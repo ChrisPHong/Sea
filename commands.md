@@ -30,3 +30,11 @@
     - the buy will be below the graph and on the right side
     - The about is below the graph on the left side
     -
+
+- **Things to Consider**
+  - You can create a demo user based on the demo login and destroy the demo user when they log out. The purpose is to reset the demo user's balance so that they can have enough to buy stocks. Or you can just reset their balance.
+    - Also change the user story for the demo user and inform the user that when they use the demo user, they will always be given a set amount and will not save their stocks once they logout.
+
+  - Create a button to add money to the user's balance in order to buy stocks
+
+  - Creating the graphs, we will a create function that will generate the prices for the daily, weekly, to the year
