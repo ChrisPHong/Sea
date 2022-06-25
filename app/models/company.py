@@ -1,4 +1,5 @@
 from .db import db
+from .watchlist import watchlist_company_join
 
 class Company(db.Model):
     __tablename__ = "companies"
@@ -18,4 +19,4 @@ class Company(db.Model):
     transactions = db.relationship('Transaction', back_populates='companies')
 
     # Many-to-Many relationship with Watchlists
-    comp_wl = db.relationship('Watchlist', secondary=watchlists, back_populates='watch_comps', cascade='all, delete')
+    comp_wl = db.relationship('Watchlist', secondary=watchlist_company_join, back_populates='watch_comps', cascade='all, delete')
