@@ -1,4 +1,5 @@
 from .db import db
+from .watchlist import watchlist_company_join
 
 class Company(db.Model):
     __tablename__ = "companies"
