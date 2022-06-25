@@ -20,3 +20,18 @@ class Company(db.Model):
 
     # Many-to-Many relationship with Watchlists
     comp_wl = db.relationship('Watchlist', secondary=watchlist_company_join, back_populates='watch_comps', cascade='all, delete')
+
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'ticker': self.ticker,
+            'description': self.description,
+            'ceo': self.ceo,
+            'employees': self.employees,
+            'headquarters': self.headquarters,
+            'founded': self.founded,
+            'basePrice': self.base_price,
+            'watchlistId': self.watchlist_id
+        }
