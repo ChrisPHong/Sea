@@ -19,12 +19,12 @@ class Transaction(db.Model):
 
 
     def to_dict(self):
-    return {
-        'id': self.id,
-        'price': self.price,
-        'shares': self.shares,
-        'type': self.type,
-        'date': self.date,
-        'userId': self.user_id,
-        'companyId': self.company_id
-    }
+        return {
+            'id': self.id,
+            'price': self.price,
+            'shares': self.shares,
+            'type': self.type,
+            'date': self.date,
+            'userId': self.user_id,
+            'companyId': self.company_id
+        }
