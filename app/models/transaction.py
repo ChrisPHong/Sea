@@ -8,8 +8,10 @@ class Transaction(db.Model):
     shares = db.Column(db.Float, nullable=False)
     type = db.Column(db.String(10), nullable=False) # Buy or sell
     date = db.Column(db.Date, nullable=False)
-    user_id = db.Column(db.Integer, nullable=False, db.ForeignKey('users.id'))
-    company_id = db.Column(db.Integer, nullable=False, db.ForeignKey('companies.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    company_id = db.Column(db.Integer, db.ForeignKey('companies.id'), nullable=False)
+
+   
 
     # Many-to-One relationship with Users
     users = db.relationship('User', back_populates='transactions')

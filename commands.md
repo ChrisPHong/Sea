@@ -38,3 +38,10 @@
   - Create a button to add money to the user's balance in order to buy stocks
 
   - Creating the graphs, we will a create function that will generate the prices for the daily, weekly, to the year
+
+
+flask db migrate
+flask db upgrade
+flask seed all
+
+flask db downgrade
