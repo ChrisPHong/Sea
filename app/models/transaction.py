@@ -11,6 +11,8 @@ class Transaction(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     company_id = db.Column(db.Integer, db.ForeignKey('companies.id'), nullable=False)
 
+   
+
     # Many-to-One relationship with Users
     users = db.relationship('User', back_populates='transactions')
 

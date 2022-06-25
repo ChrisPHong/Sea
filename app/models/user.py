@@ -11,7 +11,8 @@ class User(db.Model, UserMixin):
     last_name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
-    balance = db.Column(db.Float, nullable=False, default=10000)
+    balance = db.Column(db.Float, default=10000)
+
 
     # One-to-Many relationship with Watchlist
     watchlists = db.relationship('Watchlist', back_populates='users')
