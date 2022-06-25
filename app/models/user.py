@@ -6,10 +6,18 @@ from flask_login import UserMixin
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(40), nullable=False, unique=True)
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    first_name = db.Column(db.String(50), nullable=False)
+    last_name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(255), nullable=False, unique=True)
-    hashed_password = db.Column(db.String(255), nullable=False)
+    hashedPassword = db.Column(db.String(255), nullable=False)
+    balance = db.Column(db.Float, nullable=False, default=10000)
+
+    # One-to-Many relationship with Watchlist
+    watchlists = db.relationship('Watchlist', back_populates='users')
+
+    # One-to-Many relationship with Transactions
+    transactions = db.relationship('Transaction', back_populates='users')
 
     @property
     def password(self):
@@ -25,6 +33,7 @@ class User(db.Model, UserMixin):
     def to_dict(self):
         return {
             'id': self.id,
-            'username': self.username,
+            'firstName': self.first_name,
+            'lastName': self.last_name,
             'email': self.email
         }
