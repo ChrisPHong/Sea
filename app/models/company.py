@@ -13,7 +13,6 @@ class Company(db.Model):
     headquarters = db.Column(db.String(100), nullable=False)
     founded = db.Column(db.Integer, nullable=False)
     base_price = db.Column(db.Integer, nullable=False)
-    watchlist_id = db.Column(db.Integer, nullable=False, db.ForeignKey('watchlists.id'))
 
     # One-to-Many relationship with Transactions
     transactions = db.relationship('Transaction', back_populates='companies')
@@ -32,6 +31,5 @@ class Company(db.Model):
             'employees': self.employees,
             'headquarters': self.headquarters,
             'founded': self.founded,
-            'basePrice': self.base_price,
-            'watchlistId': self.watchlist_id
+            'basePrice': self.base_price
         }
