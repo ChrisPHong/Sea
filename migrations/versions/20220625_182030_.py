@@ -1,7 +1,7 @@
 """empty message
 
 Revision ID: aa2fa298929d
-Revises: 
+Revises:
 Create Date: 2022-06-25 18:20:30.958588
 
 """
@@ -24,7 +24,7 @@ def upgrade():
     sa.Column('last_name', sa.String(length=50), nullable=False),
     sa.Column('email', sa.String(length=255), nullable=False),
     sa.Column('hashed_password', sa.String(length=255), nullable=False),
-    sa.Column('balance', sa.Float(), nullable=False),
+    sa.Column('balance', sa.Float()),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email')
     )

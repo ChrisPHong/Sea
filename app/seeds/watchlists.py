@@ -1,6 +1,7 @@
 from app.models import db, Watchlist
 
 def seed_watchlists():
+
     watchlist1 = Watchlist(
         name="Tech",
         user_id=1

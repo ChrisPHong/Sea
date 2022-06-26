@@ -13,7 +13,6 @@ seed_commands = AppGroup('seed')
 @seed_commands.command('all')
 def seed():
     seed_users()
-    # Add other seed functions here
     seed_companies()
     seed_watchlists()
     seed_watchlist_table()
@@ -24,7 +23,6 @@ def seed():
 @seed_commands.command('undo')
 def undo():
     undo_users()
-    # Add other undo functions here
     undo_companies()
     undo_watchlists()
     undo_watchlist_table()

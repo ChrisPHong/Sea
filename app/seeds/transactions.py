@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from app.models import db, Transaction
 
 def seed_transactions():
+
     #  tech
     transaction1 = Transaction(
         shares=1,
