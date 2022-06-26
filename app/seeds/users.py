@@ -8,35 +8,35 @@ def seed_users():
         first_name="Demo",
         last_name="User",
         email="demo@aa.io",
-        hashed_password="password",
+        password="password",
         balance=10000,
     )
     user1 = User(
         first_name="Chris",
         last_name="Hong",
         email="chrishong@aa.io",
-        hashed_password="password",
+        password="password",
         balance=10000,
     )
     user2 = User(
         first_name="Chris",
         last_name="Chueng",
         email="chrischueng@aa.io",
-        hashed_password="password",
+        password="password",
         balance=10000,
     )
     user3 = User(
         first_name="Justin",
         last_name="Yi",
         email="justinyi@aa.io",
-        hashed_password="password",
+        password="password",
         balance=10000,
     )
     user4 = User(
         first_name="Grace",
         last_name="Chi",
         email="gracechi@aa.io",
-        hashed_password="password",
+        password="password",
         balance=10000,
     )
 
