@@ -1,7 +1,7 @@
 from flask import Blueprint
 from flask_login import login_required, current_user
-from models import db, Transaction
-from forms import TransactionForm
+from app.models import db, Transaction
+# from app.forms import TransactionForm
 from datetime import date
 
 transaction_routes = Blueprint('transactions', __name__)
@@ -26,19 +26,19 @@ def get_transactions():
 # Users can buy or sell stocks
 
 # Can we pass in the companyid?
-@transaction_routes.route('/update', methods=['POST'])
-def update_transactions():
-    form = TransactionForm
-    if form.validate_on_submit():
-        new_transaction = Transaction(
-            price=form.data['price'],
-            shares=form.data['shares'],
-            type=form.data['type'],
-            date=date.today(),
-            userId=current_user.get_id(),
-            companyId=form.data['companyId']
-        )
-        db.session.add(new_transaction)
-        db.sesssion.commit()
-        return new_transaction.to_dict()
-    return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+# @transaction_routes.route('/update', methods=['POST'])
+# def update_transactions():
+#     # form = TransactionForm
+#     if form.validate_on_submit():
+#         new_transaction = Transaction(
+#             price=form.data['price'],
+#             shares=form.data['shares'],
+#             type=form.data['type'],
+#             date=date.today(),
+#             userId=current_user.get_id(),
+#             companyId=form.data['companyId']
+#         )
+#         db.session.add(new_transaction)
+#         db.sesssion.commit()
+#         return new_transaction.to_dict()
+#     return {'errors': validation_errors_to_error_messages(form.errors)}, 401

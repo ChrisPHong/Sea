@@ -1,7 +1,7 @@
 from flask import Blueprint
 from flask_login import login_required, current_user
 from app.forms import WatchlistForm
-from models import Watchlist, db, Company
+from app.models import Watchlist, db, Company
 
 watchlist_routes = Blueprint('watchlists', __name__)
 
