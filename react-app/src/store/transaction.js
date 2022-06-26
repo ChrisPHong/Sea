@@ -16,7 +16,6 @@ export const getTransactions = (userId) => async (dispatch) => {
 
     if (response.ok) {
         const transactions = await response.json()
-        console.log('RESPONSE FROM BACKEND', transactions)
         dispatch(loadTransactions(transactions))
     }
 }
