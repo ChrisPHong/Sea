@@ -5,7 +5,7 @@ import './Dashboard.css'
 
 const Dashboard = () => {
     const dispatch = useDispatch()
-    const currentUser = useSelector(state => state.session.user);
+    const currentUser = useSelector(state => state?.session?.user);
 
     useEffect(() => {
 
