@@ -3,8 +3,6 @@ from app.models import db, User
 # demo user
 
 def seed_users():
-    db.drop_all()
-    db.create_all()
 
     demo = User(
         first_name="Demo",
