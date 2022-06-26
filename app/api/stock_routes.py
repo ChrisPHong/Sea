@@ -1,7 +1,7 @@
 from flask import Blueprint
 from app.models import Company
 
-stock_routes = Blueprint('stocks', __name__, url_prefix='/stocks')
+stock_routes = Blueprint('stocks', __name__)
 
 @stock_routes.route('/<ticker>')
 def get_stocks(ticker):

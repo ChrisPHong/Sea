@@ -4,7 +4,7 @@ from models import db, Transaction
 from forms import TransactionForm
 from datetime import date
 
-transaction_routes = Blueprint('transactions', __name__, url_prefix='/transactions')
+transaction_routes = Blueprint('transactions', __name__)
 
 def validation_errors_to_error_messages(validation_errors):
     """

@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from app.forms import WatchlistForm
 from models import Watchlist, db, Company
 
-watchlist_routes = Blueprint('watchlists', __name__, url_prefix='/watchlists')
+watchlist_routes = Blueprint('watchlists', __name__)
 
 def validation_errors_to_error_messages(validation_errors):
     """
