@@ -1,6 +1,7 @@
 from app.models import db, Company
 
 def seed_companies():
+
     company1 = Company(
         name="Apple Inc",
         ticker="AAPL",
