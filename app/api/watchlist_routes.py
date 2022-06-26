@@ -1,6 +1,6 @@
 from flask import Blueprint
 from flask_login import login_required, current_user
-from forms import WatchListForm
+from app.forms import WatchlistForm
 from models import Watchlist, db, Company
 
 watchlist_routes = Blueprint('watchlists', __name__, url_prefix='/watchlists')
@@ -19,9 +19,9 @@ def validation_errors_to_error_messages(validation_errors):
 @watchlist_routes.route('/', methods=['POST'])
 @login_required
 def post_watchlists():
-    form = WatchListForm()
+    form = WatchlistForm()
     if form.validate_on_submit():
-        new_watchlist = WatchListForm(
+        new_watchlist = WatchlistForm(
             name=form.data['name'],
             userId = current_user.get_id()
         )
