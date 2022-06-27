@@ -13,16 +13,15 @@ const Dashboard = () => {
     const transArr = Object.values(transactions)
     const companies = Object.values(stocks)
 
+    const [compPrice, setCompPrice] = useState()
+
     useEffect(() => {
         dispatch(getTransactions(currentUser?.id))
-    }, [dispatch])
-
-    useEffect(() => {
         dispatch(getStocks())
-    }, [dispatch])
-
-    useEffect(() => {
+        // console.log('before dispatch', stocks)
         dispatch(getOwnedWeeklyPrices(currentUser?.id))
+        // console.log('after dispatch', stocks)
+
     }, [dispatch])
 
     useEffect(() => {
@@ -51,7 +50,6 @@ const Dashboard = () => {
         for (let stock of companies) {
             if (stock.id === companyId && stock.prices) {
                 const priceArr = stock.prices
-                console.log(priceArr)
                 return priceArr[priceArr.length - 1]
             }
         }
@@ -107,7 +105,7 @@ const Dashboard = () => {
                                                 {matchTicker(transaction.companyId)}
                                             </div>
                                         </td>
-                                        <td className='owned-comp-price'>${matchPrice(transaction.companyId)?.toFixed(2)}</td>
+                                        <td className='owned-comp-price'>${companies.length && matchPrice(transaction.companyId)?.toFixed(2)}</td>
                                         <td className='owned-comp-shares'>{transaction.shares}</td>
                                         <td className='owned-allocations'>{(((matchPrice(transaction.companyId) * transaction.shares) / calculateTotal()) * 100).toFixed(2)}%</td>
                                     </tr>
