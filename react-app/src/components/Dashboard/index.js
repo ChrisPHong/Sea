@@ -13,22 +13,19 @@ const Dashboard = () => {
     const transArr = Object.values(transactions)
     const companies = Object.values(stocks)
 
-    const [compPrice, setCompPrice] = useState()
 
     useEffect(() => {
         dispatch(getTransactions(currentUser?.id))
-        dispatch(getStocks())
-        // console.log('before dispatch', stocks)
         dispatch(getOwnedWeeklyPrices(currentUser?.id))
-        // console.log('after dispatch', stocks)
-
     }, [dispatch])
 
-    useEffect(() => {
-        setTimeout(() => {
-            dispatch(getOwnedWeeklyPrices(currentUser?.id))
-        }, 30000)
-    })
+    // // Prices update every 30 seconds
+    // useEffect(() => {
+    //     const interval = setInterval(() => {
+    //         dispatch(getOwnedWeeklyPrices(currentUser?.id))
+    //     }, 30000)
+    //     return () => clearInterval(interval);
+    // })
 
     const matchTicker = (companyId) => {
         for (let stock of companies) {
@@ -105,7 +102,7 @@ const Dashboard = () => {
                                                 {matchTicker(transaction.companyId)}
                                             </div>
                                         </td>
-                                        <td className='owned-comp-price'>${companies.length && matchPrice(transaction.companyId)?.toFixed(2)}</td>
+                                        <td className='owned-comp-price'>${matchPrice(transaction.companyId)?.toFixed(2)}</td>
                                         <td className='owned-comp-shares'>{transaction.shares}</td>
                                         <td className='owned-allocations'>{(((matchPrice(transaction.companyId) * transaction.shares) / calculateTotal()) * 100).toFixed(2)}%</td>
                                     </tr>
