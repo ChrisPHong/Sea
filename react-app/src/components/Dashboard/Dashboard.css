@@ -7,25 +7,90 @@
 
 .portfolio-graph {
     width: 100vw;
-    height: 60vh;
+    height: 500px;
     border: 1px solid black;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 36pt;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: #0b7cee;
     font-weight: 700;
 }
 
 #info {
-    width: 100vw;
-}
-
-.owned-assets > ul {
-    list-style: none;
-}
-
-.stock-ctn {
     display: flex;
-    width: 600px;
+    justify-content: center;
+    width: 100vw;
+    padding-top: 40px;
+}
+
+#left {
+    width: 1000px;
+}
+
+#right {
+    width: 300px;
+}
+
+.owned-assets {
+    display: flex;
+    justify-content: center;
+    width: 1000px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid lightgray;
+}
+
+table {
+    /* text-align: center; */
+    border-collapse: collapse;
+}
+
+tr {
+    text-align: left;
+}
+
+th {
+    font-weight: 400;
+    color: gray;
+}
+
+.owned-comp-name {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0 10px 0;
+    width: 400px;
+    margin:0%
+
+}
+
+.company-ticker {
+    font-size: 10pt;
+    color: gray;
+    padding-top: 5px;
+}
+
+.owned-comp-price,
+.owned-comp-shares,
+.owned-allocations {
+    width: 200px;
+}
+
+.news-ctn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 50px;
+    height: 200px;
+    align-items: center;
+    font-size: 48pt;
+    font-weight: 700;
+}
+
+.watchlist-ctn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 500px;
+    font-size: 48pt;
+    font-weight: 700;
 }
