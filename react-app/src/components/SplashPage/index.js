@@ -20,8 +20,8 @@ function SplashPage() {
                     <div id="panel-h1-spacer"></div>
                     <p>Commission-free investing, plus the tools</p>
                     <p>you need to put your money in motion. Dive</p>
-                    <p>into Sea and get your first stock for free. Certain</p>
-                    <p>limitations apply.</p>
+                    <p>into Sea and get your first stock for free.</p>
+                    <p>Certain limitations apply.</p>
                     <button id="get-started-btn" onClick={handleSubmit}>Get Started</button>
                 </div>
             </div>

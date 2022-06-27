@@ -3,10 +3,11 @@ from app.models import Company
 
 search_routes = Blueprint('search', __name__)
 
-@search_routes.route('/')
-def get__all_stocks():
+@search_routes.route('/', methods=['GET'])
+def get_stocks():
     stock_data = []
     stocks = Company.query.all()
+    print(stocks)
 
     for i in range(0, len(stocks)):
         stock_data.append(

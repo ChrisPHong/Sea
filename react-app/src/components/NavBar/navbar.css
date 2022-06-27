@@ -75,6 +75,14 @@
     font-size: 1.2em;
 }
 
+/* .auth-navbar-search {
+    position: absolute;
+    left: 20em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+} */
+
 .auth-navbar-right {
     position: absolute;
     right: 5em;
@@ -108,13 +116,14 @@
 
 #logout-btn {
     border-radius: 23px;
-    height: 40px;
-    width: 80px;
     border: 2px solid #064788;
+    height: 40px;
+    width: 90px;
     background-color: white;
     font-size: 1em;
     margin-left: 18px;
     color: #064788;
+    font-size: 1em;
 }
 
 #logout-btn:hover {
