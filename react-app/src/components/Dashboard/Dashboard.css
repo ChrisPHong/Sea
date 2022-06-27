@@ -1,0 +1,91 @@
+#portfolio-ctn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: sans-serif;
+}
+
+.portfolio-graph {
+    width: 100vw;
+    height: 500px;
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36pt;
+    background-color: #0b7cee;
+    font-weight: 700;
+}
+
+#info {
+    display: flex;
+    justify-content: center;
+    width: 100vw;
+    padding-top: 40px;
+}
+
+#left {
+    width: 1000px;
+}
+
+#right {
+    width: 300px;
+}
+
+.owned-assets {
+    display: flex;
+    justify-content: center;
+    width: auto;
+    border-bottom: 1px solid lightgray;
+    padding-bottom: 40px;
+}
+
+tr {
+    text-align: left;
+}
+
+th {
+    font-weight: 400;
+    color: gray;
+}
+
+.owned-comp-name {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0 10px 0;
+    width: 300px;
+    margin:0%;
+
+}
+
+.company-ticker {
+    font-size: 10pt;
+    color: gray;
+    padding-top: 5px;
+}
+
+.owned-comp-price,
+.owned-comp-shares,
+.owned-allocations {
+    width: 200px;
+}
+
+.news-ctn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 50px;
+    height: 200px;
+    align-items: center;
+    font-size: 48pt;
+    font-weight: 700;
+}
+
+.watchlist-ctn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 500px;
+    font-size: 48pt;
+    font-weight: 700;
+}

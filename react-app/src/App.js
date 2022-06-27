@@ -3,10 +3,13 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import LoginForm from './components/auth/LoginForm';
 import SignUpForm from './components/auth/SignUpForm';
-import NavBar from './components/NavBar/index'
 import SplashPage from './components/SplashPage';
 import Footer from './components/Footer';
-// import ProtectedRoute from './components/auth/ProtectedRoute';
+import NavBar from './components/NavBar/index';
+import ProtectedRoute from './components/auth/ProtectedRoute';
+import UsersList from './components/UsersList';
+import User from './components/User';
+import Dashboard from './components/Dashboard'
 import { authenticate } from './store/session';
 
 function App() {
@@ -27,6 +30,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <NavBar />
       <Switch>
         <Route path='/login' exact={true}>
           <LoginForm />
@@ -34,19 +38,13 @@ function App() {
         <Route path='/sign-up' exact={true}>
           <SignUpForm />
         </Route>
-        {!user && (
-          <Route path='/' exact={true} >
-            <NavBar />
-            <SplashPage />
-            <Footer />
-          </Route>
-        )}
-        {user && (
         <Route path='/' exact={true} >
-          <NavBar />
-          {/* <DashBoard user={user}/> */}
+          <SplashPage />
+          <Footer />
         </Route>
-        )}
+        <ProtectedRoute path='/dashboard'>
+          <Dashboard />
+        </ProtectedRoute>
       </Switch>
     </BrowserRouter>
   );
