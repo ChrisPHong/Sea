@@ -43,8 +43,9 @@ const Dashboard = () => {
 
     const matchPrice = (companyId) => {
         for (let stock of companies) {
-            if (stock.id === companyId) {
-                return stock?.basePrice
+            if (stock.id === companyId && stock.prices) {
+                const priceArr = stock.prices
+                return priceArr[priceArr.length - 1]
             }
         }
     }
