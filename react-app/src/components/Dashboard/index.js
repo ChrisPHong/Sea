@@ -36,6 +36,14 @@ const Dashboard = () => {
         }
     }
 
+    const matchPrice = (companyId) => {
+        for (let stock of companies) {
+            if (stock.id === companyId) {
+                return stock.basePrice
+            }
+        }
+    }
+
     const calculateTotal = () => {
         let total = 0
         for (let transaction of transArr) {
@@ -87,9 +95,9 @@ const Dashboard = () => {
                                                     {matchTicker(transaction.companyId)}
                                                 </div>
                                             </td>
-                                            <td className='owned-comp-price'>{transaction.price}</td>
+                                            <td className='owned-comp-price'>${matchPrice(transaction.companyId).toFixed(2)}</td>
                                             <td className='owned-comp-shares'>{transaction.shares}</td>
-                                            <td className='owned-allocations'>{((20 * transaction.shares) / 2000).toFixed(2)}%</td>
+                                            <td className='owned-allocations'>{((matchPrice(transaction.companyId) * transaction.shares) / 100).toFixed(2)}%</td>
                                         {/* </div> */}
                                     </tr>
                                     : ""

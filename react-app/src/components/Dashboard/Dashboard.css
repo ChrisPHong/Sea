@@ -37,12 +37,13 @@
     justify-content: center;
     width: 1000px;
     padding-bottom: 40px;
-    border-bottom: 1px solid lightgray;
 }
 
 table {
+    border-bottom: 1px solid lightgray;
     /* text-align: center; */
-    border-collapse: collapse;
+    /* border-collapse: collapse; */
+    /* background-color: rgb(226, 226, 226); */
 }
 
 tr {
@@ -58,7 +59,7 @@ th {
     display: flex;
     flex-direction: column;
     padding: 10px 0 10px 0;
-    width: 400px;
+    width: 300px;
     margin:0%
 
 }
