@@ -12,4 +12,5 @@ def get_stocks(ticker):
 @stock_routes.route('/')
 def get__all_stocks():
     companies = Company.query.all()
+    # print(companies, '<<<<<<<<<<<<<<<<< COMPANIES >>>>>>>>>>>>')
     return jsonify([company.to_dict() for company in companies])

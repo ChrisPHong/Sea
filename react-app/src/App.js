@@ -11,6 +11,9 @@ import UsersList from './components/UsersList';
 import User from './components/User';
 import Dashboard from './components/Dashboard'
 import { authenticate } from './store/session';
+import WatchlistPage from './components/Watchlist';
+import WatchlistForm from './components/WatchlistForm';
+
 
 function App() {
   const [loaded, setLoaded] = useState(false);
@@ -44,6 +47,8 @@ function App() {
         </Route>
         <ProtectedRoute path='/dashboard'>
           <Dashboard />
+          <WatchlistPage />
+            <WatchlistForm />
         </ProtectedRoute>
       </Switch>
     </BrowserRouter>
