@@ -25,6 +25,12 @@ const Dashboard = () => {
         dispatch(getOwnedWeeklyPrices(currentUser?.id))
     }, [dispatch])
 
+    useEffect(() => {
+        setTimeout(() => {
+            dispatch(getOwnedWeeklyPrices(currentUser?.id))
+        }, 30000)
+    })
+
     const matchTicker = (companyId) => {
         for (let stock of companies) {
             if (stock.id === companyId) {
@@ -45,6 +51,7 @@ const Dashboard = () => {
         for (let stock of companies) {
             if (stock.id === companyId && stock.prices) {
                 const priceArr = stock.prices
+                console.log(priceArr)
                 return priceArr[priceArr.length - 1]
             }
         }
@@ -109,6 +116,7 @@ const Dashboard = () => {
                             </tbody>
                         </table>
                     </div>
+
                     {/* -------------------- NEWS -------------------- */}
                     <div className='news-ctn'>
                         News Container Here
