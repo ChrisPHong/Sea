@@ -16,6 +16,7 @@
     align-items: center;
     height: 700px;
     width: 100%;
+    margin-top: 70px;
     /* z-index: 0; */
     /* position: fixed; */
 }
@@ -23,10 +24,11 @@
 .panel-one-description {
     flex-direction: column;
     justify-content: flex-end;
+    align-items: center;
     align-items: flex-end;
     margin-right: 20em;
     /* margin-left: 9em; */
-    margin-top: 2em;
+    /* margin-top: 2em; */
 }
 
 .panel-one-description h1 {

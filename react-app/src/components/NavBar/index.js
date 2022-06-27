@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import LogoutButton from '../auth/LogoutButton';
+import SearchBar from '../SearchBar';
 import './navbar.css'
 
 const NavBar = () => {
@@ -13,19 +14,14 @@ const NavBar = () => {
       <div className='sea-navbar-logo'>
         Sea
       </div>
-      {/* <li>
-        <NavLink to='/' exact={true} activeClassName='active'>
-          Sea
-        </NavLink>
-      </li> */}
 
       {currentUser
       ?
         <div className='auth-navbar-right'>
 
-          {/* <div>
-            <Search />
-          </div> */}
+          <div>
+            <SearchBar />
+          </div>
 
           <div id="nav-portfolio">
             <NavLink to='/dashboard-xyz' exact={true} activeClassName='active'>
