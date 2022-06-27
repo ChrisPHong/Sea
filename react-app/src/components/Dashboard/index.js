@@ -35,30 +35,41 @@ const Dashboard = () => {
                 Graph here
             </div>
             <div id='info'>
-                {/* -------------------- OWNED STOCKS -------------------- */}
-                <div className='owned-assets'>
-                    <ul>
-                        {transArr.map(transaction => (
-                            transaction.type === 'buy' && transaction.userId === currentUser.id
-                            ?
-                            <li key={transaction.id}>
-                                <div className='stock-ctn'>
-                                    <div className='owned-company'>
-                                        Company: {matchTicker(transaction.companyId)}
+                <div id='left'>
+                    {/* -------------------- OWNED STOCKS -------------------- */}
+                    <div className='owned-assets'>
+                        <ul>
+                            {transArr.map(transaction => (
+                                transaction.type === 'buy' && transaction.userId === currentUser.id
+                                ?
+                                <li key={transaction.id}>
+                                    <div className='stock-ctn'>
+                                        <div className='owned-company'>
+                                            Company: {matchTicker(transaction.companyId)}
+                                        </div>
+                                        <div className='owned-shares'>
+                                            Shares: {transaction.shares}
+                                        </div>
+                                        <div className='owned-price'>
+                                            Price: {transaction.price}
+                                        </div>
                                     </div>
-                                    <div className='owned-shares'>
-                                        Shares: {transaction.shares}
-                                    </div>
-                                    <div className='owned-price'>
-                                        Price: {transaction.price}
-                                    </div>
-                                </div>
-                            </li>
-                            : ""
-                        ))}
-                    </ul>
-                </div>
+                                </li>
+                                : ""
+                            ))}
+                        </ul>
+                    </div>
+                    {/* -------------------- NEWS -------------------- */}
+                    <div className='news-ctn'>
 
+                    </div>
+                </div>
+                <div id='right'>
+                    {/* -------------------- WATCHLIST -------------------- */}
+                    <div className='watchlist-ctn'>
+
+                    </div>
+                </div>
             </div>
         </div>
     )
