@@ -27,7 +27,7 @@ def upgrade():
     sa.Column('employees', sa.Integer(), nullable=False),
     sa.Column('headquarters', sa.String(length=100), nullable=False),
     sa.Column('founded', sa.Integer(), nullable=False),
-    sa.Column('base_price', sa.Integer(), nullable=False),
+    sa.Column('base_price', sa.Float(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('watchlists',
