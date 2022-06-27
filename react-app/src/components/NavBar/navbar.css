@@ -1,0 +1,73 @@
+.nav-bar {
+    background-color: white;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    height: 90px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    z-index: 100;
+    /* justify-content: space-between; */
+}
+
+.sea-navbar-logo {
+    width: 40%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-left: 3em;
+    color: black;
+    font-size: 2em;
+}
+
+.navbar-right {
+    position: absolute;
+    right: 5em;
+    margin-top: 0.47em;
+    display: flex;
+    flex-direction: row;
+}
+
+#nav-signup {
+    background-color: #7cb6f0;
+    height: 30px;
+    padding: 7px 25px;
+    border-radius: 35px;
+    border: 1px solid transparent;
+}
+
+#nav-signup a {
+    color: #064788;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 1.2em;
+}
+
+#nav-signup:hover {
+    border: 2px solid #064788;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+#nav-login {
+    background-color: #7cb6f0;
+    height: 30px;
+    padding: 7px 25px;
+    border-radius: 35px;
+    border: 1px solid transparent;
+}
+
+#nav-login:hover {
+    border: 2px solid #064788;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+
+#nav-login a {
+    color: #064788;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 1.2em;
+}
