@@ -29,27 +29,38 @@ const Dashboard = () => {
     }
 
     return (
-        <>
-            <h1>Hi from Dashboard!</h1>
-            <ul>
-                {transArr.map(transaction => (
-                    transaction.type === 'buy' && transaction.userId === currentUser.id
-                    ?
-                    <li key={transaction.id}>
-                        <div>
-                            Company: {matchTicker(transaction.companyId)}
-                        </div>
-                        <div>
-                            Shares: {transaction.shares}
-                        </div>
-                        <div>
-                            Price: {transaction.price}
-                        </div>
-                    </li>
-                    : ""
-                ))}
-            </ul>
-        </>
+        <div id='portfolio-ctn'>
+            {/* -------------------- ASSETS GRAPH -------------------- */}
+            <div className='portfolio-graph'>
+                Graph here
+            </div>
+            <div id='info'>
+                <div className=''>
+                    {/* -------------------- OWNED STOCKS -------------------- */}
+                    <ul>
+                        {transArr.map(transaction => (
+                            transaction.type === 'buy' && transaction.userId === currentUser.id
+                            ?
+                            <li key={transaction.id}>
+                                <div className='stock-ctn'>
+                                    <div className='owned-company'>
+                                        Company: {matchTicker(transaction.companyId)}
+                                    </div>
+                                    <div className='owned-shares'>
+                                        Shares: {transaction.shares}
+                                    </div>
+                                    <div className='owned-price'>
+                                        Price: {transaction.price}
+                                    </div>
+                                </div>
+                            </li>
+                            : ""
+                        ))}
+                    </ul>
+                </div>
+
+            </div>
+        </div>
     )
 }
 
