@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { getWatchlists } from '../../store/watchlist'
+import {deleteWatchList} from '../../store/watchlist'
 import './Watchlist.css';
 
 
@@ -10,13 +11,14 @@ function WatchlistPage() {
     const watchlists = Object.values(watchlist[0])
     const user = useSelector((state) => (state.session.user));
 
-
+    useEffect(() => {
+    }, [dispatch]);
 
     useEffect(() => {
         dispatch(getWatchlists());
     }, [dispatch])
 
-    
+
 
     return (
         <div>
@@ -24,9 +26,14 @@ function WatchlistPage() {
             {watchlists.map(watchlist => {
                 return (
                     <div key={watchlist.id}>
-                        <h4>
+                        <h4 key={watchlist.id}>
                             {watchlist.name}
                         </h4>
+                        <button
+                        className='deleteButton'
+                        onClick={() =>{
+                            dispatch(deleteWatchList(watchlist.id))
+                        }}>Delete</button>
                     </div>
                 )
             })}

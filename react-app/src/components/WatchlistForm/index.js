@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
-import {postWatchlist} from '../../store/watchlist'
+import {postWatchlists} from '../../store/watchlist'
+import {useHistory} from 'react-router-dom'
 
 function WatchlistForm() {
     const [name, setName] = useState('');
     const [errors, setErrors] = useState([]);
 
     const dispatch = useDispatch();
-
-    let userId = useSelector((state) => state.session.user.id)
+    const history = useHistory();
+    let userId = useSelector((state) => state.session?.user?.id)
 
     useEffect(() => {
         const error = [];
@@ -25,11 +24,15 @@ function WatchlistForm() {
                 userId,
                 name,
             }
-            dispatch(postWatchlist(payload))
+            dispatch(postWatchlists(payload))
+            history.push('/dashboard')
         }
 
     }
 
+    useEffect(()=>{
+
+    },[onSubmit])
 
     return (
         <form className="WatchlistForm" onSubmit={onSubmit}>

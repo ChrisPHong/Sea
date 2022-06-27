@@ -1,5 +1,6 @@
 const LOAD_WATCHLIST = 'watchlist/LOAD'
 const POST_WATCHLIST = 'watchlist/POST'
+const DELETE_WATCHLIST = 'watchlist/DELETE'
 
 export const loadWatchlist = (watchlists) => {
     return {
@@ -8,12 +9,21 @@ export const loadWatchlist = (watchlists) => {
     }
 }
 
-export const postWatchlist = (watchlist) => {
+export const postList = (watchlist) => {
     return {
         type: POST_WATCHLIST,
         watchlist
     }
 }
+
+export const deleteList = (watchlist) => {
+    return {
+        type: DELETE_WATCHLIST,
+        watchlist
+    }
+}
+
+
 export const getWatchlists = () => async (dispatch) => {
     const response = await fetch('/api/watchlists/', {
         method: 'GET',
@@ -24,29 +34,40 @@ export const getWatchlists = () => async (dispatch) => {
     }
 
 }
-export const postWatchlists = (watchlist) => async (dispatch) => {
+export const postWatchlists = (payload) => async (dispatch) => {
     const response = await fetch('/api/watchlists/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ watchlist })
+        body: JSON.stringify(payload)
     })
     if (response.ok) {
         const watchlists = await response.json()
-        console.log('<<<<<<<<<<<<<< in Post Watchlist Thunk >>>>>>>>>>>>>>>>>>>>', watchlists)
-        dispatch(postWatchlist(watchlists))
+        dispatch(postList(watchlists))
     }
 
+}
+
+export const deleteWatchList = (watchlistId) => async (dispatch) => {
+    const response = await fetch(`/api/watchlists/${watchlistId}`, {
+        method: 'DELETE'
+    })
+
+    if (response.ok){
+        const data = await response.json();
+        dispatch(deleteList(watchlistId));
+
+        return data
+    }
 }
 
 const initialState = { entries: {}, isLoading: true }
 
 
 const watchlistReducer = (state = initialState, action) => {
-    let newState
+    let newState;
     switch (action.type) {
         case LOAD_WATCHLIST:
             newState = { ...state, entries: { ...state.entries } }
-            console.log(action, '<<<<< IN ACTION >>>>>')
             action.watchlists.forEach(watchlist => { newState.entries[watchlist.id] = watchlist })
             return newState
         case POST_WATCHLIST:
@@ -57,6 +78,11 @@ const watchlistReducer = (state = initialState, action) => {
                 }
                 return newState
             }
+        case DELETE_WATCHLIST:
+            newState = { ...state}
+            delete newState[action.watchlist]
+
+            return newState;
 
         default:
             return state

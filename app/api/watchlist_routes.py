@@ -25,13 +25,16 @@ def get__all_watchlists():
 
 # Users can create a new watchlist
 @watchlist_routes.route('/', methods=['POST'])
-@login_required
+# @login_required
 def post_watchlists():
     form = WatchlistForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
     if form.validate_on_submit():
-        new_watchlist = WatchlistForm(
+        new_watchlist = Watchlist(
             name=form.data['name'],
-            userId = current_user.get_id()
+            user_id = request.json['userId']
+
         )
         db.session.add(new_watchlist)
         db.session.commit()
@@ -54,10 +57,10 @@ def post_watchlists():
 #     return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 # Users can delete their watchlist
-# @watchlist_routes.route('/<int:id>', methods=['DELETE'])
-# def delete_watchlists(id):
-#     watchlist = Watchlist.query.filter(Watchlist.id == id).first()
-#     db.session.delete(watchlist)
-#     db.session.commit()
-#     # Are we returning the the updated list after a list has been deleted?
-#     return watchlist.to_dict()
+@watchlist_routes.route('/<int:id>', methods=['DELETE'])
+def delete_watchlists(id):
+    watchlist = Watchlist.query.filter(Watchlist.id == id).first()
+    db.session.delete(watchlist)
+    db.session.commit()
+    # Are we returning the the updated list after a list has been deleted?
+    return watchlist.to_dict()
