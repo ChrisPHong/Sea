@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getStocks } from '../../store/stock';
+import { getOwnedWeeklyPrices, getStocks } from '../../store/stock';
 import { getTransactions } from '../../store/transaction';
 import './Dashboard.css'
 
@@ -8,9 +8,12 @@ const Dashboard = () => {
     const dispatch = useDispatch()
     const transactions = useSelector(state => state?.transaction?.entries)
     const stocks = useSelector(state => state?.stock?.entries)
+    const companyPrices = useSelector(state => state?.company?.entries)
     const currentUser = useSelector(state => state?.session?.user);
     const transArr = Object.values(transactions)
     const companies = Object.values(stocks)
+    // const comps = Object.values(companyPrices)
+    console.log('company prices in frontend', companyPrices)
 
     useEffect(() => {
         dispatch(getTransactions(currentUser?.id))
@@ -18,6 +21,10 @@ const Dashboard = () => {
 
     useEffect(() => {
         dispatch(getStocks())
+    }, [dispatch])
+
+    useEffect(() => {
+        dispatch(getOwnedWeeklyPrices(currentUser?.id))
     }, [dispatch])
 
     const matchTicker = (companyId) => {
