@@ -4,8 +4,8 @@
 }
 
 .panel-one {
-    background-color: #064788;
-    color:#7cb6f0;
+    background-color: #0b7cee;
+    color:white;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -31,11 +31,12 @@
 }
 
 #panel-h1-spacer {
-    height: 1em;
+    height: 2em;
 }
 
 .panel-one-description p {
     font-size: 1em;
+    line-height: 1.5em;
 }
 
 #get-started-btn {
@@ -43,16 +44,15 @@
     border-radius: 23px;
     height: 50px;
     width: 137px;
-    background-color: #7cb6f0;
+    background-color: #0b7cee;
     border: none;
     font-size: 1em;
+    color: white;
+    border: 2px solid white;
 }
 
 #get-started-btn:hover {
     cursor: pointer;
-    background-color: #064788;
-    border: 2px solid #7cb6f0;
-    color: #7cb6f0;
 }
 
 .panel-one-image {
@@ -65,7 +65,7 @@
 
 .splash-disclaimer {
     /* background-color: whitesmoke; */
-    color:#064788;
+    color:#0b7cee;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -75,5 +75,6 @@
 }
 
 .splash-disclaimer p {
+    /* line-height: 5px; */
     margin-bottom: 0;
 }

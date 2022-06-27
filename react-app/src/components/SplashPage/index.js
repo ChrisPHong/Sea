@@ -24,14 +24,15 @@ function SplashPage() {
                     <p>limitations apply.</p>
                     <button id="get-started-btn" onClick={handleSubmit}>Get Started</button>
                 </div>
-                <div className='panel-one-image'>
+                {/* <div className='panel-one-image'>
                     <img height="400em" width="400em" src="/images/splash-image-01.jpg" alt="splash_image"></img>
-                </div>
+                </div> */}
             </div>
             <div className='splash-disclaimer'>
                 <p id='splash-disclaimer-one'>Dive into Sea and get your first stock free.</p>
                 <p id='splash-disclaimer-two'>Disclaimer: this website does not represent real-time data.</p>
             </div>
+
         </>
     )
 }
