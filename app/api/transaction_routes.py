@@ -1,5 +1,5 @@
-from flask import Blueprint
-from flask_login import login_required, current_user
+from flask import Blueprint, request, jsonify
+from flask_login import login_required, current_user, UserMixin
 from app.models import db, Transaction
 # from app.forms import TransactionForm
 from datetime import date
@@ -17,11 +17,11 @@ def validation_errors_to_error_messages(validation_errors):
     return errorMessages
 
 # Return a list of previous transactions
-@transaction_routes.route('/')
+@transaction_routes.route('/', methods=['POST'])
 def get_transactions():
-    userId = current_user.get_id()
-    transactions = Transaction.query.filter(Transaction.userId == userId).all()
-    return [transaction.to_dict() for transaction in transactions]
+    user_id = request.json['userId']
+    transactions = Transaction.query.filter(Transaction.user_id == int(user_id)).all()
+    return jsonify([transaction.to_dict() for transaction in transactions])
 
 # Users can buy or sell stocks
 
