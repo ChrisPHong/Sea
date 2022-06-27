@@ -33,7 +33,7 @@ const Dashboard = () => {
             <h1>Hi from Dashboard!</h1>
             <ul>
                 {transArr.map(transaction => (
-                    transaction.type === 'buy'
+                    transaction.type === 'buy' && transaction.userId === currentUser.id
                     ?
                     <li key={transaction.id}>
                         <div>
