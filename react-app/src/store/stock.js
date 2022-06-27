@@ -2,6 +2,7 @@ const LOAD_STOCKS = 'stock/loadStocks'
 const LOAD_OWNED_WEEKLY_PRICES = 'stock/loadOwnedWeeklyPrices'
 
 export const loadStocks = (stocks) => {
+    console.log('in loadStocks action... what are we going to send to reducer?', stocks)
     return {
         type: LOAD_STOCKS,
         stocks
@@ -9,22 +10,22 @@ export const loadStocks = (stocks) => {
 }
 
 export const loadOwnedWeeklyPrices = (companies) => {
-    console.log('in loadOwnedWeeklyPrices action')
     return {
-        type: LOAD_STOCKS,
+        type: LOAD_OWNED_WEEKLY_PRICES,
         companies
     }
 }
 
 export const getStocks = () => async (dispatch) => {
+    console.log('in getStocks thunk')
     const response = await fetch('/api/stocks/')
 
     const stocks = await response.json()
+    console.log('this is what we received from backend', stocks)
     dispatch(loadStocks(stocks))
 }
 
 export const getOwnedWeeklyPrices = (userId) => async (dispatch) => {
-    console.log('are we getting thunk?')
     const response = await fetch('/api/stocks/weekly', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -33,7 +34,6 @@ export const getOwnedWeeklyPrices = (userId) => async (dispatch) => {
 
     if (response.ok) {
         const companies = await response.json()
-        console.log(companies)
         dispatch(loadOwnedWeeklyPrices(companies))
     }
 }
@@ -50,6 +50,8 @@ const stockReducer = ( state = initialState, action ) => {
             return newState
         case LOAD_OWNED_WEEKLY_PRICES:
             newState = { ...state, entries: {...state.entries} }
+            console.log('what is newState looking like???', newState)
+            console.log('says action.companies is undefined. What is this THEN?!', action.companies)
             action.companies.forEach(company => newState.entries[company.id] = company)
             return newState
         default:

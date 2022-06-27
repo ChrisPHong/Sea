@@ -37,7 +37,7 @@ def get_stocks(ticker):
 @stock_routes.route('/')
 def get_all_stocks():
     companies = Company.query.all()
-    print(companies)
+    print('we hit backend???')
     return jsonify([company.to_dict() for company in companies])
 
 # Weekly prices for OWNED companies

@@ -8,12 +8,10 @@ const Dashboard = () => {
     const dispatch = useDispatch()
     const transactions = useSelector(state => state?.transaction?.entries)
     const stocks = useSelector(state => state?.stock?.entries)
-    const companyPrices = useSelector(state => state?.company?.entries)
+    // const companyPrices = useSelector(state => state?.company?.entries)
     const currentUser = useSelector(state => state?.session?.user);
     const transArr = Object.values(transactions)
     const companies = Object.values(stocks)
-    // const comps = Object.values(companyPrices)
-    console.log('company prices in frontend', companyPrices)
 
     useEffect(() => {
         dispatch(getTransactions(currentUser?.id))
