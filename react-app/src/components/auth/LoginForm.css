@@ -1,3 +1,7 @@
+body {
+    overflow-x: hidden;
+}
+
 .login-page {
     display: flex;
 }
@@ -51,15 +55,15 @@
 }
 
 .login-button:hover {
-    background: skyblue;
+    background: #7cb6f0;
 }
 
 
-.email-form-field,
-.password-form-field {
+.login-email-form-field,
+.login-password-form-field {
     width: 350px;
     height: 20px;
-    border: 1px solid skyblue;
+    border: 1px solid #7cb6f0;
     margin-top: 10px;
     margin-bottom: 10px;
 }
@@ -71,5 +75,5 @@
 }
 
 .login-form-create-account:hover {
-    color: skyblue;
+    color: #7cb6f0;
 }
