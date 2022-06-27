@@ -18,7 +18,7 @@
     justify-content: flex-start;
     align-items: flex-start;
     margin-left: 3em;
-    color: #0b7cee;
+    color: #064788;
     font-size: 2em;
 }
 
@@ -32,7 +32,7 @@
 }
 
 #nav-signup {
-    background-color: #7cb6f0;
+    background-color: white;
     height: 30px;
     padding: 7px 25px;
     border-radius: 35px;
@@ -54,7 +54,7 @@
 }
 
 #nav-login {
-    background-color: #7cb6f0;
+    background-color: white;
     height: 30px;
     padding: 7px 25px;
     border-radius: 35px;
@@ -110,10 +110,11 @@
     border-radius: 23px;
     height: 40px;
     width: 80px;
-    border: 1px solid #064788;
+    border: 2px solid #064788;
     background-color: white;
     font-size: 1em;
     margin-left: 18px;
+    color: #064788;
 }
 
 #logout-btn:hover {
