@@ -10,12 +10,8 @@ export const loadStocks = (stocks) => {
 export const getStocks = () => async (dispatch) => {
     const response = await fetch('/api/stocks/')
 
-    console.log('HERE IN GET STOCKS THUNK', response)
-
-    // if (response.ok) {
-        const stocks = await response.json()
-        dispatch(loadStocks(stocks))
-    // }
+    const stocks = await response.json()
+    dispatch(loadStocks(stocks))
 }
 
 const initialState = { entries: {}, isLoading: true }
