@@ -39,13 +39,6 @@
     padding-bottom: 40px;
 }
 
-table {
-    border-bottom: 1px solid lightgray;
-    /* text-align: center; */
-    /* border-collapse: collapse; */
-    /* background-color: rgb(226, 226, 226); */
-}
-
 tr {
     text-align: left;
 }
@@ -85,6 +78,7 @@ th {
     align-items: center;
     font-size: 48pt;
     font-weight: 700;
+    border-top: 1px solid lightgray;
 }
 
 .watchlist-ctn {
