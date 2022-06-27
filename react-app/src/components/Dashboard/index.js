@@ -35,8 +35,8 @@ const Dashboard = () => {
                 Graph here
             </div>
             <div id='info'>
-                <div className=''>
-                    {/* -------------------- OWNED STOCKS -------------------- */}
+                {/* -------------------- OWNED STOCKS -------------------- */}
+                <div className='owned-assets'>
                     <ul>
                         {transArr.map(transaction => (
                             transaction.type === 'buy' && transaction.userId === currentUser.id
