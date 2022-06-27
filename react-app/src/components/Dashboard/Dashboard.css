@@ -35,7 +35,8 @@
 .owned-assets {
     display: flex;
     justify-content: center;
-    width: 1000px;
+    width: auto;
+    border-bottom: 1px solid lightgray;
     padding-bottom: 40px;
 }
 
@@ -53,7 +54,7 @@ th {
     flex-direction: column;
     padding: 10px 0 10px 0;
     width: 300px;
-    margin:0%
+    margin:0%;
 
 }
 
@@ -78,7 +79,6 @@ th {
     align-items: center;
     font-size: 48pt;
     font-weight: 700;
-    border-top: 1px solid lightgray;
 }
 
 .watchlist-ctn {
