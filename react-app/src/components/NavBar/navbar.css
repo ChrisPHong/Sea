@@ -1,9 +1,9 @@
 .nav-bar {
     background-color: white;
     width: 100%;
-    position: fixed;
+    position: absolute;
     top: 0;
-    height: 90px;
+    height: 70px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -17,16 +17,17 @@
     justify-content: flex-start;
     align-items: flex-start;
     margin-left: 3em;
-    color: black;
+    color: #064788;
     font-size: 2em;
 }
 
 .navbar-right {
     position: absolute;
     right: 5em;
-    margin-top: 0.47em;
+    /* margin-top: 0.47em; */
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 
 #nav-signup {
@@ -35,6 +36,7 @@
     padding: 7px 25px;
     border-radius: 35px;
     border: 1px solid transparent;
+    margin-left: 10px;
 }
 
 #nav-signup a {
@@ -70,4 +72,49 @@
     cursor: pointer;
     text-decoration: none;
     font-size: 1.2em;
+}
+
+.auth-navbar-right {
+    position: absolute;
+    right: 5em;
+    /* margin-top: 0.47em; */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#nav-portfolio a {
+    color: #064788;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 1.2em;
+}
+
+#nav-transactions {
+    margin-left: 18px;
+}
+
+#nav-transactions a {
+    color: #064788;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 1.2em;
+}
+
+/* #nav-portfolio:hover, #nav-transactions:hover {
+    cursor: pointer;
+} */
+
+#logout-btn {
+    border-radius: 23px;
+    height: 40px;
+    width: 80px;
+    border: 1px solid #064788;
+    background-color: white;
+    font-size: 1em;
+    margin-left: 18px;
+}
+
+#logout-btn:hover {
+    cursor: pointer;
 }
