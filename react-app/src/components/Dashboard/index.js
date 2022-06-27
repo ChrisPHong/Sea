@@ -43,9 +43,6 @@ const Dashboard = () => {
                             Shares: {transaction.shares}
                         </div>
                         <div>
-                            Date: {transaction.date}
-                        </div>
-                        <div>
                             Price: {transaction.price}
                         </div>
                     </li>
