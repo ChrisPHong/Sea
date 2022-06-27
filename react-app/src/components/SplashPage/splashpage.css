@@ -1,5 +1,6 @@
 * {
     font-family: sans-serif;
+    margin: 0;
 }
 
 .panel-one {
@@ -9,7 +10,7 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    height: 650px;
+    height: 700px;
     width: 100%;
     /* z-index: 0; */
     /* position: fixed; */
@@ -19,7 +20,8 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    margin-right: 6em;
+    margin-right: 9em;
+    margin-top: 2em;
 }
 
 .panel-one-description h1 {
@@ -55,7 +57,7 @@
 
 .panel-one-image {
     position: relative;
-    top: 2em;
+    top: 3em;
     right: 2em;
     left: 1em;
     height: 30em;
@@ -74,8 +76,4 @@
 
 .splash-disclaimer p {
     margin-bottom: 0;
-}
-
-#splash-disclaimer-two {
-    margin-bottom: 20px;
 }

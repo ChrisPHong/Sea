@@ -5,6 +5,7 @@ import LoginForm from './components/auth/LoginForm';
 import SignUpForm from './components/auth/SignUpForm';
 import NavBar from './components/NavBar/index'
 import SplashPage from './components/SplashPage';
+import Footer from './components/Footer';
 // import ProtectedRoute from './components/auth/ProtectedRoute';
 import { authenticate } from './store/session';
 
@@ -37,7 +38,7 @@ function App() {
           <Route path='/' exact={true} >
             <NavBar />
             <SplashPage/>
-            {/* <Footer /> */}
+            <Footer />
           </Route>
         )}
         {user && (
