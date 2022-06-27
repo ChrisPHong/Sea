@@ -42,7 +42,7 @@ def login():
         user = User.query.filter(User.email == form.data['email']).first()
         login_user(user)
         return user.to_dict()
-    return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+    # return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 
 @auth_routes.route('/logout')
@@ -63,8 +63,8 @@ def sign_up():
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         user = User(
-            first_name=form.data['first_name'],
-            last_name=form.data['last_name'],
+            first_name=form.data['firstName'],
+            last_name=form.data['lastName'],
             email=form.data['email'],
             password=form.data['password']
         )

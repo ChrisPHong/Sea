@@ -6,8 +6,8 @@ import './SignUpForm.css'
 
 const SignUpForm = () => {
   const [errors, setErrors] = useState([]);
-  const [first_name, setFirstName] = useState('');
-  const [last_name, setLastName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
@@ -17,7 +17,7 @@ const SignUpForm = () => {
   const onSignUp = async (e) => {
     e.preventDefault();
     if (password === repeatPassword) {
-      const data = await dispatch(signUp(first_name, last_name, email, password));
+      const data = await dispatch(signUp(firstName, lastName, email, password));
       if (data) {
         setErrors(data)
       }
@@ -25,6 +25,7 @@ const SignUpForm = () => {
   };
 
   const updateFirstName = (e) => {
+    console.log(e.target.value)
     setFirstName(e.target.value);
   };
 
@@ -61,19 +62,21 @@ const SignUpForm = () => {
           <div className='signup-form-first-last-name-container'>
             <input
               type='text'
-              name='first_name'
+              name='firstName'
               className='signup-first-name-form-field'
               onChange={updateFirstName}
               placeholder='  First Name'
-              value={first_name}
+              value={firstName}
+              required={true}
             ></input>
             <input
               type='text'
-              name='last_name'
+              name='lastName'
               className='signup-last-name-form-field'
               onChange={updateLastName}
               placeholder='  Last Name'
-              value={last_name}
+              value={lastName}
+              required={true}
             ></input>
           </div>
           <div>
@@ -84,6 +87,7 @@ const SignUpForm = () => {
               onChange={updateEmail}
               placeholder='  Email Address'
               value={email}
+              required={true}
             ></input>
           </div>
           <div>
@@ -94,6 +98,7 @@ const SignUpForm = () => {
               onChange={updatePassword}
               placeholder='  Password'
               value={password}
+              required={true}
             ></input>
           </div>
           <div>
