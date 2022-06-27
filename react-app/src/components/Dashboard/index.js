@@ -94,7 +94,7 @@ const Dashboard = () => {
                                                 {matchTicker(transaction.companyId)}
                                             </div>
                                         </td>
-                                        <td className='owned-comp-price'>${matchPrice(transaction.companyId).toFixed(2)}</td>
+                                        <td className='owned-comp-price'>${matchPrice(transaction.companyId)?.toFixed(2)}</td>
                                         <td className='owned-comp-shares'>{transaction.shares}</td>
                                         <td className='owned-allocations'>{(((matchPrice(transaction.companyId) * transaction.shares) / calculateTotal()) * 100).toFixed(2)}%</td>
                                     </tr>
