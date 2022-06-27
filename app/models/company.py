@@ -12,7 +12,7 @@ class Company(db.Model):
     employees = db.Column(db.Integer, nullable=False)
     headquarters = db.Column(db.String(100), nullable=False)
     founded = db.Column(db.Integer, nullable=False)
-    base_price = db.Column(db.Integer, nullable=False)
+    base_price = db.Column(db.Float, nullable=False)
 
     # One-to-Many relationship with Transactions
     transactions = db.relationship('Transaction', back_populates='companies')
