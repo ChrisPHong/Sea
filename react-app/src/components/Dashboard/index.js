@@ -40,6 +40,11 @@ const Dashboard = () => {
         // return allTransData
     }
 
+    const startingPrice = () => {
+        const firstTransaction = transArr[transArr.length - 1]
+        return firstTransaction?.price * firstTransaction?.shares
+    }
+
     const matchTicker = (companyId) => {
         for (let stock of companies) {
             if (stock.id === companyId) {
@@ -80,19 +85,46 @@ const Dashboard = () => {
         <div id='portfolio-ctn'>
             {/* -------------------- ASSETS GRAPH -------------------- */}
             <div className='portfolio-graph'>
-                <LineChart width={1000} height={500} data={getAllTransData()}>
-                {/* <CartesianGrid strokeDasharray="3 3" /> */}
-                <XAxis dataKey="date" />
-                <YAxis dataKey="price" />
-                    <Line
-                        type="linear"
-                        dataKey="prices"
-                        stroke="#0b7cee"
-                        activeDot={{ r: 5 }}
-                        dot={false}
-                        strokeWidth={1}
-                    />
-                </LineChart>
+                <div className='balance-info'>
+                    <div className='balance-label'>Balance</div>
+                    <div className='balance-amt'>
+                        ${calculateTotal().toFixed(2)}
+                    </div>
+                    <div className='balance-percent'>
+                        {(calculateTotal() - startingPrice()).toFixed(2) > startingPrice() ? '+' : '-'}${(calculateTotal() - startingPrice()).toFixed(2)}
+                    </div>
+                </div>
+                <div className='asset-chart'>
+                    <LineChart width={950} height={300} data={getAllTransData()}>
+                    {/* <CartesianGrid strokeDasharray="3 3" /> */}
+                    <XAxis dataKey="date" />
+                    <YAxis dataKey="price" />
+                        <Line
+                            type="linear"
+                            dataKey="prices"
+                            stroke="#0b7cee"
+                            activeDot={{ r: 5 }}
+                            dot={false}
+                            strokeWidth={1}
+                        />
+                    </LineChart>
+                </div>
+                <div className='asset-bottom'>
+                    <div className='buying-power'>
+                        Buying power: ${currentUser.balance}
+                    </div>
+                    <div className='asset-timeframe'>
+                        <div className='daily'>
+                            1D
+                        </div>
+                        <div className='weekly'>
+                            1W
+                        </div>
+                        <div className='monthly'>
+                            1M
+                        </div>
+                    </div>
+                </div>
             </div>
             <div id='info'>
                 <div id='left'>
@@ -102,7 +134,7 @@ const Dashboard = () => {
                             <thead>
                                 <tr>
                                     <th className='owned-comp-label'>Company</th>
-                                    <th className='owned-price-label'>Price</th>
+                                    <th className='owned-price-label'>Balance</th>
                                     <th className='owned-shares-label'>Shares</th>
                                     <th className='owned-allocations-label'>Allocation</th>
                                 </tr>
