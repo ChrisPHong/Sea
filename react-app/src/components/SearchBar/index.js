@@ -7,8 +7,7 @@ import './searchbar.css';
 function SearchBar () {
     const dispatch = useDispatch();
     const history = useHistory();
-    const stocks = useSelector(state => state.stock.entries);
-    // const currentUser = useSelector(state => state?.session?.user);
+    const stocks = useSelector(state => state.stock.entries); // object
 
     const tickers = stocks.stock_names?.map(stock => stock['ticker'])
     const companies = stocks.stock_names?.map(stock => stock['company'])
@@ -16,6 +15,11 @@ function SearchBar () {
     const resultNames = tickers?.map((ticker, company) => {
         return `${ticker}: ${companies[company]}`
     })
+
+    console.log(stocks)
+    console.log(tickers)
+    console.log(companies)
+    console.log(resultNames)
 
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
@@ -41,19 +45,20 @@ function SearchBar () {
                     dispatch(searchStocks())
                 }, [dispatch])}
                 onChange={e => setSearchTerm(e.target.value)}
-                onBlur={() => setSearchResults('')}
+                // onBlur={() => setSearchResults('')}
                 // autoComplete='off'
             />
             <div className='search-results'>
                 <ul>
-                    {searchResults.length > 0 && searchResults.map(item => (
+                    {searchResults.length > 0 && resultNames.map(item => (
                         <div className='search-items-dropdown'
+                        // key={}
                             onClick={() => {
                                 setSearchTerm('')
                                 history.push(`/stocks/${item.split(":")[0]}`)
                             }}
-                        >
-                            <NavLink to={`/stocks/${item.split(":")[0]}`}>{item}</NavLink>
+                        >{item}
+                            {/* <NavLink to={`/stocks/${item.split(":")[0]}`}>{item}</NavLink> */}
                         </div>
                     ))}
                 </ul>
