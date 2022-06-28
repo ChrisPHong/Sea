@@ -22,7 +22,7 @@ const NavBar = () => {
           </div> */}
 
           <div className='auth-navbar-right'>
-            {/* <SearchBar /> */}
+            <SearchBar />
 
             <div id="nav-portfolio">
               <NavLink to='/dashboard-xyz' exact={true} activeClassName='active'>
