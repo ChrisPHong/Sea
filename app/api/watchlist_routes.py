@@ -43,18 +43,23 @@ def post_watchlists():
 
 
 # Users can update their watchlist
-# @watchlist_routes.route('/<int:id>', methods=['PUT'])
-# def put_watchlists(id):
-#     form = WatchlistForm()
-#     # form = UpdateWatchListForm() # Do we need UpdateWatchListForm?
-#     watchlist = Watchlist.query.filter(Watchlist.id == id).first()
+@watchlist_routes.route('/<int:id>', methods=['PATCH'])
+def patch_watchlists(id):
 
-#     if form.validate_on_submit():
-#         watchlist.name = form.data['name']
-#         db.session.add(watchlist)
-#         db.session.commit()
-#         return watchlist.to_dict()
-#     return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+    form = WatchlistForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    watchlist = Watchlist.query.filter(Watchlist.id == id).first()
+
+    print(watchlist, "INSIDE THE EDIT ROUTE AND THIS IS THE WATCHLIST")
+
+    if form.validate_on_submit():
+        watchlist.name = form.data['name']
+        db.session.add(watchlist)
+        db.session.commit()
+        return watchlist.to_dict()
+
+    return {'errors': validation_errors_to_error_messages(form.errors)}
 
 # Users can delete their watchlist
 @watchlist_routes.route('/<int:id>', methods=['DELETE'])
@@ -62,5 +67,5 @@ def delete_watchlists(id):
     watchlist = Watchlist.query.filter(Watchlist.id == id).first()
     db.session.delete(watchlist)
     db.session.commit()
-    # Are we returning the the updated list after a list has been deleted?
+
     return watchlist.to_dict()

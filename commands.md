@@ -45,3 +45,5 @@ flask db upgrade
 flask seed all
 
 flask db downgrade
+
+heroku run -a sea-coin flask seed all
