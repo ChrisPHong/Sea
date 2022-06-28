@@ -7,8 +7,8 @@ stock_routes = Blueprint('stocks', __name__)
 @stock_routes.route('/<ticker>')
 def get_stocks(ticker):
     stock = Company.query.filter(Company.ticker == ticker.upper()).first()
-    print(stock, '<<<<<<<<<<<<<<<<< STOCK >>>>>>>>>>>>')
-    return jsonify(stock.to_dict())
+    # print(stock, '<<<<<<<<<<<<<<<<< STOCK >>>>>>>>>>>>')
+    return jsonify(stock.to_dict_with_prices())
 
 @stock_routes.route('/')
 def get_all_stocks():

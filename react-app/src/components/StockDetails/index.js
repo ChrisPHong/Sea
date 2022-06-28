@@ -9,7 +9,21 @@ const StockDetails = () => {
     const { ticker } = useParams()
     console.log(ticker.toUpperCase())
     const stock = useSelector(state => state?.stock?.entries[ticker.toUpperCase()])
-    console.log(stock)
+    let min = Infinity
+    let max = -Infinity
+    if (stock) {
+        console.log(stock.prices)
+        for (let i = 0; i < stock.prices.length; i++) {
+            if (stock.prices[i] < min) {
+                min = stock.prices[i].toFixed(2);
+            }
+            if (stock.prices[i] > max) {
+                max = stock.prices[i].toFixed(2);
+            }
+        }
+    }
+    console.log(min)
+    console.log(max)
 
     useEffect(() => {
         dispatch(getOneStock(ticker))
@@ -17,19 +31,94 @@ const StockDetails = () => {
 
     return (
         <>
-            <h1>Welcome to the stock details page</h1>
-            <h2>Hello</h2>
-            <h2>Hello</h2>
             {stock &&
-                <div>
-                    {stock.basePrice}
-                    {stock.ceo}
-                    {stock.description}
-                    {stock.employees}
-                    {stock.founded}
-                    {stock.headquarters}
-                    {stock.name}
-                    {stock.ticker}
+                <div className='stock-details-information'>
+                    <div className='stock-details-name-title'>
+                        {stock.name} ({stock.ticker})
+                    </div>
+                    <div className='stock-details-company-information'>
+                        <div>
+                            <div className='stock-details-about-title'>
+                                About
+                            </div>
+                            <hr></hr>
+                            <div className='stock-details-about-description'>
+                                {stock.description}
+                            </div>
+                        </div>
+                        <div className='stock-details-title'>
+                            <div>
+                                <div className='stock-details-ceo-title'>
+                                    CEO
+                                </div>
+                                <div>
+                                    {stock.ceo}
+                                </div>
+                            </div>
+                            <div>
+                                <div className='stock-details-employees-title'>
+                                    Employees
+                                </div>
+                                <div>
+                                    {stock.employees}
+                                </div>
+                            </div>
+                            <div>
+                                <div className='stock-details-headquarters-title'>
+                                    Headquarters
+                                </div>
+                                <div>
+                                    {stock.headquarters}
+                                </div>
+                            </div>
+                            <div>
+                                <div className='stock-details-founded-title'>
+                                    Founded
+                                </div>
+                                <div>
+                                    {stock.founded}
+                                </div>
+                            </div>
+                        </div>
+                        <div className='stock-details-keystats-title'>
+                            Key Statistic
+                        </div>
+                        <hr></hr>
+                        <div className='stock-details-keystats-information'>
+                            <div>
+                                <div className='stock-details-high-price'>
+                                    High
+                                </div>
+                                <div className='stock-details-high-price-number'>
+                                    ${max}
+                                </div>
+                            </div>
+                            <div>
+                                <div className='stock-details-low-price'>
+                                    Low
+                                </div>
+                                <div className='stock-details-low-price-number'>
+                                    ${min}
+                                </div>
+                            </div>
+                            <div>
+                                <div className='stock-details-open-price'>
+                                    Open price
+                                </div>
+                                <div>
+                                    ${stock.prices[0].toFixed(2)}
+                                </div>
+                            </div>
+                            <div>
+                                <div className='stock-details-close-price'>
+                                    Close price
+                                </div>
+                                <div>
+                                    ${stock.prices[stock.prices.length - 1].toFixed(2)}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>}
         </>
     )
