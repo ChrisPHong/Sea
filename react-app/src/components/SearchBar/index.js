@@ -17,10 +17,10 @@ function SearchBar () {
         return `${ticker}: ${companies[company]}`
     })
 
-    console.log('stocks object', stocks)
-    console.log('array of tickers', tickers)
-    console.log('array of companies', companies)
-    console.log('kv pairs of ticker to company', resultNames)
+    // console.log('stocks object', stocks)
+    // console.log('array of tickers', tickers)
+    // console.log('array of companies', companies)
+    // console.log('kv pairs of ticker to company', resultNames)
 
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
@@ -33,7 +33,7 @@ function SearchBar () {
         if (!results || searchTerm === '') {
             setSearchResults('')
         }
-    }, [searchTerm, resultNames])
+    }, [searchTerm])
 
     return (
         <div className='searchbar-box'>
@@ -41,24 +41,23 @@ function SearchBar () {
                 type='text'
                 name='search-bar'
                 placeholder=' Search'
-                value={searchTerm}
                 onFocus={useEffect(() => {
                     dispatch(searchStocks())
                 }, [dispatch])}
                 onChange={e => setSearchTerm(e.target.value)}
                 onBlur={() => setSearchResults('')}
-                autoComplete='off'
+                value={searchTerm}
             />
             <div className='search-results'>
                 <ul>
-                    {searchResults.length > 0 && resultNames.map(item => (
+                    {searchResults.length > 0 && searchResults.map(item => (
                         <div className='search-items-dropdown'
                         // key={}
-                            onClick={() => {
+                            onMouseDown={() => {
                                 setSearchTerm('')
                                 history.push(`/stocks/${item.split(":")[0]}`)
                             }}
-                        >{item}
+                        >
                             <NavLink to={`/stocks/${item.split(":")[0]}`}>{item}</NavLink>
                         </div>
                     ))}

@@ -12,7 +12,7 @@ export const searchStocks = () => async(dispatch) => {
 
     if (response.ok) {
         const data = await response.json()
-        console.log('------data-------', data) // data from backend
+        // console.log('------data-------', data) // data from backend
         dispatch(getSearchStocks(data))
     }
 }
