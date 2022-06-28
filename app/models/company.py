@@ -3,10 +3,10 @@ from .watchlist import watchlist_company_join
 from random import choice, random
 
 # General upward trend
-ASCENDING = [10, 10, -10, 10, 10, -10]
+ASCENDING = [1, 1, -1, 1, 1, -1]
 
 # General downward trend
-DESCENDING = [-10, -10, 10, -10, -10, 10]
+DESCENDING = [-1, -1, 1, -1, -1, 1]
 
 # Base price, number of days, ascending/descending
 def make_stock_price(base, num, progression):
