@@ -78,7 +78,7 @@ th {
     padding-top: 50px;
     height: 200px;
     align-items: center;
-    font-size: 48pt;
+    /* font-size: 48pt; */
     font-weight: 700;
 }
 
@@ -87,6 +87,6 @@ th {
     justify-content: center;
     align-items: center;
     height: 500px;
-    font-size: 48pt;
+    /* font-size: pt; */
     font-weight: 700;
 }
