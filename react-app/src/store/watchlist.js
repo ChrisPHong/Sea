@@ -16,10 +16,10 @@ export const postList = (watchlist) => {
     }
 }
 
-export const deleteList = (watchlist) => {
+export const deleteList = (watchlistId) => {
     return {
         type: DELETE_WATCHLIST,
-        watchlist
+        watchlistId
     }
 }
 
@@ -52,7 +52,7 @@ export const deleteWatchList = (watchlistId) => async (dispatch) => {
         method: 'DELETE'
     })
 
-    if (response.ok){
+    if (response.ok) {
         const data = await response.json();
         dispatch(deleteList(watchlistId));
 
@@ -71,18 +71,21 @@ const watchlistReducer = (state = initialState, action) => {
             action.watchlists.forEach(watchlist => { newState.entries[watchlist.id] = watchlist })
             return newState
         case POST_WATCHLIST:
-            if (!state[action.watchlist.id]) {
-                const newState = {} = {
-                    ...state,
+
+            newState = {
+                ...state, entries: {
+                    ...state.entries,
                     [action.watchlist.id]: action.watchlist
                 }
-                return newState
             }
-        case DELETE_WATCHLIST:
-            newState = { ...state}
-            delete newState[action.watchlist]
+            return newState
 
-            return newState;
+        case DELETE_WATCHLIST:
+
+            newState = {...state}
+            delete newState.entries[action.watchlistId]
+            return newState
+
 
         default:
             return state
