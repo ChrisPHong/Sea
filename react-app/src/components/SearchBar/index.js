@@ -7,7 +7,7 @@ import './searchbar.css';
 function SearchBar () {
     const dispatch = useDispatch();
     const history = useHistory();
-    const stocks = useSelector(state => state.search.entries); // object
+    const stocks = useSelector(state => state.search?.entries); // object
     // const stocks = useSelector(state => console.log('-----state----', state)); // object
 
     const tickers = stocks.stock_names?.map(stock => stock['ticker'])
@@ -35,6 +35,8 @@ function SearchBar () {
         }
     }, [searchTerm])
 
+    // map thru searchresults, console.log(item)
+    //  Object.keys(item)[0]
     return (
         <div className='searchbar-box'>
             <input
