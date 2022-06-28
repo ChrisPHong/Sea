@@ -2,13 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { NavLink, useHistory } from 'react-router-dom';
 import { searchStocks } from '../../store/searchbar';
+// import { loadOneStock } from '../../store/stock';
 import './searchbar.css';
 
 function SearchBar () {
     const dispatch = useDispatch();
     const history = useHistory();
-    const stocks = useSelector(state => state.search?.entries); // object
+    const stocks = useSelector(state => state?.search?.entries); // object
+    console.log('component', stocks)
     // const stocks = useSelector(state => console.log('-----state----', state)); // object
+    // const load_stocks = useSelector(state => state?.stock?.entries);
 
     const tickers = stocks.stock_names?.map(stock => stock['ticker'])
     const companies = stocks.stock_names?.map(stock => stock['company'])
@@ -35,8 +38,24 @@ function SearchBar () {
         }
     }, [searchTerm])
 
+
+    // useEffect(() => {
+    //     dispatch(getStocks())
+    // }, [dispatch])
+
+
+
     // map thru searchresults, console.log(item)
     //  Object.keys(item)[0]
+    // searchResults.map(item => {
+    //     console.log(item)
+    //     return ''
+    // })
+    // console.log(searchResults) // array of list results
+    // item = each item in that array
+    // Object.keys(item[0])
+    // item.split(":")[0]
+
     return (
         <div className='searchbar-box'>
             <input
@@ -53,6 +72,7 @@ function SearchBar () {
             <div className='search-results'>
                 <ul>
                     {searchResults.length > 0 && searchResults.map(item => (
+                        // searchResults ===> ['MSFT: Microsoft Corporation', 'META: Meta Platforms, Inc', 'CSCO: Cisco Systems Inc.']
                         <div className='search-items-dropdown'
                         key={item}
                             onMouseDown={() => {
@@ -60,7 +80,8 @@ function SearchBar () {
                                 history.push(`/stocks/${item.split(":")[0]}`)
                             }}
                         >
-                            <NavLink to={`/stocks/${item.split(":")[0]}`}>{item}</NavLink>
+                            { companies &&
+                            <NavLink to={`/stocks/${item.split(":")[0]}`}>{item}</NavLink>}
                         </div>
                     ))}
                 </ul>
