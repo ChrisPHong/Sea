@@ -5,6 +5,7 @@ def seed_transactions():
 
     #  tech
     transaction1 = Transaction(
+        price= 146.23,
         shares=1,
         type="buy",
         date=datetime.today() - timedelta(days=1),
@@ -13,6 +14,7 @@ def seed_transactions():
     )
     #  tech
     transaction2 = Transaction(
+        price= 282.01,
         shares=1,
         type="sell",
         date=datetime.today() - timedelta(days=2),
@@ -21,6 +23,7 @@ def seed_transactions():
     )
     #  tech
     transaction3 = Transaction(
+        price= 110.59,
         shares=2,
         type="buy",
         date=datetime.today() - timedelta(days=4),
@@ -29,6 +32,7 @@ def seed_transactions():
     )
     #  healthcare
     transaction4 = Transaction(
+        price= 157.42,
         shares=1,
         type="sell",
         date=datetime.today() - timedelta(days=5),
@@ -37,6 +41,7 @@ def seed_transactions():
     )
     #  healthcare
     transaction5 = Transaction(
+        price= 503.84,
         shares=5,
         type="buy",
         date=datetime.today() - timedelta(days=7),
@@ -45,6 +50,7 @@ def seed_transactions():
     )
     #  healthcare
     transaction6 = Transaction(
+        price= 52.17,
         shares=4,
         type="buy",
         date=datetime.today() - timedelta(days=13),
@@ -53,6 +59,7 @@ def seed_transactions():
     )
     #  energy
     transaction7 = Transaction(
+        price= 722.38,
         shares=2,
         type="buy",
         date=datetime.today() - timedelta(days=16),
@@ -61,6 +68,7 @@ def seed_transactions():
     )
     #  energy
     transaction8 = Transaction(
+        price= 77.65,
         shares=4,
         type="buy",
         date=datetime.today() - timedelta(days=20),
