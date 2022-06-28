@@ -1,8 +1,3 @@
-body {
-    overflow-y: hidden;
-    overflow-x: hidden;
-}
-
 .signup-image {
     position: absolute;
     width: 50%;
@@ -10,8 +5,10 @@ body {
     height: 100%;
     object-fit: cover;
     display: flex;
-    top: 70px;
-    overflow: hidden;
+}
+
+.signup-page {
+    overflow-y: none;
 }
 
 .signup-form {
@@ -22,6 +19,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: none;
 }
 
 .signup-first-name-form-field,
@@ -100,4 +98,10 @@ body {
 
 .nav-link-login:hover {
     color: #7cb6f0;
+}
+
+.surfing-lady-image {
+    margin-top: 70px;
+    object-fit: cover;
+    height: auto;
 }
