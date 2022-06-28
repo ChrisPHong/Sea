@@ -61,7 +61,8 @@ const Dashboard = () => {
         }
     }
 
-    const matchPrice = (companyId) => {
+    // Returns the last price (closing price) in the stock prices array that YOU OWN.
+    const closingPrice = (companyId) => {
         for (let stock of companies) {
             if (stock.id === companyId && stock.prices) {
                 const priceArr = stock.prices
@@ -70,14 +71,25 @@ const Dashboard = () => {
         }
     }
 
-    const calculateTotal = () => {
+    // Returns the total price of ALL the stocks you own for the day.
+    const buyingTotal = () => {
         let total = 0
         for (let transaction of transArr) {
             if (transaction.type === 'buy') {
-                total += matchPrice(transaction.companyId) * transaction.shares
+                total += closingPrice(transaction.companyId) * transaction.shares
             }
         }
-        // console.log(total)
+        return total
+    }
+
+    // Total money you put in to buy shares
+    const totalFunds = () => {
+        let total = 0
+        for (let transaction of transArr) {
+            if (transaction.type === 'buy') {
+                total += transaction.price * transaction.shares
+            }
+        }
         return total
     }
 
@@ -88,10 +100,11 @@ const Dashboard = () => {
                 <div className='balance-info'>
                     <div className='balance-label'>Balance</div>
                     <div className='balance-amt'>
-                        ${calculateTotal().toFixed(2)}
+                        ${buyingTotal().toFixed(2)}
                     </div>
                     <div className='balance-percent'>
-                        {(calculateTotal() - startingPrice()).toFixed(2) > startingPrice() ? '+' : '-'}${(calculateTotal() - startingPrice()).toFixed(2)}
+                        {(buyingTotal() > totalFunds()) ? '+' : '-'}${Math.abs((buyingTotal() - totalFunds()).toFixed(2))}
+                        <div className='all-time'>All time</div>
                     </div>
                 </div>
                 <div className='asset-chart'>
@@ -151,10 +164,10 @@ const Dashboard = () => {
                                                 {matchTicker(transaction.companyId)}
                                             </div>
                                         </td>
-                                        {/* <td className='owned-comp-price'>${matchPrice(transaction.companyId)?.toFixed(2)}</td> */}
-                                        <td className='owned-comp-price'>${((transaction.price * transaction.shares) + transaction.shares * (matchPrice(transaction.companyId) - transaction.price)).toFixed(2)}</td>
+                                        {/* <td className='owned-comp-price'>${closingPrice(transaction.companyId)?.toFixed(2)}</td> */}
+                                        <td className='owned-comp-price'>${((transaction.price * transaction.shares) + transaction.shares * (closingPrice(transaction.companyId) - transaction.price)).toFixed(2)}</td>
                                         <td className='owned-comp-shares'>{transaction.shares}</td>
-                                        <td className='owned-allocations'>{(((matchPrice(transaction.companyId) * transaction.shares) / calculateTotal()) * 100).toFixed(2)}%</td>
+                                        <td className='owned-allocations'>{(((closingPrice(transaction.companyId) * transaction.shares) / buyingTotal()) * 100).toFixed(2)}%</td>
                                     </tr> : ""
                                 ))}
                             </tbody>
