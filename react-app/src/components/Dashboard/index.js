@@ -4,7 +4,7 @@ import { getOwnedWeeklyPrices, getStocks } from '../../store/stock';
 import { getTransactions } from '../../store/transaction';
 import WatchlistPage from '../Watchlist'
 import WatchlistForm from '../WatchlistForm';
-import { LineChart, Line, XAxis, YAxis } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
 import './Dashboard.css'
 
 const Dashboard = () => {
@@ -14,8 +14,9 @@ const Dashboard = () => {
     const currentUser = useSelector(state => state?.session?.user);
     const transArr = Object.values(transactions)
     const companies = Object.values(stocks)
-    const allTransData = []
+    const data = []
 
+    console.log('DIS STOCKSKSKSKSKSK',stocks)
     useEffect(() => {
         dispatch(getTransactions(currentUser?.id))
         dispatch(getOwnedWeeklyPrices(currentUser?.id))
@@ -29,12 +30,31 @@ const Dashboard = () => {
     //     return () => clearInterval(interval);
     // })
 
-    const getDatesAndPrices = () => {
-        return transArr.map(transaction => {
-            return {'date': transaction.date, 'price': transaction.price}
-        })
+    const getDatesAndPrices = (inc) => {
+        const dataObj = {}
+        let totalPrices;
+        totalPrices = companies[0]?.prices
 
+        // Add up all the stock prices under each column
+        for (let i = 1; i < companies.length - 1; i++) {
+            let prices = companies[i].prices
+            for (let j = 0; j < prices.length - 1; j++) {
+                totalPrices[j] += prices[j]
+            }
+        }
+
+        const date = new Date().getTime()
+        const dateCopy = new Date(date)
+
+        for (let i = 0; i < inc - 1; i++) {
+            let newDate = dateCopy.setDate(dateCopy.getDate() - 1)
+            if (totalPrices) {
+                data.push({'date': new Date(newDate), 'price': totalPrices[i]})
+            }
+        }
+        data.push(dataObj)
     }
+    getDatesAndPrices(60)
 
     const startingPrice = () => {
         const firstTransaction = transArr[transArr.length - 1]
@@ -111,10 +131,11 @@ const Dashboard = () => {
                     </div>
                 </div>
                 <div className='asset-chart'>
-                    <LineChart width={950} height={300} data={getDatesAndPrices()}>
+                    <LineChart width={950} height={300} data={data}>
                     {/* <CartesianGrid strokeDasharray="3 3" /> */}
                     <XAxis dataKey="date" />
                     <YAxis dataKey="price" />
+                    <Tooltip cursor={false} />
                         <Line
                             type="linear"
                             dataKey="price"
