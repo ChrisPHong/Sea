@@ -3,18 +3,19 @@
     flex-direction: column;
     align-items: center;
     font-family: sans-serif;
+    padding-top: 70px;
 }
 
 .portfolio-graph {
     width: 100vw;
     height: 500px;
-    border: 1px solid black;
+    /* border: 1px solid black; */
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 36pt;
-    background-color: #0b7cee;
-    font-weight: 700;
+    /* font-size: 36pt; */
+    background-color: lightgray;
+    /* font-weight: 700; */
 }
 
 #info {
