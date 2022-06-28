@@ -103,7 +103,14 @@ const Dashboard = () => {
                         ${buyingTotal().toFixed(2)}
                     </div>
                     <div className='balance-percent'>
-                        {(buyingTotal() > totalFunds()) ? '+' : '-'}${Math.abs((buyingTotal() - totalFunds()).toFixed(2))}
+                        {(buyingTotal() > totalFunds()) ?
+                        <div className='all-time-diff' style={{color: 'green'}}>
+                            +${Math.abs((buyingTotal() - totalFunds())).toFixed(2)}
+                        </div>
+                        :
+                        <div className='all-time-diff' style={{color: 'red'}}>
+                            -${Math.abs((buyingTotal() - totalFunds())).toFixed(2)}
+                        </div>}
                         <div className='all-time'>All time</div>
                     </div>
                 </div>
