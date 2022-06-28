@@ -52,7 +52,7 @@ function SearchBar () {
                 <ul>
                     {searchResults.length > 0 && searchResults.map(item => (
                         <div className='search-items-dropdown'
-                        // key={}
+                        key={item}
                             onMouseDown={() => {
                                 setSearchTerm('')
                                 history.push(`/stocks/${item.split(":")[0]}`)
