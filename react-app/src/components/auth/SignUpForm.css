@@ -66,6 +66,12 @@
     font-size: 18px;
 }
 
+.both-signup-page-btns {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
 .signup-form-button {
     outline: none;
     border-radius: 0;
@@ -73,12 +79,14 @@
     color: white;
     background: black;
     border-radius: 30%;
-    margin-top: 150px;
+    /* margin-top: 150px; */
+    margin-top: 50px;
     float: right;
 }
 
 .signup-form-button:hover {
     background: #7cb6f0;
+    cursor: pointer;
 }
 
 .nav-link-login {

@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { login } from '../../store/session';
-import '../SplashPage/splashpage.css';
+import './LoginForm.css';
 
 const DemoButton = () => {
     const dispatch = useDispatch()
@@ -16,7 +16,7 @@ const DemoButton = () => {
     }
 
     return (
-        <button className="splash-demo-btn" type='submit' onClick={handleSubmit}>Demo User</button>
+        <button className="auth-demo-btn" type='submit' onClick={handleSubmit}>Demo User</button>
     )
 }
 
