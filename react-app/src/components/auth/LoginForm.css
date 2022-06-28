@@ -1,23 +1,20 @@
-body {
-    overflow-x: hidden;
-}
-
-.login-page {
+xxx.login-page {
     display: flex;
+    overflow-x: hidden;
 }
 
 .login-image {
     background-image: url(https://cdn.sei.org/wp-content/uploads/2020/10/pressrelease-trasefinance-viaframe-gettyimages-582759168.jpg);
-    width: 60%;
+    width: 50%;
     position: absolute;
     left: 0px;
     height: 100%;
 }
 
 .login-form {
-    width: 40%;
+    width: 50%;
     position: absolute;
-    right: -20px;
+    right: 0px;
     height: 100%;
     display: flex;
     align-items: center;
@@ -27,12 +24,14 @@ body {
 .login-password-input,
 .login-button {
     display: flex;
+    margin-left: 20px;
 }
 
 .login-form-title {
     font-size: 24px;
     font-weight: 500;
     padding-bottom: 50px;
+    margin-left: 20px;
 }
 
 .login-email-input,
@@ -41,6 +40,7 @@ body {
 .login-form-signup-nav,
 .login-form-errors {
     font-size: 14px;
+    margin-left: 20px;
 }
 
 .login-button {
@@ -66,6 +66,7 @@ body {
     border: 1px solid #7cb6f0;
     margin-top: 10px;
     margin-bottom: 10px;
+    margin-left: 20px;
 }
 
 
