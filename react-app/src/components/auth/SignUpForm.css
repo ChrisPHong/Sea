@@ -1,0 +1,103 @@
+body {
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+
+.signup-image {
+    position: absolute;
+    width: 50%;
+    left: 0px;
+    height: 100%;
+    object-fit: cover;
+    display: flex;
+    top: 70px;
+    overflow: hidden;
+}
+
+.signup-form {
+    width: 40%;
+    position: absolute;
+    right: 120px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.signup-first-name-form-field,
+.signup-last-name-form-field,
+.signup-email-form-field,
+.signup-password-form-field,
+.signup-confirm-password-form-field {
+    border: 1px solid #7cb6f0;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.signup-email-form-field,
+.signup-password-form-field,
+.signup-confirm-password-form-field {
+    width: 900px;
+    height: 60px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.signup-first-name-form-field,
+.signup-last-name-form-field {
+    height: 60px;
+    width: 440px;
+}
+
+.signup-form-first-last-name-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.signup-form-intro {
+    margin-bottom: 50px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.signup-first-name-form-field,
+.signup-last-name-form-field,
+.signup-email-form-field,
+.signup-password-form-field,
+.signup-confirm-password-form-field {
+    font-size: 18px;
+}
+
+.signup-form-button {
+    outline: none;
+    border-radius: 0;
+    padding: 10px 40px;
+    color: white;
+    background: black;
+    border-radius: 30%;
+    margin-top: 150px;
+    float: right;
+}
+
+.signup-form-button:hover {
+    background: #7cb6f0;
+}
+
+.nav-link-login {
+    color: black;
+    font-weight: 600;
+    margin-top: 20px;
+}
+
+.signup-already-started-text {
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+
+.signup-disclaimer-text {
+    margin-top: 50px;
+}
+
+.nav-link-login:hover {
+    color: #7cb6f0;
+}
