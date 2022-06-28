@@ -7,8 +7,8 @@ import './searchbar.css';
 function SearchBar () {
     const dispatch = useDispatch();
     const history = useHistory();
-    const stocks = useSelector(state => state.stock.entries);
-    // const currentUser = useSelector(state => state?.session?.user);
+    const stocks = useSelector(state => state.search.entries); // object
+    // const stocks = useSelector(state => console.log('-----state----', state)); // object
 
     const tickers = stocks.stock_names?.map(stock => stock['ticker'])
     const companies = stocks.stock_names?.map(stock => stock['company'])
@@ -16,6 +16,11 @@ function SearchBar () {
     const resultNames = tickers?.map((ticker, company) => {
         return `${ticker}: ${companies[company]}`
     })
+
+    // console.log('stocks object', stocks)
+    // console.log('array of tickers', tickers)
+    // console.log('array of companies', companies)
+    // console.log('kv pairs of ticker to company', resultNames)
 
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
@@ -28,7 +33,7 @@ function SearchBar () {
         if (!results || searchTerm === '') {
             setSearchResults('')
         }
-    }, [searchTerm, resultNames])
+    }, [searchTerm])
 
     return (
         <div className='searchbar-box'>
@@ -36,19 +41,19 @@ function SearchBar () {
                 type='text'
                 name='search-bar'
                 placeholder=' Search'
-                value={searchTerm}
                 onFocus={useEffect(() => {
                     dispatch(searchStocks())
                 }, [dispatch])}
                 onChange={e => setSearchTerm(e.target.value)}
                 onBlur={() => setSearchResults('')}
-                // autoComplete='off'
+                value={searchTerm}
             />
             <div className='search-results'>
                 <ul>
                     {searchResults.length > 0 && searchResults.map(item => (
                         <div className='search-items-dropdown'
-                            onClick={() => {
+                        key={item}
+                            onMouseDown={() => {
                                 setSearchTerm('')
                                 history.push(`/stocks/${item.split(":")[0]}`)
                             }}
