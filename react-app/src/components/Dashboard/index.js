@@ -29,15 +29,11 @@ const Dashboard = () => {
     //     return () => clearInterval(interval);
     // })
 
-    const getAllTransData = () => {
-        const TransObj = {}
-        // transactions.forEach(transaction => )
-        // companies.forEach(comp => {
-        //     allTransData.push(Object.assign(comp.prices))
-        // })
-        // console.log(allTransData)
-        // console.log(transactions)
-        // return allTransData
+    const getDatesAndPrices = () => {
+        return transArr.map(transaction => {
+            return {'date': transaction.date, 'price': transaction.price}
+        })
+
     }
 
     const startingPrice = () => {
@@ -115,13 +111,13 @@ const Dashboard = () => {
                     </div>
                 </div>
                 <div className='asset-chart'>
-                    <LineChart width={950} height={300} data={getAllTransData()}>
+                    <LineChart width={950} height={300} data={getDatesAndPrices()}>
                     {/* <CartesianGrid strokeDasharray="3 3" /> */}
                     <XAxis dataKey="date" />
                     <YAxis dataKey="price" />
                         <Line
                             type="linear"
-                            dataKey="prices"
+                            dataKey="price"
                             stroke="#0b7cee"
                             activeDot={{ r: 5 }}
                             dot={false}
