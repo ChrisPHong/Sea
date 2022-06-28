@@ -12,6 +12,7 @@ import User from './components/User';
 import Dashboard from './components/Dashboard'
 import { authenticate } from './store/session';
 
+
 function App() {
   const [loaded, setLoaded] = useState(false);
   const dispatch = useDispatch();

@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getOwnedWeeklyPrices, getStocks } from '../../store/stock';
 import { getTransactions } from '../../store/transaction';
+import WatchlistPage from '../Watchlist'
+import WatchlistForm from '../WatchlistForm';
 import { LineChart, Line, XAxis, YAxis } from 'recharts';
 import './Dashboard.css'
 
@@ -134,7 +136,8 @@ const Dashboard = () => {
                 <div id='right'>
                     {/* -------------------- WATCHLIST -------------------- */}
                     <div className='watchlist-ctn'>
-                        Watchlist Container Here
+                        <WatchlistPage />
+                        <WatchlistForm />
                     </div>
                 </div>
             </div>
