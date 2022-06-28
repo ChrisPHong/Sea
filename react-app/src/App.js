@@ -10,6 +10,7 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 import UsersList from './components/UsersList';
 import User from './components/User';
 import Dashboard from './components/Dashboard'
+import StockDetails from './components/StockDetails';
 import { authenticate } from './store/session';
 
 
@@ -19,7 +20,7 @@ function App() {
   const user = useSelector(state => state.session.user)
 
   useEffect(() => {
-    (async() => {
+    (async () => {
       await dispatch(authenticate());
       setLoaded(true);
     })();
@@ -45,6 +46,9 @@ function App() {
         </Route>
         <ProtectedRoute path='/dashboard'>
           <Dashboard />
+        </ProtectedRoute>
+        <ProtectedRoute path='/stocks/:ticker'>
+          <StockDetails />
         </ProtectedRoute>
       </Switch>
     </BrowserRouter>
