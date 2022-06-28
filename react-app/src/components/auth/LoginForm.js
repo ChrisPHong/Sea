@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Redirect, NavLink } from 'react-router-dom';
 import { login } from '../../store/session';
 import './LoginForm.css'
-import DemoButton from './DemoButton';
+// import DemoButton from './SplashDemoBtn';
 
 const LoginForm = () => {
   const [errors, setErrors] = useState([]);
@@ -66,7 +66,7 @@ const LoginForm = () => {
               ))}
             </div>
             <button className='login-button' type='submit'>Log in</button>
-            <DemoButton />
+            {/* <DemoButton /> */}
           </div>
           <div className='login-form-signup-nav'>
             Don't have an account?

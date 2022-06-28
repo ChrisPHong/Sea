@@ -1,7 +1,6 @@
 import React from 'react';
-// import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-
+import DemoButton from '../auth/SplashDemoBtn';
 import './splashpage.css';
 
 
@@ -23,6 +22,7 @@ function SplashPage() {
                     <p>into Sea and get your first stock for free.</p>
                     <p>Certain limitations apply.</p>
                     <button id="get-started-btn" onClick={handleSubmit}>Get Started</button>
+                    <DemoButton />
                 </div>
             </div>
             <div className='splash-disclaimer'>

@@ -78,3 +78,20 @@
 .login-form-create-account:hover {
     color: #7cb6f0;
 }
+
+.demo-btn {
+    margin-top: 2.5em;
+    border-radius: 23px;
+    height: 50px;
+    width: 137px;
+    background-color: transparent;
+    border: none;
+    font-size: 1em;
+    color: white;
+    border: 2px solid white;
+    text-shadow: 2px 2px 2px black;
+}
+
+.demo-btn:hover {
+    cursor: pointer;
+}

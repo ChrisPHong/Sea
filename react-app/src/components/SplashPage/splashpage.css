@@ -59,6 +59,7 @@
     color: white;
     border: 2px solid white;
     text-shadow: 2px 2px 2px black;
+    margin-right: 1em;
 }
 
 #get-started-btn:hover {
