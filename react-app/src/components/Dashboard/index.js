@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getStocks } from '../../store/stock';
+import { getOwnedWeeklyPrices, getStocks } from '../../store/stock';
 import { getTransactions } from '../../store/transaction';
+import { LineChart, Line, XAxis, YAxis } from 'recharts';
 import './Dashboard.css'
 
 const Dashboard = () => {
@@ -11,14 +12,31 @@ const Dashboard = () => {
     const currentUser = useSelector(state => state?.session?.user);
     const transArr = Object.values(transactions)
     const companies = Object.values(stocks)
+    const allTransData = []
 
     useEffect(() => {
         dispatch(getTransactions(currentUser?.id))
+        dispatch(getOwnedWeeklyPrices(currentUser?.id))
     }, [dispatch])
 
-    useEffect(() => {
-        dispatch(getStocks())
-    }, [dispatch])
+    // // Prices update every 30 seconds
+    // useEffect(() => {
+    //     const interval = setInterval(() => {
+    //         dispatch(getOwnedWeeklyPrices(currentUser?.id))
+    //     }, 30000)
+    //     return () => clearInterval(interval);
+    // })
+
+    const getAllTransData = () => {
+        const TransObj = {}
+        // transactions.forEach(transaction => )
+        // companies.forEach(comp => {
+        //     allTransData.push(Object.assign(comp.prices))
+        // })
+        // console.log(allTransData)
+        // console.log(transactions)
+        // return allTransData
+    }
 
     const matchTicker = (companyId) => {
         for (let stock of companies) {
@@ -38,8 +56,9 @@ const Dashboard = () => {
 
     const matchPrice = (companyId) => {
         for (let stock of companies) {
-            if (stock.id === companyId) {
-                return stock?.basePrice
+            if (stock.id === companyId && stock.prices) {
+                const priceArr = stock.prices
+                return priceArr[priceArr.length - 1]
             }
         }
     }
@@ -51,6 +70,7 @@ const Dashboard = () => {
                 total += matchPrice(transaction.companyId) * transaction.shares
             }
         }
+        // console.log(total)
         return total
     }
 
@@ -58,7 +78,19 @@ const Dashboard = () => {
         <div id='portfolio-ctn'>
             {/* -------------------- ASSETS GRAPH -------------------- */}
             <div className='portfolio-graph'>
-                Graph here
+                <LineChart width={1000} height={500} data={getAllTransData()}>
+                {/* <CartesianGrid strokeDasharray="3 3" /> */}
+                <XAxis dataKey="date" />
+                <YAxis dataKey="price" />
+                    <Line
+                        type="linear"
+                        dataKey="prices"
+                        stroke="#0b7cee"
+                        activeDot={{ r: 5 }}
+                        dot={false}
+                        strokeWidth={1}
+                    />
+                </LineChart>
             </div>
             <div id='info'>
                 <div id='left'>
@@ -67,24 +99,15 @@ const Dashboard = () => {
                         <table>
                             <thead>
                                 <tr>
-                                    <th className='owned-comp-label'>
-                                        Company
-                                    </th>
-                                    <th className='owned-price-label'>
-                                        Price
-                                    </th>
-                                    <th className='owned-shares-label'>
-                                        Shares
-                                    </th>
-                                    <th className='owned-allocations-label'>
-                                        Allocation
-                                    </th>
+                                    <th className='owned-comp-label'>Company</th>
+                                    <th className='owned-price-label'>Price</th>
+                                    <th className='owned-shares-label'>Shares</th>
+                                    <th className='owned-allocations-label'>Allocation</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {transArr.map(transaction => (
-                                    transaction.type === 'buy' && transaction.userId === currentUser.id
-                                    ?
+                                    transaction.type === 'buy' && transaction.userId === currentUser.id ?
                                     <tr key={transaction.id}>
                                         <td className='owned-comp-name'>
                                             <div className='company-name'>
@@ -97,12 +120,12 @@ const Dashboard = () => {
                                         <td className='owned-comp-price'>${matchPrice(transaction.companyId)?.toFixed(2)}</td>
                                         <td className='owned-comp-shares'>{transaction.shares}</td>
                                         <td className='owned-allocations'>{(((matchPrice(transaction.companyId) * transaction.shares) / calculateTotal()) * 100).toFixed(2)}%</td>
-                                    </tr>
-                                    : ""
+                                    </tr> : ""
                                 ))}
                             </tbody>
                         </table>
                     </div>
+
                     {/* -------------------- NEWS -------------------- */}
                     <div className='news-ctn'>
                         News Container Here
