@@ -5,13 +5,19 @@ search_routes = Blueprint('search', __name__)
 
 @search_routes.route('/', methods=['GET'])
 def get_stocks():
-    stocks_arr = []
+    stocks_list = []
     stocks = Company.query.all()
-    print(stocks)
+    # print('STOCKS LIST', stocks)
+    # prints list of objects
 
     for i in range(0, len(stocks)):
-        stocks_arr.append(
+        stocks_list.append(
             {"ticker": stocks[i].ticker, "company": stocks[i].name}
         )
-    return {"stock_names": stocks_arr}
-    # return jsonify([company.to_dict() for company in companies])
+        # print('new stocks list', stocks_list)
+        # new stocks list [{'ticker': 'AAPL', 'company': 'Apple Inc'}]
+        # list of an object
+    # print ({"stock_names": stocks_list})
+    #  list of company objects
+    return {"stock_names": stocks_list} # {stock_names: Array(40)}
+    # [{"ticker": stocks[i].ticker, "company": stocks[i].name}]

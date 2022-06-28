@@ -7,7 +7,8 @@ import './searchbar.css';
 function SearchBar () {
     const dispatch = useDispatch();
     const history = useHistory();
-    const stocks = useSelector(state => state.stock.entries); // object
+    const stocks = useSelector(state => state.search.entries); // object
+    // const stocks = useSelector(state => console.log('-----state----', state)); // object
 
     const tickers = stocks.stock_names?.map(stock => stock['ticker'])
     const companies = stocks.stock_names?.map(stock => stock['company'])
@@ -16,10 +17,10 @@ function SearchBar () {
         return `${ticker}: ${companies[company]}`
     })
 
-    console.log(stocks)
-    console.log(tickers)
-    console.log(companies)
-    console.log(resultNames)
+    console.log('stocks object', stocks)
+    console.log('array of tickers', tickers)
+    console.log('array of companies', companies)
+    console.log('kv pairs of ticker to company', resultNames)
 
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
@@ -45,8 +46,8 @@ function SearchBar () {
                     dispatch(searchStocks())
                 }, [dispatch])}
                 onChange={e => setSearchTerm(e.target.value)}
-                // onBlur={() => setSearchResults('')}
-                // autoComplete='off'
+                onBlur={() => setSearchResults('')}
+                autoComplete='off'
             />
             <div className='search-results'>
                 <ul>
@@ -58,7 +59,7 @@ function SearchBar () {
                                 history.push(`/stocks/${item.split(":")[0]}`)
                             }}
                         >{item}
-                            {/* <NavLink to={`/stocks/${item.split(":")[0]}`}>{item}</NavLink> */}
+                            <NavLink to={`/stocks/${item.split(":")[0]}`}>{item}</NavLink>
                         </div>
                     ))}
                 </ul>

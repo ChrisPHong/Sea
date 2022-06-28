@@ -12,10 +12,8 @@ export const searchStocks = () => async(dispatch) => {
 
     if (response.ok) {
         const data = await response.json()
+        console.log('------data-------', data) // data from backend
         dispatch(getSearchStocks(data))
-        return "Success";
-    } else {
-        return "Ticker fetch search failed";
     }
 }
 
@@ -46,7 +44,7 @@ export default function searchReducer(state=initialState, action) {
 //             newState =  { ...state, entries: {...state.entries}}
 //             action.stocks.forEach(stock => newState.entries[stock.id] = stock)
 //             return newState
-//     default:
-//         return state
+//             default:
+//                 return state
 //     }
 // }
