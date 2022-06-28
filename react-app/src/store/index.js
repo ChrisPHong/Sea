@@ -4,12 +4,14 @@ import session from './session'
 import transactionReducer from './transaction';
 import stockReducer from './stock';
 import watchlistReducer from './watchlist';
+import searchReducer from './searchbar';
 
 const rootReducer = combineReducers({
   session,
   transaction: transactionReducer,
   stock: stockReducer,
-  watchlist: watchlistReducer
+  watchlist: watchlistReducer,
+  search: searchReducer
 });
 
 
