@@ -25,13 +25,13 @@ const NavBar = () => {
             <SearchBar />
 
             <div id="nav-portfolio">
-              <NavLink to='/dashboard-xyz' exact={true} activeClassName='active'>
+              <NavLink to='/dashboard' exact={true} activeClassName='active'>
                 Portfolio
               </NavLink>
             </div>
 
             <div id="nav-transactions">
-              <NavLink to='/transactions-xyz' exact={true} activeClassName='active'>
+              <NavLink to='/transactions' exact={true} activeClassName='active'>
                 Transactions
               </NavLink>
             </div>
