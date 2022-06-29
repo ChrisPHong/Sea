@@ -11,8 +11,7 @@ function WatchlistPage() {
     const dispatch = useDispatch();
     const watchlist = useSelector((state) => Object.values(state.watchlist));
     const watchlists = Object.values(watchlist[0])
-    const user = useSelector((state) => (state.session.user));
-    const [show, setShow] = useState(false)
+    const [show, setShow] = useState('hidden')
 
     useEffect(() => {
     }, [dispatch]);
@@ -23,10 +22,14 @@ function WatchlistPage() {
 
     const changeClass = (e) => {
 
-        if (show) {
-            setShow(false)
+        console.log('hello', e.target)
+        e.stopPropagation()
+        // console.log('testing', e.target.__reactProps$54nd8i6xv18.className)
+        // console.log('classlist', e.target.classList)
+        if (show === 'hidden') {
+            setShow('show')
         } else {
-            setShow(true)
+            setShow('hidden')
         }
     }
 
@@ -52,16 +55,22 @@ function WatchlistPage() {
                         ><img className='deletePicture' src={'https://www.iconpacks.net/icons/1/free-trash-icon-347-thumb.png'} /></button>
 
                         <button
-                            className={`editButton`}
-                            onClick={changeClass}
+                            className={`editButton ${watchlist.id}`}
+                            onClick={(e) => {
+                                console.log('e.target.classlistNumber', e.target.classList[1])
+                                e.stopPropagation()
+                                e.preventDefault()
+                                if (show === 'show') setShow('hidden')
+                                else setShow('show')
+                            }}
                         >
-                            <img className='editingPicture' src={'https://cdn-icons-png.flaticon.com/512/61/61456.png'} />
+                            <img className={`editingPicture ${watchlist.id}`} src={'https://cdn-icons-png.flaticon.com/512/61/61456.png'} />
                         </button >
-                        {show ?
-                            <div >
+
+                            <div className={`editform ${show}${watchlist.id}`}>
                                 < EditWatchListForm watchlist={watchlist} />
                             </div>
-                            : null}
+
 
                     </div >
 

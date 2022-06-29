@@ -5,20 +5,25 @@ import {useHistory} from 'react-router-dom'
 import './EditWatchListForm.css'
 
 function EditWatchListForm(watchlist) {
-    // let watchlist = useSelector((state) => state)
+
     const history = useHistory()
 
     const id = watchlist.watchlist.id
     const [name, setName] = useState(watchlist.watchlist.name);
     const [errors, setErrors] = useState([]);
+    const lists = useSelector((state) => Object.values(state.watchlist));
+    const watchlists = Object.values(lists[0])
+    const watchlistNames = watchlists.map((watchlist) => {
+        return watchlist.name
+    })
 
     const dispatch = useDispatch();
     let userId = useSelector((state) => state.session?.user?.id)
-    const [show, setShow] = useState('hidden')
 
     useEffect(() => {
         const error = [];
-        if (name?.length < 1) error.push('You must put a name with at least 1 character')
+        if (name?.length < 1) error.push('Put a name with at least 1 character')
+        if (watchlistNames.includes(name)) error.push('Provide a unique name')
         setErrors(error);
     }, [name])
 
@@ -32,7 +37,6 @@ function EditWatchListForm(watchlist) {
             }
             await dispatch(editWatchlists(payload))
             await history.push('/dashboard')
-            await setShow(false)
 
         }
 
@@ -46,7 +50,7 @@ function EditWatchListForm(watchlist) {
         <form className="WatchlistForm" onSubmit={onSubmit}>
            {errors.length > 0 ?
            <>
-           <h2>Create Your Watchlist</h2>
+           <h3>Error</h3>
            <ul className='errorsArray'>{errors.map(error => {
                return (
                <>
