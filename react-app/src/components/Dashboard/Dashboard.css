@@ -114,20 +114,26 @@ th {
 .owned-comp-name {
     display: flex;
     flex-direction: column;
-    padding: 10px 0 10px 0;
     width: 300px;
     margin:0%;
-
 }
 
-.company-ticker {
+.owned-comp-name,
+.owned-balance,
+.owned-comp-price {
+    padding: 10px 0 10px 0;
+}
+
+.company-ticker,
+.owned-comp-shares,
+.curr-comp-percent {
     font-size: 10pt;
     color: gray;
     padding-top: 5px;
 }
 
 .owned-comp-price,
-.owned-comp-shares,
+.owned-balance,
 .owned-allocations {
     width: 200px;
 }

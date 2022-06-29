@@ -207,8 +207,8 @@ const Dashboard = () => {
                             <thead>
                                 <tr>
                                     <th className='owned-comp-label'>Company</th>
-                                    <th className='owned-price-label'>Balance</th>
-                                    <th className='owned-shares-label'>Shares</th>
+                                    <th className='owned-shares-label'>Balance</th>
+                                    <th className='owned-price-label'>Price</th>
                                     <th className='owned-allocations-label'>Allocation</th>
                                 </tr>
                             </thead>
@@ -225,11 +225,14 @@ const Dashboard = () => {
                                             </div>
                                         </td>
                                         {/* <td className='owned-comp-price'>${closingPrice(transaction.companyId)?.toFixed(2)}</td> */}
+                                        <td className='owned-balance'>
+                                            <div className='owned-balance-price'>${(((transaction.price * transaction.shares) + transaction.shares * (closingPrice(transaction.companyId) - transaction.price)) * transaction.shares).toFixed(2)}</div>
+                                            <div className='owned-comp-shares'>{transaction.shares}</div>
+                                        </td>
                                         <td className='owned-comp-price'>
                                             <div className='curr-comp-price'>${((transaction.price * transaction.shares) + transaction.shares * (closingPrice(transaction.companyId) - transaction.price)).toFixed(2)}</div>
                                             <div className='curr-comp-percent'>{((((transaction.price * transaction.shares) + transaction.shares * (closingPrice(transaction.companyId) - transaction.price)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>
                                         </td>
-                                        <td className='owned-comp-shares'>{transaction.shares}</td>
                                         <td className='owned-allocations'>{(((closingPrice(transaction.companyId) * transaction.shares) / buyingTotal()) * 100).toFixed(2)}%</td>
                                     </tr> : ""
                                 ))}
