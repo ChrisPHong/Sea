@@ -165,6 +165,7 @@ const Dashboard = () => {
                     currentUser={currentUser}
                     setCurrPrice={setCurrPrice}
                     data={data}
+                    getDatesAndPrices={getDatesAndPrices}
                 />
             </div>
             <div id='info'>

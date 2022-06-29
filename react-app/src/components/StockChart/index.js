@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine } from 'recharts';
 import './StockChart.css'
 
-const StockChart = ({totalFunds, currentUser, setCurrPrice, data}) => {
+const StockChart = ({totalFunds, currentUser, setCurrPrice, data, getDatesAndPrices}) => {
 
     const lineMouseOver = (price) => {
         if (price) {
@@ -56,15 +56,15 @@ const StockChart = ({totalFunds, currentUser, setCurrPrice, data}) => {
                     Buying power: ${currentUser.balance}
                 </div>
                 <div className='asset-timeframe'>
-                    <div className='daily'>
-                        1D
-                    </div>
-                    <div className='weekly'>
-                        1W
-                    </div>
-                    <div className='monthly'>
-                        1M
-                    </div>
+                    <span className='daily'>
+                        <button>1D</button>
+                    </span>
+                    <span className='weekly'>
+                    <button>1W</button>
+                    </span>
+                    <span className='monthly'>
+                    <button>1M</button>
+                    </span>
                 </div>
             </div>
         </>
