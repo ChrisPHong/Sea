@@ -12,9 +12,10 @@ function WatchlistPage() {
     const watchlist = useSelector((state) => Object.values(state.watchlist));
     const state = useSelector((state) => state);
     const watchlists = Object.values(watchlist[0])
-    console.log('THIS IS STATE', state )
+    console.log('THIS IS STATE', state)
+    const [show, setShow] = useState(false)
 
-    const [show, setShow] = useState('hidden')
+    // const [show, setShow] = useState('hidden')
 
     useEffect(() => {
     }, [dispatch]);
@@ -24,18 +25,6 @@ function WatchlistPage() {
         // dispatch(getStocksWatchlists(1));
     }, [dispatch])
 
-    // const changeClass = (e) => {
-
-    //     console.log('hello', e.target)
-    //     e.stopPropagation()
-    //     // console.log('testing', e.target.__reactProps$54nd8i6xv18.className)
-    //     // console.log('classlist', e.target.classList)
-    //     if (show === 'hidden') {
-    //         setShow('show')
-    //     } else {
-    //         setShow('hidden')
-    //     }
-    // }
 
 
 
@@ -61,20 +50,20 @@ function WatchlistPage() {
                         <button
                             className={`editButton ${watchlist.id}`}
                             onClick={(e) => {
-                                console.log('e.target.classlistNumber', e.target.classList[1])
-
-                                if (show === 'show'){
-                                    setShow('hidden')
+                                console.log('<<<<<<<< value >>>>>>>>>', e);
+                                console.log('<<<<<<<< value >>>>>>>>>', e.target.value)
+                                if(e.currentTarget.value){
+                                    setShow(true)
                                 }
-                                else {setShow('show')}
-                            }}
+                            }
+                            }
                         >
                             <img className={`editingPicture ${watchlist.id}`} src={'https://cdn-icons-png.flaticon.com/512/61/61456.png'} />
                         </button >
+                                <div className={`editform ${watchlist.id} `}>
+                                    < EditWatchListForm props={show} watchlist={watchlist} />
+                                </div>
 
-                            <div className={`editform-${watchlist.id} ${show} `}>
-                                < EditWatchListForm watchlist={watchlist} />
-                            </div>
 
 
                     </div >
