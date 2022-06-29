@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { editWatchlists } from '../../store/watchlist'
 import {useHistory} from 'react-router-dom'
+import './EditWatchListForm.css'
+
 function EditWatchListForm(watchlist) {
     // let watchlist = useSelector((state) => state)
     const history = useHistory()
@@ -12,6 +14,7 @@ function EditWatchListForm(watchlist) {
 
     const dispatch = useDispatch();
     let userId = useSelector((state) => state.session?.user?.id)
+    const [show, setShow] = useState('hidden')
 
     useEffect(() => {
         const error = [];
@@ -29,6 +32,8 @@ function EditWatchListForm(watchlist) {
             }
             await dispatch(editWatchlists(payload))
             await history.push('/dashboard')
+            await setShow(false)
+
         }
 
     }

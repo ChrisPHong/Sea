@@ -1,3 +1,60 @@
 .hidden{
     display: none;
 }
+
+.show{
+    display: inline;
+    background-color: blue;
+}
+
+.watchlists{
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    border: 40px;
+    border: solid black 2px;
+    border-radius: 10px 10px;
+    padding: 40px;
+}
+.deleteButton{
+    border: solid black 1px;
+    border-radius: 5px 5px;
+    padding: 5px 14px;
+    background-color: transparent;
+    transition-duration: 1.2s;
+}
+
+.deleteButton:hover{
+    border: solid black 1px;
+    border-radius: 5px 5px;
+    padding: 5px 14px;
+    box-shadow: 0px 0px 5px rgb(92, 91, 91);
+
+    /* background-color: #0b7cee; */
+
+}
+
+.editButton{
+    border: solid black 1px;
+    border-radius: 5px 5px;
+    padding: 5px 14px;
+    background-color: transparent;
+    transition-duration: 1s;
+
+}
+.editButton:hover{
+    border: solid black 1px;
+    border-radius: 5px 5px;
+    padding: 5px 14px;
+    box-shadow: 0px 0px 5px rgb(92, 91, 91);
+    /* background-color: #0b7cee; */
+
+}
+
+.editingPicture{
+    width: 15px;
+}
+
+.deletePicture{
+    width: 15px;
+}
