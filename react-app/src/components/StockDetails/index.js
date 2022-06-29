@@ -2,17 +2,23 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getOneStock } from '../../store/stock';
+import { getCompanyNews } from '../../store/news';
+import News from '../News'
 import './StockDetails.css'
 
 const StockDetails = () => {
     const dispatch = useDispatch()
     const { ticker } = useParams()
-    console.log(ticker.toUpperCase())
+    // console.log(ticker.toUpperCase())
     const stock = useSelector(state => state?.stock?.entries[ticker.toUpperCase()])
+    const news = useSelector(state => state?.news?.entries)
+    // console.log(news)
+    let displayNews = Object.values(news).slice(0, 5)
+    // console.log("THESE ARE THE VALUESSSSSS", displayNews)
     let min = Infinity
     let max = -Infinity
     if (stock) {
-        console.log(stock.prices)
+        // console.log(stock.prices)
         for (let i = 0; i < stock.prices.length; i++) {
             if (stock.prices[i] < min) {
                 min = stock.prices[i].toFixed(2);
@@ -22,11 +28,12 @@ const StockDetails = () => {
             }
         }
     }
-    console.log(min)
-    console.log(max)
+    // console.log(min)
+    // console.log(max)
 
     useEffect(() => {
         dispatch(getOneStock(ticker))
+        dispatch(getCompanyNews(ticker))
     }, [dispatch])
 
     return (
@@ -119,6 +126,9 @@ const StockDetails = () => {
                             </div>
                         </div>
                     </div>
+                    {news ? <div>
+                        <News news={displayNews} />
+                    </div> : <div>Loading</div>}
                 </div>}
         </>
     )

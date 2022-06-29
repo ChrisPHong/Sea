@@ -1,0 +1,30 @@
+.news-title {
+    margin-top: 60px;
+    margin-bottom: 50px;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.news-images {
+    width: 250px;
+    height: 150px;
+}
+
+.news-container {
+    display: flex;
+
+}
+
+.news-sources {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.news-headlines {
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.news-images {
+    object-fit: cover;
+}

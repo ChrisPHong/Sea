@@ -1,7 +1,7 @@
 .stock-details-information {
     max-width: 60%;
     margin-left: 5%;
-    margin-top: 70px;
+    margin-top: 90px;
 }
 
 .stock-details-company-information {
@@ -43,6 +43,7 @@
 .stock-details-name-title {
     font-weight: 600;
     font-size: 36px;
+    margin-top: 50px;
 }
 
 .stock-details-keystats-title {
