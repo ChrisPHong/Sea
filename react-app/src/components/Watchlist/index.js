@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { getWatchlists } from '../../store/watchlist'
-import { deleteWatchList, editWatchlists } from '../../store/watchlist'
+import { deleteWatchList, getStocksWatchlists } from '../../store/watchlist'
 import EditWatchListForm from '../EditWatchListForm'
 import './Watchlist.css';
 
@@ -10,28 +10,32 @@ import './Watchlist.css';
 function WatchlistPage() {
     const dispatch = useDispatch();
     const watchlist = useSelector((state) => Object.values(state.watchlist));
+    const state = useSelector((state) => state);
     const watchlists = Object.values(watchlist[0])
+    console.log('THIS IS STATE', state )
+
     const [show, setShow] = useState('hidden')
 
     useEffect(() => {
     }, [dispatch]);
 
     useEffect(() => {
-        dispatch(getWatchlists());
+        dispatch(getWatchlists())
+        // dispatch(getStocksWatchlists(1));
     }, [dispatch])
 
-    const changeClass = (e) => {
+    // const changeClass = (e) => {
 
-        console.log('hello', e.target)
-        e.stopPropagation()
-        // console.log('testing', e.target.__reactProps$54nd8i6xv18.className)
-        // console.log('classlist', e.target.classList)
-        if (show === 'hidden') {
-            setShow('show')
-        } else {
-            setShow('hidden')
-        }
-    }
+    //     console.log('hello', e.target)
+    //     e.stopPropagation()
+    //     // console.log('testing', e.target.__reactProps$54nd8i6xv18.className)
+    //     // console.log('classlist', e.target.classList)
+    //     if (show === 'hidden') {
+    //         setShow('show')
+    //     } else {
+    //         setShow('hidden')
+    //     }
+    // }
 
 
 
@@ -58,16 +62,17 @@ function WatchlistPage() {
                             className={`editButton ${watchlist.id}`}
                             onClick={(e) => {
                                 console.log('e.target.classlistNumber', e.target.classList[1])
-                                e.stopPropagation()
-                                e.preventDefault()
-                                if (show === 'show') setShow('hidden')
-                                else setShow('show')
+
+                                if (show === 'show'){
+                                    setShow('hidden')
+                                }
+                                else {setShow('show')}
                             }}
                         >
                             <img className={`editingPicture ${watchlist.id}`} src={'https://cdn-icons-png.flaticon.com/512/61/61456.png'} />
                         </button >
 
-                            <div className={`editform ${show}${watchlist.id}`}>
+                            <div className={`editform-${watchlist.id} ${show} `}>
                                 < EditWatchListForm watchlist={watchlist} />
                             </div>
 

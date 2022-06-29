@@ -47,7 +47,7 @@ function EditWatchListForm(watchlist) {
 
 
     return (
-        <form className="WatchlistForm" onSubmit={onSubmit}>
+        <form className={`WatchlistForm-${id}`} onSubmit={onSubmit}>
            {errors.length > 0 ?
            <>
            <h3>Error</h3>
