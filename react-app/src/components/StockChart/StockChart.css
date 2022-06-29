@@ -1,0 +1,14 @@
+.asset-chart {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.asset-bottom {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 800px;
+    height: 50px;
+    justify-content: space-between;
+}
