@@ -74,6 +74,8 @@ const Dashboard = () => {
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0
         ]
 
+        console.log('just wanna see the companies', companies)
+
         // Add up all the stock prices under each column
         for (let i = 0; i < companies.length; i++) {
             // let prices = companies[i].prices
@@ -88,9 +90,10 @@ const Dashboard = () => {
         const date = new Date().getTime()
         const dateCopy = new Date(date)
 
+        // console.log('what is this date', date.getDate())
         // Based on the number to increment by,
         // new dates will be created and will be added to data array along with the matching price
-        for (let i = inc; i >= 0; i--) {
+        for (let i = inc - 1; i >= 0; i--) {
             let newDate = dateCopy.setDate(dateCopy.getDate() - 1)
             if (totalPrices) {
                 // Add to front of data array so that the most recent date and
@@ -105,7 +108,7 @@ const Dashboard = () => {
     }
     getDatesAndPrices(60)
 
-    const [currPrice, setCurrPrice] = useState(data[data.length - 3]?.price?.toFixed(2))
+    const [currPrice, setCurrPrice] = useState(data[data.length - 2]?.price?.toFixed(2))
 
     // Customized tooltip to show price and date
     const customTooltip = ({ active, payload, label }) => {
@@ -167,7 +170,7 @@ const Dashboard = () => {
                 <div className='balance-info'>
                     <div className='balance-label'>Balance</div>
                     <div className='balance-amt'>
-                        {currPrice !== '0.00' ? `$${currPrice}` : data[data.length - 3]?.price?.toFixed(2)}
+                        {currPrice !== '0.00' ? `$${currPrice}` : data[data.length - 2]?.price?.toFixed(2)}
                     </div>
                     <div className='balance-percent'>
                         {(buyingTotal() > totalFunds()) ?
