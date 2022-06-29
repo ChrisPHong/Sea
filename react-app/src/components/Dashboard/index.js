@@ -29,6 +29,32 @@ const Dashboard = () => {
     //     return () => clearInterval(interval);
     // })
 
+    // Returns the last price (closing price) in the stock prices array that YOU OWN.
+    const closingPrice = (companyId) => {
+        for (let stock of companies) {
+            if (stock.id === companyId && stock.prices) {
+                const priceArr = stock.prices
+                return priceArr[priceArr.length - 1]
+            }
+        }
+    }
+
+    // Returns the total price of ALL the stocks you own for the day.
+    const buyingTotal = () => {
+        let total = 0
+        for (let transaction of transArr) {
+            if (transaction.type === 'buy') {
+                total += closingPrice(transaction.companyId) * transaction.shares
+            }
+            // } else if (transaction.type === 'sell') {
+            //     total -= closingPrice(transaction.companyId) * transaction.shares
+            // }
+        }
+        return total
+    }
+
+    const [currPrice, setCurrPrice] = useState(buyingTotal().toFixed(2))
+
     const getPurchasedShares = (companyId) => {
         for (let i = 0; i < transArr.length; i++) {
             let transaction = transArr[i];
@@ -111,30 +137,6 @@ const Dashboard = () => {
         }
     }
 
-    // Returns the last price (closing price) in the stock prices array that YOU OWN.
-    const closingPrice = (companyId) => {
-        for (let stock of companies) {
-            if (stock.id === companyId && stock.prices) {
-                const priceArr = stock.prices
-                return priceArr[priceArr.length - 1]
-            }
-        }
-    }
-
-    // Returns the total price of ALL the stocks you own for the day.
-    const buyingTotal = () => {
-        let total = 0
-        for (let transaction of transArr) {
-            if (transaction.type === 'buy') {
-                total += closingPrice(transaction.companyId) * transaction.shares
-            }
-            // } else if (transaction.type === 'sell') {
-            //     total -= closingPrice(transaction.companyId) * transaction.shares
-            // }
-        }
-        return total
-    }
-
     // Total money you put in to buy shares
     const totalFunds = () => {
         let total = 0
@@ -185,6 +187,7 @@ const Dashboard = () => {
                             dot={false}
                             animationDuration={500}
                             strokeWidth={2}
+                            // onMouseOver={{setChartPrice}}
                         />
                     </LineChart>
                 </div>
