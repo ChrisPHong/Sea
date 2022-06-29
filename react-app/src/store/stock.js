@@ -50,6 +50,7 @@ export const getOneStock = (ticker) => async (dispatch) => {
     dispatch(loadOneStock(stock))
 }
 
+
 const initialState = { entries: {}, isLoading: true }
 
 
