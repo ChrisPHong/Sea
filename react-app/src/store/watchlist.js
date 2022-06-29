@@ -1,6 +1,7 @@
 const LOAD_WATCHLIST = 'watchlist/LOAD'
 const POST_WATCHLIST = 'watchlist/POST'
 const DELETE_WATCHLIST = 'watchlist/DELETE'
+const EDIT_WATCHLIST = 'watchlist/EDIT'
 
 export const loadWatchlist = (watchlists) => {
     return {
@@ -23,6 +24,12 @@ export const deleteList = (watchlistId) => {
     }
 }
 
+export const editList = (watchlist) => {
+    return {
+        type: EDIT_WATCHLIST,
+        watchlist
+    }
+}
 
 export const getWatchlists = () => async (dispatch) => {
     const response = await fetch('/api/watchlists/', {
@@ -41,8 +48,25 @@ export const postWatchlists = (payload) => async (dispatch) => {
         body: JSON.stringify(payload)
     })
     if (response.ok) {
-        const watchlists = await response.json()
-        dispatch(postList(watchlists))
+        const watchlist = await response.json()
+        dispatch(postList(watchlist))
+    }
+
+}
+
+export const editWatchlists = (payload) => async (dispatch) => {
+
+    const id = payload.id
+    const response = await fetch(`/api/watchlists/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    })
+    if (response.ok) {
+
+        const watchlist = await response.json()
+
+        dispatch(editList(watchlist))
     }
 
 }
@@ -78,14 +102,20 @@ const watchlistReducer = (state = initialState, action) => {
                     [action.watchlist.id]: action.watchlist
                 }
             }
+
             return newState
 
         case DELETE_WATCHLIST:
 
-            newState = {...state}
+            newState = { ...state }
             delete newState.entries[action.watchlistId]
             return newState
 
+        case EDIT_WATCHLIST:
+            newState = {...state, entries:{ ...state.entries,
+                [action.watchlist.id]: action.watchlist  }
+            }
+            return newState
 
         default:
             return state
