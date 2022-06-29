@@ -14,47 +14,48 @@ function TransactionPage () {
     console.log('---transactions----', transactionsObj)
     const transactions = Object.values(transactionsObj ? transactionsObj : {})
 
-    useEffect(() => {
-        if(!sessionUser) {
-            history.push('/login')
-        } else {
-            dispatch(loadTransactions(userId));
-        }
-    }, [dispatch, userId])
+    // useEffect(() => {
+    //     if(!sessionUser) {
+    //         history.push('/login')
+    //     } else {
+    //         dispatch(loadTransactions(userId));
+    //     }
+    // }, [dispatch, userId])
 
     return (
-        <div className='transaction-container'>
-            <h2>Transactions</h2>
-            <div className='transaction-table'>
-                {transactions && transactions.length ?
-                (
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Company</th>
-                                <th>Price</th>
-                                <th>Shares</th>
-                                <th>Buy/Sell</th>
-                                <th>Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {transactions.map(transaction => (
-                                <tr key={transaction.id} className={(transaction?.type === "sell") ? 'sell' : 'buy'}>
-                                    <td>{transaction?.companyId}</td>
-                                    <td>{transaction?.price}</td>
-                                    <td>{transaction?.shares}</td>
-                                    <td>{transaction?.type}</td>
-                                    <td>{transaction?.date}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                ):
-                (<div>You don't have any transactions yet.</div>)}
+        <h1>Transaction Page</h1>
+    //     <div className='transaction-container'>
+    //         <h2>Transactions</h2>
+    //         <div className='transaction-table'>
+    //             {transactions && transactions.length ?
+    //             (
+    //                 <table>
+    //                     <thead>
+    //                         <tr>
+    //                             <th>Company</th>
+    //                             <th>Price</th>
+    //                             <th>Shares</th>
+    //                             <th>Buy/Sell</th>
+    //                             <th>Date</th>
+    //                         </tr>
+    //                     </thead>
+    //                     <tbody>
+    //                         {transactions.map(transaction => (
+    //                             <tr key={transaction.id} className={(transaction?.type === "sell") ? 'sell' : 'buy'}>
+    //                                 <td>{transaction?.companyId}</td>
+    //                                 <td>{transaction?.price}</td>
+    //                                 <td>{transaction?.shares}</td>
+    //                                 <td>{transaction?.type}</td>
+    //                                 <td>{transaction?.date}</td>
+    //                             </tr>
+    //                         ))}
+    //                     </tbody>
+    //                 </table>
+    //             ):
+    //             (<div>You don't have any transactions yet.</div>)}
 
-            </div>
-        </div>
+    //         </div>
+    //     </div>
     )
 
 }
