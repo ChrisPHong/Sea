@@ -4,7 +4,7 @@ import { getOwnedWeeklyPrices, getStocks } from '../../store/stock';
 import { getTransactions } from '../../store/transaction';
 import WatchlistPage from '../Watchlist'
 import WatchlistForm from '../WatchlistForm';
-import { LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine } from 'recharts';
 import './Dashboard.css'
 
 const Dashboard = () => {
@@ -28,63 +28,6 @@ const Dashboard = () => {
     //     }, 30000)
     //     return () => clearInterval(interval);
     // })
-
-    const getPurchasedShares = (companyId) => {
-        for (let i = 0; i < transArr.length; i++) {
-            let transaction = transArr[i];
-            if (transaction?.type === 'buy' && companyId === transaction?.companyId) {
-                return transaction.shares
-            }
-        }
-    }
-
-    const getDatesAndPrices = (inc) => {
-        const dataObj = {}
-        let totalPrices = [
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-        ]
-
-        // Add up all the stock prices under each column
-        for (let i = 0; i < companies.length; i++) {
-            let prices = companies[i].prices
-            for (let j = 0; j < prices.length; j++) {
-                totalPrices[j] += (prices[j] * getPurchasedShares(companies[i]?.id))
-            }
-        }
-
-        const date = new Date().getTime()
-        const dateCopy = new Date(date)
-
-        for (let i = inc; i >= 0; i--) {
-            let newDate = dateCopy.setDate(dateCopy.getDate() - 1)
-            if (totalPrices) {
-                data.unshift({'date': new Date(newDate), 'price': totalPrices[i]})
-            }
-        }
-        data.push(dataObj)
-    }
-    getDatesAndPrices(60)
-
-    const matchTicker = (companyId) => {
-        for (let stock of companies) {
-            if (stock.id === companyId) {
-                return stock.ticker
-            }
-        }
-    }
-
-    const matchName = (companyId) => {
-        for (let stock of companies) {
-            if (stock.id === companyId) {
-                return stock.name
-            }
-        }
-    }
 
     // Returns the last price (closing price) in the stock prices array that YOU OWN.
     const closingPrice = (companyId) => {
@@ -110,6 +53,90 @@ const Dashboard = () => {
         return total
     }
 
+    const [currPrice, setCurrPrice] = useState(buyingTotal().toFixed(2))
+
+    const getPurchasedShares = (companyId) => {
+        for (let i = 0; i < transArr.length; i++) {
+            let transaction = transArr[i];
+            if (transaction?.type === 'buy' && companyId === transaction?.companyId) {
+                return transaction.shares
+            }
+        }
+    }
+
+    const getDatesAndPrices = (inc) => {
+        const dataObj = {}
+        let totalPrices = [
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+
+        // Add up all the stock prices under each column
+        for (let i = 0; i < companies.length; i++) {
+            // let prices = companies[i].prices
+            if (companies.length) {
+                for (let j = 0; j < companies[i]?.prices?.length; j++) {
+                    totalPrices[j] += (companies[i]?.prices[j] * getPurchasedShares(companies[i]?.id))
+                }
+
+            }
+        }
+
+        const date = new Date().getTime()
+        const dateCopy = new Date(date)
+
+        // Based on the number to increment by,
+        // new dates will be created and will be added to data array along with the matching price
+        for (let i = inc; i >= 0; i--) {
+            let newDate = dateCopy.setDate(dateCopy.getDate() - 1)
+            if (totalPrices) {
+                // Add to front of data array so that the most recent date and
+                // price will be at the end and previous dates/price near the beginning
+                data.unshift({
+                    'date': new Date(newDate).toLocaleDateString('en-US', {month: 'long', day: 'numeric'}),
+                    'price': totalPrices[i]
+                })
+            }
+        }
+        data.push(dataObj)
+    }
+    getDatesAndPrices(60)
+
+    // Customized tooltip to show price and date
+    const customTooltip = ({ active, payload, label }) => {
+        if (active && payload && payload.length) {
+            return (
+              <div className="custom-tooltip">
+                <p className="tooltip-price">{`$${((payload[0].value)).toFixed(2)}`}</p>
+                <p className="tooltip-date">{label}</p>
+              </div>
+            );
+        }
+        return null;
+    }
+
+    // Find ticker from transaction that matches with the pool of companies in database
+    const matchTicker = (companyId) => {
+        for (let stock of companies) {
+            if (stock.id === companyId) {
+                return stock.ticker
+            }
+        }
+    }
+
+    // Find name from transaction that matches with the pool of companies in database
+    const matchName = (companyId) => {
+        for (let stock of companies) {
+            if (stock.id === companyId) {
+                return stock.name
+            }
+        }
+    }
+
     // Total money you put in to buy shares
     const totalFunds = () => {
         let total = 0
@@ -128,7 +155,6 @@ const Dashboard = () => {
                 <div className='balance-info'>
                     <div className='balance-label'>Balance</div>
                     <div className='balance-amt'>
-                        {/* ${data[0]?.price?.toFixed(2)} */}
                         ${buyingTotal().toFixed(2)}
                     </div>
                     <div className='balance-percent'>
@@ -143,19 +169,25 @@ const Dashboard = () => {
                         <div className='all-time'>All time</div>
                     </div>
                 </div>
+                {/* -------------------- LINE CHART HERE -------------------- */}
                 <div className='asset-chart'>
                     <LineChart width={950} height={300} data={data}>
-                    {/* <CartesianGrid strokeDasharray="3 3" /> */}
                     <XAxis dataKey="date" hide="true" />
-                    <YAxis dataKey="price" hide='"true' />
-                    <Tooltip cursor={false} />
+                    <YAxis dataKey="price" domain={['dataMin', 'dataMax']} hide="true" />
+                    <ReferenceLine y={totalFunds()} stroke="gray" strokeDasharray="3 3" />
+                    <Tooltip
+                        cursor={false}
+                        content={customTooltip}
+                    />
                         <Line
                             type="linear"
                             dataKey="price"
                             stroke="#0b7cee"
                             activeDot={{ r: 5 }}
                             dot={false}
-                            strokeWidth={1}
+                            animationDuration={500}
+                            strokeWidth={2}
+                            // onMouseOver={{setChartPrice}}
                         />
                     </LineChart>
                 </div>
@@ -180,12 +212,13 @@ const Dashboard = () => {
                 <div id='left'>
                     {/* -------------------- OWNED STOCKS -------------------- */}
                     <div className='owned-assets'>
+                        {transArr.length ?
                         <table>
                             <thead>
                                 <tr>
                                     <th className='owned-comp-label'>Company</th>
-                                    <th className='owned-price-label'>Balance</th>
-                                    <th className='owned-shares-label'>Shares</th>
+                                    <th className='owned-shares-label'>Balance</th>
+                                    <th className='owned-price-label'>Price</th>
                                     <th className='owned-allocations-label'>Allocation</th>
                                 </tr>
                             </thead>
@@ -193,6 +226,7 @@ const Dashboard = () => {
                                 {transArr.map(transaction => (
                                     transaction.type === 'buy' && transaction.userId === currentUser.id ?
                                     <tr key={transaction.id}>
+                                        {/* -------------------- COMPANY SECTION -------------------- */}
                                         <td className='owned-comp-name'>
                                             <div className='company-name'>
                                                 {matchName(transaction.companyId)}
@@ -201,14 +235,27 @@ const Dashboard = () => {
                                                 {matchTicker(transaction.companyId)}
                                             </div>
                                         </td>
-                                        {/* <td className='owned-comp-price'>${closingPrice(transaction.companyId)?.toFixed(2)}</td> */}
-                                        <td className='owned-comp-price'>${((transaction.price * transaction.shares) + transaction.shares * (closingPrice(transaction.companyId) - transaction.price)).toFixed(2)}</td>
-                                        <td className='owned-comp-shares'>{transaction.shares}</td>
+                                        {/* -------------------- BALANCE SECTION -------------------- */}
+                                        <td className='owned-balance'>
+                                            <div className='owned-balance-price'>${(((transaction.price * transaction.shares) + transaction.shares * (closingPrice(transaction.companyId) - transaction.price)) * transaction.shares).toFixed(2)}</div>
+                                            <div className='owned-comp-shares'>{transaction.shares}</div>
+                                        </td>
+                                        {/* -------------------- PRICE SECTION -------------------- */}
+                                        <td className='owned-comp-price'>
+                                            <div className='curr-comp-price'>${((transaction.price * transaction.shares) + transaction.shares * (closingPrice(transaction.companyId) - transaction.price)).toFixed(2)}</div>
+                                            {(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2) >= 0 ?
+                                            <div className='curr-comp-percent' style={{color: 'green'}}>+{(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>
+                                            :
+                                            <div className='curr-comp-percent' style={{color: 'red'}}>{(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>}
+                                        </td>
+                                        {/* -------------------- ALLOCATION SECTION -------------------- */}
                                         <td className='owned-allocations'>{(((closingPrice(transaction.companyId) * transaction.shares) / buyingTotal()) * 100).toFixed(2)}%</td>
                                     </tr> : ""
                                 ))}
                             </tbody>
                         </table>
+                        :
+                        <p>You do not have any stocks!</p>}
                     </div>
 
                     {/* -------------------- NEWS -------------------- */}
