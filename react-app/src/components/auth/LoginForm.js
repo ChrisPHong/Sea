@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Redirect, NavLink } from 'react-router-dom';
 import { login } from '../../store/session';
 import './LoginForm.css'
-import DemoButton from './DemoButton';
+import DemoButton from './AuthPageDemoBtn';
 
 const LoginForm = () => {
   const [errors, setErrors] = useState([]);
@@ -39,7 +39,7 @@ const LoginForm = () => {
       <div className='login-form'>
         <form className='login-form-inputs' onSubmit={onLogin}>
           <div className='login-form-title'>
-            Log in to SeaCoin
+            Log in to Sea
           </div>
           <div>
             <label className='login-email-input' htmlFor='email'>Email</label>
@@ -65,11 +65,13 @@ const LoginForm = () => {
                 <div key={ind}>{error}</div>
               ))}
             </div>
-            <button className='login-button' type='submit'>Log in</button>
-            <DemoButton />
+            <div className='both-login-page-btns'>
+              <button className='login-button' type='submit'>Log in</button>
+              <DemoButton />
+            </div>
           </div>
           <div className='login-form-signup-nav'>
-            Don't have an account?
+            Don't have an account?<span> </span>
             <NavLink className='login-form-create-account' to='/sign-up'>Create an account</NavLink>
           </div>
         </form>
