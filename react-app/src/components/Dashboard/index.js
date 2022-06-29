@@ -74,8 +74,6 @@ const Dashboard = () => {
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0
         ]
 
-        console.log('just wanna see the companies', companies)
-
         // Add up all the stock prices under each column
         for (let i = 0; i < companies.length; i++) {
             // let prices = companies[i].prices
@@ -157,11 +155,6 @@ const Dashboard = () => {
         }
         return total
     }
-
-    // console.log('WHAT IS THIS WHEN I HOVER?!?!?!?!??!?!?!?!?!', currPrice)
-    // console.log('DIS DAT STARTING PRICEEEEE BRRAAAAHHHH', data[0]?.price?.toFixed(2))
-    // console.log('THIS IS MY FIRST DATAAAAA', data)
-    // console.log('THIS IS MY LAST DATAAAAA', data[data.length - 3])
 
     return (
         <div id='portfolio-ctn'>

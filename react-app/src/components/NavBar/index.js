@@ -11,7 +11,6 @@ const NavBar = () => {
   // const dispatch = useDispatch();
   const currentUser = useSelector(state => state.session.user);
   const stock = useSelector(state => state?.stock?.entries)
-  console.log('navbar', stock)
 
   // useEffect(() => {
   //   dispatch(getStocks())
