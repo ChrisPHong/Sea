@@ -1,0 +1,59 @@
+.stock-details-information {
+    max-width: 60%;
+    margin-left: 5%;
+    margin-top: 90px;
+}
+
+.stock-details-company-information {
+    margin-top: 40px;
+}
+
+.stock-details-title,
+.stock-details-keystats-information {
+    display: flex;
+    justify-content: space-between;
+}
+
+.stock-details-about-title,
+.stock-details-keystats-title {
+    margin-bottom: 40px;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.stock-details-about-description {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    line-height: 2;
+}
+
+.stock-details-ceo-title,
+.stock-details-employees-title,
+.stock-details-headquarters-title,
+.stock-details-founded-title,
+.stock-details-high-price,
+.stock-details-low-price,
+.stock-details-open-price,
+.stock-details-close-price {
+    margin-bottom: 7px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.stock-details-name-title {
+    font-weight: 600;
+    font-size: 36px;
+    margin-top: 50px;
+}
+
+.stock-details-keystats-title {
+    margin-top: 40px;
+    display: flex;
+}
+
+.stock-details-high-price,
+.stock-details-low-price,
+.stock-details-open-price,
+.stock-details-close-price {
+    margin-top: 40px;
+}
