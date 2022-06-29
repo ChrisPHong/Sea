@@ -15,8 +15,6 @@ const Dashboard = () => {
     const transArr = Object.values(transactions)
     const companies = Object.values(stocks)
     const data = []
-    console.log(companies)
-    console.log('here is the transaction OBJ', transArr)
 
     useEffect(() => {
         dispatch(getTransactions(currentUser?.id))
@@ -35,7 +33,6 @@ const Dashboard = () => {
         for (let i = 0; i < transArr.length; i++) {
             let transaction = transArr[i];
             if (transaction?.type === 'buy' && companyId === transaction?.companyId) {
-                console.log('MY SHARES RIGHT HURRRRRR', transaction.shares)
                 return transaction.shares
             }
         }
@@ -51,32 +48,14 @@ const Dashboard = () => {
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0
         ]
-        // let totalPrices;
-        // totalPrices = companies[0]?.prices
-        // [1, 2, 3, 4, 5]
-        // let initialVal = 0
 
         // Add up all the stock prices under each column
         for (let i = 0; i < companies.length; i++) {
             let prices = companies[i].prices
-            console.log('here are all the prices', prices)
-            // console.log('what is this companies id', companies[i].id)
-            // console.log('what is this TRANSACTIONS SHARES', transactions[i]?.companyId)
             for (let j = 0; j < prices.length; j++) {
-                console.log('IM ON MY LAST LEGS HERE', companies[i]?.id)
-                totalPrices[j] += (prices[j] * getPurchasedShares(companies[i]?.id))// 2, 4, 6
-                // initialVal += prices[j]
-
+                totalPrices[j] += (prices[j] * getPurchasedShares(companies[i]?.id))
             }
         }
-        // for (let i = 1; i < companies.length; i++) {
-        //     let prices = companies[i].prices
-        //     for (let j = 0; j < prices.length; j++) {
-        //         totalPrices[j] += prices[j] // 2, 4, 6
-        //     }
-        // }
-
-        console.log('total prices array',totalPrices)
 
         const date = new Date().getTime()
         const dateCopy = new Date(date)
@@ -90,12 +69,6 @@ const Dashboard = () => {
         data.push(dataObj)
     }
     getDatesAndPrices(60)
-    console.log('data with the totalPrices in each date', data)
-
-    const startingPrice = () => {
-        const firstTransaction = transArr[transArr.length - 1]
-        return firstTransaction?.price * firstTransaction?.shares
-    }
 
     const matchTicker = (companyId) => {
         for (let stock of companies) {
