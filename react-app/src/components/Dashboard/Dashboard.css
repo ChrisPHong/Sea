@@ -34,36 +34,6 @@
     padding-left: 5px;
 }
 
-.custom-tooltip {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 1px solid lightgray;
-    padding: 10px 20px;
-    border-radius: 7px;
-}
-
-.tooltip-price {
-    padding-bottom: 5px;
-    font-weight: 600;
-    font-size: 14pt;
-}
-
-.tooltip-date {
-    font-size: 10pt;
-}
-
-.asset-timeframe {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    font-size: 10pt;
-}
-
-.asset-timeframe div {
-    width: 50px;
-}
-
 #info {
     display: flex;
     justify-content: center;
