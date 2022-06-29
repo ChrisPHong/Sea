@@ -129,7 +129,7 @@ const StockDetails = () => {
                             </div>
                         </div>
                     </div>
-                    {stock ? <div>
+                    {news ? <div>
                         <News news={news} ticker={ticker} />
                     </div> : <div>Loading</div>}
                 </div>}
