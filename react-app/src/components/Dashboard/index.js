@@ -68,7 +68,6 @@ const Dashboard = () => {
             if (totalPrices) {
                 data.unshift({
                     'date': new Date(newDate).toLocaleDateString('en-US', {month: 'long', day: 'numeric'}),
-                    'YAxis': totalPrices[i],
                     'price': totalPrices[i]
                 })
             }
@@ -76,6 +75,18 @@ const Dashboard = () => {
         data.push(dataObj)
     }
     getDatesAndPrices(60)
+
+    const customTooltip = ({ active, payload, label }) => {
+        if (active && payload && payload.length) {
+            return (
+              <div className="custom-tooltip">
+                <p className="tooltip-price">{`$${((payload[0].value)).toFixed(2)}`}</p>
+                <p className="tooltip-date">{label}</p>
+              </div>
+            );
+        }
+        return null;
+    }
 
     const matchTicker = (companyId) => {
         for (let stock of companies) {
@@ -154,16 +165,11 @@ const Dashboard = () => {
                     <LineChart width={950} height={300} data={data}>
                     {/* <CartesianGrid strokeDasharray="3 3" /> */}
                     <XAxis dataKey="date" hide="true" />
-                    <YAxis dataKey="YAxis" domain={['dataMin', 'dataMax']} hide="true" />
+                    <YAxis dataKey="price" domain={['dataMin', 'dataMax']} hide="true" />
                     <ReferenceLine y={totalFunds()} stroke="gray" strokeDasharray="3 3" />
                     <Tooltip
                         cursor={false}
-                        contentStyle={{
-                            borderRadius: '7px',
-                            fontWeight: '600',
-
-                        }}
-                        labelStyle={{display: 'flex', justifyContent: 'center'}}
+                        content={customTooltip}
                     />
                         <Line
                             type="linear"
@@ -219,7 +225,10 @@ const Dashboard = () => {
                                             </div>
                                         </td>
                                         {/* <td className='owned-comp-price'>${closingPrice(transaction.companyId)?.toFixed(2)}</td> */}
-                                        <td className='owned-comp-price'>${((transaction.price * transaction.shares) + transaction.shares * (closingPrice(transaction.companyId) - transaction.price)).toFixed(2)}</td>
+                                        <td className='owned-comp-price'>
+                                            <div className='curr-comp-price'>${((transaction.price * transaction.shares) + transaction.shares * (closingPrice(transaction.companyId) - transaction.price)).toFixed(2)}</div>
+                                            <div className='curr-comp-percent'>{((((transaction.price * transaction.shares) + transaction.shares * (closingPrice(transaction.companyId) - transaction.price)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>
+                                        </td>
                                         <td className='owned-comp-shares'>{transaction.shares}</td>
                                         <td className='owned-allocations'>{(((closingPrice(transaction.companyId) * transaction.shares) / buyingTotal()) * 100).toFixed(2)}%</td>
                                     </tr> : ""
