@@ -5,13 +5,15 @@ import transactionReducer from './transaction';
 import stockReducer from './stock';
 import watchlistReducer from './watchlist';
 import searchReducer from './searchbar';
+import newsReducer from './news';
 
 const rootReducer = combineReducers({
   session,
   transaction: transactionReducer,
   stock: stockReducer,
   watchlist: watchlistReducer,
-  search: searchReducer
+  search: searchReducer,
+  news: newsReducer,
 });
 
 

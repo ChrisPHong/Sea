@@ -7,7 +7,7 @@ export const getSearchStocks = (stocks) => {
     }
 }
 
-export const searchStocks = () => async(dispatch) => {
+export const searchStocks = () => async (dispatch) => {
     const response = await fetch('/api/search/')
 
     if (response.ok) {
