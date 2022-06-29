@@ -12,6 +12,7 @@ import User from './components/User';
 import Dashboard from './components/Dashboard'
 import StockDetails from './components/StockDetails';
 import { authenticate } from './store/session';
+import TransactionPage from './components/Transaction';
 
 
 function App() {
@@ -49,6 +50,9 @@ function App() {
         </ProtectedRoute>
         <ProtectedRoute path='/stocks/:ticker'>
           <StockDetails />
+        </ProtectedRoute>
+        <ProtectedRoute path='/transactions'>
+          <TransactionPage />
         </ProtectedRoute>
       </Switch>
     </BrowserRouter>
