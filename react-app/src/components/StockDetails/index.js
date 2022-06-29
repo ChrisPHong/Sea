@@ -11,9 +11,12 @@ const StockDetails = () => {
     const stock = useSelector(state => state?.stock?.entries[ticker.toUpperCase()])
     console.log(stock)
 
+    // getting stocks from backend
     useEffect(() => {
-        dispatch(getOneStock(ticker))
-    }, [dispatch])
+        if (stock === undefined) {
+            dispatch(getOneStock(ticker))
+        }
+    }, [dispatch, stock])
 
     return (
         <>
@@ -30,7 +33,9 @@ const StockDetails = () => {
                     {stock.headquarters}
                     {stock.name}
                     {stock.ticker}
-                </div>}
+                </div>
+            }
+
         </>
     )
 

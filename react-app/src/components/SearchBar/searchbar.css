@@ -35,8 +35,8 @@
     cursor: pointer;
 }
 
-.search-items-dropdown a {
-    text-decoration: none;
+.search-items-dropdown p {
+    /* text-decoration: none; */
     color:#064788;
 }
 
