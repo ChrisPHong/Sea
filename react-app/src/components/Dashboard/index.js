@@ -63,7 +63,7 @@ const Dashboard = () => {
         for (let i = inc; i >= 0; i--) {
             let newDate = dateCopy.setDate(dateCopy.getDate() - 1)
             if (totalPrices) {
-                data.unshift({'date': new Date(newDate), 'price': totalPrices[i]})
+                data.unshift({'date': new Date(newDate).toLocaleDateString('en-US', {month: 'short', day: 'numeric'}), 'price': totalPrices[i]})
             }
         }
         data.push(dataObj)
