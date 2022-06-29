@@ -8,7 +8,7 @@ const News = ({ news, ticker }) => {
     // console.log("These are the state in displayNews", displayNews)
     // console.log("These are the passed in news", news)
     // console.log("These are the stockssssssssss", stock)
-    let slicedNews = Object.values(news).slice(0, 5)
+    let slicedNews = Object.values(news).reverse().slice(0, 5)
     // console.log("These are the passed in news after slicing", slicedNews)
     // console.log("this is the tickerrrrrrrrrrrrrrr", ticker)
 
