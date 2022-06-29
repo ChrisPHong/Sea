@@ -5,7 +5,7 @@ import { searchStocks } from '../../store/searchbar';
 import { loadOneStock, getOneStock } from '../../store/stock';
 import './searchbar.css';
 
-function SearchBar () {
+function SearchBar() {
     const dispatch = useDispatch();
     const history = useHistory();
     const stocks = useSelector(state => state?.search?.entries); // object
@@ -88,7 +88,7 @@ function SearchBar () {
                     {searchResults?.length > 0 && searchResults?.map(item => (
                         // searchResults ===> ['MSFT: Microsoft Corporation', 'META: Meta Platforms, Inc', 'CSCO: Cisco Systems Inc.']
                         <div className='search-items-dropdown'
-                        key={item}
+                            key={item}
                             onMouseDown={() => {
                                 setSearchTerm('')
                                 setSearchResults([])
@@ -96,7 +96,7 @@ function SearchBar () {
                                 history.push(`/stocks/${item.split(":")[0]}`)
                             }}
                         >
-                            {/* <Link to={`/stocks/${item.split(":")[0]}`}>{item}</Link> */}
+                            {/* <NavLink to={`/stocks/${item.split(":")[0]}`}>{item}</NavLink> */}
                             <p>{item}</p>
                         </div>
                     ))}

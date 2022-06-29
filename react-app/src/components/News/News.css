@@ -18,6 +18,7 @@
 
 .news-container {
     display: flex;
+    margin-bottom: 40px;
     /* width: 90%; */
 }
 
@@ -44,12 +45,10 @@
     float: right;
 }
 
-/* .news-summaries {
-    width: 90%;
-} */
 
 .news-article-link {
     color: black;
+    margin-bottom: 40px;
 }
 
 .news-article-link:hover {
