@@ -13,6 +13,6 @@ def get_news():
     # print("THIS IS THE TICKERRRRR",ticker)
     today = date.today()
     yesterday = today - timedelta(days=1)
-    print("THIS IS WHAT TODAYS DATE SHOULD BE JUNE 29, 2022", today)
-    print("THIS IS WHAT YESTERDAYS DATE SHOULD BE JUNE 28, 2022", yesterday)
+    # print("THIS IS WHAT TODAYS DATE SHOULD BE JUNE 29, 2022", today)
+    # print("THIS IS WHAT YESTERDAYS DATE SHOULD BE JUNE 28, 2022", yesterday)
     return jsonify((finnhub_client.company_news(ticker, _from=yesterday, to=today)))
