@@ -53,7 +53,6 @@ const Dashboard = () => {
         return total
     }
 
-    const [currPrice, setCurrPrice] = useState(buyingTotal().toFixed(2))
 
     const getPurchasedShares = (companyId) => {
         for (let i = 0; i < transArr.length; i++) {
@@ -106,6 +105,8 @@ const Dashboard = () => {
     }
     getDatesAndPrices(60)
 
+    const [currPrice, setCurrPrice] = useState(data[data.length - 3]?.price?.toFixed(2))
+
     // Customized tooltip to show price and date
     const customTooltip = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
@@ -117,6 +118,12 @@ const Dashboard = () => {
             );
         }
         return null;
+    }
+
+    const lineMouseOver = (price) => {
+        if (price) {
+            setCurrPrice(price?.toFixed(2))
+        }
     }
 
     // Find ticker from transaction that matches with the pool of companies in database
@@ -148,6 +155,11 @@ const Dashboard = () => {
         return total
     }
 
+    // console.log('WHAT IS THIS WHEN I HOVER?!?!?!?!??!?!?!?!?!', currPrice)
+    // console.log('DIS DAT STARTING PRICEEEEE BRRAAAAHHHH', data[0]?.price?.toFixed(2))
+    // console.log('THIS IS MY FIRST DATAAAAA', data)
+    // console.log('THIS IS MY LAST DATAAAAA', data[data.length - 3])
+
     return (
         <div id='portfolio-ctn'>
             {/* -------------------- ASSETS GRAPH -------------------- */}
@@ -155,7 +167,7 @@ const Dashboard = () => {
                 <div className='balance-info'>
                     <div className='balance-label'>Balance</div>
                     <div className='balance-amt'>
-                        ${buyingTotal().toFixed(2)}
+                        {currPrice !== '0.00' ? `$${currPrice}` : data[data.length - 3]?.price?.toFixed(2)}
                     </div>
                     <div className='balance-percent'>
                         {(buyingTotal() > totalFunds()) ?
@@ -171,7 +183,12 @@ const Dashboard = () => {
                 </div>
                 {/* -------------------- LINE CHART HERE -------------------- */}
                 <div className='asset-chart'>
-                    <LineChart width={950} height={300} data={data}>
+                    <LineChart
+                        width={950}
+                        height={300}
+                        data={data}
+                        onMouseMove={(e) => lineMouseOver(e?.activePayload && e?.activePayload[0].payload.price)}
+                    >
                     <XAxis dataKey="date" hide="true" />
                     <YAxis dataKey="price" domain={['dataMin', 'dataMax']} hide="true" />
                     <ReferenceLine y={totalFunds()} stroke="gray" strokeDasharray="3 3" />
@@ -187,7 +204,6 @@ const Dashboard = () => {
                             dot={false}
                             animationDuration={500}
                             strokeWidth={2}
-                            // onMouseOver={{setChartPrice}}
                         />
                     </LineChart>
                 </div>
