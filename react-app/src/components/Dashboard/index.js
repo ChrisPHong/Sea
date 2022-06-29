@@ -15,8 +15,9 @@ const Dashboard = () => {
     const transArr = Object.values(transactions)
     const companies = Object.values(stocks)
     const data = []
+    console.log(companies)
+    console.log('here is the transaction OBJ', transArr)
 
-    console.log('DIS STOCKSKSKSKSKSK',stocks)
     useEffect(() => {
         dispatch(getTransactions(currentUser?.id))
         dispatch(getOwnedWeeklyPrices(currentUser?.id))
@@ -30,31 +31,66 @@ const Dashboard = () => {
     //     return () => clearInterval(interval);
     // })
 
-    const getDatesAndPrices = (inc) => {
-        const dataObj = {}
-        let totalPrices;
-        totalPrices = companies[0]?.prices
-
-        // Add up all the stock prices under each column
-        for (let i = 1; i < companies.length - 1; i++) {
-            let prices = companies[i].prices
-            for (let j = 0; j < prices.length - 1; j++) {
-                totalPrices[j] += prices[j]
+    const getPurchasedShares = (companyId) => {
+        for (let i = 0; i < transArr.length; i++) {
+            let transaction = transArr[i];
+            if (transaction?.type === 'buy' && companyId === transaction?.companyId) {
+                console.log('MY SHARES RIGHT HURRRRRR', transaction.shares)
+                return transaction.shares
             }
         }
+    }
+
+    const getDatesAndPrices = (inc) => {
+        const dataObj = {}
+        let totalPrices = [
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+        // let totalPrices;
+        // totalPrices = companies[0]?.prices
+        // [1, 2, 3, 4, 5]
+        // let initialVal = 0
+
+        // Add up all the stock prices under each column
+        for (let i = 0; i < companies.length; i++) {
+            let prices = companies[i].prices
+            console.log('here are all the prices', prices)
+            // console.log('what is this companies id', companies[i].id)
+            // console.log('what is this TRANSACTIONS SHARES', transactions[i]?.companyId)
+            for (let j = 0; j < prices.length; j++) {
+                console.log('IM ON MY LAST LEGS HERE', companies[i]?.id)
+                totalPrices[j] += (prices[j] * getPurchasedShares(companies[i]?.id))// 2, 4, 6
+                // initialVal += prices[j]
+
+            }
+        }
+        // for (let i = 1; i < companies.length; i++) {
+        //     let prices = companies[i].prices
+        //     for (let j = 0; j < prices.length; j++) {
+        //         totalPrices[j] += prices[j] // 2, 4, 6
+        //     }
+        // }
+
+        console.log('total prices array',totalPrices)
 
         const date = new Date().getTime()
         const dateCopy = new Date(date)
 
-        for (let i = 0; i < inc - 1; i++) {
+        for (let i = inc; i >= 0; i--) {
             let newDate = dateCopy.setDate(dateCopy.getDate() - 1)
             if (totalPrices) {
-                data.push({'date': new Date(newDate), 'price': totalPrices[i]})
+                data.unshift({'date': new Date(newDate), 'price': totalPrices[i]})
             }
         }
         data.push(dataObj)
     }
     getDatesAndPrices(60)
+    console.log('data with the totalPrices in each date', data)
 
     const startingPrice = () => {
         const firstTransaction = transArr[transArr.length - 1]
@@ -94,6 +130,9 @@ const Dashboard = () => {
             if (transaction.type === 'buy') {
                 total += closingPrice(transaction.companyId) * transaction.shares
             }
+            // } else if (transaction.type === 'sell') {
+            //     total -= closingPrice(transaction.companyId) * transaction.shares
+            // }
         }
         return total
     }
@@ -116,6 +155,7 @@ const Dashboard = () => {
                 <div className='balance-info'>
                     <div className='balance-label'>Balance</div>
                     <div className='balance-amt'>
+                        {/* ${data[0]?.price?.toFixed(2)} */}
                         ${buyingTotal().toFixed(2)}
                     </div>
                     <div className='balance-percent'>
@@ -133,8 +173,8 @@ const Dashboard = () => {
                 <div className='asset-chart'>
                     <LineChart width={950} height={300} data={data}>
                     {/* <CartesianGrid strokeDasharray="3 3" /> */}
-                    <XAxis dataKey="date" />
-                    <YAxis dataKey="price" />
+                    <XAxis dataKey="date" hide="true" />
+                    <YAxis dataKey="price" hide='"true' />
                     <Tooltip cursor={false} />
                         <Line
                             type="linear"
