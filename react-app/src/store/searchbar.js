@@ -7,7 +7,7 @@ export const getSearchStocks = (stocks) => {
     }
 }
 
-export const searchStocks = () => async(dispatch) => {
+export const searchStocks = () => async (dispatch) => {
     const response = await fetch('/api/search/')
 
     if (response.ok) {
@@ -22,7 +22,7 @@ let initialState = {
     entries: {}, isLoading: true
 }
 
-export default function searchReducer(state=initialState, action) {
+export default function searchReducer(state = initialState, action) {
     switch (action.type) {
         case GET_SEARCH_STOCKS:
             return {

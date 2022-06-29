@@ -16,7 +16,7 @@ export const getCompanyNews = (ticker) => async (dispatch) => {
 
     if (response.ok) {
         const news = await response.json()
-        // console.log(news)
+        console.log(news)
         dispatch(loadCompanyNews(news))
     }
 }

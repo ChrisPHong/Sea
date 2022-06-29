@@ -7,7 +7,7 @@ news_routes = Blueprint('news', __name__)
 
 @news_routes.route('/', methods=['POST'])
 def get_news():
-    finnhub_client = finnhub.Client(api_key="catogbiad3ia1n9mnpsg")
+    finnhub_client = finnhub.Client(api_key="catte7iad3ia1n9mr0i0")
     ticker = request.json['ticker'].upper()
-    print("THIS IS THE TICKERRRRR",ticker)
+    # print("THIS IS THE TICKERRRRR",ticker)
     return jsonify((finnhub_client.company_news(ticker, _from="2022-06-01", to="2022-06-27")))
