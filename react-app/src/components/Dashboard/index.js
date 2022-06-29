@@ -4,7 +4,7 @@ import { getOwnedWeeklyPrices, getStocks } from '../../store/stock';
 import { getTransactions } from '../../store/transaction';
 import WatchlistPage from '../Watchlist'
 import WatchlistForm from '../WatchlistForm';
-import { LineChart, Line, XAxis, YAxis } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
 import './Dashboard.css'
 
 const Dashboard = () => {
@@ -14,7 +14,7 @@ const Dashboard = () => {
     const currentUser = useSelector(state => state?.session?.user);
     const transArr = Object.values(transactions)
     const companies = Object.values(stocks)
-    const allTransData = []
+    const data = []
 
     useEffect(() => {
         dispatch(getTransactions(currentUser?.id))
@@ -29,21 +29,46 @@ const Dashboard = () => {
     //     return () => clearInterval(interval);
     // })
 
-    const getAllTransData = () => {
-        const TransObj = {}
-        // transactions.forEach(transaction => )
-        // companies.forEach(comp => {
-        //     allTransData.push(Object.assign(comp.prices))
-        // })
-        // console.log(allTransData)
-        // console.log(transactions)
-        // return allTransData
+    const getPurchasedShares = (companyId) => {
+        for (let i = 0; i < transArr.length; i++) {
+            let transaction = transArr[i];
+            if (transaction?.type === 'buy' && companyId === transaction?.companyId) {
+                return transaction.shares
+            }
+        }
     }
 
-    const startingPrice = () => {
-        const firstTransaction = transArr[transArr.length - 1]
-        return firstTransaction?.price * firstTransaction?.shares
+    const getDatesAndPrices = (inc) => {
+        const dataObj = {}
+        let totalPrices = [
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+
+        // Add up all the stock prices under each column
+        for (let i = 0; i < companies.length; i++) {
+            let prices = companies[i].prices
+            for (let j = 0; j < prices.length; j++) {
+                totalPrices[j] += (prices[j] * getPurchasedShares(companies[i]?.id))
+            }
+        }
+
+        const date = new Date().getTime()
+        const dateCopy = new Date(date)
+
+        for (let i = inc; i >= 0; i--) {
+            let newDate = dateCopy.setDate(dateCopy.getDate() - 1)
+            if (totalPrices) {
+                data.unshift({'date': new Date(newDate), 'price': totalPrices[i]})
+            }
+        }
+        data.push(dataObj)
     }
+    getDatesAndPrices(60)
 
     const matchTicker = (companyId) => {
         for (let stock of companies) {
@@ -78,6 +103,9 @@ const Dashboard = () => {
             if (transaction.type === 'buy') {
                 total += closingPrice(transaction.companyId) * transaction.shares
             }
+            // } else if (transaction.type === 'sell') {
+            //     total -= closingPrice(transaction.companyId) * transaction.shares
+            // }
         }
         return total
     }
@@ -100,6 +128,7 @@ const Dashboard = () => {
                 <div className='balance-info'>
                     <div className='balance-label'>Balance</div>
                     <div className='balance-amt'>
+                        {/* ${data[0]?.price?.toFixed(2)} */}
                         ${buyingTotal().toFixed(2)}
                     </div>
                     <div className='balance-percent'>
@@ -115,13 +144,14 @@ const Dashboard = () => {
                     </div>
                 </div>
                 <div className='asset-chart'>
-                    <LineChart width={950} height={300} data={getAllTransData()}>
+                    <LineChart width={950} height={300} data={data}>
                     {/* <CartesianGrid strokeDasharray="3 3" /> */}
-                    <XAxis dataKey="date" />
-                    <YAxis dataKey="price" />
+                    <XAxis dataKey="date" hide="true" />
+                    <YAxis dataKey="price" hide='"true' />
+                    <Tooltip cursor={false} />
                         <Line
                             type="linear"
-                            dataKey="prices"
+                            dataKey="price"
                             stroke="#0b7cee"
                             activeDot={{ r: 5 }}
                             dot={false}

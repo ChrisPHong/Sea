@@ -1,19 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {postWatchlists} from '../../store/watchlist'
+import { editWatchlists } from '../../store/watchlist'
+import {useHistory} from 'react-router-dom'
+import './EditWatchListForm.css'
 
+function EditWatchListForm(watchlist) {
+    // let watchlist = useSelector((state) => state)
+    const history = useHistory()
 
-function WatchlistForm() {
-    const [name, setName] = useState('');
+    const id = watchlist.watchlist.id
+    const [name, setName] = useState(watchlist.watchlist.name);
     const [errors, setErrors] = useState([]);
 
     const dispatch = useDispatch();
-
     let userId = useSelector((state) => state.session?.user?.id)
+    const [show, setShow] = useState('hidden')
 
     useEffect(() => {
         const error = [];
-        if (name.length < 1) error.push('You must put a name with at least 1 character')
+        if (name?.length < 1) error.push('You must put a name with at least 1 character')
         setErrors(error);
     }, [name])
 
@@ -21,17 +26,21 @@ function WatchlistForm() {
         e.preventDefault();
         if (errors.length === 0) {
             const payload = {
+                id,
                 userId,
                 name,
             }
-            dispatch(postWatchlists(payload))
+            await dispatch(editWatchlists(payload))
+            await history.push('/dashboard')
+            await setShow(false)
+
         }
 
     }
-
     useEffect(()=>{
 
     },[onSubmit])
+
 
     return (
         <form className="WatchlistForm" onSubmit={onSubmit}>
@@ -62,9 +71,9 @@ function WatchlistForm() {
                 className='submitButton'
                 type='submit'
                 disabled={errors.length > 0 ? true : false}
-            >Submit</button>
+            >Save Changes</button>
         </form>
     )
 }
 
-export default WatchlistForm;
+export default EditWatchListForm;

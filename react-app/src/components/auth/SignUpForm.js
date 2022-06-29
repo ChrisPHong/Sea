@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Redirect, NavLink } from 'react-router-dom';
 import { signUp } from '../../store/session';
 import './SignUpForm.css'
+import DemoButton from './AuthPageDemoBtn';
 
 const SignUpForm = () => {
   const [errors, setErrors] = useState([]);
@@ -128,7 +129,10 @@ const SignUpForm = () => {
           <div className='signup-disclaimer-text'>
             By signing up, you agree that this is for fun and should NOT be used for real financial purposes.
           </div>
-          <button className='signup-form-button' type='submit'>Sign Up</button>
+          <div className='both-signup-page-btns'>
+            <button className='signup-form-button' type='submit'>Sign Up</button>
+            {/* <DemoButton /> */}
+          </div>
         </form>
       </div>
     </div>

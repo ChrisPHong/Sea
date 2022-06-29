@@ -21,3 +21,5 @@ def get_stocks():
     #  list of company objects
     return {"stock_names": stocks_list} # {stock_names: Array(40)}
     # [{"ticker": stocks[i].ticker, "company": stocks[i].name}]
+
+# make post route

@@ -59,6 +59,7 @@
     color: white;
     border: 2px solid white;
     text-shadow: 2px 2px 2px black;
+    margin-right: 1em;
 }
 
 #get-started-btn:hover {
@@ -81,4 +82,21 @@
 .splash-disclaimer p {
     /* line-height: 5px; */
     margin-bottom: 0;
+}
+
+.splash-demo-btn {
+    margin-top: 2.5em;
+    border-radius: 23px;
+    height: 50px;
+    width: 137px;
+    background-color: transparent;
+    border: none;
+    font-size: 1em;
+    color: white;
+    border: 2px solid white;
+    text-shadow: 2px 2px 2px black;
+}
+
+.splash-demo-btn:hover {
+    cursor: pointer;
 }

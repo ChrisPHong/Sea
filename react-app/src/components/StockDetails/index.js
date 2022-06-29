@@ -31,10 +31,14 @@ const StockDetails = () => {
     // console.log(min)
     // console.log(max)
 
+    // getting stocks from backend
     useEffect(() => {
-        dispatch(getOneStock(ticker))
-        dispatch(getCompanyNews(ticker))
-    }, [dispatch])
+
+        if (stock === undefined) {
+            dispatch(getOneStock(ticker))
+            dispatch(getCompanyNews(ticker))
+        }
+    }, [dispatch, stock])
 
     return (
         <>

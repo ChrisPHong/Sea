@@ -22,6 +22,11 @@
     font-size: 2em;
 }
 
+.sea-navbar-logo a {
+    text-decoration: none;
+    color: #064788;
+}
+
 .navbar-right {
     position: absolute;
     right: 5em;

@@ -1,28 +1,38 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+// import { useEffect } from 'react';
 import LogoutButton from '../auth/LogoutButton';
 import SearchBar from '../SearchBar';
+// import { getStocks } from '../../store/stock';
 import './navbar.css'
 
 const NavBar = () => {
+  // const dispatch = useDispatch();
   const currentUser = useSelector(state => state.session.user);
+  const stock = useSelector(state => state?.stock?.entries)
+  console.log('navbar', stock)
+
+  // useEffect(() => {
+  //   dispatch(getStocks())
+  // }, [dispatch])
 
   return (
     <nav className='nav-bar'>
 
-      <div className='sea-navbar-logo'>
-        Sea
-      </div>
-
       {currentUser
       ?
         <>
-          {/* <div className='auth-navbar-search'>
-          </div> */}
+          <div className='sea-navbar-logo'>
+            <NavLink to='/dashboard' exact={true} activeClassName='active'>
+              Sea
+            </NavLink>
+          </div>
 
           <div className='auth-navbar-right'>
-            <SearchBar />
+            { stock && (
+              <SearchBar />
+            )}
 
             <div id="nav-portfolio">
               <NavLink to='/dashboard' exact={true} activeClassName='active'>
@@ -40,18 +50,25 @@ const NavBar = () => {
           </div>
         </>
       :
-        <div className='navbar-right'>
-          <div id="nav-login">
-            <NavLink to="/login" exact={true} >
-              Log In
+        <>
+          <div className='sea-navbar-logo'>
+            <NavLink to='/' exact={true} activeClassName='active'>
+              Sea
             </NavLink>
           </div>
-          <div id="nav-signup">
-            <NavLink to="/sign-up" exact={true} >
-              Sign Up
-            </NavLink>
+          <div className='navbar-right'>
+            <div id="nav-login">
+              <NavLink to="/login" exact={true} >
+                Log In
+              </NavLink>
+            </div>
+            <div id="nav-signup">
+              <NavLink to="/sign-up" exact={true} >
+                Sign Up
+              </NavLink>
+            </div>
           </div>
-        </div>
+        </>
       }
     </nav>
   );

@@ -43,7 +43,13 @@
     margin-left: 20px;
 }
 
-.login-button {
+.both-login-page-btns {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.login-button, .auth-demo-btn {
     outline: none;
     border-radius: 0;
     padding: 10px 40px;
@@ -54,8 +60,9 @@
     margin-bottom: 20px;
 }
 
-.login-button:hover {
+.login-button:hover, .auth-demo-btn:hover {
     background: #7cb6f0;
+    cursor: pointer;
 }
 
 
