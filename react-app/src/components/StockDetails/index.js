@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getOneStock } from '../../store/stock';
-import { getCompanyNews } from '../../store/news';
 import News from '../News'
+import { getCompanyNews } from '../../store/news';
 import './StockDetails.css'
 
 const StockDetails = () => {
@@ -13,32 +13,31 @@ const StockDetails = () => {
     const stock = useSelector(state => state?.stock?.entries[ticker.toUpperCase()])
     const news = useSelector(state => state?.news?.entries)
     // console.log(news)
-    let displayNews = Object.values(news).slice(0, 5)
     // console.log("THESE ARE THE VALUESSSSSS", displayNews)
     let min = Infinity
     let max = -Infinity
     if (stock) {
         // console.log(stock.prices)
-        for (let i = 0; i < stock.prices.length; i++) {
-            if (stock.prices[i] < min) {
-                min = stock.prices[i].toFixed(2);
+        for (let i = 0; i < stock?.prices?.length; i++) {
+            if (stock?.prices[i] < min) {
+                min = stock?.prices[i].toFixed(2);
             }
-            if (stock.prices[i] > max) {
-                max = stock.prices[i].toFixed(2);
+            if (stock?.prices[i] > max) {
+                max = stock?.prices[i].toFixed(2);
             }
         }
     }
     // console.log(min)
     // console.log(max)
-
     // getting stocks from backend
     useEffect(() => {
-
         if (stock === undefined) {
             dispatch(getOneStock(ticker))
             dispatch(getCompanyNews(ticker))
         }
     }, [dispatch, stock])
+
+
 
     return (
         <>
@@ -130,8 +129,8 @@ const StockDetails = () => {
                             </div>
                         </div>
                     </div>
-                    {news ? <div>
-                        <News news={displayNews} />
+                    {stock ? <div>
+                        <News news={news} ticker={ticker} />
                     </div> : <div>Loading</div>}
                 </div>}
         </>
