@@ -43,6 +43,7 @@
 .asset-bottom {
     display: flex;
     flex-direction: row;
+    align-items: center;
     width: 800px;
     height: 50px;
     justify-content: space-between;

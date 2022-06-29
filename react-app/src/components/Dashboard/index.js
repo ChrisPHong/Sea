@@ -4,7 +4,7 @@ import { getOwnedWeeklyPrices, getStocks } from '../../store/stock';
 import { getTransactions } from '../../store/transaction';
 import WatchlistPage from '../Watchlist'
 import WatchlistForm from '../WatchlistForm';
-import { LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine } from 'recharts';
 import './Dashboard.css'
 
 const Dashboard = () => {
@@ -51,9 +51,12 @@ const Dashboard = () => {
 
         // Add up all the stock prices under each column
         for (let i = 0; i < companies.length; i++) {
-            let prices = companies[i].prices
-            for (let j = 0; j < prices.length; j++) {
-                totalPrices[j] += (prices[j] * getPurchasedShares(companies[i]?.id))
+            // let prices = companies[i].prices
+            if (companies.length) {
+                for (let j = 0; j < companies[i]?.prices?.length; j++) {
+                    totalPrices[j] += (companies[i]?.prices[j] * getPurchasedShares(companies[i]?.id))
+                }
+
             }
         }
 
@@ -63,7 +66,11 @@ const Dashboard = () => {
         for (let i = inc; i >= 0; i--) {
             let newDate = dateCopy.setDate(dateCopy.getDate() - 1)
             if (totalPrices) {
-                data.unshift({'date': new Date(newDate).toLocaleDateString('en-US', {month: 'short', day: 'numeric'}), 'price': totalPrices[i]})
+                data.unshift({
+                    'date': new Date(newDate).toLocaleDateString('en-US', {month: 'long', day: 'numeric'}),
+                    'YAxis': totalPrices[i],
+                    'price': totalPrices[i]
+                })
             }
         }
         data.push(dataObj)
@@ -147,15 +154,25 @@ const Dashboard = () => {
                     <LineChart width={950} height={300} data={data}>
                     {/* <CartesianGrid strokeDasharray="3 3" /> */}
                     <XAxis dataKey="date" hide="true" />
-                    <YAxis dataKey="price" hide='"true' />
-                    <Tooltip cursor={false} />
+                    <YAxis dataKey="YAxis" domain={['dataMin', 'dataMax']} hide="true" />
+                    <ReferenceLine y={totalFunds()} stroke="gray" strokeDasharray="3 3" />
+                    <Tooltip
+                        cursor={false}
+                        contentStyle={{
+                            borderRadius: '7px',
+                            fontWeight: '600',
+
+                        }}
+                        labelStyle={{display: 'flex', justifyContent: 'center'}}
+                    />
                         <Line
                             type="linear"
                             dataKey="price"
                             stroke="#0b7cee"
                             activeDot={{ r: 5 }}
                             dot={false}
-                            strokeWidth={1}
+                            animationDuration={500}
+                            strokeWidth={2}
                         />
                     </LineChart>
                 </div>
