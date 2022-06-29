@@ -1,5 +1,4 @@
 import './News.css'
-import { NavLink } from 'react-router-dom';
 
 const News = ({ news }) => {
     console.log("These are the passed in news", news)
