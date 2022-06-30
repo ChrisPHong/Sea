@@ -15,8 +15,12 @@
 }
 
 .deleteButton {
+    border: none;
+    border-radius: 8px 8px;
+
     padding: 5px 14px;
     background-color: transparent;
+    box-shadow: 0px 0px 4px rgb(92, 91, 91, .4);
     transition-duration: 1.2s;
 }
 
@@ -29,8 +33,12 @@
 }
 
 .editButton {
+    border: none;
+    border-radius: 8px 8px;
     padding: 5px 14px;
     background-color: transparent;
+    margin-left: 5px;
+    box-shadow: 0px 0px 4px rgb(92, 91, 91, .4);
     transition-duration: 1s;
 
 }
@@ -48,4 +56,74 @@
 
 .deletePicture {
     width: 15px;
+}
+
+.company{
+    /* display: inline-block; */
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    flex-direction: column;
+}
+
+.navLinkStocksWatchlist{
+    text-decoration: none;
+    text-decoration-style: none;
+    color: black;
+    font-weight: bold;
+    transition-duration: 1s;
+    border: none;
+    border-radius: 5px 5px;
+    padding: 5px;
+}
+
+.navLinkStocksWatchlist:hover{
+    text-decoration: underline;
+    color: black;
+    font-weight: bold;
+    /* box-shadow: 0px 0px 5px rgb(92, 91, 91); */
+}
+
+.divCompanyPriceAndGraph{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.watchlistButtonsEditAndDelete{
+    display: inline-block;
+    justify-content: space-around;
+}
+
+.watchlistName{
+    font-weight: bold;
+    font-size: 25px;
+    display: inline-block;
+}
+
+.editAndDeleteButtonDiv{
+    display: inline-block;
+    justify-content: space-between;
+}
+
+.titleWatchlistDiv{
+
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3px;
+    padding-bottom: 6px;
+    border-bottom: rgb(0, 0, 0, .4) 1px solid;
+    /* border-style: dashed double none; */
+    /* background-color: blue; */
+}
+
+.WatchlistTitleH1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.OneWatchListDiv{
+    margin-bottom: 20px;
 }
