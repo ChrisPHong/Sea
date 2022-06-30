@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
 from app.forms import WatchlistForm
 from app.models import Watchlist, db
+import json
 
 watchlist_routes = Blueprint('watchlists', __name__)
 
@@ -69,3 +70,10 @@ def delete_watchlists(id):
     db.session.commit()
 
     return watchlist.to_dict()
+
+# @watchlist_routes.route('/')
+# @login_required
+# def get__all_watchlists():
+#     watchlists = Watchlist.query.filter(Watchlist.user_id == current_user.get_id()).all()
+#     print(' <<<<<<<<< in the other route >>>>>>>>>>>', {[watchlist.to_dict() for watchlist in watchlists]})
+#     return {[watchlist.to_dict_stocks() for watchlist in watchlists]}
