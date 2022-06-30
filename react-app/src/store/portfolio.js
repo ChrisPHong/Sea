@@ -7,11 +7,12 @@ export const loadPortfolio = (portfolio) => {
     }
 }
 
-export const getPortfolio = (payload) => async (dispatch) => {
-    const response = await fetch('/api/portfolio', {
+export const getPortfolio = (userId) => async (dispatch) => {
+    console.log('------------------in getPortfolio------------------')
+    const response = await fetch('/api/portfolio/', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({payload})
+        body: JSON.stringify(userId)
     })
 
     if (response.ok) {
@@ -26,8 +27,8 @@ const portfolioReducer = ( state = initialState, action ) => {
     let newState
     switch (action.type) {
         case LOAD_PORTFOLIO:
-            newState = {entries:{}}
-            newState.entries[action.portfolio.date] = action.stock
+            newState = { ...state, entries: {...state.entries} }
+            action.portfolio.forEach((priceData, i) => newState.entries[i] = priceData)
             return newState
         default:
             return state

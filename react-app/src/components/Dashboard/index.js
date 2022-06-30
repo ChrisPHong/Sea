@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getStocks } from '../../store/stock';
 import { getTransactions, getAllTransactions } from '../../store/transaction';
+import { getPortfolio } from '../../store/portfolio';
 import WatchlistPage from '../Watchlist'
 import WatchlistForm from '../WatchlistForm';
 import StockChart from '../StockChart';
@@ -13,12 +14,16 @@ const Dashboard = () => {
     const transactions = useSelector(state => state?.transaction?.entries)
     const stocks = useSelector(state => state?.stock?.entries)
     const currentUser = useSelector(state => state?.session?.user);
+    const prices = useSelector(state => state?.portfolio?.entries)
     const transArr = Object.values(transactions)
     const companies = Object.values(stocks)
+
+    console.log('IS THIS THE FINAL PRICES', prices)
 
     useEffect(() => {
         // dispatch(getTransactions(currentUser?.id))
         dispatch(getAllTransactions())
+        dispatch(getPortfolio({userId: currentUser?.id}))
 
     }, [dispatch])
 
