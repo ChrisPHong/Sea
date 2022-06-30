@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getOwnedWeeklyPrices, getStocks } from '../../store/stock';
-import { getTransactions } from '../../store/transaction';
+import { getTransactions, getAllTransactions } from '../../store/transaction';
 import WatchlistPage from '../Watchlist'
 import WatchlistForm from '../WatchlistForm';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine } from 'recharts';
@@ -17,7 +17,8 @@ const Dashboard = () => {
     const data = []
 
     useEffect(() => {
-        dispatch(getTransactions(currentUser?.id))
+        // dispatch(getTransactions(currentUser?.id))
+        dispatch(getAllTransactions())
         dispatch(getOwnedWeeklyPrices(currentUser?.id))
     }, [dispatch])
 
@@ -97,7 +98,7 @@ const Dashboard = () => {
                 // Add to front of data array so that the most recent date and
                 // price will be at the end and previous dates/price near the beginning
                 data.unshift({
-                    'date': new Date(newDate).toLocaleDateString('en-US', {month: 'long', day: 'numeric'}),
+                    'date': new Date(newDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric' }),
                     'price': totalPrices[i]
                 })
             }
@@ -110,10 +111,10 @@ const Dashboard = () => {
     const customTooltip = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
             return (
-              <div className="custom-tooltip">
-                <p className="tooltip-price">{`$${((payload[0].value)).toFixed(2)}`}</p>
-                <p className="tooltip-date">{label}</p>
-              </div>
+                <div className="custom-tooltip">
+                    <p className="tooltip-price">{`$${((payload[0].value)).toFixed(2)}`}</p>
+                    <p className="tooltip-date">{label}</p>
+                </div>
             );
         }
         return null;
@@ -159,26 +160,26 @@ const Dashboard = () => {
                     </div>
                     <div className='balance-percent'>
                         {(buyingTotal() > totalFunds()) ?
-                        <div className='all-time-diff' style={{color: 'green'}}>
-                            +${Math.abs((buyingTotal() - totalFunds())).toFixed(2)}
-                        </div>
-                        :
-                        <div className='all-time-diff' style={{color: 'red'}}>
-                            -${Math.abs((buyingTotal() - totalFunds())).toFixed(2)}
-                        </div>}
+                            <div className='all-time-diff' style={{ color: 'green' }}>
+                                +${Math.abs((buyingTotal() - totalFunds())).toFixed(2)}
+                            </div>
+                            :
+                            <div className='all-time-diff' style={{ color: 'red' }}>
+                                -${Math.abs((buyingTotal() - totalFunds())).toFixed(2)}
+                            </div>}
                         <div className='all-time'>All time</div>
                     </div>
                 </div>
                 {/* -------------------- LINE CHART HERE -------------------- */}
                 <div className='asset-chart'>
                     <LineChart width={950} height={300} data={data}>
-                    <XAxis dataKey="date" hide="true" />
-                    <YAxis dataKey="price" domain={['dataMin', 'dataMax']} hide="true" />
-                    <ReferenceLine y={totalFunds()} stroke="gray" strokeDasharray="3 3" />
-                    <Tooltip
-                        cursor={false}
-                        content={customTooltip}
-                    />
+                        <XAxis dataKey="date" hide="true" />
+                        <YAxis dataKey="price" domain={['dataMin', 'dataMax']} hide="true" />
+                        <ReferenceLine y={totalFunds()} stroke="gray" strokeDasharray="3 3" />
+                        <Tooltip
+                            cursor={false}
+                            content={customTooltip}
+                        />
                         <Line
                             type="linear"
                             dataKey="price"
@@ -187,7 +188,7 @@ const Dashboard = () => {
                             dot={false}
                             animationDuration={500}
                             strokeWidth={2}
-                            // onMouseOver={{setChartPrice}}
+                        // onMouseOver={{setChartPrice}}
                         />
                     </LineChart>
                 </div>
@@ -213,49 +214,49 @@ const Dashboard = () => {
                     {/* -------------------- OWNED STOCKS -------------------- */}
                     <div className='owned-assets'>
                         {transArr.length ?
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th className='owned-comp-label'>Company</th>
-                                    <th className='owned-shares-label'>Balance</th>
-                                    <th className='owned-price-label'>Price</th>
-                                    <th className='owned-allocations-label'>Allocation</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {transArr.map(transaction => (
-                                    transaction.type === 'buy' && transaction.userId === currentUser.id ?
-                                    <tr key={transaction.id}>
-                                        {/* -------------------- COMPANY SECTION -------------------- */}
-                                        <td className='owned-comp-name'>
-                                            <div className='company-name'>
-                                                {matchName(transaction.companyId)}
-                                            </div>
-                                            <div className='company-ticker'>
-                                                {matchTicker(transaction.companyId)}
-                                            </div>
-                                        </td>
-                                        {/* -------------------- BALANCE SECTION -------------------- */}
-                                        <td className='owned-balance'>
-                                            <div className='owned-balance-price'>${(((transaction.price * transaction.shares) + transaction.shares * (closingPrice(transaction.companyId) - transaction.price)) * transaction.shares).toFixed(2)}</div>
-                                            <div className='owned-comp-shares'>{transaction.shares}</div>
-                                        </td>
-                                        {/* -------------------- PRICE SECTION -------------------- */}
-                                        <td className='owned-comp-price'>
-                                            <div className='curr-comp-price'>${((transaction.price * transaction.shares) + transaction.shares * (closingPrice(transaction.companyId) - transaction.price)).toFixed(2)}</div>
-                                            {(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2) >= 0 ?
-                                            <div className='curr-comp-percent' style={{color: 'green'}}>+{(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>
-                                            :
-                                            <div className='curr-comp-percent' style={{color: 'red'}}>{(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>}
-                                        </td>
-                                        {/* -------------------- ALLOCATION SECTION -------------------- */}
-                                        <td className='owned-allocations'>{(((closingPrice(transaction.companyId) * transaction.shares) / buyingTotal()) * 100).toFixed(2)}%</td>
-                                    </tr> : ""
-                                ))}
-                            </tbody>
-                        </table>
-                        :
-                        <p>You do not have any stocks!</p>}
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th className='owned-comp-label'>Company</th>
+                                        <th className='owned-shares-label'>Balance</th>
+                                        <th className='owned-price-label'>Price</th>
+                                        <th className='owned-allocations-label'>Allocation</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {transArr.map(transaction => (
+                                        transaction.type === 'buy' && transaction.userId === currentUser.id ?
+                                            <tr key={transaction.id}>
+                                                {/* -------------------- COMPANY SECTION -------------------- */}
+                                                <td className='owned-comp-name'>
+                                                    <div className='company-name'>
+                                                        {matchName(transaction.companyId)}
+                                                    </div>
+                                                    <div className='company-ticker'>
+                                                        {matchTicker(transaction.companyId)}
+                                                    </div>
+                                                </td>
+                                                {/* -------------------- BALANCE SECTION -------------------- */}
+                                                <td className='owned-balance'>
+                                                    <div className='owned-balance-price'>${(((transaction.price * transaction.shares) + transaction.shares * (closingPrice(transaction.companyId) - transaction.price)) * transaction.shares).toFixed(2)}</div>
+                                                    <div className='owned-comp-shares'>{transaction.shares}</div>
+                                                </td>
+                                                {/* -------------------- PRICE SECTION -------------------- */}
+                                                <td className='owned-comp-price'>
+                                                    <div className='curr-comp-price'>${((transaction.price * transaction.shares) + transaction.shares * (closingPrice(transaction.companyId) - transaction.price)).toFixed(2)}</div>
+                                                    {(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2) >= 0 ?
+                                                        <div className='curr-comp-percent' style={{ color: 'green' }}>+{(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>
+                                                        :
+                                                        <div className='curr-comp-percent' style={{ color: 'red' }}>{(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>}
+                                                </td>
+                                                {/* -------------------- ALLOCATION SECTION -------------------- */}
+                                                <td className='owned-allocations'>{(((closingPrice(transaction.companyId) * transaction.shares) / buyingTotal()) * 100).toFixed(2)}%</td>
+                                            </tr> : ""
+                                    ))}
+                                </tbody>
+                            </table>
+                            :
+                            <p>You do not have any stocks!</p>}
                     </div>
 
                     {/* -------------------- NEWS -------------------- */}
