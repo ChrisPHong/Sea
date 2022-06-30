@@ -45,71 +45,75 @@ function WatchlistPage() {
 
     return (
         <div className='watchlists'>
-            <h1>Watchlists</h1>
+            <h1 className='WatchlistTitleH1'>Watchlists</h1>
             {watchlists.map(watchlist => {
                 return (
-                    <div>
-                        <h4>
-                            {watchlist.name}
-                        </h4>
-                        <button
+                    <div className='OneWatchListDiv'>
+                        <div className='watchlistButtonsEditAndDelete'>
+                            <div className='titleWatchlistDiv'>
+                                <p className='watchlistName'>
+                                    {watchlist.name}
+                                </p>
+                                <div className='editAndDeleteButtonDiv'>
+                                    <button
 
-                            className='deleteButton'
+                                        className='deleteButton'
 
-                            onClick={() => {
-                                dispatch(deleteWatchList(watchlist.id))
-                            }}
+                                        onClick={() => {
+                                            dispatch(deleteWatchList(watchlist.id))
+                                        }}
 
-                        ><img className='deletePicture' src={'https://www.iconpacks.net/icons/1/free-trash-icon-347-thumb.png'} /></button>
+                                    ><img className='deletePicture' src={'https://www.iconpacks.net/icons/1/free-trash-icon-347-thumb.png'} /></button>
 
-                        <button
-                            className={`editButton ${watchlist.id}`}
-                            onClick={async (e) => {
-                                // Getting the specific edit form div
-                                let specificEditForm = document.getElementsByClassName(`editform-${watchlist.id}`)[0]
-                                // Checking to see if the current clicked is equal to the watchlistId
+                                    <button
+                                        className={`editButton ${watchlist.id}`}
+                                        onClick={async (e) => {
+                                            // Getting the specific edit form div
+                                            let specificEditForm = document.getElementsByClassName(`editform-${watchlist.id}`)[0]
+                                            // Checking to see if the current clicked is equal to the watchlistId
 
-                                if (parseInt(e.currentTarget.className.split(' ')[1]) === watchlist.id) {
-                                    if (specificEditForm.className === `editform-${watchlist.id} hidden`) {
+                                            if (parseInt(e.currentTarget.className.split(' ')[1]) === watchlist.id) {
+                                                if (specificEditForm.className === `editform-${watchlist.id} hidden`) {
 
-                                        return specificEditForm.className = `editform-${watchlist.id} show`
+                                                    return specificEditForm.className = `editform-${watchlist.id} show`
 
 
 
-                                    } else if (specificEditForm.className === `editform-${watchlist.id} show`) {
-                                        return specificEditForm.className = `editform-${watchlist.id} hidden`
+                                                } else if (specificEditForm.className === `editform-${watchlist.id} show`) {
+                                                    return specificEditForm.className = `editform-${watchlist.id} hidden`
 
-                                    }
-                                }
-                                else {
-                                    setShow('hidden')
-                                    specificEditForm.className = `editform-${watchlist.id} ${show}`
-                                    return
-                                }
-                            }
-                            }
-                        >
-                            <img className={`editingPicture ${watchlist.id}`} src={'https://cdn-icons-png.flaticon.com/512/61/61456.png'} />
-                        </button >
+                                                }
+                                            }
+                                            else {
+                                                setShow('hidden')
+                                                specificEditForm.className = `editform-${watchlist.id} ${show}`
+                                                return
+                                            }
+                                        }
+                                        }
+                                    >
+                                        <img className={`editingPicture ${watchlist.id}`} src={'https://cdn-icons-png.flaticon.com/512/61/61456.png'} />
+                                    </button >
 
-                        <div className={`editform-${watchlist.id} hidden`}>
-                            < EditWatchListForm watchlist={watchlist} />
-                        </div>
-
+                                    <div className={`editform-${watchlist.id} hidden`}>
+                                        < EditWatchListForm watchlist={watchlist} />
+                                    </div>
+                                </div>
+                            </div>
                             <div className='company'>
-                                {watchlist.watchComps.map((company)=>{
+                                {watchlist.watchComps.map((company) => {
                                     return (
-                                        <div className={`company-${company.id}`}>
-                                        <NavLink to={`/stocks/${company.ticker}`}>
-                                        {company.ticker}
-                                        </NavLink>
-                                        <h5>- Stocks Graph Goes Here</h5>
-                                        <h5>{closingPrice(company.id)}</h5>
+                                        <div className={`company-${company.id} divCompanyPriceAndGraph`}>
+                                            <NavLink className='navLinkStocksWatchlist' to={`/stocks/${company.ticker}`}>
+                                                {company.ticker}
+                                            </NavLink>
+                                            <h5>- Stocks Graph Goes Here -</h5>
+                                            <h5>Closing Price: {closingPrice(company.id)}</h5>
                                         </div>
                                     )
                                 })}
-
                             </div>
+                        </div>
                     </div >
 
                 )
