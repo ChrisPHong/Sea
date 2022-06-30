@@ -2,10 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { stockTransaction } from '../../store/transaction';
 
-const Buy = ({ user, ticker, price }) => {
+const Buy = ({ user, companyId, ticker, price }) => {
     const dispatch = useDispatch()
-    const data = useSelector(state => state.transactions.transactionData);
-    console.log(data)
+    const transactions = useSelector(state => state?.transaction?.entries);
+    // console.log(transactions)
+    // const stock = useSelector(state => state?.stock?.entries)
+
+    // const companies = Object.values(stocks)
+    // console.log('---companies in buy page', companies)
     const [transactionPrice, setTransactionPrice] = useState((0).toFixed(2));
     const [sharesBought, setSharesBought] = useState(0);
     const [order, setOrder] = useState('buy');
@@ -16,10 +20,6 @@ const Buy = ({ user, ticker, price }) => {
         setTransactionPrice((e.target.value * price).toFixed(2));
         //  price = market price per share
     }
-
-    useEffect(() => {
-        dispatch(stockTransaction(data))
-    })
 
     const buyStock = async (e) => {
         e.preventDefault();
@@ -32,7 +32,8 @@ const Buy = ({ user, ticker, price }) => {
             shares: Number(sharesBought),
             price: Number(transactionTotal),
             type: 'buy',
-            balance: Number(newBalance)
+            company_id: companyId
+            // balance: Number(newBalance)
         }
         dispatch(stockTransaction(newTransaction))
     }

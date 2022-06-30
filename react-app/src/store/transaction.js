@@ -47,11 +47,11 @@ export const getTransactions = (userId) => async (dispatch) => {
 }
 
 // thunk - buy/sell stock ??
-export const stockTransaction = (data) => async (dispatch) => {
+export const stockTransaction = (payload) => async (dispatch) => {
     const res = await fetch(`/api/transactions/update`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(data)
+        body: JSON.stringify(payload)
     })
 
     if (res.ok) {
@@ -79,10 +79,17 @@ const transactionReducer = ( state = initialState, action ) => {
             return newState
         case BUY_STOCK:
             console.log('BUY STOCK ACTION-----', action.transaction)
-            return {
-                ...state,
-                entries: action.transaction
+            newState = {
+                ...state, entries: {
+                    ...state.entries,
+                    [action.transaction.id]: action.transaction
+                }
             }
+            return newState;
+            // return {
+            //     ...state,
+            //     entries: action.transaction
+            // }
         default:
             return state
     }

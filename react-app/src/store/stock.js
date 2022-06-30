@@ -45,7 +45,7 @@ export const getOwnedWeeklyPrices = (userId) => async (dispatch) => {
 
 export const getOneStock = (ticker) => async (dispatch) => {
     const response = await fetch(`/api/stocks/${ticker}`)
-
+    // console.log()
     const stock = await response.json()
     dispatch(loadOneStock(stock))
 }

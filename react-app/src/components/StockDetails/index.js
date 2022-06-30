@@ -40,6 +40,12 @@ const StockDetails = () => {
     const { ticker } = useParams()
     // console.log(ticker.toUpperCase())
     const stock = useSelector(state => state?.stock?.entries[ticker.toUpperCase()])
+    console.log('STOCKKK', stock)
+    const companyId = stock?.id;
+    console.log(companyId)
+    // console.log('stockk.prices', stock.prices)
+    // console.log('pricessss', prices)
+    // console.log('stockkkk', prices[prices.length - 1])
     const news = useSelector(state => state?.news?.entries)
     // console.log(news)
     // console.log("THESE ARE THE VALUESSSSSS", displayNews)
@@ -51,8 +57,8 @@ const StockDetails = () => {
     const user = useSelector(state => state.session.user);
     const transaction = useSelector(state => state.transaction.entries)
     console.log('----stock transaction', transaction)
-    const closePrice = transaction.price?.toFixed(2);
-    console.log('---close price', closePrice)
+    // const closePrice = transaction.price?.toFixed(2);
+    // console.log('---close price', closePrice)
     // const userShares = transactions
     // const state = useSelector(state => console.log(state))
 
@@ -72,12 +78,21 @@ const StockDetails = () => {
     // console.log(min)
     // console.log(max)
     // getting stocks from backend
+
+    let stockPricesArr;
+    const prices = () => {
+        stockPricesArr = stock?.prices;
+        console.log('stock prices arr on stock details page', stockPricesArr)
+        console.log(stockPricesArr[stockPricesArr.length - 1])
+        return stockPricesArr[stockPricesArr.length - 1]
+    }
+
     useEffect(() => {
         if (stock === undefined) {
             dispatch(getOneStock(ticker))
             dispatch(getCompanyNews(ticker))
             dispatch(getAllTransactions())
-            dispatch(stockTransaction(transaction))
+            // dispatch(stockTransaction(transaction))
         }
     }, [dispatch, stock])
 
@@ -190,8 +205,10 @@ const StockDetails = () => {
                                     selectTab={setCurrentTab}
                                 /> */}
                                 <div className="tab-toggle-content">
-                                {/* {currentTab === 0 && <Buy user={user} price={price} />}
-                                {currentTab === 1 && <Sell user={user} price={closePrice} shares={userShares} />} */}
+                                {stock && <Buy user={user}
+                                companyId={companyId} ticker={ticker} price={prices()} />}
+                                {/* {currentTab === 0 && <Buy user={user} price={price} />} */}
+                                {/* {currentTab === 1 && <Sell user={user} price={closePrice} shares={userShares} />} */}
                                 </div>
                             </div>
                         </section>
