@@ -16,7 +16,7 @@ export const getCompanyNews = (ticker) => async (dispatch) => {
 
     if (response.ok) {
         const news = await response.json()
-        console.log(news)
+        // console.log(news)
         dispatch(loadCompanyNews(news))
     }
 }
@@ -29,7 +29,9 @@ const newsReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOAD_COMP_NEWS:
             // console.log(action.news)
-            newState = { ...state, entries: { ...state.entries } }
+            // console.log("This is the state from the newsREDUCER", state)
+            newState = { entries: {} }
+            // console.log("-----------THIS IS THE NEW STATE-------------------", newState)
             action.news.forEach(companyNews => newState.entries[companyNews.id] = companyNews)
             return newState
         default:

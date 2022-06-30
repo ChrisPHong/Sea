@@ -26,7 +26,7 @@ const SignUpForm = () => {
   };
 
   const updateFirstName = (e) => {
-    console.log(e.target.value)
+    // console.log(e.target.value)
     setFirstName(e.target.value);
   };
 

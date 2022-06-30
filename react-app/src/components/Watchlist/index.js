@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { getWatchlists } from '../../store/watchlist'
-import { deleteWatchList, editWatchlists } from '../../store/watchlist'
+import { deleteWatchList, getStocksWatchlists } from '../../store/watchlist'
 import EditWatchListForm from '../EditWatchListForm'
 import './Watchlist.css';
 
@@ -10,26 +10,19 @@ import './Watchlist.css';
 function WatchlistPage() {
     const dispatch = useDispatch();
     const watchlist = useSelector((state) => Object.values(state.watchlist));
+    const state = useSelector((state) => state);
     const watchlists = Object.values(watchlist[0])
-    const user = useSelector((state) => (state.session.user));
-    const [show, setShow] = useState(false)
+
+
+    const [show, setShow] = useState('hidden')
 
     useEffect(() => {
     }, [dispatch]);
 
     useEffect(() => {
-        dispatch(getWatchlists());
-    }, [dispatch])
-
-    const changeClass = (e) => {
-
-        if (show) {
-            setShow(false)
-        } else {
-            setShow(true)
-        }
-    }
-
+        dispatch(getWatchlists())
+        // dispatch(getStocksWatchlists(1));
+    }, [dispatch, show])
 
 
     return (
@@ -52,16 +45,41 @@ function WatchlistPage() {
                         ><img className='deletePicture' src={'https://www.iconpacks.net/icons/1/free-trash-icon-347-thumb.png'} /></button>
 
                         <button
-                            className={`editButton`}
-                            onClick={changeClass}
+                            className={`editButton ${watchlist.id}`}
+                            onClick={async (e) => {
+                                // Getting the specific edit form div
+                                let specificEditForm = document.getElementsByClassName(`editform-${watchlist.id}`)[0]
+                                // Checking to see if the current clicked is equal to the watchlistId
+
+                                if (parseInt(e.currentTarget.className.split(' ')[1]) === watchlist.id) {
+                                    if (specificEditForm.className === `editform-${watchlist.id} hidden`) {
+
+                                        return specificEditForm.className = `editform-${watchlist.id} show`
+
+
+
+                                    } else if (specificEditForm.className === `editform-${watchlist.id} show`) {
+                                        return specificEditForm.className = `editform-${watchlist.id} hidden`
+
+                                    }
+                                }
+                                else {
+                                    setShow('hidden')
+                                    specificEditForm.className = `editform-${watchlist.id} ${show}`
+                                    return
+                                }
+                            }
+                            }
                         >
-                            <img className='editingPicture' src={'https://cdn-icons-png.flaticon.com/512/61/61456.png'} />
+                            <img className={`editingPicture ${watchlist.id}`} src={'https://cdn-icons-png.flaticon.com/512/61/61456.png'} />
                         </button >
-                        {show ?
-                            <div >
-                                < EditWatchListForm watchlist={watchlist} />
-                            </div>
-                            : null}
+
+                        <div className={`editform-${watchlist.id} hidden`}>
+                            < EditWatchListForm watchlist={watchlist} />
+                        </div>
+
+
+
 
                     </div >
 
