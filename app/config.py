@@ -11,3 +11,4 @@ class Config:
     SQLALCHEMY_DATABASE_URI = os.environ.get(
         'DATABASE_URL').replace('postgres://', 'postgresql://')
     SQLALCHEMY_ECHO = True
+    FINNHUB_API_KEY = os.environ.get('FINNHUB_API_KEY')
