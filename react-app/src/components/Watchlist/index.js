@@ -19,8 +19,6 @@ function WatchlistPage() {
     const companies = Object.values(stocks)
 
 
-    console.log('<<<<<<<< copmanies >>>>>>>>>>>>>>', companies)
-
 
 
     const [show, setShow] = useState('hidden')

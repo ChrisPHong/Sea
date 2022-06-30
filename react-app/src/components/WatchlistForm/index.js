@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {postWatchlists} from '../../store/watchlist'
-
+import './WatchlistForm.css';
 
 function WatchlistForm() {
     const [name, setName] = useState('');
@@ -46,11 +46,11 @@ function WatchlistForm() {
         <form className="WatchlistForm" onSubmit={onSubmit}>
            {errors.length > 0 ?
            <>
-           <h2>Create Your Watchlist</h2>
+           <h2 className='WatchlistHeaderForm'>Create Your Watchlist</h2>
            <ul className='errorsArray'>{errors.map(error => {
                return (
                    <>
-               <li className='errorItem'
+               <li className='WatchlistFormErrorItem'
                key={error}>{error}</li>
                </>
                )
@@ -58,7 +58,7 @@ function WatchlistForm() {
             </ul>
            </>
            : null}
-                <div className='WatchlistForm'>
+                <div className='InputAndSubmitButton'>
             <div className='nameInput'>
                 <input type='text'
                     required
@@ -70,7 +70,7 @@ function WatchlistForm() {
             </div>
 
             <button
-                className='submitButton'
+                className='WatchlistSubmitButton'
                 type='submit'
                 disabled={errors.length > 0 ? true : false}
                 >Submit</button>
