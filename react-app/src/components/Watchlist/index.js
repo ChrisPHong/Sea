@@ -85,10 +85,12 @@ function WatchlistPage() {
                             <div className='company'>
                                 {watchlist.watchComps.map((company)=>{
                                     return (
-                                        <div>
-                                        <NavLink to={`/${company.ticker}`}>
+                                        <div className={`company-${company.id}`}>
+                                        <NavLink to={`/stocks/${company.ticker}`}>
                                         {company.ticker}
                                         </NavLink>
+                                        <h5>- Stocks Graph Goes Here</h5>
+                                        <h5>- Company Stock Price Goes Here</h5>
                                         </div>
                                     )
                                 })}

@@ -21,7 +21,6 @@ def validation_errors_to_error_messages(validation_errors):
 @login_required
 def get__all_watchlists():
     watchlists = Watchlist.query.filter(Watchlist.user_id == current_user.get_id()).all()
-    print('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>',[watchlist.to_dict() for watchlist in watchlists])
     return jsonify([watchlist.to_dict() for watchlist in watchlists])
 
 
