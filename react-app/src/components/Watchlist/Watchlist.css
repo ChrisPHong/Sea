@@ -1,10 +1,10 @@
-.hidden{
+.hidden {
     display: none;
 }
 
 
 
-.watchlists{
+.watchlists {
     justify-content: center;
     align-items: center;
     margin: 10px;
@@ -13,17 +13,14 @@
     border-radius: 10px 10px;
     padding: 40px;
 }
-.deleteButton{
-    border: solid black 1px;
-    border-radius: 5px 5px;
+
+.deleteButton {
     padding: 5px 14px;
     background-color: transparent;
     transition-duration: 1.2s;
 }
 
-.deleteButton:hover{
-    border: solid black 1px;
-    border-radius: 5px 5px;
+.deleteButton:hover {
     padding: 5px 14px;
     box-shadow: 0px 0px 5px rgb(92, 91, 91);
 
@@ -31,27 +28,24 @@
 
 }
 
-.editButton{
-    border: solid black 1px;
-    border-radius: 5px 5px;
+.editButton {
     padding: 5px 14px;
     background-color: transparent;
     transition-duration: 1s;
 
 }
-.editButton:hover{
-    border: solid black 1px;
-    border-radius: 5px 5px;
+
+.editButton:hover {
     padding: 5px 14px;
     box-shadow: 0px 0px 5px rgb(92, 91, 91);
     /* background-color: #0b7cee; */
 
 }
 
-.editingPicture{
+.editingPicture {
     width: 15px;
 }
 
-.deletePicture{
+.deletePicture {
     width: 15px;
 }
