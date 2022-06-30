@@ -1,0 +1,20 @@
+.WatchlistFormDiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+}
+.WatchlistForm{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: blue;
+}
+
+.errorsArray{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: blue;
+}

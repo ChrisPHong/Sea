@@ -41,13 +41,15 @@ function WatchlistForm() {
     },[onSubmit])
 
     return (
+        <div className="WatchlistFormDiv">
+
         <form className="WatchlistForm" onSubmit={onSubmit}>
            {errors.length > 0 ?
            <>
            <h2>Create Your Watchlist</h2>
            <ul className='errorsArray'>{errors.map(error => {
                return (
-               <>
+                   <>
                <li className='errorItem'
                key={error}>{error}</li>
                </>
@@ -56,6 +58,7 @@ function WatchlistForm() {
             </ul>
            </>
            : null}
+                <div className='WatchlistForm'>
             <div className='nameInput'>
                 <input type='text'
                     required
@@ -63,14 +66,17 @@ function WatchlistForm() {
                     placeholder='Watchlist Name'
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                />
+                    />
             </div>
+
             <button
                 className='submitButton'
                 type='submit'
                 disabled={errors.length > 0 ? true : false}
-            >Submit</button>
+                >Submit</button>
+                </div>
         </form>
+                </div>
     )
 }
 
