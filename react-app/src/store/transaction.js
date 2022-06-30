@@ -1,38 +1,88 @@
-// const LOAD_TRANSACTIONS = 'transaction/loadTransactions'
+const LOAD_TRANSACTIONS = 'transaction/loadTransactions';
+const BUY_STOCK = 'transactions/BUY_STOCK';
+// const SELL_STOCK = 'transactions/SELL_STOCK';
 
-// export const loadTransactions = (transactions) => {
-//     return {
-//         type: LOAD_TRANSACTIONS,
-//         transactions
-//     }
-// }
+// get all transactions
+export const loadTransactions = (transactions) => {
+    return {
+        type: LOAD_TRANSACTIONS,
+        transactions
+    }
+}
 
-// export const getTransactions = (userId) => async (dispatch) => {
-//     const response = await fetch('/api/transactions/', {
-//         method: 'POST',
-//         headers: {'Content-Type': 'application/json'},
-//         body: JSON.stringify({userId})
-//     })
+// post
+export const buyStock = (transaction) => ({
+    type: BUY_STOCK,
+    transaction
+})
 
-//     if (response.ok) {
-//         const transactions = await response.json()
-//         dispatch(loadTransactions(transactions))
-//     }
-// }
+// // delete
+// export const sellStock = (transaction) => ({
+//     type: SELL_STOCK,
+//     payload: transaction
+// })
 
-// const initialState = { entries: {}, isLoading: true }
+// thunk - get all transactions
+export const getAllTransactions = () => async (dispatch) => {
+    const response = await fetch('/api/transactions/')
 
-// const transactionReducer = ( state = initialState, action ) => {
-//     let newState
-//     switch (action.type) {
-//         case LOAD_TRANSACTIONS:
-//             newState = { ...state, entries: {...state.entries} }
-//             action.transactions.forEach(transaction => {newState.entries[transaction.id] = transaction})
-//             return newState
+    const transactions = await response.json()
+    console.log('THUNKKK----', transactions)
+    dispatch(loadTransactions(transactions))
+}
 
-//         default:
-//             return state
-//     }
-// }
+export const getTransactions = (userId) => async (dispatch) => {
+    const response = await fetch('/api/transactions/', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({userId})
+    })
 
-// export default transactionReducer
+    if (response.ok) {
+        console.log('RESPONSEEEEEEEE', response)
+        const transactions = await response.json()
+        console.log('storeeeeeee', transactions)
+        dispatch(loadTransactions(transactions))
+    }
+}
+
+// thunk - buy/sell stock ??
+export const stockTransaction = (data) => async (dispatch) => {
+    const res = await fetch(`/api/transactions/update`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+    })
+
+    if (res.ok) {
+        const transactionInfo = await res.json()
+        dispatch(buyStock(transactionInfo))
+    }
+}
+
+
+const initialState = { entries: {}, isLoading: true }
+
+const transactionReducer = ( state = initialState, action ) => {
+    let newState;
+    switch (action.type) {
+        case LOAD_TRANSACTIONS:
+            console.log('ACTION-----', action.transactions)
+            // return {
+            //     ...state,
+            //     entries: action.transactions
+            // }
+            newState = { ...state, entries: {...state.entries} }
+            action.transactions.forEach(transaction => {newState.entries[transaction.id] = transaction})
+            return newState
+        case BUY_STOCK:
+            return {
+                ...state,
+                entries: action.transaction
+            }
+        default:
+            return state
+    }
+}
+
+export default transactionReducer
