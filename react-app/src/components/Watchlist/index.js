@@ -22,7 +22,7 @@ function WatchlistPage() {
     useEffect(() => {
         dispatch(getWatchlists())
         // dispatch(getStocksWatchlists(1));
-    }, [dispatch])
+    }, [dispatch, show])
 
 
     return (
@@ -48,27 +48,25 @@ function WatchlistPage() {
                             className={`editButton ${watchlist.id}`}
                             onClick={async (e) => {
                                 // Getting the specific edit form div
-                                let gottems = document.getElementsByClassName(`editform-${watchlist.id}`)[0]
-                                    // Checking to see if the current clicked is equal to the watchlistId
-                                if (parseInt(e.currentTarget.className.split(' ')[1]) === watchlist.id) {
-                                    console.log('here in the click -=----------------')
-                                    if (gottems?.className === `editform-${watchlist.id} hidden`) {
-                                        console.log('within the second if <<<<<<<<<<<<<<<<<<')
-                                         setShow('show')
-                                       gottems.className = `editform-${watchlist.id} ${show}`
-                                        console.log(gottems.className, '<<<<<<<<<<<<<<<<<<')
+                                let specificEditForm = document.getElementsByClassName(`editform-${watchlist.id}`)[0]
+                                // Checking to see if the current clicked is equal to the watchlistId
 
-                                    } else if(gottems?.className === `editform-${watchlist.id} show`){
-                                        setShow('hidden')
-                                       return gottems.className = `editform-${watchlist.id} ${show}`
+                                if (parseInt(e.currentTarget.className.split(' ')[1]) === watchlist.id) {
+                                    if (specificEditForm.className === `editform-${watchlist.id} hidden`) {
+
+                                        return specificEditForm.className = `editform-${watchlist.id} show`
+
+
+
+                                    } else if (specificEditForm.className === `editform-${watchlist.id} show`) {
+                                        return specificEditForm.className = `editform-${watchlist.id} hidden`
 
                                     }
-
                                 }
                                 else {
-                                     console.log('<<<<<<<<NOT IN THE IFF >>>>>>>> ')
                                     setShow('hidden')
-                                    gottems.className = `editform-${watchlist.id} ${show}`
+                                    specificEditForm.className = `editform-${watchlist.id} ${show}`
+                                    return
                                 }
                             }
                             }

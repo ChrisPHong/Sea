@@ -2,10 +2,7 @@
     display: none;
 }
 
-.show{
-    display: inline;
-    background-color: blue;
-}
+
 
 .watchlists{
     justify-content: center;
