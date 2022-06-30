@@ -18,7 +18,7 @@ def make_stock_price(base, progression):
     # Base price
     val = base
 
-    for day in range(7):
+    for day in range(365):
 
         stock_value = (val + (choice(progression))*random())
 
@@ -56,7 +56,7 @@ def make_portfolio():
     owned_companies = Company.query.filter(Company.id == Transaction.company_id, Transaction.user_id == int(user_id), Transaction.type == "buy").all()
 
     summed_prices_data = []
-    summed_price = [0] * 7 # [0 , 0 ,,0 , 0 ,0 ,0 ,0 ]
+    summed_price = [0] * 365 # [0 , 0 ,,0 , 0 ,0 ,0 ,0 ]
     today_date = datetime.today()
 
     # For every company that the user owns,
