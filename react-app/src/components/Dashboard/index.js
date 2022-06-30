@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getOwnedWeeklyPrices, getStocks } from '../../store/stock';
 import { getTransactions, getAllTransactions } from '../../store/transaction';
+import { getGeneralNews } from '../../store/news';
 import WatchlistPage from '../Watchlist'
 import WatchlistForm from '../WatchlistForm';
+import MarketNews from '../MarketNews';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine } from 'recharts';
 import './Dashboard.css'
 
@@ -12,12 +14,15 @@ const Dashboard = () => {
     const transactions = useSelector(state => state?.transaction?.entries)
     const stocks = useSelector(state => state?.stock?.entries)
     const currentUser = useSelector(state => state?.session?.user);
+    const news = useSelector(state => state?.news?.entries)
     const transArr = Object.values(transactions)
     const companies = Object.values(stocks)
+    const newsArr = Object.values(news)
     const data = []
 
     useEffect(() => {
         // dispatch(getTransactions(currentUser?.id))
+        dispatch(getGeneralNews())
         dispatch(getAllTransactions())
         dispatch(getOwnedWeeklyPrices(currentUser?.id))
     }, [dispatch])
@@ -261,14 +266,15 @@ const Dashboard = () => {
 
                     {/* -------------------- NEWS -------------------- */}
                     <div className='news-ctn'>
-                        News Container Here
+
+                        <MarketNews news={newsArr} />
                     </div>
                 </div>
                 <div id='right'>
                     {/* -------------------- WATCHLIST -------------------- */}
-                    <div className='watchlist-ctn'>
-                        <WatchlistPage />
+                    <div className='watchlist-form'>
                         <WatchlistForm />
+                        <WatchlistPage />
                     </div>
                 </div>
             </div>
