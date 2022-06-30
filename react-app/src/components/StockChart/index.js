@@ -8,68 +8,12 @@ const StockChart = ({totalFunds, currentUser, transArr, companies, buyingTotal})
     const [timeframe, setTimeframe] = useState(90)
     const [newData, setNewData] = useState(data)
 
-    useEffect(() => {
-        getDatesAndPrices(timeframe)
-    }, [timeframe])
-
-    const getPurchasedShares = (companyId) => {
-        for (let i = 0; i < transArr?.length; i++) {
-            let transaction = transArr[i];
-            if (transaction?.type === 'buy' && companyId === transaction?.companyId) {
-                return transaction.shares
-            }
-        }
-    }
-
-    const getDatesAndPrices = (inc) => {
-        let totalPrices = [
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-        ]
-
-        // Add up all the stock prices under each column
-        for (let i = 0; i < companies.length; i++) {
-            // let prices = companies[i].prices
-            if (companies.length) {
-                for (let j = 0; j < companies[i]?.prices?.length; j++) {
-                    totalPrices[j] += (companies[i]?.prices[j] * getPurchasedShares(companies[i]?.id))
-                }
-
-            }
-        }
-
-        const date = new Date().getTime()
-        const dateCopy = new Date(date)
-
-        // Based on the number to increment by,
-        // new dates will be created and will be added to data array along with the matching price
-        for (let i = inc - 1; i >= 0; i--) {
-            let newDate = dateCopy.setDate(dateCopy.getDate() - 1)
-            if (totalPrices) {
-                // Add to front of data array so that the most recent date and
-                // price will be at the end and previous dates/price near the beginning
-                data.unshift({
-                    'date': new Date(newDate).toLocaleDateString('en-US', {month: 'long', day: 'numeric'}),
-                    'price': totalPrices[i]
-                })
-            }
-        }
-        setNewData(data)
-    }
-
     const [currPrice, setCurrPrice] = useState(newData[newData.length - 1])
 
     const createData = (time) => {
         if (time === '3m') {
             setTimeframe(90)
-            getDatesAndPrices(timeframe)
+            // getDatesAndPrices(timeframe)
             console.log('data for 3 months', newData)
         } else if (time === '1w') {
             setTimeframe(7)
@@ -106,17 +50,18 @@ const StockChart = ({totalFunds, currentUser, transArr, companies, buyingTotal})
             <div className='balance-info'>
                 <div className='balance-label'>Balance</div>
                 <div className='balance-amt'>
-                    {currPrice !== '0.00' ? `$${currPrice}` : data[data.length - 1]?.price?.toFixed(2)}
+                    {/* {currPrice !== '0.00' ? `$${currPrice}` : data[data.length - 1]?.price?.toFixed(2)} */}
                 </div>
                 <div className='balance-percent'>
-                    {(buyingTotal() > totalFunds()) ?
+                    {/* {(buyingTotal() > totalFunds()) ? */}
                     <div className='all-time-diff' style={{color: 'green'}}>
-                        +${Math.abs((buyingTotal() - totalFunds())).toFixed(2)}
+                        {/* +${Math.abs((buyingTotal() - totalFunds())).toFixed(2)} */}
                     </div>
                     :
                     <div className='all-time-diff' style={{color: 'red'}}>
-                        -${Math.abs((buyingTotal() - totalFunds())).toFixed(2)}
-                    </div>}
+                        {/* -${Math.abs((buyingTotal() - totalFunds())).toFixed(2)} */}
+                    </div>
+                    {/* } */}
                     <div className='all-time'>All time</div>
                 </div>
             </div>
@@ -130,7 +75,7 @@ const StockChart = ({totalFunds, currentUser, transArr, companies, buyingTotal})
                 >
                 <XAxis dataKey="date" />
                 <YAxis dataKey="price" domain={['dataMin', 'dataMax']} />
-                <ReferenceLine y={totalFunds()} stroke="gray" strokeDasharray="3 3" />
+                {/* <ReferenceLine y={totalFunds()} stroke="gray" strokeDasharray="3 3" /> */}
                 <Tooltip
                     cursor={false}
                     content={customTooltip}

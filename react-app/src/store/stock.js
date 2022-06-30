@@ -1,6 +1,7 @@
 const LOAD_STOCKS = 'stock/loadStocks'
 const LOAD_OWNED_WEEKLY_PRICES = 'stock/loadOwnedWeeklyPrices'
 const LOAD_ONE_STOCK = 'stock/loadOneStock'
+const LOAD_TESTS = 'stock/loadTests'
 
 export const loadStocks = (stocks) => {
     return {
@@ -20,6 +21,25 @@ export const loadOneStock = (stock) => {
     return {
         type: LOAD_ONE_STOCK,
         stock
+    }
+}
+
+export const loadTest = (func) => {
+    return {
+        type: LOAD_TESTS,
+        func
+    }
+}
+
+export const testFuncs = (payload) => async (dispatch) => {
+    const response = await fetch('/api/stocks/weekly', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(payload)
+    })
+    if (response.ok) {
+        const testFunc = await response.json()
+        dispatch(loadTest(testFunc))
     }
 }
 
@@ -57,6 +77,10 @@ const initialState = { entries: {}, isLoading: true }
 const stockReducer = ( state = initialState, action ) => {
     let newState
     switch (action.type) {
+        case LOAD_TESTS:
+            newState = { ...state, entries: {...state.entries} }
+            action.func.forEach(funct => newState.entries[funct.id] = funct)
+            return newState
         case LOAD_STOCKS:
             newState = { ...state, entries: {...state.entries} }
             action.stocks.forEach(stock => newState.entries[stock.id] = stock)
