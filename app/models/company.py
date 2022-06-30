@@ -70,5 +70,5 @@ class Company(db.Model):
             'headquarters': self.headquarters,
             'founded': self.founded,
             'basePrice': self.base_price,
-            'prices': make_stock_price(round(self.base_price, 2), 60, choice([ASCENDING, DESCENDING]))
+            'prices': make_stock_price(round(self.base_price, 2), 90, choice([ASCENDING, DESCENDING]))
         }

@@ -5,7 +5,7 @@ import { getTransactions } from '../../store/transaction';
 import WatchlistPage from '../Watchlist'
 import WatchlistForm from '../WatchlistForm';
 import StockChart from '../StockChart';
-import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine } from 'recharts';
+// import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine } from 'recharts';
 import './Dashboard.css'
 
 const Dashboard = () => {
@@ -15,11 +15,11 @@ const Dashboard = () => {
     const currentUser = useSelector(state => state?.session?.user);
     const transArr = Object.values(transactions)
     const companies = Object.values(stocks)
-    const data = []
 
     useEffect(() => {
         dispatch(getTransactions(currentUser?.id))
         dispatch(getOwnedWeeklyPrices(currentUser?.id))
+
     }, [dispatch])
 
     // // Prices update every 30 seconds
@@ -54,61 +54,6 @@ const Dashboard = () => {
         return total
     }
 
-
-    const getPurchasedShares = (companyId) => {
-        for (let i = 0; i < transArr.length; i++) {
-            let transaction = transArr[i];
-            if (transaction?.type === 'buy' && companyId === transaction?.companyId) {
-                return transaction.shares
-            }
-        }
-    }
-
-    const getDatesAndPrices = (inc) => {
-        const dataObj = {}
-        let totalPrices = [
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-        ]
-
-        // Add up all the stock prices under each column
-        for (let i = 0; i < companies.length; i++) {
-            // let prices = companies[i].prices
-            if (companies.length) {
-                for (let j = 0; j < companies[i]?.prices?.length; j++) {
-                    totalPrices[j] += (companies[i]?.prices[j] * getPurchasedShares(companies[i]?.id))
-                }
-
-            }
-        }
-
-        const date = new Date().getTime()
-        const dateCopy = new Date(date)
-
-        // console.log('what is this date', date.getDate())
-        // Based on the number to increment by,
-        // new dates will be created and will be added to data array along with the matching price
-        for (let i = inc - 1; i >= 0; i--) {
-            let newDate = dateCopy.setDate(dateCopy.getDate() - 1)
-            if (totalPrices) {
-                // Add to front of data array so that the most recent date and
-                // price will be at the end and previous dates/price near the beginning
-                data.unshift({
-                    'date': new Date(newDate).toLocaleDateString('en-US', {month: 'long', day: 'numeric'}),
-                    'price': totalPrices[i]
-                })
-            }
-        }
-        data.push(dataObj)
-    }
-    getDatesAndPrices(60)
-
-    const [currPrice, setCurrPrice] = useState(data[data.length - 2]?.price?.toFixed(2))
-
     // Find ticker from transaction that matches with the pool of companies in database
     const matchTicker = (companyId) => {
         for (let stock of companies) {
@@ -142,30 +87,12 @@ const Dashboard = () => {
         <div id='portfolio-ctn'>
             {/* -------------------- ASSETS GRAPH -------------------- */}
             <div className='portfolio-graph'>
-                <div className='balance-info'>
-                    <div className='balance-label'>Balance</div>
-                    <div className='balance-amt'>
-                        {currPrice !== '0.00' ? `$${currPrice}` : data[data.length - 2]?.price?.toFixed(2)}
-                    </div>
-                    <div className='balance-percent'>
-                        {(buyingTotal() > totalFunds()) ?
-                        <div className='all-time-diff' style={{color: 'green'}}>
-                            +${Math.abs((buyingTotal() - totalFunds())).toFixed(2)}
-                        </div>
-                        :
-                        <div className='all-time-diff' style={{color: 'red'}}>
-                            -${Math.abs((buyingTotal() - totalFunds())).toFixed(2)}
-                        </div>}
-                        <div className='all-time'>All time</div>
-                    </div>
-                </div>
-                {/* -------------------- LINE CHART HERE -------------------- */}
                 <StockChart
                     totalFunds={totalFunds}
                     currentUser={currentUser}
-                    setCurrPrice={setCurrPrice}
-                    data={data}
-                    getDatesAndPrices={getDatesAndPrices}
+                    companies={companies}
+                    transArr={transArr}
+                    buyingTotal={buyingTotal}
                 />
             </div>
             <div id='info'>

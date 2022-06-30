@@ -1,3 +1,22 @@
+.balance-info {
+    width: 800px;
+    height: 100px;
+}
+
+.balance-amt {
+    font-size: 26pt;
+    font-weight: 600;
+    padding: 5px 0;
+}
+
+.balance-percent {
+    display: flex;
+}
+
+.all-time {
+    padding-left: 5px;
+}
+
 .asset-chart {
     display: flex;
     align-items: center;
