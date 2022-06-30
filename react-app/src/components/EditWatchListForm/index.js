@@ -4,15 +4,15 @@ import { editWatchlists } from '../../store/watchlist'
 import {useHistory} from 'react-router-dom'
 import './EditWatchListForm.css'
 
-function EditWatchListForm(props, watchlist) {
+function EditWatchListForm(watchlist) {
 
-    console.log('<<<<<<<<<<<<<< THIS IS SHOW >>>>>>>>>>>', props)
-    console.log('<<<<<<<<<<<<<< THIS IS SHOW >>>>>>>>>>>', watchlist)
+    // console.log('<<<<<<<<<<<<<< THIS IS SHOW >>>>>>>>>>>', props)
+    // console.log('<<<<<<<<<<<<<< THIS IS SHOW >>>>>>>>>>>', watchlist)
     const history = useHistory()
-    const id = props.watchlist.id
-    const [name, setName] = useState(props.watchlist.name);
+    const id = watchlist.watchlist.id
+    const [name, setName] = useState(watchlist.watchlist.name);
     const [errors, setErrors] = useState([]);
-    const [show, setShow] = useState(props.props);
+    // const [show, setShow] = useState(props.props);
 
     const lists = useSelector((state) => Object.values(state.watchlist));
     const watchlists = Object.values(lists[0])
@@ -50,7 +50,6 @@ function EditWatchListForm(props, watchlist) {
 
 
     return (
-        show ?
         <form className={`WatchlistForm-${id}`} onSubmit={onSubmit}>
            {errors.length > 0 ?
            <>
@@ -80,7 +79,7 @@ function EditWatchListForm(props, watchlist) {
                 type='submit'
                 disabled={errors.length > 0 ? true : false}
             >Save Changes</button>
-        </form> : null
+        </form>
     )
 }
 

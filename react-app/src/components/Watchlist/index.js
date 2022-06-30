@@ -12,10 +12,9 @@ function WatchlistPage() {
     const watchlist = useSelector((state) => Object.values(state.watchlist));
     const state = useSelector((state) => state);
     const watchlists = Object.values(watchlist[0])
-    console.log('THIS IS STATE', state)
-    const [show, setShow] = useState(false)
 
-    // const [show, setShow] = useState('hidden')
+
+    const [show, setShow] = useState('hidden')
 
     useEffect(() => {
     }, [dispatch]);
@@ -24,8 +23,6 @@ function WatchlistPage() {
         dispatch(getWatchlists())
         // dispatch(getStocksWatchlists(1));
     }, [dispatch])
-
-
 
 
     return (
@@ -49,20 +46,40 @@ function WatchlistPage() {
 
                         <button
                             className={`editButton ${watchlist.id}`}
-                            onClick={(e) => {
-                                console.log('<<<<<<<< value >>>>>>>>>', e);
-                                console.log('<<<<<<<< value >>>>>>>>>', e.target.value)
-                                if(e.currentTarget.value){
-                                    setShow(true)
+                            onClick={async (e) => {
+                                // Getting the specific edit form div
+                                let gottems = document.getElementsByClassName(`editform-${watchlist.id}`)[0]
+                                    // Checking to see if the current clicked is equal to the watchlistId
+                                if (parseInt(e.currentTarget.className.split(' ')[1]) === watchlist.id) {
+                                    console.log('here in the click -=----------------')
+                                    if (gottems?.className === `editform-${watchlist.id} hidden`) {
+                                        console.log('within the second if <<<<<<<<<<<<<<<<<<')
+                                         setShow('show')
+                                       gottems.className = `editform-${watchlist.id} ${show}`
+                                        console.log(gottems.className, '<<<<<<<<<<<<<<<<<<')
+
+                                    } else if(gottems?.className === `editform-${watchlist.id} show`){
+                                        setShow('hidden')
+                                       return gottems.className = `editform-${watchlist.id} ${show}`
+
+                                    }
+
+                                }
+                                else {
+                                     console.log('<<<<<<<<NOT IN THE IFF >>>>>>>> ')
+                                    setShow('hidden')
+                                    gottems.className = `editform-${watchlist.id} ${show}`
                                 }
                             }
                             }
                         >
                             <img className={`editingPicture ${watchlist.id}`} src={'https://cdn-icons-png.flaticon.com/512/61/61456.png'} />
                         </button >
-                                <div className={`editform ${watchlist.id} `}>
-                                    < EditWatchListForm props={show} watchlist={watchlist} />
-                                </div>
+
+                        <div className={`editform-${watchlist.id} hidden`}>
+                            < EditWatchListForm watchlist={watchlist} />
+                        </div>
+
 
 
 
