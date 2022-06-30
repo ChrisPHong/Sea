@@ -97,12 +97,13 @@ const Dashboard = () => {
                     currentUser={currentUser}
                     priceData={priceData}
                     totalFunds={totalFunds}
+                    buyingTotal={buyingTotal}
                 />
             </div>
             <div id='info'>
                 <div id='left'>
                     {/* -------------------- OWNED STOCKS -------------------- */}
-                    {/* <div className='owned-assets'>
+                    <div className='owned-assets'>
                         {transArr.length ?
                             <table>
                                 <thead>
@@ -116,31 +117,31 @@ const Dashboard = () => {
                                 <tbody>
                                     {transArr.map(transaction => (
                                         transaction.type === 'buy' && transaction.userId === currentUser.id ?
-                                            <tr key={transaction.id}> */}
+                                            <tr key={transaction.id}>
                                                 {/* -------------------- COMPANY SECTION -------------------- */}
-                                                {/* <td className='owned-comp-name'>
+                                                <td className='owned-comp-name'>
                                                     <div className='company-name'>
                                                         {matchName(transaction.companyId)}
                                                     </div>
                                                     <div className='company-ticker'>
                                                         {matchTicker(transaction.companyId)}
                                                     </div>
-                                                </td> */}
+                                                </td>
                                                 {/* -------------------- BALANCE SECTION -------------------- */}
-                                                {/* <td className='owned-balance'>
+                                                <td className='owned-balance'>
                                                     <div className='owned-balance-price'>${(((transaction.price * transaction.shares) + transaction.shares * (closingPrice(transaction.companyId) - transaction.price)) * transaction.shares).toFixed(2)}</div>
                                                     <div className='owned-comp-shares'>{transaction.shares}</div>
-                                                </td> */}
+                                                </td>
                                                 {/* -------------------- PRICE SECTION -------------------- */}
-                                                {/* <td className='owned-comp-price'>
+                                                <td className='owned-comp-price'>
                                                     <div className='curr-comp-price'>${((transaction.price * transaction.shares) + transaction.shares * (closingPrice(transaction.companyId) - transaction.price)).toFixed(2)}</div>
                                                     {(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2) >= 0 ?
                                                         <div className='curr-comp-percent' style={{ color: 'green' }}>+{(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>
                                                         :
                                                         <div className='curr-comp-percent' style={{ color: 'red' }}>{(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>}
-                                                </td> */}
+                                                </td>
                                                 {/* -------------------- ALLOCATION SECTION -------------------- */}
-                                                {/* <td className='owned-allocations'>
+                                                <td className='owned-allocations'>
                                                     {(((closingPrice(transaction.companyId) * transaction.shares) / buyingTotal()) * 100).toFixed(2)}%</td>
                                             </tr> : ""
                                     ))}
@@ -148,7 +149,7 @@ const Dashboard = () => {
                             </table>
                             :
                             <p>You do not have any stocks!</p>}
-                    </div> */}
+                    </div>
 
                     {/* -------------------- NEWS -------------------- */}
                     <div className='news-ctn'>

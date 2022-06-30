@@ -4,7 +4,7 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine } from 'recharts'
 import { getPortfolio } from '../../store/portfolio';
 import './StockChart.css'
 
-const StockChart = ({currentUser, priceData, totalFunds}) => {
+const StockChart = ({currentUser, priceData, totalFunds, buyingTotal}) => {
     // const transArr = Object.values(transactions)
     const dispatch = useDispatch()
     const [newData, setNewData] = useState(priceData)
@@ -67,18 +67,18 @@ const StockChart = ({currentUser, priceData, totalFunds}) => {
             <div className='balance-info'>
                 <div className='balance-label'>Balance</div>
                 <div className='balance-amt'>
-                    {/* {currPrice !== '0.00' ? `$${currPrice}` : data[data.length - 1]?.price?.toFixed(2)} */}
+                    {currPrice !== '0.00' ? `$${currPrice}` : priceData[priceData.length - 1].toFixed(2)}
                 </div>
                 <div className='balance-percent'>
-                    {/* {(buyingTotal() > totalFunds()) ? */}
+                    {(buyingTotal() > totalFunds()) ?
                     <div className='all-time-diff' style={{color: 'green'}}>
-                        {/* +${Math.abs((buyingTotal() - totalFunds())).toFixed(2)} */}
+                        +${Math.abs((buyingTotal() - totalFunds())).toFixed(2)}
                     </div>
                     :
                     <div className='all-time-diff' style={{color: 'red'}}>
-                        {/* -${Math.abs((buyingTotal() - totalFunds())).toFixed(2)} */}
+                        -${Math.abs((buyingTotal() - totalFunds())).toFixed(2)}
                     </div>
-                    {/* } */}
+                    }
                     <div className='all-time'>All time</div>
                 </div>
             </div>
