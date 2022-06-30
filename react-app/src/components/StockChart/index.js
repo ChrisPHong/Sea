@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine } from 'recharts';
 import './StockChart.css'
 
@@ -7,6 +6,7 @@ const StockChart = ({totalFunds, currentUser, transArr, companies, buyingTotal})
     // const transArr = Object.values(transactions)
     const data = []
     const [timeframe, setTimeframe] = useState(7)
+    const [newData, setNewData] = useState(data)
     // useEffect(() => {
     //     if (e.target.value === '1w') {
     //         getDatesAndPrices(7)
@@ -18,7 +18,6 @@ const StockChart = ({totalFunds, currentUser, transArr, companies, buyingTotal})
     // }, [timeframe])
 
     useEffect(() => {
-        setTimeframe(7)
         getDatesAndPrices(timeframe)
     }, [timeframe])
 
@@ -32,7 +31,6 @@ const StockChart = ({totalFunds, currentUser, transArr, companies, buyingTotal})
     }
 
     const getDatesAndPrices = (inc) => {
-        const dataObj = {}
         let totalPrices = [
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -59,7 +57,6 @@ const StockChart = ({totalFunds, currentUser, transArr, companies, buyingTotal})
         const date = new Date().getTime()
         const dateCopy = new Date(date)
 
-        // console.log('what is this date', date.getDate())
         // Based on the number to increment by,
         // new dates will be created and will be added to data array along with the matching price
         for (let i = inc - 1; i >= 0; i--) {
@@ -73,11 +70,25 @@ const StockChart = ({totalFunds, currentUser, transArr, companies, buyingTotal})
                 })
             }
         }
-        data.push(dataObj)
-        return data
+        setNewData(data.slice(-inc))
     }
-    const [currPrice, setCurrPrice] = useState(data[data.length - 2]?.price?.toFixed(2))
+    const [currPrice, setCurrPrice] = useState(newData[newData.length - 1])
 
+    const createData = (time) => {
+        if (time === '1w') {
+            setTimeframe(7)
+            getDatesAndPrices(timeframe)
+            console.log('data for one week', newData)
+        } else if (time === '1m') {
+            setTimeframe(30)
+            getDatesAndPrices(timeframe)
+            console.log('data for 1 month', newData)
+        } else if (time === '3m') {
+            setTimeframe(90)
+            getDatesAndPrices(timeframe)
+            console.log('data for 3 months', newData)
+        }
+    }
 
     const lineMouseOver = (price) => {
         if (price) {
@@ -103,7 +114,7 @@ const StockChart = ({totalFunds, currentUser, transArr, companies, buyingTotal})
             <div className='balance-info'>
                 <div className='balance-label'>Balance</div>
                 <div className='balance-amt'>
-                    {currPrice !== '0.00' ? `$${currPrice}` : data[data.length - 2]?.price?.toFixed(2)}
+                    {currPrice !== '0.00' ? `$${currPrice}` : data[data.length - 1]?.price?.toFixed(2)}
                 </div>
                 <div className='balance-percent'>
                     {(buyingTotal() > totalFunds()) ?
@@ -122,10 +133,10 @@ const StockChart = ({totalFunds, currentUser, transArr, companies, buyingTotal})
                 <LineChart
                     width={950}
                     height={300}
-                    data={getDatesAndPrices(timeframe)}
+                    data={newData}
                     onMouseMove={(e) => lineMouseOver(e?.activePayload && e?.activePayload[0].payload.price)}
                 >
-                <XAxis dataKey="date"  />
+                <XAxis dataKey="date" />
                 <YAxis dataKey="price" domain={['dataMin', 'dataMax']} />
                 <ReferenceLine y={totalFunds()} stroke="gray" strokeDasharray="3 3" />
                 <Tooltip
@@ -148,30 +159,30 @@ const StockChart = ({totalFunds, currentUser, transArr, companies, buyingTotal})
                     Buying power: ${currentUser.balance}
                 </div>
                 <div className='asset-timeframe'>
-                    <span className='daily'>
+                    <span className='weekly'>
                         <button
                             value='1w'
-                            // onClick={setTimeframe(7)}
+                            onClick={e => createData(e.target.value)}
                             >
                             1W
                         </button>
                     </span>
-                    {/* <span className='weekly'>
+                    <span className='monthly'>
                         <button
                             value='1m'
-                            onClick={setTimeframe(30)}
+                            onClick={e => createData(e.target.value)}
                             >
                             1M
                         </button>
                     </span>
-                    <span className='monthly'>
+                    <span className='three-months'>
                         <button
                             value='3m'
-                            onClick={setTimeframe(90)}
+                            onClick={e => createData(e.target.value)}
                             >
                             3M
                         </button>
-                    </span> */}
+                    </span>
                 </div>
             </div>
         </>

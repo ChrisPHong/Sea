@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOwnedWeeklyPrices, getStocks } from '../../store/stock';
+import { getOwnedWeeklyPrices } from '../../store/stock';
 import { getTransactions } from '../../store/transaction';
 import WatchlistPage from '../Watchlist'
 import WatchlistForm from '../WatchlistForm';
