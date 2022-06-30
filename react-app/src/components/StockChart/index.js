@@ -5,17 +5,8 @@ import './StockChart.css'
 const StockChart = ({totalFunds, currentUser, transArr, companies, buyingTotal}) => {
     // const transArr = Object.values(transactions)
     const data = []
-    const [timeframe, setTimeframe] = useState(7)
+    const [timeframe, setTimeframe] = useState(90)
     const [newData, setNewData] = useState(data)
-    // useEffect(() => {
-    //     if (e.target.value === '1w') {
-    //         getDatesAndPrices(7)
-    //     } else if (e.target.value === '1m') {
-    //         getDatesAndPrices(30)
-    //     } else if (e.target.value === '3m') {
-    //         getDatesAndPrices(90)
-    //     }
-    // }, [timeframe])
 
     useEffect(() => {
         getDatesAndPrices(timeframe)
@@ -70,23 +61,24 @@ const StockChart = ({totalFunds, currentUser, transArr, companies, buyingTotal})
                 })
             }
         }
-        setNewData(data.slice(-inc))
+        setNewData(data)
     }
+
     const [currPrice, setCurrPrice] = useState(newData[newData.length - 1])
 
     const createData = (time) => {
-        if (time === '1w') {
-            setTimeframe(7)
-            getDatesAndPrices(timeframe)
-            console.log('data for one week', newData)
-        } else if (time === '1m') {
-            setTimeframe(30)
-            getDatesAndPrices(timeframe)
-            console.log('data for 1 month', newData)
-        } else if (time === '3m') {
+        if (time === '3m') {
             setTimeframe(90)
             getDatesAndPrices(timeframe)
             console.log('data for 3 months', newData)
+        } else if (time === '1w') {
+            setTimeframe(7)
+            setNewData(newData.slice(-timeframe))
+            console.log('data for one week', newData)
+        } else if (time === '1m') {
+            setTimeframe(30)
+            setNewData(newData.slice(-timeframe))
+            console.log('data for 1 month', newData)
         }
     }
 
