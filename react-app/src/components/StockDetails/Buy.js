@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {stockTransaction } from '../../store/transaction';
+import { stockTransaction } from '../../store/transaction';
 
 const Buy = ({ user, ticker, price }) => {
     const dispatch = useDispatch()
@@ -16,6 +16,10 @@ const Buy = ({ user, ticker, price }) => {
         setTransactionPrice((e.target.value * price).toFixed(2));
         //  price = market price per share
     }
+
+    useEffect(() => {
+        dispatch(stockTransaction(data))
+    })
 
     const buyStock = async (e) => {
         e.preventDefault();

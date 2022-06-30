@@ -60,6 +60,8 @@ export const stockTransaction = (data) => async (dispatch) => {
     }
 }
 
+// put / sell
+
 
 const initialState = { entries: {}, isLoading: true }
 
@@ -76,6 +78,7 @@ const transactionReducer = ( state = initialState, action ) => {
             action.transactions.forEach(transaction => {newState.entries[transaction.id] = transaction})
             return newState
         case BUY_STOCK:
+            console.log('BUY STOCK ACTION-----', action.transaction)
             return {
                 ...state,
                 entries: action.transaction
