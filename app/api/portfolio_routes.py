@@ -75,7 +75,8 @@ def make_portfolio():
             # Multiply the price by the amount of shares bought
             # ex: { 300, 99, 202 }
             priceData['price'] *= get_purchased_shares(company.id)
-
+            # Add price to corresponding index in summed_price list
             summed_price[i] += round(priceData['price'], 2)
+            # Append final date and price to summed_prices_data
             summed_prices_data.append({'date': priceData['date'], 'price': summed_price[i]})
     return jsonify(summed_prices_data)
