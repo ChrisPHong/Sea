@@ -1,34 +1,54 @@
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine } from 'recharts';
+import { getPortfolio } from '../../store/portfolio';
 import './StockChart.css'
 
 const StockChart = ({currentUser, priceData}) => {
     // const transArr = Object.values(transactions)
-    const [timeframe, setTimeframe] = useState(90)
+    const dispatch = useDispatch()
     const [newData, setNewData] = useState(priceData)
 
     const [currPrice, setCurrPrice] = useState(newData[newData?.length - 1])
 
+    // useEffect(() => {
+    //     // dispatch(getPortfolio(currentUser?.id))
+    // }, [dispatch])
+
+    useEffect(() => {
+        createData('1w')
+    }, [priceData?.length])
+
     const createData = (time) => {
         if (time === '1y') {
-            setTimeframe(priceData?.length)
+            setNewData(priceData)
             console.log('data for 1 year', newData)
-        } else if (time === '1w') {
-            setTimeframe(7)
-            setNewData(newData?.slice(-timeframe))
+            console.log('heres the length for pricedata', priceData.length)
+            return newData
+        }
+        if (time === '1w') {
+            setNewData(priceData?.slice(-7))
             console.log('data for one week', newData)
-        } else if (time === '1m') {
-            setTimeframe(30)
-            setNewData(newData?.slice(-timeframe))
+            console.log('heres the length for pricedata', priceData.length)
+            return newData
+        }
+        if (time === '1m') {
+            setNewData(priceData?.slice(-30))
             console.log('data for 1 month', newData)
-        } else if (time === '3m') {
-            setTimeframe(90)
-            setNewData(newData?.slice(-timeframe))
+            console.log('heres the length for pricedata', priceData.length)
+            return newData
+        }
+        if (time === '3m') {
+            setNewData(priceData?.slice(-90))
             console.log('data for 3 months', newData)
-        } else if (time === '6m') {
-            setTimeframe(Math.floor(priceData?.length / 2))
-            setNewData(newData?.slice(-timeframe))
+            console.log('heres the length for pricedata', priceData.length)
+            return newData
+        }
+        if (time === '6m') {
+            setNewData(priceData?.slice(-(Math.floor(priceData?.length / 2))))
             console.log('data for 6 months', newData)
+            console.log('heres the length for pricedata', priceData.length)
+            return newData
         }
     }
 
