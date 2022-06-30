@@ -274,8 +274,6 @@ const Dashboard = () => {
                     {/* -------------------- WATCHLIST -------------------- */}
                     <div className='watchlist-form'>
                         <WatchlistForm />
-                    </div>
-                    <div className='watchlist-ctn'>
                         <WatchlistPage />
                     </div>
                 </div>
