@@ -4,7 +4,7 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine } from 'recharts'
 import { getPortfolio } from '../../store/portfolio';
 import './StockChart.css'
 
-const StockChart = ({currentUser, priceData}) => {
+const StockChart = ({currentUser, priceData, totalFunds}) => {
     // const transArr = Object.values(transactions)
     const dispatch = useDispatch()
     const [newData, setNewData] = useState(priceData)
@@ -15,6 +15,7 @@ const StockChart = ({currentUser, priceData}) => {
     //     // dispatch(getPortfolio(currentUser?.id))
     // }, [dispatch])
 
+    // Once priceData is fetched, display the one week graph.
     useEffect(() => {
         createData('1w')
     }, [priceData?.length])
@@ -22,32 +23,22 @@ const StockChart = ({currentUser, priceData}) => {
     const createData = (time) => {
         if (time === '1y') {
             setNewData(priceData)
-            console.log('data for 1 year', newData)
-            console.log('heres the length for pricedata', priceData.length)
             return newData
         }
         if (time === '1w') {
             setNewData(priceData?.slice(-7))
-            console.log('data for one week', newData)
-            console.log('heres the length for pricedata', priceData.length)
             return newData
         }
         if (time === '1m') {
             setNewData(priceData?.slice(-30))
-            console.log('data for 1 month', newData)
-            console.log('heres the length for pricedata', priceData.length)
             return newData
         }
         if (time === '3m') {
             setNewData(priceData?.slice(-90))
-            console.log('data for 3 months', newData)
-            console.log('heres the length for pricedata', priceData.length)
             return newData
         }
         if (time === '6m') {
             setNewData(priceData?.slice(-(Math.floor(priceData?.length / 2))))
-            console.log('data for 6 months', newData)
-            console.log('heres the length for pricedata', priceData.length)
             return newData
         }
     }
@@ -99,9 +90,10 @@ const StockChart = ({currentUser, priceData}) => {
                     data={newData}
                     onMouseMove={(e) => lineMouseOver(e?.activePayload && e?.activePayload[0].payload.price)}
                 >
-                <XAxis dataKey="date" />
-                <YAxis dataKey="price" domain={['dataMin', 'dataMax']} />
-                {/* <ReferenceLine y={totalFunds()} stroke="gray" strokeDasharray="3 3" /> */}
+                <XAxis dataKey="date" hide='true' />
+                {/* <YAxis dataKey="price" domain={['dataMin', 'dataMax']} hide='true' /> */}
+                <YAxis dataKey="price" domain={['dataMin', 'dataMax']} hide='true' />
+                <ReferenceLine y={totalFunds()} stroke="gray" strokeDasharray="3 3" />
                 <Tooltip
                     cursor={false}
                     content={customTooltip}

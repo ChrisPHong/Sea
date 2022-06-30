@@ -96,6 +96,7 @@ const Dashboard = () => {
                 <StockChart
                     currentUser={currentUser}
                     priceData={priceData}
+                    totalFunds={totalFunds}
                 />
             </div>
             <div id='info'>
