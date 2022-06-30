@@ -1,6 +1,7 @@
 from .db import db
 from .watchlist import watchlist_company_join
 from random import choice, random
+from datetime import datetime, timedelta
 
 # General upward trend
 ASCENDING = [1, 1, -1, 1, 1, -1]
@@ -11,7 +12,7 @@ DESCENDING = [-1, -1, 1, -1, -1, 1]
 # Base price, number of days, ascending/descending
 def make_stock_price(base, num, progression):
     stocks = []
-
+    today_date = datetime.now()
     # Base price
     val = base
 
@@ -20,8 +21,9 @@ def make_stock_price(base, num, progression):
         # Pick a positive/negative number in the ascending/descending list and multiply it by a number from 0 to 1 (random())
         # Then add to base price
         stock_value = val + (choice(progression))*random()
+        new_date = today_date + timedelta(days = 1)
         # Add stock_value to the stocks list with a float of 2
-        stocks.append(round(stock_value, 2))
+        stocks.append({'date': new_date.strftime("%b %d %Y %H:%M:%S"), 'price': round(stock_value, 2)})
         # Make the value the new stock_value price
         val = stock_value
     return stocks
