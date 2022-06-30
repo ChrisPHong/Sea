@@ -10,10 +10,16 @@ function WatchlistForm() {
     const dispatch = useDispatch();
 
     let userId = useSelector((state) => state.session?.user?.id)
+    const lists = useSelector((state) => Object.values(state.watchlist));
+    const watchlists = Object.values(lists[0])
+    const watchlistNames = watchlists.map((watchlist) => {
+        return watchlist.name
+    })
 
     useEffect(() => {
         const error = [];
         if (name.length < 1) error.push('You must put a name with at least 1 character')
+        if (watchlistNames.includes(name)) error.push('Provide a unique name')
         setErrors(error);
     }, [name])
 
