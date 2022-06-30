@@ -34,7 +34,7 @@ function WatchlistPage() {
             <h1>Watchlists</h1>
             {watchlists.map(watchlist => {
                 return (
-                    <div >
+                    <div>
                         <h4>
                             {watchlist.name}
                         </h4>
