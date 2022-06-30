@@ -2,27 +2,33 @@ import { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine } from 'recharts';
 import './StockChart.css'
 
-const StockChart = ({currentUser}) => {
+const StockChart = ({currentUser, priceData}) => {
     // const transArr = Object.values(transactions)
-    const data = []
     const [timeframe, setTimeframe] = useState(90)
-    const [newData, setNewData] = useState(data)
+    const [newData, setNewData] = useState(priceData)
 
-    const [currPrice, setCurrPrice] = useState(newData[newData.length - 1])
+    const [currPrice, setCurrPrice] = useState(newData[newData?.length - 1])
 
     const createData = (time) => {
-        if (time === '3m') {
-            setTimeframe(90)
-            // getDatesAndPrices(timeframe)
-            console.log('data for 3 months', newData)
+        if (time === '1y') {
+            setTimeframe(priceData?.length)
+            console.log('data for 1 year', newData)
         } else if (time === '1w') {
             setTimeframe(7)
-            setNewData(newData.slice(-timeframe))
+            setNewData(newData?.slice(-timeframe))
             console.log('data for one week', newData)
         } else if (time === '1m') {
             setTimeframe(30)
-            setNewData(newData.slice(-timeframe))
+            setNewData(newData?.slice(-timeframe))
             console.log('data for 1 month', newData)
+        } else if (time === '3m') {
+            setTimeframe(90)
+            setNewData(newData?.slice(-timeframe))
+            console.log('data for 3 months', newData)
+        } else if (time === '6m') {
+            setTimeframe(Math.floor(priceData?.length / 2))
+            setNewData(newData?.slice(-timeframe))
+            console.log('data for 6 months', newData)
         }
     }
 
@@ -118,6 +124,22 @@ const StockChart = ({currentUser}) => {
                             onClick={e => createData(e.target.value)}
                             >
                             3M
+                        </button>
+                    </span>
+                    <span className='six-months'>
+                        <button
+                            value='6m'
+                            onClick={e => createData(e.target.value)}
+                            >
+                            6M
+                        </button>
+                    </span>
+                    <span className='one-year'>
+                        <button
+                            value='1y'
+                            onClick={e => createData(e.target.value)}
+                            >
+                            1Y
                         </button>
                     </span>
                 </div>
