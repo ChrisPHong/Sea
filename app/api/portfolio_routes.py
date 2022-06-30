@@ -57,7 +57,7 @@ def make_portfolio():
 
     summed_prices_data = []
     summed_price = [0] * 365 # [0 , 0 ,,0 , 0 ,0 ,0 ,0 ]
-    today_date = datetime.today()
+    days_365 = datetime.today() - timedelta(days=365)
 
     # For every company that the user owns,
     for idx in range(len(owned_companies)):
@@ -80,8 +80,8 @@ def make_portfolio():
             summed_price[i] += round(priceData['price'], 2)
 
     for i in range(len(summed_price)):
-        new_date = today_date - timedelta(days = 1)
-        today_date = new_date
-        summed_prices_data.append({'date': today_date.strftime("%b %d %Y"), 'price': summed_price[i]})
+        new_date = days_365 + timedelta(days = 1)
+        days_365 = new_date
+        summed_prices_data.append({'date': days_365.strftime("%b %d %Y"), 'price': summed_price[i]})
 
     return jsonify(summed_prices_data)

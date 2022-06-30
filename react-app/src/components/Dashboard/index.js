@@ -18,6 +18,7 @@ const Dashboard = () => {
     const transArr = Object.values(transactions)
     const companies = Object.values(stocks)
     const priceData = Object.values(prices)
+    console.log(prices)
 
     useEffect(() => {
         // dispatch(getTransactions(currentUser?.id))
