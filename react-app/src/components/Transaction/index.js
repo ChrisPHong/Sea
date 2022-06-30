@@ -61,7 +61,7 @@ function TransactionPage () {
                                 if (transaction.userId === userId) {
                                     return (<tr key={transaction.id} className={(transaction?.type === "sell") ? 'sell' : 'buy'}>
                                         <td>{companiesObj && companiesObj[transaction.companyId].ticker}</td>
-                                        <td>{companiesObj && companiesObj[1].ticker}</td>
+                                        {/* <td>{companiesObj && companiesObj[1].ticker}</td> */}
                                         <td>{transaction?.price}</td>
                                         <td>{transaction?.shares}</td>
                                         <td>{transaction?.type}</td>
