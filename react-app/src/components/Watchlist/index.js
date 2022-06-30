@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
+import { NavLink } from 'react-router-dom';
 import { getWatchlists } from '../../store/watchlist'
 import { deleteWatchList, getStocksWatchlists } from '../../store/watchlist'
 import EditWatchListForm from '../EditWatchListForm'
@@ -13,6 +14,9 @@ function WatchlistPage() {
     const state = useSelector((state) => state);
     const watchlists = Object.values(watchlist[0])
 
+    console.log('ONE >>>>>>>>>>>>>>', watchlists)
+    console.log('MANY >>>>>>>>>>>>>>', watchlists[0])
+
 
     const [show, setShow] = useState('hidden')
 
@@ -21,7 +25,7 @@ function WatchlistPage() {
 
     useEffect(() => {
         dispatch(getWatchlists())
-        // dispatch(getStocksWatchlists(1));
+        // dispatch(getStocksWatchlists());
     }, [dispatch, show])
 
 
@@ -78,9 +82,18 @@ function WatchlistPage() {
                             < EditWatchListForm watchlist={watchlist} />
                         </div>
 
+                            <div className='company'>
+                                {watchlist.watchComps.map((company)=>{
+                                    return (
+                                        <div>
+                                        <NavLink to={`/${company.ticker}`}>
+                                        {company.ticker}
+                                        </NavLink>
+                                        </div>
+                                    )
+                                })}
 
-
-
+                            </div>
                     </div >
 
                 )
