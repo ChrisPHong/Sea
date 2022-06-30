@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine } from 'recharts';
 import './StockChart.css'
 
-const StockChart = ({totalFunds, currentUser, transArr, companies, buyingTotal}) => {
+const StockChart = ({currentUser}) => {
     // const transArr = Object.values(transactions)
     const data = []
     const [timeframe, setTimeframe] = useState(90)

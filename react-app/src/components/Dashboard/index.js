@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOwnedWeeklyPrices, getStocks, testFuncs } from '../../store/stock';
+import { getStocks, testFuncs } from '../../store/stock';
 import { getTransactions, getAllTransactions } from '../../store/transaction';
 import WatchlistPage from '../Watchlist'
 import WatchlistForm from '../WatchlistForm';
@@ -20,7 +20,6 @@ const Dashboard = () => {
     useEffect(() => {
         // dispatch(getTransactions(currentUser?.id))
         dispatch(getAllTransactions())
-        dispatch(getOwnedWeeklyPrices(currentUser?.id))
         dispatch(testFuncs({'base': 100, 'num': 10, progression: 'ASCENDING'}))
 
     }, [dispatch])
