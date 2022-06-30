@@ -1,5 +1,5 @@
 from app.models import Transaction, Company
-from flask import Blueprint
+from flask import Blueprint, jsonify
 from datetime import datetime, timedelta
 
 portfolio_routes = Blueprint('portfolio', __name__)
@@ -39,26 +39,43 @@ def get_purchased_shares(id):
 
 # def sum_owned_assets(time_period):
 #     owned_companies = Company.query.filter(Company.id == Transaction.company_id, Transaction.user_id == int(user_id), Transaction.type == "buy").all()
-#     summed_prices = []
+#     summed_prices_data = []
 #     for company in owned_companies:
 #         owned_company_prices = make_stock_price(company.base_price, time_period, choice([ASCENDING, DESCENDING]))
 #         for price in owned_company_prices:
 #             price['price'] *= get_purchased_shares(company.id)
-#         summed_prices.append(owned_company_prices)
-#     return summed_prices
+#         summed_prices_data.append(owned_company_prices)
+#     return summed_prices_data
 
 
 @portfolio_routes.route('/', methods=['POST'])
 def make_portfolio():
-    # base = request.json['base']
     timeframe = request.json['timeframe']
     user_id = request.json['userId']
-    # progression = request.json['ASCENDING']
+
+    # Get all companies that the user has bought
     owned_companies = Company.query.filter(Company.id == Transaction.company_id, Transaction.user_id == int(user_id), Transaction.type == "buy").all()
-    summed_prices = []
+
+    summed_prices_data = []
+
+    # For every company that the user owns,
     for company in owned_companies:
+        # Prices will be generated based on owned company's base price
         owned_company_prices = make_stock_price(company.base_price, timeframe, choice([ASCENDING, DESCENDING]))
-        for price in owned_company_prices:
-            price['price'] *= get_purchased_shares(company.id)
-        summed_prices.append(owned_company_prices)
-    return dict(summed_prices)
+        # ex: {
+            # 'date': Jun 30 2022 05:30:00, 'price': 100,
+            # 'date': Jun 29 2022 05:30:00, 'price': 99,
+            # 'date': Jun 28 2022 05:30:00, 'price': 101,
+            # }
+        summed_price = [0] * timeframe
+
+        # For every datePrice dictionary in owned_company_prices
+        for i in range(len(owned_company_prices)):
+            priceData = owned_company_prices[i]
+            # Multiply the price by the amount of shares bought
+            # ex: { 300, 99, 202 }
+            priceData['price'] *= get_purchased_shares(company.id)
+
+            summed_price[i] += round(priceData['price'], 2)
+            summed_prices_data.append({'date': priceData['date'], 'price': summed_price[i]})
+    return jsonify(summed_prices_data)

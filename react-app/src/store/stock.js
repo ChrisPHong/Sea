@@ -23,31 +23,11 @@ export const loadOneStock = (stock) => {
     }
 }
 
-export const loadTest = (func) => {
-    return {
-        type: LOAD_TESTS,
-        func
-    }
-}
-
 export const getStocks = () => async (dispatch) => {
     const response = await fetch('/api/stocks/')
 
     const stocks = await response.json()
     dispatch(loadStocks(stocks))
-}
-
-export const getOwnedWeeklyPrices = (userId) => async (dispatch) => {
-    const response = await fetch('/api/stocks/weekly', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({userId})
-    })
-
-    if (response.ok) {
-        const companies = await response.json()
-        dispatch(loadOwnedWeeklyPrices(companies))
-    }
 }
 
 export const getOneStock = (ticker) => async (dispatch) => {
