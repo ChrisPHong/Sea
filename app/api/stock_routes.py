@@ -8,7 +8,7 @@ stock_routes = Blueprint('stocks', __name__)
 def get_stocks(ticker):
     stock = Company.query.filter(Company.ticker == ticker.upper()).first()
     # print(stock, '<<<<<<<<<<<<<<<<< STOCK >>>>>>>>>>>>')
-    return jsonify(stock.to_dict_with_prices())
+    return jsonify(stock.to_dict())
 
 @stock_routes.route('/')
 def get_all_stocks():
@@ -16,12 +16,12 @@ def get_all_stocks():
     # print(companies, '<<<<<<<<<<<<<<<<< COMPANIES >>>>>>>>>>>>')
     return jsonify([company.to_dict() for company in companies])
 
-# Weekly prices for OWNED companies
-@stock_routes.route('/weekly', methods=['POST'])
-def get_owned_weekly_prices():
-    user_id = request.json['userId']
-    ownedCompanies = Company.query.filter(Company.id == Transaction.company_id, Transaction.user_id == int(user_id), Transaction.type == "buy").all()
-    return jsonify([comp.to_dict_with_prices() for comp in ownedCompanies])
+# # Weekly prices for OWNED companies
+# @stock_routes.route('/weekly', methods=['POST'])
+# def get_owned_weekly_prices():
+#     user_id = request.json['userId']
+#     ownedCompanies = Company.query.filter(Company.id == Transaction.company_id, Transaction.user_id == int(user_id), Transaction.type == "buy").all()
+#     return jsonify([comp.to_dict_with_prices() for comp in ownedCompanies])
 
 # # Weekly prices for ONE company
 # @stock_routes.route('/<ticker>/weekly')

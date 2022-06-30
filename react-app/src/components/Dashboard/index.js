@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getStocks, testFuncs } from '../../store/stock';
+import { getStocks } from '../../store/stock';
 import { getTransactions, getAllTransactions } from '../../store/transaction';
 import WatchlistPage from '../Watchlist'
 import WatchlistForm from '../WatchlistForm';
@@ -13,14 +13,12 @@ const Dashboard = () => {
     const transactions = useSelector(state => state?.transaction?.entries)
     const stocks = useSelector(state => state?.stock?.entries)
     const currentUser = useSelector(state => state?.session?.user);
-    const testFunction = useSelector(state => state?.func?.entries);
     const transArr = Object.values(transactions)
     const companies = Object.values(stocks)
 
     useEffect(() => {
         // dispatch(getTransactions(currentUser?.id))
         dispatch(getAllTransactions())
-        dispatch(testFuncs({'base': 100, 'num': 10, progression: 'ASCENDING'}))
 
     }, [dispatch])
 
