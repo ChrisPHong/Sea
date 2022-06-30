@@ -13,12 +13,26 @@ function WatchlistPage() {
     const watchlist = useSelector((state) => Object.values(state.watchlist));
     const state = useSelector((state) => state);
     const watchlists = Object.values(watchlist[0])
+    const transactions = useSelector(state => state?.transaction?.entries)
+    const transArr = Object.values(transactions)
+    const stocks = useSelector(state => state?.stock?.entries)
+    const companies = Object.values(stocks)
 
-    console.log('ONE >>>>>>>>>>>>>>', watchlists)
-    console.log('MANY >>>>>>>>>>>>>>', watchlists[0])
+
+    console.log('<<<<<<<< copmanies >>>>>>>>>>>>>>', companies)
+
 
 
     const [show, setShow] = useState('hidden')
+
+    const closingPrice = (companyId) => {
+        for (let stock of companies) {
+            if (stock.id === companyId && stock.prices) {
+                const priceArr = stock.prices
+                return priceArr[priceArr.length - 1]
+            }
+        }
+    }
 
     useEffect(() => {
     }, [dispatch]);
@@ -90,7 +104,7 @@ function WatchlistPage() {
                                         {company.ticker}
                                         </NavLink>
                                         <h5>- Stocks Graph Goes Here</h5>
-                                        <h5>- Company Stock Price Goes Here</h5>
+                                        <h5>{closingPrice(company.id)}</h5>
                                         </div>
                                     )
                                 })}

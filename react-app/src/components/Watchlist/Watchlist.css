@@ -15,6 +15,9 @@
 }
 
 .deleteButton {
+    border: none;
+    border-radius: 8px 8px;
+
     padding: 5px 14px;
     background-color: transparent;
     transition-duration: 1.2s;
@@ -29,6 +32,8 @@
 }
 
 .editButton {
+    border: none;
+    border-radius: 8px 8px;
     padding: 5px 14px;
     background-color: transparent;
     transition-duration: 1s;
@@ -48,4 +53,11 @@
 
 .deletePicture {
     width: 15px;
+}
+
+.company{
+    display: inline-block;
+    justify-content: center;
+    align-self: center;
+    flex-direction: column;
 }
