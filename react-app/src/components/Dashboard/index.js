@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOwnedWeeklyPrices } from '../../store/stock';
-import { getTransactions } from '../../store/transaction';
+import { getOwnedWeeklyPrices, getStocks } from '../../store/stock';
+import { getTransactions, getAllTransactions } from '../../store/transaction';
 import WatchlistPage from '../Watchlist'
 import WatchlistForm from '../WatchlistForm';
 import StockChart from '../StockChart';
@@ -17,7 +17,8 @@ const Dashboard = () => {
     const companies = Object.values(stocks)
 
     useEffect(() => {
-        dispatch(getTransactions(currentUser?.id))
+        // dispatch(getTransactions(currentUser?.id))
+        dispatch(getAllTransactions())
         dispatch(getOwnedWeeklyPrices(currentUser?.id))
 
     }, [dispatch])
@@ -100,49 +101,49 @@ const Dashboard = () => {
                     {/* -------------------- OWNED STOCKS -------------------- */}
                     <div className='owned-assets'>
                         {transArr.length ?
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th className='owned-comp-label'>Company</th>
-                                    <th className='owned-shares-label'>Balance</th>
-                                    <th className='owned-price-label'>Price</th>
-                                    <th className='owned-allocations-label'>Allocation</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {transArr.map(transaction => (
-                                    transaction.type === 'buy' && transaction.userId === currentUser.id ?
-                                    <tr key={transaction.id}>
-                                        {/* -------------------- COMPANY SECTION -------------------- */}
-                                        <td className='owned-comp-name'>
-                                            <div className='company-name'>
-                                                {matchName(transaction.companyId)}
-                                            </div>
-                                            <div className='company-ticker'>
-                                                {matchTicker(transaction.companyId)}
-                                            </div>
-                                        </td>
-                                        {/* -------------------- BALANCE SECTION -------------------- */}
-                                        <td className='owned-balance'>
-                                            <div className='owned-balance-price'>${(((transaction.price * transaction.shares) + transaction.shares * (closingPrice(transaction.companyId) - transaction.price)) * transaction.shares).toFixed(2)}</div>
-                                            <div className='owned-comp-shares'>{transaction.shares}</div>
-                                        </td>
-                                        {/* -------------------- PRICE SECTION -------------------- */}
-                                        <td className='owned-comp-price'>
-                                            <div className='curr-comp-price'>${((transaction.price * transaction.shares) + transaction.shares * (closingPrice(transaction.companyId) - transaction.price)).toFixed(2)}</div>
-                                            {(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2) >= 0 ?
-                                            <div className='curr-comp-percent' style={{color: 'green'}}>+{(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>
-                                            :
-                                            <div className='curr-comp-percent' style={{color: 'red'}}>{(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>}
-                                        </td>
-                                        {/* -------------------- ALLOCATION SECTION -------------------- */}
-                                        <td className='owned-allocations'>{(((closingPrice(transaction.companyId) * transaction.shares) / buyingTotal()) * 100).toFixed(2)}%</td>
-                                    </tr> : ""
-                                ))}
-                            </tbody>
-                        </table>
-                        :
-                        <p>You do not have any stocks!</p>}
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th className='owned-comp-label'>Company</th>
+                                        <th className='owned-shares-label'>Balance</th>
+                                        <th className='owned-price-label'>Price</th>
+                                        <th className='owned-allocations-label'>Allocation</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {transArr.map(transaction => (
+                                        transaction.type === 'buy' && transaction.userId === currentUser.id ?
+                                            <tr key={transaction.id}>
+                                                {/* -------------------- COMPANY SECTION -------------------- */}
+                                                <td className='owned-comp-name'>
+                                                    <div className='company-name'>
+                                                        {matchName(transaction.companyId)}
+                                                    </div>
+                                                    <div className='company-ticker'>
+                                                        {matchTicker(transaction.companyId)}
+                                                    </div>
+                                                </td>
+                                                {/* -------------------- BALANCE SECTION -------------------- */}
+                                                <td className='owned-balance'>
+                                                    <div className='owned-balance-price'>${(((transaction.price * transaction.shares) + transaction.shares * (closingPrice(transaction.companyId) - transaction.price)) * transaction.shares).toFixed(2)}</div>
+                                                    <div className='owned-comp-shares'>{transaction.shares}</div>
+                                                </td>
+                                                {/* -------------------- PRICE SECTION -------------------- */}
+                                                <td className='owned-comp-price'>
+                                                    <div className='curr-comp-price'>${((transaction.price * transaction.shares) + transaction.shares * (closingPrice(transaction.companyId) - transaction.price)).toFixed(2)}</div>
+                                                    {(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2) >= 0 ?
+                                                        <div className='curr-comp-percent' style={{ color: 'green' }}>+{(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>
+                                                        :
+                                                        <div className='curr-comp-percent' style={{ color: 'red' }}>{(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>}
+                                                </td>
+                                                {/* -------------------- ALLOCATION SECTION -------------------- */}
+                                                <td className='owned-allocations'>{(((closingPrice(transaction.companyId) * transaction.shares) / buyingTotal()) * 100).toFixed(2)}%</td>
+                                            </tr> : ""
+                                    ))}
+                                </tbody>
+                            </table>
+                            :
+                            <p>You do not have any stocks!</p>}
                     </div>
 
                     {/* -------------------- NEWS -------------------- */}
