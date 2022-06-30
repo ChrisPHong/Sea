@@ -31,6 +31,7 @@ function WatchlistForm() {
                 name,
             }
             dispatch(postWatchlists(payload))
+            setName('')
         }
 
     }
