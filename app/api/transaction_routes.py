@@ -35,14 +35,14 @@ def validation_errors_to_error_messages(validation_errors):
 @transaction_routes.route('/', methods=['POST'])
 def get_transactions_comp_tickers(companyId):
     companies = Company.query.filter(Company.id == companyId)
-    print('-----COMPANIES TRANSACTION', companies)
+    # print('-----COMPANIES TRANSACTION', companies)
     return jsonify([company.to_dict() for company in companies])
 
 # Return a list of previous transactions
 @transaction_routes.route('/')
 def get_all_transactions():
     allTransactions = Transaction.query.all()
-    print('-----GET ALL TRANSACTIONS---', allTransactions)
+    # print('-----GET ALL TRANSACTIONS---', allTransactions)
     return jsonify([transaction.to_dict() for transaction in allTransactions])
 
 # Users can buy or sell stocks

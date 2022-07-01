@@ -1,6 +1,7 @@
 const LOAD_STOCKS = 'stock/loadStocks'
 const LOAD_OWNED_WEEKLY_PRICES = 'stock/loadOwnedWeeklyPrices'
 const LOAD_ONE_STOCK = 'stock/loadOneStock'
+const LOAD_STOCK_PRICES = 'stock/loadStockPrices'
 
 export const loadStocks = (stocks) => {
     return {
@@ -23,24 +24,18 @@ export const loadOneStock = (stock) => {
     }
 }
 
+export const loadStockPrices = (prices) => {
+    return {
+        type: LOAD_STOCK_PRICES,
+        prices
+    }
+}
+
 export const getStocks = () => async (dispatch) => {
     const response = await fetch('/api/stocks/')
 
     const stocks = await response.json()
     dispatch(loadStocks(stocks))
-}
-
-export const getOwnedWeeklyPrices = (userId) => async (dispatch) => {
-    const response = await fetch('/api/stocks/weekly', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({userId})
-    })
-
-    if (response.ok) {
-        const companies = await response.json()
-        dispatch(loadOwnedWeeklyPrices(companies))
-    }
 }
 
 export const getOneStock = (ticker) => async (dispatch) => {
@@ -50,8 +45,21 @@ export const getOneStock = (ticker) => async (dispatch) => {
     dispatch(loadOneStock(stock))
 }
 
+export const getStockPrices = (ticker) => async (dispatch) => {
+    const response = await fetch(`/api/stocks/${ticker}/prices`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(ticker)
+    })
 
-const initialState = { entries: {}, isLoading: true }
+    if (response.ok) {
+        const prices = await response.json()
+        dispatch(loadStockPrices(prices))
+    }
+}
+
+
+const initialState = { entries: {}, prices: {}, isLoading: true }
 
 
 const stockReducer = ( state = initialState, action ) => {
@@ -68,6 +76,11 @@ const stockReducer = ( state = initialState, action ) => {
         case LOAD_ONE_STOCK:
             newState = {entries:{}}
             newState.entries[action.stock.ticker] = action.stock
+            return newState
+        case LOAD_STOCK_PRICES:
+            newState = { ...state, entries: {...state.entries}, prices: {...state.prices} }
+            console.log('in reducer printing out prices', newState)
+            action.prices.forEach((stockPrice, i) => newState.prices[i] = stockPrice)
             return newState
         default:
             return state

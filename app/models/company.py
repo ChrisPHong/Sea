@@ -1,30 +1,32 @@
 from .db import db
 from .watchlist import watchlist_company_join
 from random import choice, random
+from datetime import datetime, timedelta
 
-# General upward trend
-ASCENDING = [1, 1, -1, 1, 1, -1]
+# # General upward trend
+# ASCENDING = [1, 1, -1, 1, 1, -1]
 
-# General downward trend
-DESCENDING = [-1, -1, 1, -1, -1, 1]
+# # General downward trend
+# DESCENDING = [-1, -1, 1, -1, -1, 1]
 
-# Base price, number of days, ascending/descending
-def make_stock_price(base, num, progression):
-    stocks = []
+# # Base price, number of days, ascending/descending
+# def make_stock_price(base, num, progression):
+#     stocks = []
+#     today_date = datetime.now()
+#     # Base price
+#     val = base
 
-    # Base price
-    val = base
-
-    # For each stock in the number of days
-    for stock in range(num):
-        # Pick a positive/negative number in the ascending/descending list and multiply it by a number from 0 to 1 (random())
-        # Then add to base price
-        stock_value = val + (choice(progression))*random()
-        # Add stock_value to the stocks list with a float of 2
-        stocks.append(round(stock_value, 2))
-        # Make the value the new stock_value price
-        val = stock_value
-    return stocks
+#     # For each stock in the number of days
+#     for stock in range(num):
+#         # Pick a positive/negative number in the ascending/descending list and multiply it by a number from 0 to 1 (random())
+#         # Then add to base price
+#         stock_value = val + (choice(progression))*random()
+#         new_date = today_date + timedelta(days = 1)
+#         # Add stock_value to the stocks list with a float of 2
+#         stocks.append({'date': new_date.strftime("%b %d %Y %H:%M:%S"), 'price': round(stock_value, 2)})
+#         # Make the value the new stock_value price
+#         val = stock_value
+#     return stocks
 
 class Company(db.Model):
     __tablename__ = "companies"
@@ -59,16 +61,16 @@ class Company(db.Model):
             'basePrice': self.base_price
         }
 
-    def to_dict_with_prices(self):
-        return {
-            'id': self.id,
-            'name': self.name,
-            'ticker': self.ticker,
-            'description': self.description,
-            'ceo': self.ceo,
-            'employees': self.employees,
-            'headquarters': self.headquarters,
-            'founded': self.founded,
-            'basePrice': self.base_price,
-            'prices': make_stock_price(round(self.base_price, 2), 60, choice([ASCENDING, DESCENDING]))
-        }
+    # def to_dict_with_prices(self):
+    #     return {
+    #         'id': self.id,
+    #         'name': self.name,
+    #         'ticker': self.ticker,
+    #         'description': self.description,
+    #         'ceo': self.ceo,
+    #         'employees': self.employees,
+    #         'headquarters': self.headquarters,
+    #         'founded': self.founded,
+    #         'basePrice': self.base_price,
+    #         'prices': make_stock_price(round(self.base_price, 2), 90, choice([ASCENDING, DESCENDING]))
+    #     }

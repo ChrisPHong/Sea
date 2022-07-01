@@ -27,7 +27,7 @@ export const getAllTransactions = () => async (dispatch) => {
     const response = await fetch('/api/transactions/')
 
     const transactions = await response.json()
-    console.log('THUNKKK----', transactions)
+    // console.log('THUNKKK----', transactions)
     dispatch(loadTransactions(transactions))
 }
 
@@ -39,9 +39,9 @@ export const getTransactions = (userId) => async (dispatch) => {
     })
 
     if (response.ok) {
-        console.log('RESPONSEEEEEEEE', response)
+        // console.log('RESPONSEEEEEEEE', response)
         const transactions = await response.json()
-        console.log('storeeeeeee', transactions)
+        // console.log('storeeeeeee', transactions)
         dispatch(loadTransactions(transactions))
     }
 }
@@ -67,7 +67,7 @@ const transactionReducer = ( state = initialState, action ) => {
     let newState;
     switch (action.type) {
         case LOAD_TRANSACTIONS:
-            console.log('ACTION-----', action.transactions)
+            // console.log('ACTION-----', action.transactions)
             // return {
             //     ...state,
             //     entries: action.transactions

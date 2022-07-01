@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOwnedWeeklyPrices, getStocks } from '../../store/stock';
+import { getStockPrices, getStocks } from '../../store/stock';
 import { getTransactions, getAllTransactions } from '../../store/transaction';
-import { getGeneralNews } from '../../store/news';
+import { getPortfolio } from '../../store/portfolio';
 import WatchlistPage from '../Watchlist'
 import WatchlistForm from '../WatchlistForm';
+import StockChart from '../StockChart';
+import { getGeneralNews } from '../../store/news';
 import MarketNews from '../MarketNews';
-import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine } from 'recharts';
 import './Dashboard.css'
 
 const Dashboard = () => {
@@ -14,18 +15,23 @@ const Dashboard = () => {
     const transactions = useSelector(state => state?.transaction?.entries)
     const stocks = useSelector(state => state?.stock?.entries)
     const currentUser = useSelector(state => state?.session?.user);
+    const portfolioPrices = useSelector(state => state?.portfolio?.entries)
+    const portfolio = Object.values(portfolioPrices)
     const news = useSelector(state => state?.news?.entries)
     const transArr = Object.values(transactions)
     const companies = Object.values(stocks)
     const newsArr = Object.values(news)
-    const data = []
 
     useEffect(() => {
         // dispatch(getTransactions(currentUser?.id))
         dispatch(getGeneralNews())
         dispatch(getAllTransactions())
-        dispatch(getOwnedWeeklyPrices(currentUser?.id))
-    }, [dispatch])
+        dispatch(getPortfolio({userId: currentUser?.id}))
+        dispatch(getStocks())
+
+    }, [dispatch, currentUser])
+
+
 
     // // Prices update every 30 seconds
     // useEffect(() => {
@@ -57,72 +63,6 @@ const Dashboard = () => {
             // }
         }
         return total
-    }
-
-    const [currPrice, setCurrPrice] = useState(buyingTotal().toFixed(2))
-
-    const getPurchasedShares = (companyId) => {
-        for (let i = 0; i < transArr.length; i++) {
-            let transaction = transArr[i];
-            if (transaction?.type === 'buy' && companyId === transaction?.companyId) {
-                return transaction.shares
-            }
-        }
-    }
-
-    const getDatesAndPrices = (inc) => {
-        const dataObj = {}
-        let totalPrices = [
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-        ]
-
-        // Add up all the stock prices under each column
-        for (let i = 0; i < companies.length; i++) {
-            // let prices = companies[i].prices
-            if (companies.length) {
-                for (let j = 0; j < companies[i]?.prices?.length; j++) {
-                    totalPrices[j] += (companies[i]?.prices[j] * getPurchasedShares(companies[i]?.id))
-                }
-
-            }
-        }
-
-        const date = new Date().getTime()
-        const dateCopy = new Date(date)
-
-        // Based on the number to increment by,
-        // new dates will be created and will be added to data array along with the matching price
-        for (let i = inc; i >= 0; i--) {
-            let newDate = dateCopy.setDate(dateCopy.getDate() - 1)
-            if (totalPrices) {
-                // Add to front of data array so that the most recent date and
-                // price will be at the end and previous dates/price near the beginning
-                data.unshift({
-                    'date': new Date(newDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric' }),
-                    'price': totalPrices[i]
-                })
-            }
-        }
-        data.push(dataObj)
-    }
-    getDatesAndPrices(60)
-
-    // Customized tooltip to show price and date
-    const customTooltip = ({ active, payload, label }) => {
-        if (active && payload && payload.length) {
-            return (
-                <div className="custom-tooltip">
-                    <p className="tooltip-price">{`$${((payload[0].value)).toFixed(2)}`}</p>
-                    <p className="tooltip-date">{label}</p>
-                </div>
-            );
-        }
-        return null;
     }
 
     // Find ticker from transaction that matches with the pool of companies in database
@@ -158,61 +98,12 @@ const Dashboard = () => {
         <div id='portfolio-ctn'>
             {/* -------------------- ASSETS GRAPH -------------------- */}
             <div className='portfolio-graph'>
-                <div className='balance-info'>
-                    <div className='balance-label'>Balance</div>
-                    <div className='balance-amt'>
-                        ${buyingTotal().toFixed(2)}
-                    </div>
-                    <div className='balance-percent'>
-                        {(buyingTotal() > totalFunds()) ?
-                            <div className='all-time-diff' style={{ color: 'green' }}>
-                                +${Math.abs((buyingTotal() - totalFunds())).toFixed(2)}
-                            </div>
-                            :
-                            <div className='all-time-diff' style={{ color: 'red' }}>
-                                -${Math.abs((buyingTotal() - totalFunds())).toFixed(2)}
-                            </div>}
-                        <div className='all-time'>All time</div>
-                    </div>
-                </div>
-                {/* -------------------- LINE CHART HERE -------------------- */}
-                <div className='asset-chart'>
-                    <LineChart width={950} height={300} data={data}>
-                        <XAxis dataKey="date" hide="true" />
-                        <YAxis dataKey="price" domain={['dataMin', 'dataMax']} hide="true" />
-                        <ReferenceLine y={totalFunds()} stroke="gray" strokeDasharray="3 3" />
-                        <Tooltip
-                            cursor={false}
-                            content={customTooltip}
-                        />
-                        <Line
-                            type="linear"
-                            dataKey="price"
-                            stroke="#0b7cee"
-                            activeDot={{ r: 5 }}
-                            dot={false}
-                            animationDuration={500}
-                            strokeWidth={2}
-                        // onMouseOver={{setChartPrice}}
-                        />
-                    </LineChart>
-                </div>
-                <div className='asset-bottom'>
-                    <div className='buying-power'>
-                        Buying power: ${currentUser.balance}
-                    </div>
-                    <div className='asset-timeframe'>
-                        <div className='daily'>
-                            1D
-                        </div>
-                        <div className='weekly'>
-                            1W
-                        </div>
-                        <div className='monthly'>
-                            1M
-                        </div>
-                    </div>
-                </div>
+                <StockChart
+                    currentUser={currentUser}
+                    portfolio={portfolio}
+                    totalFunds={totalFunds}
+                    buyingTotal={buyingTotal}
+                />
             </div>
             <div id='info'>
                 <div id='left'>
@@ -255,7 +146,8 @@ const Dashboard = () => {
                                                         <div className='curr-comp-percent' style={{ color: 'red' }}>{(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>}
                                                 </td>
                                                 {/* -------------------- ALLOCATION SECTION -------------------- */}
-                                                <td className='owned-allocations'>{(((closingPrice(transaction.companyId) * transaction.shares) / buyingTotal()) * 100).toFixed(2)}%</td>
+                                                <td className='owned-allocations'>
+                                                    {(((closingPrice(transaction.companyId) * transaction.shares) / buyingTotal()) * 100).toFixed(2)}%</td>
                                             </tr> : ""
                                     ))}
                                 </tbody>

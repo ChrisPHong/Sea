@@ -12,7 +12,6 @@ const NavBar = () => {
   const currentUser = useSelector(state => state.session.user);
   const stock = useSelector(state => state?.stock?.entries)
 
-
   // useEffect(() => {
   //   dispatch(getStocks())
   // }, [dispatch])
