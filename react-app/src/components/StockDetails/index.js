@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getOneStock, getStockPrices } from '../../store/stock';
-import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
 import News from '../News'
 import { getCompanyNews } from '../../store/news';
 import './StockDetails.css'
@@ -48,29 +48,30 @@ const StockDetails = () => {
     }, [dispatch, stock])
 
     useEffect(() => {
+        setData(pricesData)
         createData('1w')
-    }, [pricesData?.length])
+    }, [pricesData?.length, prices, ticker])
 
     const createData = (time) => {
         if (time === '1y') {
             setData(pricesData)
-            return data
+            return pricesData
         }
         if (time === '1w') {
             setData(pricesData?.slice(-7))
-            return data
+            return pricesData
         }
         if (time === '1m') {
             setData(pricesData?.slice(-30))
-            return data
+            return pricesData
         }
         if (time === '3m') {
             setData(pricesData?.slice(-90))
-            return data
+            return pricesData
         }
         if (time === '6m') {
             setData(pricesData?.slice(-(Math.floor(pricesData?.length / 2))))
-            return data
+            return pricesData
         }
     }
 
@@ -97,28 +98,31 @@ const StockDetails = () => {
         <div id='stocks-detail-ctn'>
             {/* -------------------- LINE CHART HERE -------------------- */}
             <div className='asset-chart'>
-                <LineChart
-                    width={950}
-                    height={300}
-                    data={data}
-                    onMouseMove={(e) => lineMouseOver(e?.activePayload && e?.activePayload[0].payload.price)}
-                >
-                    <XAxis dataKey="date" hide='true' />
-                    <YAxis dataKey="price" domain={['dataMin', 'dataMax']} hide='true' />
-                    <Tooltip
-                        cursor={false}
-                        content={customTooltip}
-                    />
-                    <Line
-                        type="linear"
-                        dataKey="price"
-                        stroke="#0b7cee"
-                        activeDot={{ r: 5 }}
-                        dot={false}
-                        animationDuration={500}
-                        strokeWidth={2}
-                    />
-                </LineChart>
+                {prices &&
+                <>
+                    <LineChart
+                        width={950}
+                        height={300}
+                        data={data}
+                        onMouseMove={(e) => lineMouseOver(e?.activePayload && e?.activePayload[0].payload.price)}
+                    >
+                        <XAxis dataKey="date" hide='true' />
+                        <YAxis dataKey="price" domain={['dataMin', 'dataMax']} hide='true' />
+                        <Tooltip
+                            cursor={false}
+                            content={customTooltip}
+                        />
+                        <Line
+                            type="linear"
+                            dataKey="price"
+                            stroke="#0b7cee"
+                            activeDot={{ r: 5 }}
+                            dot={false}
+                            animationDuration={500}
+                            strokeWidth={2}
+                        />
+                    </LineChart>
+                </>}
             </div>
             <div className='stock-chart-bottom'>
                 <div className='stock-timeframe'>

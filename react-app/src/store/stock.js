@@ -1,5 +1,5 @@
 const LOAD_STOCKS = 'stock/loadStocks'
-const LOAD_OWNED_WEEKLY_PRICES = 'stock/loadOwnedWeeklyPrices'
+// const LOAD_OWNED_WEEKLY_PRICES = 'stock/loadOwnedWeeklyPrices'
 const LOAD_ONE_STOCK = 'stock/loadOneStock'
 const LOAD_STOCK_PRICES = 'stock/loadStockPrices'
 
@@ -10,12 +10,12 @@ export const loadStocks = (stocks) => {
     }
 }
 
-export const loadOwnedWeeklyPrices = (companies) => {
-    return {
-        type: LOAD_OWNED_WEEKLY_PRICES,
-        companies
-    }
-}
+// export const loadOwnedWeeklyPrices = (companies) => {
+//     return {
+//         type: LOAD_OWNED_WEEKLY_PRICES,
+//         companies
+//     }
+// }
 
 export const loadOneStock = (stock) => {
     return {
@@ -69,17 +69,17 @@ const stockReducer = (state = initialState, action) => {
             newState = { ...state, entries: { ...state.entries } }
             action.stocks.forEach(stock => newState.entries[stock.id] = stock)
             return newState
-        case LOAD_OWNED_WEEKLY_PRICES:
-            newState = { ...state, entries: { ...state.entries } }
-            action.companies.forEach(company => newState.entries[company.id] = company)
-            return newState
+        // case LOAD_OWNED_WEEKLY_PRICES:
+        //     newState = { ...state, entries: { ...state.entries } }
+        //     action.companies.forEach(company => newState.entries[company.id] = company)
+        //     return newState
         case LOAD_ONE_STOCK:
-            newState = { ...state, entries: { ...state.entries } }
+            newState = { ...state, entries: { }, prices: { ...state.prices } }
             newState.entries[action.stock.ticker] = action.stock
             console.log('in LOAD ONE STOCK REDUCER', action.stock)
             return newState
         case LOAD_STOCK_PRICES:
-            newState = { ...state, entries: { ...state.entries }, prices: { ...state.prices } }
+            newState = { ...state, entries: { ...state.entries }, prices: { } }
             console.log('in reducer printing out prices', newState)
             action.prices.forEach((stockPrice, i) => newState.prices[i] = stockPrice)
             newState.entries[action.stock] = action.stock

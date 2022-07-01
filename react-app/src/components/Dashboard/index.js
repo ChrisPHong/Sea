@@ -22,7 +22,7 @@ const Dashboard = () => {
     const companies = Object.values(stocks)
     const newsArr = Object.values(news)
     console.log("THIS IS THE STOCKSSSSSS", stocks)
-    console.log("THIS IS THE COMPANIESSSSSSSSSSSS", companies)
+    // console.log("THIS IS THE COMPANIESSSSSSSSSSSS", companies)
 
     useEffect(() => {
         // dispatch(getTransactions(currentUser?.id))
@@ -47,7 +47,7 @@ const Dashboard = () => {
     // Returns the last price (closing price) in the stock prices array that YOU OWN.
     const closingPrice = (companyId) => {
         for (let stock of companies) {
-            if (stock.id === companyId && stock.prices) {
+            if (stock?.id === companyId && stock.prices) {
                 const priceArr = stock.prices
                 return priceArr[priceArr.length - 1]
             }
@@ -71,7 +71,7 @@ const Dashboard = () => {
     // Find ticker from transaction that matches with the pool of companies in database
     const matchTicker = (companyId) => {
         for (let stock of companies) {
-            if (stock.id === companyId) {
+            if (stock.id === companyId && stock.prices) {
                 return stock.ticker
             }
         }
@@ -80,7 +80,7 @@ const Dashboard = () => {
     // Find name from transaction that matches with the pool of companies in database
     const matchName = (companyId) => {
         for (let stock of companies) {
-            if (stock.id === companyId) {
+            if (stock && stock.id === companyId && stock.prices) {
                 return stock.name
             }
         }
