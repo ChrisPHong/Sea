@@ -53,29 +53,31 @@ def get_all_transactions():
 def update_transactions():
     form = TransactionForm()
     form['csrf_token'].data = request.cookies['csrf_token']
+    todays_date = datetime.today()
 
     # jsonData = request.get_json()
     # data = jsonData['data']
-    print('price:', form.data['price'])
-    print('shares:', form.data['shares'])
-    print('type:', form.data['type'])
-    print('date:', form.data['date']) # None
+    print('price:', type(form.data['price']))
+    print('shares:', type(form.data['shares']))
+    print('type:', type(form.data['type']))
     # print(strftime(datetime.today()))
+    print('HERES THE NEW DAAAATEEEEEE', type(todays_date))
     #  strf
-    print('userId:', request.json['user_id'])
-    print('companyId:', form.data['company_id'])
+    print('userId:', type(form.data['user_id']))
+    print('companyId:', type(form.data['company_id']))
     print('Hi from backend------')
 
     # new_date = datetime.now()
     # form.data['date'] = new_date()
     if form.validate_on_submit():
+        print('ARE WE EVEN HITTING HEREEERERER?!?!?!?! ABOVE TRANSACTION')
         transaction = Transaction(
             price=form.data['price'],
             shares=form.data['shares'],
             type=form.data['type'],
-            date=datetime.today(),
+            date=todays_date.strftime('%Y-%m-%d'),
             # user_id=form.data['user_id'],
-            user_id=request.json['user_id'],
+            user_id=form.data['user_id'],
             company_id=form.data['company_id']
             # company_id=request.json['company_id']
         )

@@ -42,7 +42,7 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
         return result.toDateString()
     }
 
-    console.log('IS THIS OUR BRAND NEW DATE?!??!?!?!!', convertDate(priceData.date))
+    // console.log('IS THIS OUR BRAND NEW DATE?!??!?!?!!', convertDate(priceData.date))
 
     const buyStock = async (e) => {
         e.preventDefault();
@@ -55,13 +55,12 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
         // console.log('transaction price----', typeof(parseInt(sharesBought)))
         // console.log('transaction price----', typeof(companyId))
         // console.log('transaction price----', typeof('buy'))
-        console.log('THIS IS THE DATE WE ARE TRYING TO SEND OVER TO BACKEND', new Date(priceData.date))
+        console.log('THIS IS THE DATE WE ARE TRYING TO SEND OVER TO BACKEND', typeof priceData.date)
         let newTransaction = {
             user_id: user.id,
             shares: parseInt(sharesBought),
             price: Number(transactionPrice).toFixed(2),
             type: 'buy',
-            date: convertDate(priceData.date),
             company_id: companyId,
             // balance: Number(newBalance)
         }
