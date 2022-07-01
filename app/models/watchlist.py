@@ -22,18 +22,6 @@ class Watchlist(db.Model):
     # Many-to-Many relationship with Companies
     watch_comps = db.relationship('Company', secondary=watchlist_company_join, back_populates='comp_wl', cascade='all, delete')
 
-    def to_dict_company(self):
-        return {
-            'id': self.id,
-            'name': self.name,
-            'ticker': self.ticker,
-            'description': self.description,
-            'ceo': self.ceo,
-            'employees': self.employees,
-            'headquarters': self.headquarters,
-            'founded': self.founded,
-            'basePrice': self.base_price
-        }
 
     def to_dict(self):
         return {
@@ -42,12 +30,11 @@ class Watchlist(db.Model):
             'userId': self.user_id,
             'watchComps': [watch_comp.to_dict() for watch_comp in self.watch_comps]
         }
-        
     # testing
-    # def to_dict_stocks(self):
-    #     return {
-    #         'id': self.id,
-    #         'name': self.name,
-    #         'userId': self.user_id,
-    #         'watchComps': [watch_comp.to_dict() for watch_comp in self.watch_comps]
-    #     }
+    def to_dict_stocks(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'userId': self.user_id,
+            'watchComps': [watch_comp.to_dict_relationship() for watch_comp in self.watch_comps]
+        }

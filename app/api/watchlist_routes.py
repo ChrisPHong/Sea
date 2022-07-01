@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
 from app.forms import WatchlistForm
-from app.models import Watchlist, db
+from app.models import Watchlist, db, Company
 import json
 
 watchlist_routes = Blueprint('watchlists', __name__)
@@ -21,6 +21,7 @@ def validation_errors_to_error_messages(validation_errors):
 @login_required
 def get__all_watchlists():
     watchlists = Watchlist.query.filter(Watchlist.user_id == current_user.get_id()).all()
+    # print('<<<<<<<<<< watchlists >>>>>>>>>', [watchlist.to_dict() for watchlist in watchlists])
     return jsonify([watchlist.to_dict() for watchlist in watchlists])
 
 
@@ -71,9 +72,34 @@ def delete_watchlists(id):
 
     return watchlist.to_dict()
 
-# @watchlist_routes.route('/')
-# @login_required
-# def get__all_watchlists():
-#     watchlists = Watchlist.query.filter(Watchlist.user_id == current_user.get_id()).all()
-#     print(' <<<<<<<<< in the other route >>>>>>>>>>>', {[watchlist.to_dict() for watchlist in watchlists]})
-#     return {[watchlist.to_dict_stocks() for watchlist in watchlists]}
+@watchlist_routes.route('/<int:id>/add', methods=['POST'])
+@login_required
+def post_company_watchlists(id):
+    # payload = request.json['payload']
+    # print('----------- payload in backend ----------------', payload)
+    ticker = request.json['ticker']
+    # id = request.json['payload'].watchlistId
+    print('<<<<<<<<<<< ticker >>>>>>>', ticker)
+    print('<<<<<<<<<<< id >>>>>>>', id)
+
+
+    watchlist = Watchlist.query.filter(Watchlist.id == id).first()
+    stock = Company.query.filter(Company.ticker == ticker.upper()).first()
+
+    watchlist.watch_comps.append(stock)
+    print('<<<<<<<<<< watchlist >>>>>>>>>>>>>>', watchlist)
+    print('<<<<<<<<<< stock >>>>>>>>>>>>>>', stock)
+
+    # db.session.add(new_company_watchlist)
+    db.session.commit()
+    watchlists = Watchlist.query.filter(Watchlist.user_id == current_user.get_id()).all()
+    # print('<<<<<<<<<< watchlists >>>>>>>>>', [watchlist.to_dict() for watchlist in watchlists])
+    return jsonify([watchlist.to_dict() for watchlist in watchlists])
+    return "Added company to watchlist"
+
+    # Seed Data example
+    #     name="Tech",
+    #     user_id=1,
+    #     watch_comps = tech_companies
+
+    # return {'errors': validation_errors_to_error_messages(form.errors)}

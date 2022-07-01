@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { NavLink } from 'react-router-dom';
 import { getStockPrices } from '../../store/stock';
 import { getWatchlists } from '../../store/watchlist'
-import { deleteWatchList, getStocksWatchlists } from '../../store/watchlist'
+import { deleteWatchList, createStockWatchlists } from '../../store/watchlist'
 import { LineChart, Line, XAxis, YAxis } from 'recharts';
 import EditWatchListForm from '../EditWatchListForm'
 import './Watchlist.css';
@@ -12,8 +12,8 @@ import './Watchlist.css';
 
 function WatchlistPage() {
     const dispatch = useDispatch();
-    const watchlist = useSelector((state) => Object.values(state.watchlist));
     const state = useSelector((state) => state);
+    const watchlist = useSelector((state) => Object.values(state.watchlist));
     const watchlists = Object.values(watchlist[0])
     const transactions = useSelector(state => state?.transaction?.entries)
     const transArr = Object.values(transactions)
@@ -41,7 +41,7 @@ function WatchlistPage() {
 
     useEffect(() => {
         dispatch(getWatchlists())
-        // dispatch(getStocksWatchlists());
+
     }, [dispatch, show])
 
     // useEffect(() => {
@@ -105,6 +105,7 @@ function WatchlistPage() {
                                     <div className={`editform-${watchlist.id} hidden`}>
                                         < EditWatchListForm watchlist={watchlist} />
                                     </div>
+
                                 </div>
                             </div>
                             <div className='company'>

@@ -7,6 +7,8 @@ import { LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
 import News from '../News'
 import { getCompanyNews } from '../../store/news';
 import './StockDetails.css'
+import CompanyWatchlistForm from '../CompanyWatchlistForm';
+import { getWatchlists } from '../../store/watchlist'
 
 const StockDetails = () => {
     const dispatch = useDispatch()
@@ -18,6 +20,10 @@ const StockDetails = () => {
     const user = useSelector(state => state.session.user)
     // console.log(prices)
     const pricesData = Object.values(prices)
+
+    const watchlist = useSelector((state) => Object.values(state.watchlist));
+    const watchlists = Object.values(watchlist[0])
+    // console.log(pricesData)
     console.log("THIS IS THE PRICE DATA IN AN ARRAY", pricesData)
     // console.log('why are prices not rendering', prices)
     // console.log('heres the pricesData that DOESNT WANNA WORK SOMETIMES SMH', pricesData)
@@ -56,6 +62,7 @@ const StockDetails = () => {
             dispatch(getCompanyNews(ticker))
             dispatch(getOneStock(ticker))
             dispatch(getStockPrices(ticker))
+            dispatch(getWatchlists())
             // dispatch(getAllTransactions())
             // dispatch(stockTransaction(transaction))
         }
@@ -274,6 +281,9 @@ const StockDetails = () => {
                             </div>
                         </div>
                     </div>
+                    <div className='PostCompanyInWatchlist'>
+                        < CompanyWatchlistForm props={watchlists}/>
+                        </div>
                     {news ? <div>
                         <News news={news} ticker={ticker} />
                     </div> : <div>Loading</div>}
