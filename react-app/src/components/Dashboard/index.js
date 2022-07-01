@@ -47,7 +47,7 @@ const Dashboard = () => {
     // Returns the last price (closing price) in the stock prices array that YOU OWN.
     const closingPrice = (companyId) => {
         for (let stock of companies) {
-            if (stock.id === companyId && stock.prices) {
+            if (stock && stock.id === companyId && stock.prices) {
                 const priceArr = stock.prices
                 return priceArr[priceArr.length - 1]
             }
