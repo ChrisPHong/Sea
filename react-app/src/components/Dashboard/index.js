@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getStocks } from '../../store/stock';
+import { getStockPrices, getStocks } from '../../store/stock';
 import { getTransactions, getAllTransactions } from '../../store/transaction';
 import { getPortfolio } from '../../store/portfolio';
 import WatchlistPage from '../Watchlist'
@@ -18,7 +18,7 @@ const Dashboard = () => {
     const transArr = Object.values(transactions)
     const companies = Object.values(stocks)
     const portfolio = Object.values(portfolioPrices)
-    console.log('DIS BESTIES TRANSACVTTIIOOONSNNSSSS', transArr)
+    console.log('DID WE MAKE THE STOCK PRICES?!?!??!?!', transactions)
 
     useEffect(() => {
         // dispatch(getTransactions(currentUser?.id))

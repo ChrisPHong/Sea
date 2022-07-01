@@ -8,7 +8,6 @@ export const loadPortfolio = (portfolio) => {
 }
 
 export const getPortfolio = (userId) => async (dispatch) => {
-    console.log('------------------in getPortfolio------------------')
     const response = await fetch('/api/portfolio/', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},

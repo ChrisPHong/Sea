@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { getOneStock } from '../../store/stock';
+import { getOneStock, getStockPrices } from '../../store/stock';
 import News from '../News'
 import { getCompanyNews } from '../../store/news';
 import './StockDetails.css'
@@ -12,6 +12,9 @@ const StockDetails = () => {
     // console.log(ticker.toUpperCase())
     const stock = useSelector(state => state?.stock?.entries[ticker.toUpperCase()])
     const news = useSelector(state => state?.news?.entries)
+    const prices = useSelector(state => state?.prices?.entries)
+    // const pricesData = Object.values(prices)
+    // console.log(pricesData)
     // console.log(news)
     // console.log("THESE ARE THE VALUESSSSSS", displayNews)
     let min = Infinity
@@ -34,6 +37,7 @@ const StockDetails = () => {
         if (stock === undefined) {
             dispatch(getOneStock(ticker))
             dispatch(getCompanyNews(ticker))
+            dispatch(getStockPrices(ticker))
         }
     }, [dispatch, stock])
 
@@ -116,7 +120,7 @@ const StockDetails = () => {
                                     Open price
                                 </div>
                                 <div>
-                                    ${stock.prices[0].toFixed(2)}
+                                    ${stock?.prices?.toFixed(2)}
                                 </div>
                             </div>
                             <div>
@@ -124,7 +128,7 @@ const StockDetails = () => {
                                     Close price
                                 </div>
                                 <div>
-                                    ${stock.prices[stock.prices.length - 1].toFixed(2)}
+                                    {/* ${stock.prices[stock.prices.length - 1].toFixed(2)} */}
                                 </div>
                             </div>
                         </div>

@@ -48,7 +48,6 @@ def get_purchased_shares(id, user_id):
 
 @portfolio_routes.route('/', methods=['POST'])
 def make_portfolio():
-    print('------------------in make_portfolio backend------------------')
     # timeframe = request.json['timeframe']
     user_id = request.json['userId']
 
