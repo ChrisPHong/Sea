@@ -55,7 +55,6 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
         // console.log('transaction price----', typeof(parseInt(sharesBought)))
         // console.log('transaction price----', typeof(companyId))
         // console.log('transaction price----', typeof('buy'))
-        console.log('THIS IS THE DATE WE ARE TRYING TO SEND OVER TO BACKEND', typeof priceData.date)
         let newTransaction = {
             price: Number(transactionPrice).toFixed(2),
             shares: parseInt(sharesBought),

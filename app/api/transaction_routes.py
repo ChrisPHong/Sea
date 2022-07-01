@@ -64,8 +64,8 @@ def update_transactions():
             user_id=form.data['user_id'],
             company_id=form.data['company_id']
         )
-        # user = User.query.filter(User.id == data['user_id']).one()
-        # user.balance = data['balance']
+        # user = User.query.filter(User.id == form.data['user_id']).first()
+        # user.balance = form.data['balance']
 
         db.session.add(transaction)
         db.session.commit()
