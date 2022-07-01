@@ -6,7 +6,8 @@ import { getPortfolio } from '../../store/portfolio';
 import WatchlistPage from '../Watchlist'
 import WatchlistForm from '../WatchlistForm';
 import StockChart from '../StockChart';
-// import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine } from 'recharts';
+import { getGeneralNews } from '../../store/news';
+import MarketNews from '../MarketNews';
 import './Dashboard.css'
 
 const Dashboard = () => {
@@ -15,13 +16,15 @@ const Dashboard = () => {
     const stocks = useSelector(state => state?.stock?.entries)
     const currentUser = useSelector(state => state?.session?.user);
     const portfolioPrices = useSelector(state => state?.portfolio?.entries)
+    const portfolio = Object.values(portfolioPrices)
+    const news = useSelector(state => state?.news?.entries)
     const transArr = Object.values(transactions)
     const companies = Object.values(stocks)
-    const portfolio = Object.values(portfolioPrices)
-    console.log('DID WE MAKE THE STOCK PRICES?!?!??!?!', transactions)
+    const newsArr = Object.values(news)
 
     useEffect(() => {
         // dispatch(getTransactions(currentUser?.id))
+        dispatch(getGeneralNews())
         dispatch(getAllTransactions())
         dispatch(getPortfolio({userId: currentUser?.id}))
         dispatch(getStocks())
@@ -155,14 +158,15 @@ const Dashboard = () => {
 
                     {/* -------------------- NEWS -------------------- */}
                     <div className='news-ctn'>
-                        News Container Here
+
+                        <MarketNews news={newsArr} />
                     </div>
                 </div>
                 <div id='right'>
                     {/* -------------------- WATCHLIST -------------------- */}
-                    <div className='watchlist-ctn'>
-                        <WatchlistPage />
+                    <div className='watchlist-form'>
                         <WatchlistForm />
+                        <WatchlistPage />
                     </div>
                 </div>
             </div>

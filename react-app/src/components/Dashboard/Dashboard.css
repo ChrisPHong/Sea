@@ -27,7 +27,8 @@
 }
 
 #right {
-    width: 300px;
+    width: auto;
+    margin-left: 60px;
 }
 
 .owned-assets {
@@ -51,7 +52,7 @@ th {
     display: flex;
     flex-direction: column;
     width: 300px;
-    margin:0%;
+    margin: 0%;
 }
 
 .owned-comp-name,
@@ -78,8 +79,8 @@ th {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-top: 50px;
-    height: 200px;
+    /* padding-top: 50px; */
+    margin-top: 10px;
     align-items: center;
     /* font-size: 48pt; */
     font-weight: 700;
@@ -89,6 +90,11 @@ th {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 500px;
+    height: 300px;
     font-weight: 700;
+}
+
+.watchlist-form {
+    justify-content: center;
+    align-items: center;
 }

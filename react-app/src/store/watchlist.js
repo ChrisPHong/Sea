@@ -2,7 +2,7 @@ const LOAD_WATCHLIST = 'watchlist/LOAD'
 const POST_WATCHLIST = 'watchlist/POST'
 const DELETE_WATCHLIST = 'watchlist/DELETE'
 const EDIT_WATCHLIST = 'watchlist/EDIT'
-const GET_STOCKS_WATCHLIST = 'stocks/watchlist/GET'
+const POST_STOCKS_WATCHLIST = 'stocks/watchlist/POST'
 
 export const loadWatchlist = (watchlists) => {
     return {
@@ -32,26 +32,29 @@ export const editList = (watchlist) => {
     }
 }
 
-export const loadstocksWatchlist = (stocks) => {
+export const postStocksWatchlist = (stocks) => {
     return {
-        type: GET_STOCKS_WATCHLIST,
+        type: POST_STOCKS_WATCHLIST,
         stocks
     }
 }
-export const getStocksWatchlists = (id) => async (dispatch) => {
-    const response = await fetch(`/api/watchlists/${id}`, {
-        method: 'GET',
+
+export const getStocksWatchlists = () => async (dispatch) => {
+    const response = await fetch(`/api/watchlists/`, {
+        method: 'POST',
     })
     if (response.ok) {
         const stocks = await response.json()
         console.log('<<<<<<<<< stocks >>>>>>>', stocks)
-        dispatch(loadstocksWatchlist(stocks))
+        dispatch(postStocksWatchlist(stocks))
     }
 
 }
-export const getWatchlists = () => async (dispatch) => {
+export const getWatchlists = (payload) => async (dispatch) => {
     const response = await fetch('/api/watchlists/', {
         method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
     })
     if (response.ok) {
         const watchlists = await response.json()
@@ -134,10 +137,10 @@ const watchlistReducer = (state = initialState, action) => {
                 [action.watchlist.id]: action.watchlist  }
             }
             return newState
-        case GET_STOCKS_WATCHLIST:
-            newState = { ...state, entries: { ...state.entries } }
+        case POST_STOCKS_WATCHLIST:
+            newState = { ...state, entries: { ...state.entries, watchComps:{...state.entries.watchComps,[ action.watchlists.watchComps.id]: action.watchlists.watchComps}} }
             console.log('----------- action ------------', action)
-            action.stocks.forEach(stock => { newState.entries[stock.id] = stock })
+            // action.watchlists.watchComps.forEach(stock => { newState.entries[stock.id] = stock })
             return newState
         default:
             return state
