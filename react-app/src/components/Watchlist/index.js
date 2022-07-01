@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { NavLink } from 'react-router-dom';
 import { getWatchlists } from '../../store/watchlist'
-import { deleteWatchList, getStocksWatchlists } from '../../store/watchlist'
+import { deleteWatchList, createStockWatchlists } from '../../store/watchlist'
 import EditWatchListForm from '../EditWatchListForm'
 import './Watchlist.css';
 
@@ -37,7 +37,7 @@ function WatchlistPage() {
 
     useEffect(() => {
         dispatch(getWatchlists())
-        // dispatch(getStocksWatchlists());
+
     }, [dispatch, show])
 
 
@@ -96,6 +96,15 @@ function WatchlistPage() {
                                     <div className={`editform-${watchlist.id} hidden`}>
                                         < EditWatchListForm watchlist={watchlist} />
                                     </div>
+                                    <button
+                                    onClick={async (e)=>{
+                                        // e.target.value
+                                        const watchlistId = watchlist.id
+                                        const payload = {id:watchlistId, ticker:'MSFT'}
+                                        await dispatch(createStockWatchlists(payload))
+                                    }}>
+                                        hi
+                                    </button>
                                 </div>
                             </div>
                             <div className='company'>

@@ -39,14 +39,20 @@ export const postStocksWatchlist = (stocks) => {
     }
 }
 
-export const getStocksWatchlists = () => async (dispatch) => {
-    const response = await fetch(`/api/watchlists/`, {
+export const createStockWatchlists = (payload) => async (dispatch) => {
+
+    const response = await fetch(`/api/watchlists/${payload.id}/add`, {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
     })
+    console.log(response, 'THIS IS THE RESPONSE')
+
     if (response.ok) {
-        const stocks = await response.json()
-        console.log('<<<<<<<<< stocks >>>>>>>', stocks)
-        dispatch(postStocksWatchlist(stocks))
+        console.log("<<<<<<<<<<<< INSIDE THE RESPONSE", response)
+        const stock = await response.json()
+        console.log('<<<<<<<<< inside the response.okstocks >>>>>>>', stock)
+        dispatch(postStocksWatchlist(stock))
     }
 
 }
@@ -139,7 +145,6 @@ const watchlistReducer = (state = initialState, action) => {
             return newState
         case POST_STOCKS_WATCHLIST:
             newState = { ...state, entries: { ...state.entries, watchComps:{...state.entries.watchComps,[ action.watchlists.watchComps.id]: action.watchlists.watchComps}} }
-            console.log('----------- action ------------', action)
             // action.watchlists.watchComps.forEach(stock => { newState.entries[stock.id] = stock })
             return newState
         default:

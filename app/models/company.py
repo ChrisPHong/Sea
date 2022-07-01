@@ -72,3 +72,11 @@ class Company(db.Model):
             'basePrice': self.base_price,
             'prices': make_stock_price(round(self.base_price, 2), 60, choice([ASCENDING, DESCENDING]))
         }
+    # testing
+    def to_dict_relationship(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'ticker': self.ticker,
+            'watchlistStuff': [comp_wl.to_dict() for comp_wl in self.comp_wl]
+        }
