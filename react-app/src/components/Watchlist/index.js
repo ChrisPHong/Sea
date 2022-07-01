@@ -97,11 +97,11 @@ function WatchlistPage() {
                                         < EditWatchListForm watchlist={watchlist} />
                                     </div>
                                     <button
-                                    onClick={async (e)=>{
+                                    onClick={(e)=>{
                                         // e.target.value
                                         const watchlistId = watchlist.id
-                                        const payload = {id:watchlistId, ticker:'MSFT'}
-                                        await dispatch(createStockWatchlists(payload))
+                                        const payload = {watchlistId: watchlistId, ticker:'TSLA'}
+                                        dispatch(createStockWatchlists(payload))
                                     }}>
                                         hi
                                     </button>

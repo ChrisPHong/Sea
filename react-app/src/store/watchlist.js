@@ -40,19 +40,20 @@ export const postStocksWatchlist = (stocks) => {
 }
 
 export const createStockWatchlists = (payload) => async (dispatch) => {
-
-    const response = await fetch(`/api/watchlists/${payload.id}/add`, {
+    console.log("<<<<<<<<<<< PAYLOAD IN THUNK", payload)
+    const response = await fetch(`/api/watchlists/${payload.watchlistId}/add`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
     })
-    console.log(response, 'THIS IS THE RESPONSE')
+
 
     if (response.ok) {
         console.log("<<<<<<<<<<<< INSIDE THE RESPONSE", response)
-        const stock = await response.json()
-        console.log('<<<<<<<<< inside the response.okstocks >>>>>>>', stock)
-        dispatch(postStocksWatchlist(stock))
+        const watchlists = await response.json()
+
+        // dispatch(postStocksWatchlist(stock))
+        dispatch(loadWatchlist(watchlists))
     }
 
 }
