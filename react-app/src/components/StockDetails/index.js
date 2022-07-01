@@ -14,9 +14,11 @@ const StockDetails = () => {
     const stock = useSelector(state => state?.stock?.entries[ticker.toUpperCase()])
     const news = useSelector(state => state?.news?.entries)
     const prices = useSelector(state => state?.stock?.prices)
+    // console.log(prices)
     const pricesData = Object.values(prices)
-    console.log('why are prices not rendering', prices)
-    console.log('heres the pricesData that DOESNT WANNA WORK SOMETIMES SMH', pricesData)
+    // console.log(pricesData)
+    // console.log('why are prices not rendering', prices)
+    // console.log('heres the pricesData that DOESNT WANNA WORK SOMETIMES SMH', pricesData)
 
     const [data, setData] = useState(pricesData)
     const [currPrice, setCurrPrice] = useState(data[data?.length - 1])
@@ -25,12 +27,12 @@ const StockDetails = () => {
     let max = -Infinity
     if (stock) {
         // console.log(stock.prices)
-        for (let i = 0; i < stock?.prices?.length; i++) {
-            if (stock?.prices[i] < min) {
-                min = stock?.prices[i].toFixed(2);
+        for (let i = 0; i < prices?.length; i++) {
+            if (prices[i] < min) {
+                min = prices[i].toFixed(2);
             }
             if (stock?.prices[i] > max) {
-                max = stock?.prices[i].toFixed(2);
+                max = prices[i].toFixed(2);
             }
         }
     }
@@ -39,8 +41,8 @@ const StockDetails = () => {
     // getting stocks from backend
     useEffect(() => {
         if (stock === undefined) {
-            dispatch(getOneStock(ticker))
             dispatch(getCompanyNews(ticker))
+            dispatch(getOneStock(ticker))
             dispatch(getStockPrices(ticker))
         }
     }, [dispatch, stock])
@@ -83,8 +85,8 @@ const StockDetails = () => {
         if (active && payload && payload.length) {
             return (
                 <div className="custom-tooltip">
-                <p className="tooltip-price">{`$${((payload[0].value)).toFixed(2)}`}</p>
-                <p className="tooltip-date">{label}</p>
+                    <p className="tooltip-price">{`$${((payload[0].value)).toFixed(2)}`}</p>
+                    <p className="tooltip-date">{label}</p>
                 </div>
             );
         }
@@ -101,12 +103,12 @@ const StockDetails = () => {
                     data={data}
                     onMouseMove={(e) => lineMouseOver(e?.activePayload && e?.activePayload[0].payload.price)}
                 >
-                <XAxis dataKey="date" hide='true' />
-                <YAxis dataKey="price" domain={['dataMin', 'dataMax']} hide='true' />
-                <Tooltip
-                    cursor={false}
-                    content={customTooltip}
-                />
+                    <XAxis dataKey="date" hide='true' />
+                    <YAxis dataKey="price" domain={['dataMin', 'dataMax']} hide='true' />
+                    <Tooltip
+                        cursor={false}
+                        content={customTooltip}
+                    />
                     <Line
                         type="linear"
                         dataKey="price"
@@ -124,7 +126,7 @@ const StockDetails = () => {
                         <button
                             value='1w'
                             onClick={e => createData(e.target.value)}
-                            >
+                        >
                             1W
                         </button>
                     </span>
@@ -132,7 +134,7 @@ const StockDetails = () => {
                         <button
                             value='1m'
                             onClick={e => createData(e.target.value)}
-                            >
+                        >
                             1M
                         </button>
                     </span>
@@ -140,7 +142,7 @@ const StockDetails = () => {
                         <button
                             value='3m'
                             onClick={e => createData(e.target.value)}
-                            >
+                        >
                             3M
                         </button>
                     </span>
@@ -148,7 +150,7 @@ const StockDetails = () => {
                         <button
                             value='6m'
                             onClick={e => createData(e.target.value)}
-                            >
+                        >
                             6M
                         </button>
                     </span>
@@ -156,7 +158,7 @@ const StockDetails = () => {
                         <button
                             value='1y'
                             onClick={e => createData(e.target.value)}
-                            >
+                        >
                             1Y
                         </button>
                     </span>

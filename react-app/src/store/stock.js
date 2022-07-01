@@ -48,7 +48,7 @@ export const getOneStock = (ticker) => async (dispatch) => {
 export const getStockPrices = (ticker) => async (dispatch) => {
     const response = await fetch(`/api/stocks/${ticker}/prices`, {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(ticker)
     })
 
@@ -62,25 +62,27 @@ export const getStockPrices = (ticker) => async (dispatch) => {
 const initialState = { entries: {}, prices: {}, isLoading: true }
 
 
-const stockReducer = ( state = initialState, action ) => {
+const stockReducer = (state = initialState, action) => {
     let newState
     switch (action.type) {
         case LOAD_STOCKS:
-            newState = { ...state, entries: {...state.entries} }
+            newState = { ...state, entries: { ...state.entries } }
             action.stocks.forEach(stock => newState.entries[stock.id] = stock)
             return newState
         case LOAD_OWNED_WEEKLY_PRICES:
-            newState = { ...state, entries: {...state.entries} }
+            newState = { ...state, entries: { ...state.entries } }
             action.companies.forEach(company => newState.entries[company.id] = company)
             return newState
         case LOAD_ONE_STOCK:
-            newState = {entries:{}}
+            newState = { ...state, entries: { ...state.entries } }
             newState.entries[action.stock.ticker] = action.stock
+            console.log('in LOAD ONE STOCK REDUCER', action.stock)
             return newState
         case LOAD_STOCK_PRICES:
-            newState = { ...state, entries: {...state.entries}, prices: {...state.prices} }
+            newState = { ...state, entries: { ...state.entries }, prices: { ...state.prices } }
             console.log('in reducer printing out prices', newState)
             action.prices.forEach((stockPrice, i) => newState.prices[i] = stockPrice)
+            newState.entries[action.stock] = action.stock
             return newState
         default:
             return state

@@ -1,7 +1,7 @@
 import './MarketNews.css'
 
 const MarketNews = ({news}) => {
-    console.log(news)
+    // console.log(news)
     let slicedNews = Object.values(news).slice(0, 5)
     return (
         <>
