@@ -18,12 +18,13 @@ const Dashboard = () => {
     const transArr = Object.values(transactions)
     const companies = Object.values(stocks)
     const portfolio = Object.values(portfolioPrices)
-    console.log('DIS BESTIES TRANSACVTTIIOOONSNNSSSS', transactions)
+    console.log('DIS BESTIES TRANSACVTTIIOOONSNNSSSS', transArr)
 
     useEffect(() => {
         // dispatch(getTransactions(currentUser?.id))
         dispatch(getAllTransactions())
         dispatch(getPortfolio({userId: currentUser?.id}))
+        dispatch(getStocks())
 
     }, [dispatch, currentUser])
 
