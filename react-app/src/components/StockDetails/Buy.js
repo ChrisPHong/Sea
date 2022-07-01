@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { stockTransaction } from '../../store/transaction';
 
-const Buy = ({ user, companyId, ticker, priceArr }) => {
+const Buy = ({ user, companyId, ticker, price }) => {
     const dispatch = useDispatch()
     const transactions = useSelector(state => state?.transaction?.entries);
     const userId = user.id;
@@ -17,9 +17,14 @@ const Buy = ({ user, companyId, ticker, priceArr }) => {
     const [order, setOrder] = useState('buy');
     const [balance, setBalance] = useState(user?.balance)
 
+    useEffect(() => {
+        setSharesBought(0)
+        setTransactionPrice((0).toFixed(2))
+    }, [price])
+
     const transactionTotal = e => {
         setSharesBought(e.target.value);
-        setTransactionPrice((e.target.value * (priceArr[priceArr.length - 1].price)).toFixed(2));
+        setTransactionPrice((e.target.value * (price)).toFixed(2));
         //  price = market price per share
     }
 
@@ -77,9 +82,7 @@ const Buy = ({ user, companyId, ticker, priceArr }) => {
                 <div className='transaction-info'>
                     <div className='transaction-labels'>Market Price</div>
                     <div id='transaction-stock-price'>
-                        {/* ${(priceArr[priceArr.length - 1].price).toFixed(2)} */}
-                        {priceArr}
-                        {priceArr.length}
+                        ${price}
                     </div>
                 </div>
                 <hr />

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getOneStock, getStockPrices } from '../../store/stock';
+import Buy from './Buy';
 import { LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
 import News from '../News'
 import { getCompanyNews } from '../../store/news';
@@ -14,6 +15,7 @@ const StockDetails = () => {
     const stock = useSelector(state => state?.stock?.entries[ticker.toUpperCase()])
     const news = useSelector(state => state?.news?.entries)
     const prices = useSelector(state => state?.stock?.prices)
+    const user = useSelector(state => state.session.user)
     // console.log(prices)
     const pricesData = Object.values(prices)
     // console.log(pricesData)
@@ -44,6 +46,8 @@ const StockDetails = () => {
             dispatch(getCompanyNews(ticker))
             dispatch(getOneStock(ticker))
             dispatch(getStockPrices(ticker))
+            // dispatch(getAllTransactions())
+            // dispatch(stockTransaction(transaction))
         }
     }, [dispatch, stock])
 
@@ -53,6 +57,8 @@ const StockDetails = () => {
         setData(pricesData)
         createData('1w')
     }, [pricesData?.length, prices, ticker])
+
+    console.log('what is data printing again??!?!?!?!?!?!??!?', data)
 
     const createData = (time) => {
         if (time === '1y') {
@@ -262,6 +268,30 @@ const StockDetails = () => {
                         <News news={news} ticker={ticker} />
                     </div> : <div>Loading</div>}
                 </div>}
+                {/* start of buy sell container */}
+                <div className='fixed-side-container'>
+                    <div className='buy-sell-container'>
+                        <section className="buy-sell">
+                            <div id='tabs'>
+                                <h2>This is the Buy Sell Tab</h2>
+                                {/* <Headers
+                                    titles={titles}
+                                    currentTab={currentTab}
+                                    selectTab={setCurrentTab}
+                                /> */}
+                                <div className="tab-toggle-content">
+                                {prices && <Buy user={user} companyId={stock?.id} ticker={ticker} price={data[data.length - 1]?.price} />}
+                                {/* {stock && <Sell user={user} price={lastPrice} shares={userShares} />} */}
+                                {/* {currentTab === 0 && <Buy user={user} priceArr={price} />} */}
+                                {/* {currentTab === 1 && <Sell user={user} price={closePrice} shares={userShares} />} */}
+                                </div>
+                            </div>
+                        </section>
+                        {/* <section className="">
+                            watchlist?
+                        </section> */}
+                    </div>
+                </div>
         </div>
     )
 
