@@ -5,7 +5,7 @@ import { getTransactions, getAllTransactions } from '../../store/transaction';
 import { getPortfolio } from '../../store/portfolio';
 import WatchlistPage from '../Watchlist'
 import WatchlistForm from '../WatchlistForm';
-import StockChart from '../StockChart';
+import PortfolioChart from '../PortfolioChart';
 import { getGeneralNews } from '../../store/news';
 import MarketNews from '../MarketNews';
 import './Dashboard.css'
@@ -101,7 +101,7 @@ const Dashboard = () => {
         <div id='portfolio-ctn'>
             {/* -------------------- ASSETS GRAPH -------------------- */}
             <div className='portfolio-graph'>
-                <StockChart
+                <PortfolioChart
                     currentUser={currentUser}
                     portfolio={portfolio}
                     totalFunds={totalFunds}
