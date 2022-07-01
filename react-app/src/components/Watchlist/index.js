@@ -27,7 +27,7 @@ function WatchlistPage() {
 
     const closingPrice = (companyId) => {
         for (let stock of companies) {
-            if (stock && stock.id === companyId && stock.prices) {
+            if (stock?.id === companyId && stock.prices) {
                 const priceArr = stock.prices
                 return priceArr[priceArr.length - 1]
             }
