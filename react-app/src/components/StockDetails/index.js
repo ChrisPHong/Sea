@@ -13,6 +13,7 @@ const StockDetails = () => {
     const stock = useSelector(state => state?.stock?.entries[ticker.toUpperCase()])
     const news = useSelector(state => state?.news?.entries)
     const prices = useSelector(state => state?.prices?.entries)
+    console.log('here are the stock prices', prices)
     // const pricesData = Object.values(prices)
     // console.log(pricesData)
     // console.log(news)
@@ -37,9 +38,12 @@ const StockDetails = () => {
         if (stock === undefined) {
             dispatch(getOneStock(ticker))
             dispatch(getCompanyNews(ticker))
-            dispatch(getStockPrices(ticker))
         }
     }, [dispatch, stock])
+
+    useEffect(() => {
+        dispatch(getStockPrices(ticker))
+    }, [dispatch])
 
 
 

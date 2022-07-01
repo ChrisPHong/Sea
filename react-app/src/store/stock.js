@@ -46,14 +46,16 @@ export const getOneStock = (ticker) => async (dispatch) => {
 }
 
 export const getStockPrices = (ticker) => async (dispatch) => {
-    const response = await fetch(`/api/stocks/prices`, {
+    const response = await fetch(`/api/stocks/${ticker}/prices`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(ticker)
     })
 
-    const prices = await response.json()
-    dispatch(loadStockPrices(prices))
+    if (response.ok) {
+        const prices = await response.json()
+        dispatch(loadStockPrices(prices))
+    }
 }
 
 
@@ -76,8 +78,8 @@ const stockReducer = ( state = initialState, action ) => {
             newState.entries[action.stock.ticker] = action.stock
             return newState
         case LOAD_STOCK_PRICES:
-            newState = { ...state, entries: {...state.entries} }
-            action.prices.forEach((stockPrice, i) => newState.entries[i] = stockPrice)
+            newState = { ...state, entries: {...state.entries}, prices: {...state.prices} }
+            action.prices.forEach((stockPrice, i) => newState.prices[i] = stockPrice)
             return newState
         default:
             return state

@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from app.models import Company, Transaction
 from random import choice, random
+from datetime import datetime, timedelta
 from .portfolio_routes import make_stock_price, ASCENDING, DESCENDING
 
 stock_routes = Blueprint('stocks', __name__)
@@ -17,20 +18,23 @@ def get_all_stocks():
     # print(companies, '<<<<<<<<<<<<<<<<< COMPANIES >>>>>>>>>>>>')
     return jsonify([company.to_dict() for company in companies])
 
-@stock_routes.route('/prices', methods=['POST'])
-def get_stock_prices():
-    company_id = request.json['ticker']
+@stock_routes.route('/<ticker>/prices', methods=['POST'])
+def get_stock_prices(ticker):
     stock_prices_data = []
     one_year_data = datetime.today() - timedelta(days=365)
-    stock = Company.query.filter(Company.ticker == ticker).first()
+    stock = Company.query.filter(Company.ticker == ticker.upper()).first()
     stock_prices = make_stock_price(stock.base_price, choice([ASCENDING, DESCENDING]))
 
+    # For each price in stock_prices
     for i in range(len(stock_prices)):
+        price = stock_prices[i]
+        # Create new date
         new_date = one_year_data + timedelta(days = 1)
         one_year_data = new_date
-        stock_prices_data.append({'date': days_365.strftime("%b %d %Y"), 'price': stock_prices[i]})
+        # create date key/value pair in each stock price
+        price['date'] = one_year_data.strftime("%b %d %Y")
 
-    return jsonify(stock_prices_data)
+    return jsonify(stock_prices)
 
 # # Weekly prices for OWNED companies
 # @stock_routes.route('/weekly', methods=['POST'])
