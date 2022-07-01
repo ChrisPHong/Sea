@@ -55,39 +55,19 @@ def update_transactions():
     form['csrf_token'].data = request.cookies['csrf_token']
     todays_date = datetime.today()
 
-    # jsonData = request.get_json()
-    # data = jsonData['data']
-    print('price:', type(form.data['price']))
-    print('shares:', type(form.data['shares']))
-    print('type:', type(form.data['type']))
-    # print(strftime(datetime.today()))
-    print('HERES THE NEW DAAAATEEEEEE', type(todays_date))
-    #  strf
-    print('userId:', type(form.data['user_id']))
-    print('companyId:', type(form.data['company_id']))
-    print('Hi from backend------')
-
-    # new_date = datetime.now()
-    # form.data['date'] = new_date()
     if form.validate_on_submit():
-        print('ARE WE EVEN HITTING HEREEERERER?!?!?!?! ABOVE TRANSACTION')
         transaction = Transaction(
             price=form.data['price'],
             shares=form.data['shares'],
             type=form.data['type'],
             date=todays_date.strftime('%Y-%m-%d'),
-            # user_id=form.data['user_id'],
             user_id=form.data['user_id'],
             company_id=form.data['company_id']
-            # company_id=request.json['company_id']
         )
-        print(transaction)
         # user = User.query.filter(User.id == data['user_id']).one()
         # user.balance = data['balance']
-        db.session.add(transaction)
-        # db.session.add(user)
-        db.session.commit()
 
+        db.session.add(transaction)
+        db.session.commit()
         return transaction.to_dict()
     return {'errors': validation_errors_to_error_messages(form.errors)}, 402
-    print('BACKEND FAILEDDD')

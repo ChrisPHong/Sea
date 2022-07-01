@@ -8,6 +8,5 @@ class TransactionForm(FlaskForm):
     price = FloatField('price', validators=[DataRequired()])
     shares = FloatField('shares')
     type = StringField('type', validators=[DataRequired()])
-    date = DateField('date', validators=[DataRequired()])
     user_id = IntegerField('user_id', validators=[DataRequired()])
     company_id = IntegerField('company_id', validators=[DataRequired()])
