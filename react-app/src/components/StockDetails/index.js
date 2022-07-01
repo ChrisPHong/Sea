@@ -47,6 +47,8 @@ const StockDetails = () => {
         }
     }, [dispatch, stock])
 
+    // When the price state, the length of the pricesData array, or the ticker changes,
+    // Set the data to the new pricesData and show the 1W timeframe.
     useEffect(() => {
         setData(pricesData)
         createData('1w')

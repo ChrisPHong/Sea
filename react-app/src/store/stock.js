@@ -73,14 +73,16 @@ const stockReducer = (state = initialState, action) => {
         //     newState = { ...state, entries: { ...state.entries } }
         //     action.companies.forEach(company => newState.entries[company.id] = company)
         //     return newState
+
+        // Reset the entries data and then fill state with stock.
         case LOAD_ONE_STOCK:
             newState = { ...state, entries: { }, prices: { ...state.prices } }
             newState.entries[action.stock.ticker] = action.stock
-            console.log('in LOAD ONE STOCK REDUCER', action.stock)
             return newState
+
+        // Keep previous state, but reset the prices data and then fill state with new updated prices.
         case LOAD_STOCK_PRICES:
             newState = { ...state, entries: { ...state.entries }, prices: { } }
-            console.log('in reducer printing out prices', newState)
             action.prices.forEach((stockPrice, i) => newState.prices[i] = stockPrice)
             newState.entries[action.stock] = action.stock
             return newState
