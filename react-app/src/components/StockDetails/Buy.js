@@ -1,21 +1,48 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {stockTransaction } from '../../store/transaction';
+import { stockTransaction } from '../../store/transaction';
 
-const Buy = ({ user, ticker, price }) => {
+const Buy = ({ user, companyId, ticker, priceData }) => {
     const dispatch = useDispatch()
-    const data = useSelector(state => state.transactions.transactionData);
-    console.log(data)
+    const transactions = useSelector(state => state?.transaction?.entries);
+    const userId = user.id;
+    console.log('USERRRRR', user)
+
+    // console.log(transactions)
+    // const stock = useSelector(state => state?.stock?.entries)
+    // const companies = Object.values(stocks)
+    // console.log('---companies in buy page', companies)
     const [transactionPrice, setTransactionPrice] = useState((0).toFixed(2));
     const [sharesBought, setSharesBought] = useState(0);
     const [order, setOrder] = useState('buy');
     const [balance, setBalance] = useState(user?.balance)
 
+    useEffect(() => {
+        setSharesBought(0)
+        setTransactionPrice((0).toFixed(2))
+    }, [priceData?.price])
+
     const transactionTotal = e => {
         setSharesBought(e.target.value);
-        setTransactionPrice((e.target.value * price).toFixed(2));
+        setTransactionPrice((e.target.value * (priceData.price)).toFixed(2));
         //  price = market price per share
     }
+
+    const convertDate = date => {
+        const dates = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        const newDate = date.split(' ')
+        let newMonth
+        for (let i in dates) {
+            if (newDate[0] === dates[i]) {
+                newMonth = i
+            }
+
+        }
+        const result = new Date(`${newMonth}-${parseInt(newDate[1])}-${parseInt(newDate[2])}`)
+        return result.toDateString()
+    }
+
+    // console.log('IS THIS OUR BRAND NEW DATE?!??!?!?!!', convertDate(priceData.date))
 
     const buyStock = async (e) => {
         e.preventDefault();
@@ -23,13 +50,20 @@ const Buy = ({ user, ticker, price }) => {
         setBalance((Number(balance) - Number(transactionPrice)).toFixed(2));
         let newBalance = (Number(balance) - Number(transactionPrice)).toFixed(2);
 
+        // console.log('transaction price----', typeof(parseInt(transactionPrice)))
+        // console.log('transaction price----', typeof(user.id))
+        // console.log('transaction price----', typeof(parseInt(sharesBought)))
+        // console.log('transaction price----', typeof(companyId))
+        // console.log('transaction price----', typeof('buy'))
         let newTransaction = {
-            user_id: user.id,
-            shares: Number(sharesBought),
-            price: Number(transactionTotal),
+            price: Number(transactionPrice).toFixed(2),
+            shares: parseInt(sharesBought),
             type: 'buy',
-            balance: Number(newBalance)
+            user_id: user.id,
+            company_id: companyId,
+            // balance: Number(newBalance)
         }
+        // const payload = { companyId, userId };
         dispatch(stockTransaction(newTransaction))
     }
 
@@ -62,7 +96,7 @@ const Buy = ({ user, ticker, price }) => {
                 <div className='transaction-info'>
                     <div className='transaction-labels'>Market Price</div>
                     <div id='transaction-stock-price'>
-                        ${price}
+                        ${priceData?.price}
                     </div>
                 </div>
                 <hr />
