@@ -1,3 +1,14 @@
+#stocks-detail-ctn {
+    padding-top: 70px;
+}
+.stock-chart-bottom {
+    display: flex;
+    justify-content: center;
+    width: auto;
+    border-bottom: 1px solid lightgray;
+    padding-bottom: 40px;
+}
+
 .balance-info {
     width: 800px;
     height: 100px;

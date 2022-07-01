@@ -15,6 +15,8 @@ const StockDetails = () => {
     const news = useSelector(state => state?.news?.entries)
     const prices = useSelector(state => state?.stock?.prices)
     const pricesData = Object.values(prices)
+    console.log('why are prices not rendering', prices)
+    console.log('heres the pricesData that DOESNT WANNA WORK SOMETIMES SMH', pricesData)
 
     const [data, setData] = useState(pricesData)
     const [currPrice, setCurrPrice] = useState(data[data?.length - 1])
@@ -39,12 +41,9 @@ const StockDetails = () => {
         if (stock === undefined) {
             dispatch(getOneStock(ticker))
             dispatch(getCompanyNews(ticker))
+            dispatch(getStockPrices(ticker))
         }
     }, [dispatch, stock])
-
-    useEffect(() => {
-        dispatch(getStockPrices(ticker))
-    }, [dispatch, prices])
 
     useEffect(() => {
         createData('1w')
@@ -93,7 +92,7 @@ const StockDetails = () => {
     }
 
     return (
-        <>
+        <div id='stocks-detail-ctn'>
             {/* -------------------- LINE CHART HERE -------------------- */}
             <div className='asset-chart'>
                 <LineChart
@@ -119,8 +118,8 @@ const StockDetails = () => {
                     />
                 </LineChart>
             </div>
-            <div className='asset-bottom'>
-                <div className='asset-timeframe'>
+            <div className='stock-chart-bottom'>
+                <div className='stock-timeframe'>
                     <span className='weekly'>
                         <button
                             value='1w'
@@ -255,7 +254,7 @@ const StockDetails = () => {
                         <News news={news} ticker={ticker} />
                     </div> : <div>Loading</div>}
                 </div>}
-        </>
+        </div>
     )
 
 }

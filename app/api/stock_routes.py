@@ -20,7 +20,6 @@ def get_all_stocks():
 
 @stock_routes.route('/<ticker>/prices', methods=['POST'])
 def get_stock_prices(ticker):
-    stock_prices_data = []
     one_year_data = datetime.today() - timedelta(days=365)
     stock = Company.query.filter(Company.ticker == ticker.upper()).first()
     stock_prices = make_stock_price(stock.base_price, choice([ASCENDING, DESCENDING]))

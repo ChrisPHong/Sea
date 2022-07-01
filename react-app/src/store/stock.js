@@ -79,6 +79,7 @@ const stockReducer = ( state = initialState, action ) => {
             return newState
         case LOAD_STOCK_PRICES:
             newState = { ...state, entries: {...state.entries}, prices: {...state.prices} }
+            console.log('in reducer printing out prices', newState)
             action.prices.forEach((stockPrice, i) => newState.prices[i] = stockPrice)
             return newState
         default:
