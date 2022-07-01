@@ -105,15 +105,7 @@ function WatchlistPage() {
                                     <div className={`editform-${watchlist.id} hidden`}>
                                         < EditWatchListForm watchlist={watchlist} />
                                     </div>
-                                    <button
-                                    onClick={(e)=>{
-                                        // e.target.value
-                                        const watchlistId = watchlist.id
-                                        const payload = {watchlistId: watchlistId, ticker:'TSLA'}
-                                        dispatch(createStockWatchlists(payload))
-                                    }}>
-                                        hi
-                                    </button>
+
                                 </div>
                             </div>
                             <div className='company'>
