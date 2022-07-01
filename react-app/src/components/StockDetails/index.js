@@ -16,28 +16,38 @@ const StockDetails = () => {
     const prices = useSelector(state => state?.stock?.prices)
     // console.log(prices)
     const pricesData = Object.values(prices)
-    // console.log(pricesData)
+    console.log("THIS IS THE PRICE DATA IN AN ARRAY", pricesData)
     // console.log('why are prices not rendering', prices)
     // console.log('heres the pricesData that DOESNT WANNA WORK SOMETIMES SMH', pricesData)
 
     const [data, setData] = useState(pricesData)
     const [currPrice, setCurrPrice] = useState(data[data?.length - 1])
 
-    let min = Infinity
-    let max = -Infinity
-    if (stock) {
-        // console.log(stock.prices)
-        for (let i = 0; i < prices?.length; i++) {
-            if (prices[i] < min) {
-                min = prices[i].toFixed(2);
-            }
-            if (stock?.prices[i] > max) {
-                max = prices[i].toFixed(2);
-            }
-        }
+    let stockPrices = []
+
+    for (let i = 0; i < pricesData.length; i++) {
+        stockPrices.push(pricesData[i].price)
     }
-    // console.log(min)
-    // console.log(max)
+
+    console.log(stockPrices)
+
+    const gainOrLoss = [1, -1]
+
+    const gainOrLossRandomElement = gainOrLoss[Math.floor(Math.random().toFixed(2) * gainOrLoss.length)]
+
+    let max = Math.max(...stockPrices).toFixed(2)
+
+    let min = Math.min(...stockPrices).toFixed(2)
+
+    let openPrice = stockPrices[0]
+
+    console.log(openPrice)
+
+    let randomNum = Math.random().toFixed(2)
+
+    console.log("THIS IS MY TEST FOR THE RANDOM NUMBER GENERATOR", randomNum * openPrice)
+
+
     // getting stocks from backend
     useEffect(() => {
         if (stock === undefined) {
@@ -239,7 +249,7 @@ const StockDetails = () => {
                                     Open price
                                 </div>
                                 <div>
-                                    ${stock?.prices?.toFixed(2)}
+                                    ${openPrice}
                                 </div>
                             </div>
                             <div>
@@ -247,7 +257,7 @@ const StockDetails = () => {
                                     Close price
                                 </div>
                                 <div>
-                                    {/* ${stock.prices[stock.prices.length - 1].toFixed(2)} */}
+                                    ${stockPrices[stockPrices.length - 1]}
                                 </div>
                             </div>
                         </div>
