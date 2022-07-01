@@ -4,10 +4,10 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine } from 'recharts'
 import { getPortfolio } from '../../store/portfolio';
 import './StockChart.css'
 
-const StockChart = ({currentUser, priceData, totalFunds, buyingTotal}) => {
+const StockChart = ({currentUser, portfolio, totalFunds, buyingTotal}) => {
     // const transArr = Object.values(transactions)
     const dispatch = useDispatch()
-    const [newData, setNewData] = useState(priceData)
+    const [newData, setNewData] = useState(portfolio)
 
     const [currPrice, setCurrPrice] = useState(newData[newData?.length - 1])
 
@@ -15,30 +15,30 @@ const StockChart = ({currentUser, priceData, totalFunds, buyingTotal}) => {
     //     // dispatch(getPortfolio(currentUser?.id))
     // }, [dispatch])
 
-    // Once priceData is fetched, display the one week graph.
+    // Once portfolio is fetched, display the one week graph.
     useEffect(() => {
         createData('1w')
-    }, [priceData?.length])
+    }, [portfolio?.length, currentUser])
 
     const createData = (time) => {
         if (time === '1y') {
-            setNewData(priceData)
+            setNewData(portfolio)
             return newData
         }
         if (time === '1w') {
-            setNewData(priceData?.slice(-7))
+            setNewData(portfolio?.slice(-7))
             return newData
         }
         if (time === '1m') {
-            setNewData(priceData?.slice(-30))
+            setNewData(portfolio?.slice(-30))
             return newData
         }
         if (time === '3m') {
-            setNewData(priceData?.slice(-90))
+            setNewData(portfolio?.slice(-90))
             return newData
         }
         if (time === '6m') {
-            setNewData(priceData?.slice(-(Math.floor(priceData?.length / 2))))
+            setNewData(portfolio?.slice(-(Math.floor(portfolio?.length / 2))))
             return newData
         }
     }
@@ -67,7 +67,7 @@ const StockChart = ({currentUser, priceData, totalFunds, buyingTotal}) => {
             <div className='balance-info'>
                 <div className='balance-label'>Balance</div>
                 <div className='balance-amt'>
-                    {currPrice !== '0.00' ? `$${currPrice}` : priceData[priceData.length - 1].toFixed(2)}
+                    {currPrice !== '0.00' ? `$${currPrice}` : portfolio[portfolio.length - 1].toFixed(2)}
                 </div>
                 <div className='balance-percent'>
                     {(buyingTotal() > totalFunds()) ?

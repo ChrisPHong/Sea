@@ -14,10 +14,11 @@ const Dashboard = () => {
     const transactions = useSelector(state => state?.transaction?.entries)
     const stocks = useSelector(state => state?.stock?.entries)
     const currentUser = useSelector(state => state?.session?.user);
-    const prices = useSelector(state => state?.portfolio?.entries)
+    const portfolioPrices = useSelector(state => state?.portfolio?.entries)
     const transArr = Object.values(transactions)
     const companies = Object.values(stocks)
-    const priceData = Object.values(prices)
+    const portfolio = Object.values(portfolioPrices)
+    console.log('DIS BESTIES TRANSACVTTIIOOONSNNSSSS', transactions)
 
     useEffect(() => {
         // dispatch(getTransactions(currentUser?.id))
@@ -95,7 +96,7 @@ const Dashboard = () => {
             <div className='portfolio-graph'>
                 <StockChart
                     currentUser={currentUser}
-                    priceData={priceData}
+                    portfolio={portfolio}
                     totalFunds={totalFunds}
                     buyingTotal={buyingTotal}
                 />
