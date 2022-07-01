@@ -91,7 +91,6 @@ const StockChart = ({currentUser, portfolio, totalFunds, buyingTotal}) => {
                     onMouseMove={(e) => lineMouseOver(e?.activePayload && e?.activePayload[0].payload.price)}
                 >
                 <XAxis dataKey="date" hide='true' />
-                {/* <YAxis dataKey="price" domain={['dataMin', 'dataMax']} hide='true' /> */}
                 <YAxis dataKey="price" domain={['dataMin', 'dataMax']} hide='true' />
                 <ReferenceLine y={totalFunds()} stroke="gray" strokeDasharray="3 3" />
                 <Tooltip

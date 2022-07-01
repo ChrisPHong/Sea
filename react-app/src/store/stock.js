@@ -59,7 +59,7 @@ export const getStockPrices = (ticker) => async (dispatch) => {
 }
 
 
-const initialState = { entries: {}, isLoading: true }
+const initialState = { entries: {}, prices: {}, isLoading: true }
 
 
 const stockReducer = ( state = initialState, action ) => {
