@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { NavLink } from 'react-router-dom';
+import { getStockPrices } from '../../store/stock';
 import { getWatchlists } from '../../store/watchlist'
 import { deleteWatchList, getStocksWatchlists } from '../../store/watchlist'
+import { LineChart, Line, XAxis, YAxis } from 'recharts';
 import EditWatchListForm from '../EditWatchListForm'
 import './Watchlist.css';
 
@@ -15,24 +17,24 @@ function WatchlistPage() {
     const watchlists = Object.values(watchlist[0])
     const transactions = useSelector(state => state?.transaction?.entries)
     const transArr = Object.values(transactions)
-    const stocks = useSelector(state => state?.stock?.entries)
-    const companies = Object.values(stocks)
-
-
-    console.log('<<<<<<<< copmanies >>>>>>>>>>>>>>', companies)
+    // const stocks = useSelector(state => state?.stock?.entries)
+    // const companies = Object.values(stocks)
+    const prices = useSelector(state => state?.stock?.prices)
+    const pricesData = Object.values(prices).slice(-7)
+    const [watchlistChartData, setWatchlistChartData] = useState(pricesData)
 
 
 
     const [show, setShow] = useState('hidden')
 
-    const closingPrice = (companyId) => {
-        for (let stock of companies) {
-            if (stock?.id === companyId && stock.prices) {
-                const priceArr = stock.prices
-                return priceArr[priceArr.length - 1]
-            }
-        }
-    }
+    // const closingPrice = (companyId) => {
+    //     for (let stock of companies) {
+    //         if (stock.id === companyId && stock.prices) {
+    //             const priceArr = stock.prices
+    //             return priceArr[priceArr.length - 1]
+    //         }
+    //     }
+    // }
 
     useEffect(() => {
     }, [dispatch]);
@@ -42,6 +44,11 @@ function WatchlistPage() {
         // dispatch(getStocksWatchlists());
     }, [dispatch, show])
 
+    // useEffect(() => {
+    //     for (let watchlist of watchlists) {
+    //         dispatch(getStockPrices(watchlist?.watchComps?.id))
+    //     }
+    // }, [dispatch])
 
     return (
         <div className='watchlists'>
@@ -107,8 +114,26 @@ function WatchlistPage() {
                                             <NavLink className='navLinkStocksWatchlist' to={`/stocks/${company.ticker}`}>
                                                 {company.ticker}
                                             </NavLink>
-                                            <h5>- Stocks Graph Goes Here -</h5>
-                                            <h5>Closing Price: {closingPrice(company.id)}</h5>
+                                            <div className='asset-chart'>
+                                                {/* <LineChart
+                                                    width={200}
+                                                    height={100}
+                                                    data={watchlistChartData}
+                                                >
+                                                    <XAxis dataKey="date" hide='true' />
+                                                    <YAxis dataKey="price" domain={['dataMin', 'dataMax']} hide='true' />
+                                                    <Line
+                                                        type="linear"
+                                                        dataKey="price"
+                                                        stroke="#0b7cee"
+                                                        activeDot={{ r: 5 }}
+                                                        dot={false}
+                                                        strokeWidth={2}
+                                                    />
+                                                </LineChart> */}
+                                                Chart here
+                                            </div>
+                                            {/* <h5>Closing Price: {closingPrice(company.id)}</h5> */}
                                         </div>
                                     )
                                 })}

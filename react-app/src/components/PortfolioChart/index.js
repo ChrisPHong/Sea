@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine } from 'recharts';
 import { getPortfolio } from '../../store/portfolio';
-import './StockChart.css'
+import './PortfolioChart.css'
 
-const StockChart = ({ currentUser, portfolio, totalFunds, buyingTotal }) => {
+const PortfolioChart = ({ currentUser, portfolio, totalFunds, buyingTotal }) => {
     // const transArr = Object.values(transactions)
     const dispatch = useDispatch()
     const [newData, setNewData] = useState(portfolio)
@@ -160,4 +160,4 @@ const StockChart = ({ currentUser, portfolio, totalFunds, buyingTotal }) => {
     )
 }
 
-export default StockChart
+export default PortfolioChart

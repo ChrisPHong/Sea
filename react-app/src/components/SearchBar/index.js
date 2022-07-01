@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { NavLink, Link, useHistory } from 'react-router-dom';
 import { searchStocks } from '../../store/searchbar';
-import { loadOneStock, getOneStock } from '../../store/stock';
+import StockDetails from '../StockDetails';
+import { loadOneStock, getOneStock, getStockPrices } from '../../store/stock';
 import './searchbar.css';
 
 function SearchBar() {
@@ -96,7 +97,7 @@ function SearchBar() {
                                 history.push(`/stocks/${item.split(":")[0]}`)
                             }}
                         >
-                            {/* <NavLink to={`/stocks/${item.split(":")[0]}`}>{item}</NavLink> */}
+                            {/* <span><NavLink to={`/stocks/${item.split(":")[0]}`}>{<StockDetails ticker={item.split(":")[0]}/>}</NavLink></span> */}
                             <p>{item}</p>
                         </div>
                     ))}
