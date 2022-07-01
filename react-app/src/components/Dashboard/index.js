@@ -111,6 +111,7 @@ const Dashboard = () => {
             <div id='info'>
                 <div id='left'>
                     {/* -------------------- OWNED STOCKS -------------------- */}
+                    <h1 className='your-assets-heading'>Your assets</h1>
                     <div className='owned-assets'>
                         {transArr.length ?
                             <table>
