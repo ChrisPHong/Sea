@@ -56,6 +56,7 @@ export const stockTransaction = (payload) => async (dispatch) => {
 
     if (res.ok) {
         const transactionInfo = await res.json()
+        console.log('transact info in STORE', transactionInfo)
         dispatch(buyStock(transactionInfo))
     }
 }

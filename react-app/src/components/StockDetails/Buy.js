@@ -5,6 +5,8 @@ import { stockTransaction } from '../../store/transaction';
 const Buy = ({ user, companyId, ticker, price }) => {
     const dispatch = useDispatch()
     const transactions = useSelector(state => state?.transaction?.entries);
+    const userId = user.id;
+    console.log('USERRRRR', user)
     // console.log(transactions)
     // const stock = useSelector(state => state?.stock?.entries)
 
@@ -21,20 +23,28 @@ const Buy = ({ user, companyId, ticker, price }) => {
         //  price = market price per share
     }
 
+
     const buyStock = async (e) => {
         e.preventDefault();
         setOrder('ordered');
         setBalance((Number(balance) - Number(transactionPrice)).toFixed(2));
         let newBalance = (Number(balance) - Number(transactionPrice)).toFixed(2);
 
+        // console.log('transaction price----', typeof(parseInt(transactionPrice)))
+        // console.log('transaction price----', typeof(user.id))
+        // console.log('transaction price----', typeof(parseInt(sharesBought)))
+        // console.log('transaction price----', typeof(companyId))
+        // console.log('transaction price----', typeof('buy'))
         let newTransaction = {
             user_id: user.id,
-            shares: Number(sharesBought),
-            price: Number(transactionTotal),
+            shares: parseInt(sharesBought),
+            price: parseInt(transactionPrice),
             type: 'buy',
-            company_id: companyId
+            // date: ,
+            company_id: companyId,
             // balance: Number(newBalance)
         }
+        // const payload = { companyId, userId };
         dispatch(stockTransaction(newTransaction))
     }
 
