@@ -5,7 +5,7 @@ import { getTransactions, getAllTransactions } from '../../store/transaction';
 import { getPortfolio } from '../../store/portfolio';
 import WatchlistPage from '../Watchlist'
 import WatchlistForm from '../WatchlistForm';
-import StockChart from '../StockChart';
+import PortfolioChart from '../PortfolioChart';
 import { getGeneralNews } from '../../store/news';
 import MarketNews from '../MarketNews';
 import './Dashboard.css'
@@ -21,7 +21,7 @@ const Dashboard = () => {
     const transArr = Object.values(transactions)
     const companies = Object.values(stocks)
     const newsArr = Object.values(news)
-    // console.log("THIS IS THE STOCKSSSSSS", stocks)
+    console.log("THIS IS THE STOCKSSSSSS", stocks)
     // console.log("THIS IS THE COMPANIESSSSSSSSSSSS", companies)
 
     useEffect(() => {
@@ -47,7 +47,7 @@ const Dashboard = () => {
     // Returns the last price (closing price) in the stock prices array that YOU OWN.
     const closingPrice = (companyId) => {
         for (let stock of companies) {
-            if (stock.id === companyId && stock.prices) {
+            if (stock?.id === companyId && stock.prices) {
                 const priceArr = stock.prices
                 return priceArr[priceArr.length - 1]
             }
@@ -71,7 +71,7 @@ const Dashboard = () => {
     // Find ticker from transaction that matches with the pool of companies in database
     const matchTicker = (companyId) => {
         for (let stock of companies) {
-            if (stock.id === companyId) {
+            if (stock?.id === companyId && stock.prices) {
                 return stock.ticker
             }
         }
@@ -80,7 +80,7 @@ const Dashboard = () => {
     // Find name from transaction that matches with the pool of companies in database
     const matchName = (companyId) => {
         for (let stock of companies) {
-            if (stock.id === companyId) {
+            if (stock?.id === companyId && stock.prices) {
                 return stock.name
             }
         }
@@ -101,7 +101,7 @@ const Dashboard = () => {
         <div id='portfolio-ctn'>
             {/* -------------------- ASSETS GRAPH -------------------- */}
             <div className='portfolio-graph'>
-                <StockChart
+                <PortfolioChart
                     currentUser={currentUser}
                     portfolio={portfolio}
                     totalFunds={totalFunds}
@@ -111,6 +111,7 @@ const Dashboard = () => {
             <div id='info'>
                 <div id='left'>
                     {/* -------------------- OWNED STOCKS -------------------- */}
+                    <h1 className='your-assets-heading'>Your assets</h1>
                     <div className='owned-assets'>
                         {transArr.length ?
                             <table>

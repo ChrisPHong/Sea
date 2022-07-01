@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getOneStock, getStockPrices } from '../../store/stock';
-import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine } from 'recharts';
+import Buy from './Buy';
+import { LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
 import News from '../News'
 import { getCompanyNews } from '../../store/news';
 import './StockDetails.css'
@@ -16,33 +17,45 @@ const StockDetails = () => {
     const stock = useSelector(state => state?.stock?.entries[ticker.toUpperCase()])
     const news = useSelector(state => state?.news?.entries)
     const prices = useSelector(state => state?.stock?.prices)
+    const user = useSelector(state => state.session.user)
     // console.log(prices)
     const pricesData = Object.values(prices)
 
     const watchlist = useSelector((state) => Object.values(state.watchlist));
     const watchlists = Object.values(watchlist[0])
     // console.log(pricesData)
+    console.log("THIS IS THE PRICE DATA IN AN ARRAY", pricesData)
     // console.log('why are prices not rendering', prices)
     // console.log('heres the pricesData that DOESNT WANNA WORK SOMETIMES SMH', pricesData)
 
     const [data, setData] = useState(pricesData)
     const [currPrice, setCurrPrice] = useState(data[data?.length - 1])
 
-    let min = Infinity
-    let max = -Infinity
-    if (stock) {
-        // console.log(stock.prices)
-        for (let i = 0; i < prices?.length; i++) {
-            if (prices[i] < min) {
-                min = prices[i].toFixed(2);
-            }
-            if (stock?.prices[i] > max) {
-                max = prices[i].toFixed(2);
-            }
-        }
+    let stockPrices = []
+
+    for (let i = 0; i < pricesData.length; i++) {
+        stockPrices.push(pricesData[i].price)
     }
-    // console.log(min)
-    // console.log(max)
+
+    console.log(stockPrices)
+
+    const gainOrLoss = [1, -1]
+
+    const gainOrLossRandomElement = gainOrLoss[Math.floor(Math.random().toFixed(2) * gainOrLoss.length)]
+
+    let max = Math.max(...stockPrices).toFixed(2)
+
+    let min = Math.min(...stockPrices).toFixed(2)
+
+    let openPrice = stockPrices[0]
+
+    console.log(openPrice)
+
+    let randomNum = Math.random().toFixed(2)
+
+    console.log("THIS IS MY TEST FOR THE RANDOM NUMBER GENERATOR", randomNum * openPrice)
+
+
     // getting stocks from backend
     useEffect(() => {
         if (stock === undefined) {
@@ -50,33 +63,40 @@ const StockDetails = () => {
             dispatch(getOneStock(ticker))
             dispatch(getStockPrices(ticker))
             dispatch(getWatchlists())
+            // dispatch(getAllTransactions())
+            // dispatch(stockTransaction(transaction))
         }
     }, [dispatch, stock])
 
+    // When the price state, the length of the pricesData array, or the ticker changes,
+    // Set the data to the new pricesData and show the 1W timeframe.
     useEffect(() => {
+        setData(pricesData)
         createData('1w')
-    }, [pricesData?.length])
+    }, [pricesData?.length, prices, ticker])
+
+    console.log('what is data printing again??!?!?!?!?!?!??!?', data)
 
     const createData = (time) => {
         if (time === '1y') {
             setData(pricesData)
-            return data
+            return pricesData
         }
         if (time === '1w') {
             setData(pricesData?.slice(-7))
-            return data
+            return pricesData
         }
         if (time === '1m') {
             setData(pricesData?.slice(-30))
-            return data
+            return pricesData
         }
         if (time === '3m') {
             setData(pricesData?.slice(-90))
-            return data
+            return pricesData
         }
         if (time === '6m') {
             setData(pricesData?.slice(-(Math.floor(pricesData?.length / 2))))
-            return data
+            return pricesData
         }
     }
 
@@ -103,28 +123,31 @@ const StockDetails = () => {
         <div id='stocks-detail-ctn'>
             {/* -------------------- LINE CHART HERE -------------------- */}
             <div className='asset-chart'>
-                <LineChart
-                    width={950}
-                    height={300}
-                    data={data}
-                    onMouseMove={(e) => lineMouseOver(e?.activePayload && e?.activePayload[0].payload.price)}
-                >
-                    <XAxis dataKey="date" hide='true' />
-                    <YAxis dataKey="price" domain={['dataMin', 'dataMax']} hide='true' />
-                    <Tooltip
-                        cursor={false}
-                        content={customTooltip}
-                    />
-                    <Line
-                        type="linear"
-                        dataKey="price"
-                        stroke="#0b7cee"
-                        activeDot={{ r: 5 }}
-                        dot={false}
-                        animationDuration={500}
-                        strokeWidth={2}
-                    />
-                </LineChart>
+                {prices &&
+                <>
+                    <LineChart
+                        width={950}
+                        height={300}
+                        data={data}
+                        onMouseMove={(e) => lineMouseOver(e?.activePayload && e?.activePayload[0].payload.price)}
+                    >
+                        <XAxis dataKey="date" hide='true' />
+                        <YAxis dataKey="price" domain={['dataMin', 'dataMax']} hide='true' />
+                        <Tooltip
+                            cursor={false}
+                            content={customTooltip}
+                        />
+                        <Line
+                            type="linear"
+                            dataKey="price"
+                            stroke="#0b7cee"
+                            activeDot={{ r: 5 }}
+                            dot={false}
+                            animationDuration={500}
+                            strokeWidth={2}
+                        />
+                    </LineChart>
+                </>}
             </div>
             <div className='stock-chart-bottom'>
                 <div className='stock-timeframe'>
@@ -245,7 +268,7 @@ const StockDetails = () => {
                                     Open price
                                 </div>
                                 <div>
-                                    ${stock?.prices?.toFixed(2)}
+                                    ${openPrice}
                                 </div>
                             </div>
                             <div>
@@ -253,7 +276,7 @@ const StockDetails = () => {
                                     Close price
                                 </div>
                                 <div>
-                                    {/* ${stock.prices[stock.prices.length - 1].toFixed(2)} */}
+                                    ${stockPrices[stockPrices.length - 1]}
                                 </div>
                             </div>
                         </div>
@@ -265,6 +288,30 @@ const StockDetails = () => {
                         <News news={news} ticker={ticker} />
                     </div> : <div>Loading</div>}
                 </div>}
+                {/* start of buy sell container */}
+                <div className='fixed-side-container'>
+                    <div className='buy-sell-container'>
+                        <section className="buy-sell">
+                            <div id='tabs'>
+                                <h2>This is the Buy Sell Tab</h2>
+                                {/* <Headers
+                                    titles={titles}
+                                    currentTab={currentTab}
+                                    selectTab={setCurrentTab}
+                                /> */}
+                                <div className="tab-toggle-content">
+                                {prices && <Buy user={user} companyId={stock?.id} ticker={ticker} priceData={data[data.length - 1]} />}
+                                {/* {stock && <Sell user={user} price={lastPrice} shares={userShares} />} */}
+                                {/* {currentTab === 0 && <Buy user={user} priceArr={price} />} */}
+                                {/* {currentTab === 1 && <Sell user={user} price={closePrice} shares={userShares} />} */}
+                                </div>
+                            </div>
+                        </section>
+                        {/* <section className="">
+                            watchlist?
+                        </section> */}
+                    </div>
+                </div>
         </div>
     )
 

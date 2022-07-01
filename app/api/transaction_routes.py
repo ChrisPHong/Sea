@@ -1,8 +1,8 @@
 from flask import Blueprint, request, jsonify
 from flask_login import login_required, current_user, UserMixin
 from app.models import db, Transaction, User
-# from app.forms import TransactionForm
-from datetime import date
+from app.forms import TransactionForm
+from datetime import datetime, timedelta
 import json
 
 from app.models.company import Company
@@ -49,46 +49,25 @@ def get_all_transactions():
     # FORM WILL BE IN THE FRONT END COMPONENT
 # Can we pass in the companyid?
 @transaction_routes.route('/update', methods=['POST'])
+@login_required
 def update_transactions():
-    # form = TransactionForm
-    # if form.validate_on_submit():
-    #     new_transaction = Transaction(
-    #         price=form.data['price'],
-    #         shares=form.data['shares'],
-    #         type=form.data['type'],
-    #         date=date.today(),
-    #         userId=current_user.get_id(),
-    #         companyId=form.data['companyId']
-    #     )
+    form = TransactionForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+    todays_date = datetime.today()
 
-    jsonData = request.get_json()
-    data = jsonData['data']
+    if form.validate_on_submit():
+        transaction = Transaction(
+            price=form.data['price'],
+            shares=form.data['shares'],
+            type=form.data['type'],
+            date=todays_date.strftime('%Y-%m-%d'),
+            user_id=form.data['user_id'],
+            company_id=form.data['company_id']
+        )
+        # user = User.query.filter(User.id == form.data['user_id']).first()
+        # user.balance = form.data['balance']
 
-
-    transaction = Transaction(
-        price=data['price'],
-        shares=data['shares'],
-        type=data['type'],
-        date=date.today(),
-        userId=current_user.get_id(),
-        companyId=data['companyId']
-    )
-
-    transaction_data = {
-        'price':data['price'],
-        'shares':data['shares'],
-        'type':data['type'],
-        'date':date.today(),
-        'userId':current_user.get_id(),
-        'companyId':data['companyId']
-    }
-
-    user = User.query.filter(User.id == data['user_id']).one()
-    user.balance = data['balance']
-    db.session.add(transaction)
-    db.session.add(user)
-    db.sesssion.commit()
-
-    return transaction_data
-        # return new_transaction.to_dict()
-    # return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+        db.session.add(transaction)
+        db.session.commit()
+        return transaction.to_dict()
+    return {'errors': validation_errors_to_error_messages(form.errors)}, 402

@@ -76,10 +76,14 @@ const transactionReducer = ( state = initialState, action ) => {
             action.transactions.forEach(transaction => {newState.entries[transaction.id] = transaction})
             return newState
         case BUY_STOCK:
-            return {
-                ...state,
-                entries: action.transaction
+            console.log('BUY STOCK ACTION-----', action.transaction)
+            newState = {
+                ...state, entries: {
+                    ...state.entries,
+                    [action.transaction.id]: action.transaction
+                }
             }
+            return newState;
         default:
             return state
     }
