@@ -21,13 +21,16 @@ const Dashboard = () => {
     const transArr = Object.values(transactions)
     const companies = Object.values(stocks)
     const newsArr = Object.values(news)
+    console.log("THIS IS THE STOCKSSSSSS", stocks)
+    console.log("THIS IS THE COMPANIESSSSSSSSSSSS", companies)
 
     useEffect(() => {
         // dispatch(getTransactions(currentUser?.id))
-        dispatch(getGeneralNews())
-        dispatch(getAllTransactions())
-        dispatch(getPortfolio({userId: currentUser?.id}))
-        dispatch(getStocks())
+
+            dispatch(getGeneralNews())
+            dispatch(getAllTransactions())
+            dispatch(getPortfolio({ userId: currentUser?.id }))
+            dispatch(getStocks())
 
     }, [dispatch, currentUser])
 

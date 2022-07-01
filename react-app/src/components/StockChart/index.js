@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine } from 'recharts';
 import { getPortfolio } from '../../store/portfolio';
 import './StockChart.css'
 
-const StockChart = ({currentUser, portfolio, totalFunds, buyingTotal}) => {
+const StockChart = ({ currentUser, portfolio, totalFunds, buyingTotal }) => {
     // const transArr = Object.values(transactions)
     const dispatch = useDispatch()
     const [newData, setNewData] = useState(portfolio)
-
+    const stock = useSelector(state => state?.stock)
+    // console.log(" THIS IS THE STOCK CHECKER FOR THE STOCK CHART", stock.prices)
     const [currPrice, setCurrPrice] = useState(newData[newData?.length - 1])
 
     // useEffect(() => {
@@ -54,8 +55,8 @@ const StockChart = ({currentUser, portfolio, totalFunds, buyingTotal}) => {
         if (active && payload && payload.length) {
             return (
                 <div className="custom-tooltip">
-                <p className="tooltip-price">{`$${((payload[0].value)).toFixed(2)}`}</p>
-                <p className="tooltip-date">{label}</p>
+                    <p className="tooltip-price">{`$${((payload[0].value)).toFixed(2)}`}</p>
+                    <p className="tooltip-date">{label}</p>
                 </div>
             );
         }
@@ -71,13 +72,13 @@ const StockChart = ({currentUser, portfolio, totalFunds, buyingTotal}) => {
                 </div>
                 <div className='balance-percent'>
                     {(buyingTotal() > totalFunds()) ?
-                    <div className='all-time-diff' style={{color: 'green'}}>
-                        +${Math.abs((buyingTotal() - totalFunds())).toFixed(2)}
-                    </div>
-                    :
-                    <div className='all-time-diff' style={{color: 'red'}}>
-                        -${Math.abs((buyingTotal() - totalFunds())).toFixed(2)}
-                    </div>
+                        <div className='all-time-diff' style={{ color: 'green' }}>
+                            +${Math.abs((buyingTotal() - totalFunds())).toFixed(2)}
+                        </div>
+                        :
+                        <div className='all-time-diff' style={{ color: 'red' }}>
+                            -${Math.abs((buyingTotal() - totalFunds())).toFixed(2)}
+                        </div>
                     }
                     <div className='all-time'>All time</div>
                 </div>
@@ -90,13 +91,13 @@ const StockChart = ({currentUser, portfolio, totalFunds, buyingTotal}) => {
                     data={newData}
                     onMouseMove={(e) => lineMouseOver(e?.activePayload && e?.activePayload[0].payload.price)}
                 >
-                <XAxis dataKey="date" hide='true' />
-                <YAxis dataKey="price" domain={['dataMin', 'dataMax']} hide='true' />
-                <ReferenceLine y={totalFunds()} stroke="gray" strokeDasharray="3 3" />
-                <Tooltip
-                    cursor={false}
-                    content={customTooltip}
-                />
+                    <XAxis dataKey="date" hide='true' />
+                    <YAxis dataKey="price" domain={['dataMin', 'dataMax']} hide='true' />
+                    <ReferenceLine y={totalFunds()} stroke="gray" strokeDasharray="3 3" />
+                    <Tooltip
+                        cursor={false}
+                        content={customTooltip}
+                    />
                     <Line
                         type="linear"
                         dataKey="price"
@@ -117,7 +118,7 @@ const StockChart = ({currentUser, portfolio, totalFunds, buyingTotal}) => {
                         <button
                             value='1w'
                             onClick={e => createData(e.target.value)}
-                            >
+                        >
                             1W
                         </button>
                     </span>
@@ -125,7 +126,7 @@ const StockChart = ({currentUser, portfolio, totalFunds, buyingTotal}) => {
                         <button
                             value='1m'
                             onClick={e => createData(e.target.value)}
-                            >
+                        >
                             1M
                         </button>
                     </span>
@@ -133,7 +134,7 @@ const StockChart = ({currentUser, portfolio, totalFunds, buyingTotal}) => {
                         <button
                             value='3m'
                             onClick={e => createData(e.target.value)}
-                            >
+                        >
                             3M
                         </button>
                     </span>
@@ -141,7 +142,7 @@ const StockChart = ({currentUser, portfolio, totalFunds, buyingTotal}) => {
                         <button
                             value='6m'
                             onClick={e => createData(e.target.value)}
-                            >
+                        >
                             6M
                         </button>
                     </span>
@@ -149,7 +150,7 @@ const StockChart = ({currentUser, portfolio, totalFunds, buyingTotal}) => {
                         <button
                             value='1y'
                             onClick={e => createData(e.target.value)}
-                            >
+                        >
                             1Y
                         </button>
                     </span>
