@@ -56,14 +56,14 @@ def update_transactions():
 
     # jsonData = request.get_json()
     # data = jsonData['data']
-    print(form.data['price'])
-    print(form.data['shares'])
-    print(form.data['type'])
-    # print(form.data['date']) # None
+    print('price:', form.data['price'])
+    print('shares:', form.data['shares'])
+    print('type:', form.data['type'])
+    print('date:', form.data['date']) # None
     # print(strftime(datetime.today()))
     #  strf
-    print(request.json['user_id'] == 1)
-    print(form.data['company_id'] == 4)
+    print('userId:', request.json['user_id'])
+    print('companyId:', form.data['company_id'])
     print('Hi from backend------')
 
     # new_date = datetime.now()

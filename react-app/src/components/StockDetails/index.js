@@ -280,7 +280,7 @@ const StockDetails = () => {
                                     selectTab={setCurrentTab}
                                 /> */}
                                 <div className="tab-toggle-content">
-                                {prices && <Buy user={user} companyId={stock?.id} ticker={ticker} price={data[data.length - 1]?.price} />}
+                                {prices && <Buy user={user} companyId={stock?.id} ticker={ticker} priceData={data[data.length - 1]} />}
                                 {/* {stock && <Sell user={user} price={lastPrice} shares={userShares} />} */}
                                 {/* {currentTab === 0 && <Buy user={user} priceArr={price} />} */}
                                 {/* {currentTab === 1 && <Sell user={user} price={closePrice} shares={userShares} />} */}
