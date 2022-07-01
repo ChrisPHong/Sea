@@ -1,0 +1,75 @@
+#stocks-detail-ctn {
+    padding-top: 70px;
+}
+.stock-chart-bottom {
+    display: flex;
+    justify-content: center;
+    width: auto;
+    border-bottom: 1px solid lightgray;
+    padding-bottom: 40px;
+}
+
+.balance-info {
+    width: 800px;
+    height: 100px;
+}
+
+.balance-amt {
+    font-size: 26pt;
+    font-weight: 600;
+    padding: 5px 0;
+}
+
+.balance-percent {
+    display: flex;
+}
+
+.all-time {
+    padding-left: 5px;
+}
+
+.asset-chart {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-tooltip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid lightgray;
+    padding: 10px 20px;
+    border-radius: 7px;
+}
+
+.tooltip-price {
+    padding-bottom: 5px;
+    font-weight: 600;
+    font-size: 14pt;
+}
+
+.tooltip-date {
+    font-size: 10pt;
+}
+
+.asset-bottom {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 800px;
+    height: 50px;
+    justify-content: space-between;
+}
+
+
+.asset-timeframe {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 10pt;
+}
+
+.asset-timeframe span {
+    width: 50px;
+}

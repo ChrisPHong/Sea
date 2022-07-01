@@ -6,6 +6,7 @@ import stockReducer from './stock';
 import watchlistReducer from './watchlist';
 import searchReducer from './searchbar';
 import newsReducer from './news';
+import portfolioReducer from './portfolio';
 
 const rootReducer = combineReducers({
   session,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   watchlist: watchlistReducer,
   search: searchReducer,
   news: newsReducer,
+  portfolio: portfolioReducer,
 });
 
 
