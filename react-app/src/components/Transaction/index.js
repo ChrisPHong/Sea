@@ -29,7 +29,7 @@ function TransactionPage() {
     // Find ticker from transaction that matches with the pool of companies in database
     const matchTicker = (companyId) => {
         for (let stock of companiesArr) {
-            if (stock.id === companyId) {
+            if (stock?.id === companyId) {
                 return stock.ticker
             }
         }

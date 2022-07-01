@@ -71,7 +71,7 @@ const Dashboard = () => {
     // Find ticker from transaction that matches with the pool of companies in database
     const matchTicker = (companyId) => {
         for (let stock of companies) {
-            if (stock.id === companyId && stock.prices) {
+            if (stock?.id === companyId && stock.prices) {
                 return stock.ticker
             }
         }
@@ -80,7 +80,7 @@ const Dashboard = () => {
     // Find name from transaction that matches with the pool of companies in database
     const matchName = (companyId) => {
         for (let stock of companies) {
-            if (stock && stock.id === companyId && stock.prices) {
+            if (stock?.id === companyId && stock.prices) {
                 return stock.name
             }
         }
