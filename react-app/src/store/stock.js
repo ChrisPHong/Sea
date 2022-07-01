@@ -76,7 +76,7 @@ const stockReducer = (state = initialState, action) => {
         case LOAD_ONE_STOCK:
             newState = { ...state, entries: { ...state.entries } }
             newState.entries[action.stock.ticker] = action.stock
-            console.log('in LOAD ONE STOCK REDUCER', action.stock)
+            // console.log('in LOAD ONE STOCK REDUCER', action.stock)
             return newState
         case LOAD_STOCK_PRICES:
             newState = { ...state, entries: { ...state.entries }, prices: { ...state.prices } }

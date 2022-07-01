@@ -1,24 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
-import { NavLink } from 'react-router-dom';
-import { getWatchlists } from '../../store/watchlist'
-import { deleteWatchList, createStockWatchlists } from '../../store/watchlist'
-import EditWatchListForm from '../EditWatchListForm'
-import './Watchlist.css';
+import { createStockWatchlists } from '../../store/watchlist'
+import './CompanyWatchlistForm.css';
 
 
 
-function CompanyWatchlistForm() {
+function CompanyWatchlistForm(props) {
     const dispatch = useDispatch();
-    const watchlist = useSelector((state) => Object.values(state.watchlist));
     const state = useSelector((state) => state);
-    const watchlists = Object.values(watchlist[0])
     const transactions = useSelector(state => state?.transaction?.entries)
     const transArr = Object.values(transactions)
     const stocks = useSelector(state => state?.stock?.entries)
     const companies = Object.values(stocks)
-
-
+    const watchlists = props.props
 
 
     const [value, setValue] = useState('')
@@ -28,43 +22,51 @@ function CompanyWatchlistForm() {
     }, [dispatch]);
 
     const onSubmit = async (e) => {
-        e.preventDefault();
-        if (errors.length === 0) {
-            const payload = {
-
-            }
-            await dispatch(createStockWatchlists(payload))
-
+        e.preventDefault()
+        const payload = {
+            value
         }
+        console.log(payload)
+        // await dispatch(createStockWatchlists(payload))
 
     }
 
+    const getWatchList = (watchlist) =>{
+        console.log(watchlist, '<<<<<<<<<<<<<<<<<')
+        let value = watchlist.value;
+        setValue(value)
+        return value
+      }
+
 
     return (
-        <div className='watchlists'>
+        <div className='CompanyWatchlistDiv'>
+            <h3> Add This Stock To A Watchlist</h3>
             <form className='CompanyWatchlistForm' onSubmit={onSubmit}>
-                <select name='WathlistNames'></select>
-
-                <select name="pets" id="pet-select">
-    <option value="">--Please choose an option--</option>
-    <option value="dog">Dog</option>
-    <option value="cat">Cat</option>
-    <option value="hamster">Hamster</option>
-    <option value="parrot">Parrot</option>
-    <option value="spider">Spider</option>
-    <option value="goldfish">Goldfish</option>
-</select>
-
+                <select name='WathlistNames'  onChange={getWatchList}>
+                    {watchlists.map(watchlist => {
+                        return <option value={watchlist.name}>{watchlist.name}</option>
+                        // onChange={setValue(value)}
+                        // <option value="cat">Cat</option>
+                        // <option value="hamster">Hamster</option>
+                        // <option value="parrot">Parrot</option>
+                        // <option value="spider">Spider</option>
+                        // <option value="goldfish">Goldfish</option>
+                    })
+                    }
+                </select>
+                <button
+                type='submit'
+                    // onClick={(e) => {
+                    //     // e.target.value
+                    //     // const watchlistId = watchlist.id
+                    //     // const payload = { watchlistId: watchlistId, ticker: 'TSLA' }
+                    //     // dispatch(createStockWatchlists(payload))
+                    // }}
+                    >
+                    Submit
+                </button>
             </form>
-                                    <button
-                                    onClick={(e)=>{
-                                        // e.target.value
-                                        const watchlistId = watchlist.id
-                                        const payload = {watchlistId: watchlistId, ticker:'TSLA'}
-                                        dispatch(createStockWatchlists(payload))
-                                    }}>
-                                        hi
-                                    </button>
 
         </div >
     )

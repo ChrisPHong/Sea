@@ -10,8 +10,8 @@ import './Watchlist.css';
 
 function WatchlistPage() {
     const dispatch = useDispatch();
-    const watchlist = useSelector((state) => Object.values(state.watchlist));
     const state = useSelector((state) => state);
+    const watchlist = useSelector((state) => Object.values(state.watchlist));
     const watchlists = Object.values(watchlist[0])
     const transactions = useSelector(state => state?.transaction?.entries)
     const transArr = Object.values(transactions)
