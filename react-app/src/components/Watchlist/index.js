@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { NavLink } from 'react-router-dom';
 import { getStockPrices } from '../../store/stock';
 import { getWatchlists } from '../../store/watchlist'
-import { deleteWatchList, createStockWatchlists } from '../../store/watchlist'
+import { deleteWatchList, deleteStockWatchlists } from '../../store/watchlist'
 import { LineChart, Line, XAxis, YAxis } from 'recharts';
 import EditWatchListForm from '../EditWatchListForm'
 import './Watchlist.css';
@@ -115,6 +115,17 @@ function WatchlistPage() {
                                             <NavLink className='navLinkStocksWatchlist' to={`/stocks/${company.ticker}`}>
                                                 {company.ticker}
                                             </NavLink>
+                                            <button className='deleteButton'
+                                            onClick={async (e)=>{
+                                                const payload = {
+                                                    watchlistId: watchlist.id,
+                                                    ticker: company.ticker
+                                                }
+
+                                                await dispatch(deleteStockWatchlists(payload))
+                                                await dispatch(getWatchlists())
+                                            }}
+                                            ><img className='deletePicture' src={'https://www.iconpacks.net/icons/1/free-trash-icon-347-thumb.png'} /></button>
                                             <div className='asset-chart'>
                                                 {/* <LineChart
                                                     width={200}
@@ -132,7 +143,7 @@ function WatchlistPage() {
                                                         strokeWidth={2}
                                                     />
                                                 </LineChart> */}
-                                                Chart here
+
                                             </div>
                                             {/* <h5>Closing Price: {closingPrice(company.id)}</h5> */}
                                         </div>
