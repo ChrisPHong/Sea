@@ -5,3 +5,26 @@
 
 
 }
+
+.WatchListCompanyButton{
+    border: none;
+    background-color: transparent;
+    font-family: sans-serif;
+    border-bottom: 1px solid;
+    border-top: 1px solid;
+    transition-duration: 1s;
+    padding: 13px 20px;
+    border-radius: 5px 5px;
+    margin: 6px 10px;
+}
+
+.WatchListCompanyButton:hover{
+    border: none;
+    border-bottom: 1px solid;
+    border-top: 1px solid;
+    background-color: transparent;
+    font-family: sans-serif;
+    box-shadow: 0px 0px 8px rgb(92, 91, 91, .8);
+
+
+}
