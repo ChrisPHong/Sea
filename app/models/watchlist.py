@@ -36,5 +36,5 @@ class Watchlist(db.Model):
             'id': self.id,
             'name': self.name,
             'userId': self.user_id,
-            'watchComps': [watch_comp.to_dict_relationship() for watch_comp in self.watch_comps]
+            'watchComps': [watch_comp.to_dict() for watch_comp in self.watch_comps]
         }

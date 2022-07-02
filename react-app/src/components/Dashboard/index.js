@@ -22,7 +22,6 @@ const Dashboard = () => {
     const transArr = Object.values(transactions)
     const portfolio = Object.values(portfolioPrices)
     const newsArr = Object.values(news)
-
     const options = { style: 'currency', currency: 'USD' };
     const currencyFormat = new Intl.NumberFormat('en-US', options);
 
