@@ -75,31 +75,43 @@ def delete_watchlists(id):
 @watchlist_routes.route('/<int:id>/add', methods=['POST'])
 @login_required
 def post_company_watchlists(id):
-    # payload = request.json['payload']
-    # print('----------- payload in backend ----------------', payload)
-    ticker = request.json['ticker']
-    # id = request.json['payload'].watchlistId
-    print('<<<<<<<<<<< ticker >>>>>>>', ticker)
-    print('<<<<<<<<<<< id >>>>>>>', id)
 
+    ticker = request.json['ticker']
 
     watchlist = Watchlist.query.filter(Watchlist.id == id).first()
     stock = Company.query.filter(Company.ticker == ticker.upper()).first()
 
     watchlist.watch_comps.append(stock)
-    print('<<<<<<<<<< watchlist >>>>>>>>>>>>>>', watchlist)
-    print('<<<<<<<<<< stock >>>>>>>>>>>>>>', stock)
 
-    # db.session.add(new_company_watchlist)
     db.session.commit()
-    watchlists = Watchlist.query.filter(Watchlist.user_id == current_user.get_id()).all()
-    # print('<<<<<<<<<< watchlists >>>>>>>>>', [watchlist.to_dict() for watchlist in watchlists])
-    return jsonify([watchlist.to_dict() for watchlist in watchlists])
     return "Added company to watchlist"
 
-    # Seed Data example
-    #     name="Tech",
-    #     user_id=1,
-    #     watch_comps = tech_companies
+@watchlist_routes.route('/<int:id>/delete', methods=['PATCH'])
+@login_required
+def delete_company_watchlists(id):
 
-    # return {'errors': validation_errors_to_error_messages(form.errors)}
+    ticker = request.json['ticker']
+    # Selecting the specific watchlist and specific stock
+    watchlist = Watchlist.query.filter(Watchlist.id == id).first()
+    stock = Company.query.filter(Company.ticker == ticker.upper()).first()
+
+# I think you can find the company and then find the index of the company and then remove it from the list
+
+    # Finding that specific company within the watch_comps and then removing it from the list
+    # joint_table = watchlist.watch_comps
+    print('<<<<<<<<<<<< BEFORE DELETE >>>>>>>>>>>>>')
+    the_list = [company for company in watchlist.watch_comps if company.id == stock.id]
+    print('<<<<<<<<<<<< THE LIST >>>>>>>>>>>>>> ', the_list[0])
+    # found_company = [company.to_dict() for company in joint_table if company.id == stock.id]
+    # print(found_company)
+    # index = joint_table.index(found_company)
+    # print('<<<<<<<<<<<< output for joint_table>>>>>>>>>>>>>', [company for company in joint_table if company.id == stock.id])
+    # print('<<<<<<<<<<<< index >>>>>>>>>>>>>', index)
+
+    watchlist.watch_comps.remove(([company for company in watchlist.watch_comps if company.id == stock.id][0]))
+
+    print('<<<<<<<<<<<< AFTER DELETE >>>>>>>>>>>>>', watchlist.watch_comps)
+
+    db.session.commit()
+    watchlists = Watchlist.query.filter(Watchlist.user_id == current_user.get_id()).all()
+    return jsonify([watchlist.to_dict() for watchlist in watchlists])
