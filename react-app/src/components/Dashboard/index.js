@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getStockPrices, getStocks } from '../../store/stock';
 import { getTransactions, getAllTransactions } from '../../store/transaction';
@@ -22,8 +22,7 @@ const Dashboard = () => {
     const transArr = Object.values(transactions)
     const portfolio = Object.values(portfolioPrices)
     const newsArr = Object.values(news)
-    const ownedStockPricesArr = Object.values(ownedStockPrices)
-    console.log('WAIT DID THIS ACTUALLY WORK?!?!?!?', ownedStockPricesArr)
+    const initialPriceArr = Object.values(ownedStockPrices)
 
     useEffect(() => {
         // dispatch(getTransactions(currentUser?.id))
