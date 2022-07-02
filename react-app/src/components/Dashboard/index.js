@@ -12,37 +12,39 @@ import './Dashboard.css'
 
 const Dashboard = () => {
     const dispatch = useDispatch()
-    const transactions = useSelector(state => state?.transaction?.entries)
-    const stocks = useSelector(state => state?.stock?.entries)
     const currentUser = useSelector(state => state?.session?.user);
+    const stocks = useSelector(state => state?.stock?.entries)
+    const transactions = useSelector(state => state?.transaction?.entries)
     const portfolioPrices = useSelector(state => state?.portfolio?.entries)
-    const portfolio = Object.values(portfolioPrices)
     const news = useSelector(state => state?.news?.entries)
-    const transArr = Object.values(transactions)
+    const ownedStockPrices = useSelector(state => state?.stock?.prices)
     const companies = Object.values(stocks)
+    const transArr = Object.values(transactions)
+    const portfolio = Object.values(portfolioPrices)
     const newsArr = Object.values(news)
-    console.log("THIS IS THE STOCKSSSSSS", stocks)
-    // console.log("THIS IS THE COMPANIESSSSSSSSSSSS", companies)
+    const ownedStockPricesArr = Object.values(ownedStockPrices)
+    console.log('WAIT DID THIS ACTUALLY WORK?!?!?!?', ownedStockPricesArr)
 
     useEffect(() => {
         // dispatch(getTransactions(currentUser?.id))
 
-            dispatch(getGeneralNews())
-            dispatch(getAllTransactions())
-            dispatch(getPortfolio({ userId: currentUser?.id }))
-            dispatch(getStocks())
+        dispatch(getGeneralNews())
+        dispatch(getAllTransactions())
+        dispatch(getPortfolio({ userId: currentUser?.id }))
+        dispatch(getStocks())
 
     }, [dispatch, currentUser])
 
-
-
-    // // Prices update every 30 seconds
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //         dispatch(getOwnedWeeklyPrices(currentUser?.id))
-    //     }, 30000)
-    //     return () => clearInterval(interval);
-    // })
+    // UPDATE THIS: Currently trying to iterate through each owned company in transaction array
+    // If owned, dispatch to get the stock prices of the company by providing the companyId
+    // OKAY THIS ACTUALLY WORKS, BUT NOW WE NEED TO FIGURE OUT HOW TO GRAB THE CORRECT PRICES ARRAY AND MATCH IT TO ITS CORRESPONDING COMPANY
+    useEffect(() => {
+        for (let transaction of transArr) {
+            if (transaction.type === 'buy') {
+                dispatch(getStockPrices(transaction?.companyId))
+            }
+        }
+    }, [dispatch])
 
     // Returns the last price (closing price) in the stock prices array that YOU OWN.
     const closingPrice = (companyId) => {
@@ -71,7 +73,7 @@ const Dashboard = () => {
     // Find ticker from transaction that matches with the pool of companies in database
     const matchTicker = (companyId) => {
         for (let stock of companies) {
-            if (stock?.id === companyId && stock.prices) {
+            if (stock?.id === companyId) {
                 return stock.ticker
             }
         }
@@ -80,7 +82,7 @@ const Dashboard = () => {
     // Find name from transaction that matches with the pool of companies in database
     const matchName = (companyId) => {
         for (let stock of companies) {
-            if (stock?.id === companyId && stock.prices) {
+            if (stock?.id === companyId) {
                 return stock.name
             }
         }
@@ -90,15 +92,16 @@ const Dashboard = () => {
     const totalFunds = () => {
         let total = 0
         for (let transaction of transArr) {
-            if (transaction.type === 'buy') {
+            if (transaction?.type === 'buy') {
                 total += transaction.price * transaction.shares
             }
         }
-        return total
+        return total.toLocaleString('en-US')
     }
 
     return (
         <div id='portfolio-ctn'>
+            <h1 className='your-assets-heading'>Your assets</h1>
             {/* -------------------- ASSETS GRAPH -------------------- */}
             <div className='portfolio-graph'>
                 <PortfolioChart
@@ -111,7 +114,6 @@ const Dashboard = () => {
             <div id='info'>
                 <div id='left'>
                     {/* -------------------- OWNED STOCKS -------------------- */}
-                    <h1 className='your-assets-heading'>Your assets</h1>
                     <div className='owned-assets'>
                         {transArr.length ?
                             <table>
@@ -124,7 +126,7 @@ const Dashboard = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {transArr.map(transaction => (
+                                    {stocks && transArr.map(transaction => (
                                         transaction.type === 'buy' && transaction.userId === currentUser.id ?
                                             <tr key={transaction.id}>
                                                 {/* -------------------- COMPANY SECTION -------------------- */}
@@ -138,7 +140,7 @@ const Dashboard = () => {
                                                 </td>
                                                 {/* -------------------- BALANCE SECTION -------------------- */}
                                                 <td className='owned-balance'>
-                                                    <div className='owned-balance-price'>${(((transaction.price * transaction.shares) + transaction.shares * (closingPrice(transaction.companyId) - transaction.price)) * transaction.shares).toFixed(2)}</div>
+                                                    <div className='owned-balance-price'>${(((transaction.price * transaction.shares) + transaction.shares * (closingPrice(transaction?.companyId) - transaction.price)) * transaction.shares).toFixed(2)}</div>
                                                     <div className='owned-comp-shares'>{transaction.shares}</div>
                                                 </td>
                                                 {/* -------------------- PRICE SECTION -------------------- */}

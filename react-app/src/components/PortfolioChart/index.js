@@ -73,7 +73,7 @@ const PortfolioChart = ({ currentUser, portfolio, totalFunds, buyingTotal }) => 
                 <div className='balance-percent'>
                     {(buyingTotal() > totalFunds()) ?
                         <div className='all-time-diff' style={{ color: 'green' }}>
-                            +${Math.abs((buyingTotal() - totalFunds())).toFixed(2)}
+                            +${(Math.abs((buyingTotal() - totalFunds())).toFixed(2)).toLocaleString('en-US')}
                         </div>
                         :
                         <div className='all-time-diff' style={{ color: 'red' }}>
@@ -111,7 +111,7 @@ const PortfolioChart = ({ currentUser, portfolio, totalFunds, buyingTotal }) => 
             </div>
             <div className='asset-bottom'>
                 <div className='buying-power'>
-                    Buying power: ${currentUser.balance}
+                    Buying power: ${(currentUser.balance).toLocaleString('en-US')}
                 </div>
                 <div className='asset-timeframe'>
                     <span className='weekly'>

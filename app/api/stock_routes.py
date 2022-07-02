@@ -18,10 +18,11 @@ def get_all_stocks():
     # print(companies, '<<<<<<<<<<<<<<<<< COMPANIES >>>>>>>>>>>>')
     return jsonify([company.to_dict() for company in companies])
 
-@stock_routes.route('/<ticker>/prices', methods=['POST'])
-def get_stock_prices(ticker):
+@stock_routes.route('/<company_id>/prices', methods=['POST'])
+def get_stock_prices(company_id):
+    print('WHAT IS THIS COMPANY ID WE ARE RECEIVING FROM FRONT END', company_id)
     one_year_data = datetime.today() - timedelta(days=365)
-    stock = Company.query.filter(Company.ticker == ticker.upper()).first()
+    stock = Company.query.filter(Company.id == company_id).first()
     stock_prices = make_stock_price(stock.base_price, choice([ASCENDING, DESCENDING]))
 
     # For each price in stock_prices
