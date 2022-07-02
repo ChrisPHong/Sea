@@ -50,13 +50,14 @@ def get_purchased_shares(id, user_id):
 def make_portfolio():
     # timeframe = request.json['timeframe']
     user_id = request.json['userId']
+    current_balance = request.json['currentBalance']
 
     # Get all companies that the user has bought
     owned_companies = Company.query.filter(Company.id == Transaction.company_id, Transaction.user_id == int(user_id), Transaction.type == "buy").all()
 
     summed_prices_data = []
     summed_price = [0] * 365 # [0 , 0 ,,0 , 0 ,0 ,0 ,0 ]
-    days_365 = datetime.today() - timedelta(days=365)
+    days_365 = datetime.today() - timedelta(days=364)
 
     # For every company that the user owns,
     for idx in range(len(owned_companies)):
@@ -83,4 +84,5 @@ def make_portfolio():
         days_365 = new_date
         summed_prices_data.append({'date': days_365.strftime("%b %d %Y"), 'price': summed_price[i]})
 
+    summed_prices_data.append({'date': datetime.today().strftime("%b %d %Y"), 'price': current_balance})
     return jsonify(summed_prices_data)

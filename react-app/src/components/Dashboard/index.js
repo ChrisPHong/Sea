@@ -31,7 +31,7 @@ const Dashboard = () => {
 
         dispatch(getGeneralNews())
         dispatch(getAllTransactions())
-        dispatch(getPortfolio({ userId: currentUser?.id }))
+        dispatch(getPortfolio({ userId: currentUser?.id, currentBalance: totalBalance() }))
         dispatch(getStocks())
 
     }, [dispatch, currentUser])
@@ -51,7 +51,9 @@ const Dashboard = () => {
     const closingPrice = (companyId) => {
         for (let compId in assetPrices) {
             if (parseInt(compId) === companyId) {
-                return assetPrices[compId].length - 1
+                // console.log('here is the assetPrices being returned hopefully its all different', assetPrices[compId].length - 1)
+                let pricesArr = assetPrices[compId]
+                return pricesArr[pricesArr.length - 1].price
             }
         }
     }
@@ -61,6 +63,8 @@ const Dashboard = () => {
         let total = 0
         for (let transaction of transArr) {
             if (transaction.type === 'buy') {
+                // console.log('this is the transArr', transArr)
+                // console.log('this is what were adding to the total', closingPrice(transaction.companyId) * transaction.shares)
                 total += closingPrice(transaction.companyId) * transaction.shares
             }
             // } else if (transaction.type === 'sell') {
@@ -97,6 +101,18 @@ const Dashboard = () => {
             }
         }
         return total.toLocaleString('en-US')
+    }
+
+    const totalBalance = () => {
+        let topBalance = 0
+        for (let transaction of transArr) {
+            if (transaction?.type === 'buy') {
+                // (146.23 * 1) + (1 * 364) - 146.23
+                topBalance += transaction.shares * (closingPrice(transaction?.companyId))
+            }
+        }
+        console.log('what is this number', topBalance)
+        return topBalance
     }
 
     return (
