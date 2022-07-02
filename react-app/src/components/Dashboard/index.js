@@ -156,7 +156,7 @@ const Dashboard = () => {
                                                 </td>
                                                 {/* -------------------- BALANCE SECTION -------------------- */}
                                                 <td className='owned-balance'>
-                                                    <div className='owned-balance-price'>{currencyFormat.format(((transaction?.price * transaction?.shares) + transaction?.shares * (closingPrice(transaction?.companyId) - transaction?.price)) * transaction?.shares)}</div>
+                                                    <div className='owned-balance-price'>{currencyFormat.format(transaction?.shares * closingPrice(transaction?.companyId))}</div>
                                                     <div className='owned-comp-shares'>{transaction.shares}</div>
                                                 </td>
                                                 {/* -------------------- PRICE SECTION -------------------- */}
