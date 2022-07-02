@@ -161,7 +161,7 @@ const Dashboard = () => {
                                                 </td>
                                                 {/* -------------------- PRICE SECTION -------------------- */}
                                                 <td className='owned-comp-price'>
-                                                    <div className='curr-comp-price'>{currencyFormat.format((transaction.price * transaction.shares) + transaction.shares * (closingPrice(transaction.companyId) - transaction.price))}</div>
+                                                    <div className='curr-comp-price'>{currencyFormat.format(closingPrice(transaction.companyId))}</div>
                                                     {(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2) >= 0 ?
                                                         <div className='curr-comp-percent' style={{ color: 'green' }}>+{(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>
                                                         :
