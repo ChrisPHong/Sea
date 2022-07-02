@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {stockTransaction } from '../../store/transaction';
 
-const Sell = ({ user, ticker, price, shares }) => {
+const Sell = ({ user, ticker, companyId, priceData, shares }) => {
     const dispatch = useDispatch();
     const [userShares, setUserShares] = useState(shares);
     const [transactionPrice, setTransactionPrice] = useState((0).toFixed(2));
@@ -12,8 +12,22 @@ const Sell = ({ user, ticker, price, shares }) => {
 
     const transactionTotal = e => {
         setSharesSold(e.target.value);
-        setTransactionPrice((e.target.value * price).toFixed(2));
+        setTransactionPrice((e.target.value * (priceData.price)).toFixed(2));
         //  price = market price per share
+    }
+
+    const convertDate = date => {
+        const dates = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        const newDate = date.split(' ')
+        let newMonth
+        for (let i in dates) {
+            if (newDate[0] === dates[i]) {
+                newMonth = i
+            }
+
+        }
+        const result = new Date(`${newMonth}-${parseInt(newDate[1])}-${parseInt(newDate[2])}`)
+        return result.toDateString()
     }
 
     const sellStock = async (e) => {
@@ -23,27 +37,28 @@ const Sell = ({ user, ticker, price, shares }) => {
         setBalance((Number(balance) + Number(transactionPrice)).toFixed(2));
         let newBalance = (Number(balance) + Number(transactionPrice)).toFixed(2);
 
-            let newTransaction = {
-                user_id: user.id,
-                shares: Number(-sharesSold),
-                price: Number(transactionTotal),
-                type: 'sell',
-                balance: Number(newBalance)
-            }
-            dispatch(stockTransaction(newTransaction))
+        let newTransaction = {
+            price: Number(transactionTotal),
+            shares: Number(-sharesSold),
+            type: 'sell',
+            user_id: user.id,
+            company_id: companyId,
+            // balance: Number(newBalance)
+        }
+        dispatch(stockTransaction(newTransaction))
     }
 
     if (sellStock) {
         setTimeout(() => {
             setOrder('sell')
-        }, 3000)
+        }, 3500)
     }
 
     return (
         <div>
             <form onSubmit={sellStock}>
                 <div className='transaction-box'>
-                    <div className='transaction-labels' id='buy-label'>Type: Buy</div>
+                    <div className='transaction-labels' id='buy-label'>Type: Sell</div>
                     <div className='transaction-labels'>Shares</div>
                     <select name="shares" id="shares" onChange={transactionTotal} value={sharesSold}>
                         <option value=""></option>
@@ -62,7 +77,7 @@ const Sell = ({ user, ticker, price, shares }) => {
                 <div className='transaction-info'>
                     <div className='transaction-labels'>Market Price</div>
                     <div id='transaction-stock-price'>
-                        ${price}
+                        ${priceData?.price}
                     </div>
                 </div>
                 <hr />
