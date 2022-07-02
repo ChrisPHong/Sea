@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getStockPrices, getStocks } from '../../store/stock';
 import { getTransactions, getAllTransactions } from '../../store/transaction';
-import { getPortfolio } from '../../store/portfolio';
+import { getPortfolio, getAssetPrices } from '../../store/portfolio';
 import WatchlistPage from '../Watchlist'
 import WatchlistForm from '../WatchlistForm';
 import PortfolioChart from '../PortfolioChart';
@@ -17,12 +17,14 @@ const Dashboard = () => {
     const transactions = useSelector(state => state?.transaction?.entries)
     const portfolioPrices = useSelector(state => state?.portfolio?.entries)
     const news = useSelector(state => state?.news?.entries)
-    const ownedStockPrices = useSelector(state => state?.stock?.prices)
+    const assetPrices = useSelector(state => state?.portfolio?.prices)
     const companies = Object.values(stocks)
     const transArr = Object.values(transactions)
     const portfolio = Object.values(portfolioPrices)
     const newsArr = Object.values(news)
-    const initialPriceArr = Object.values(ownedStockPrices)
+
+    const options = { style: 'currency', currency: 'USD' };
+    const currencyFormat = new Intl.NumberFormat('en-US', options);
 
     useEffect(() => {
         // dispatch(getTransactions(currentUser?.id))
@@ -40,17 +42,16 @@ const Dashboard = () => {
     useEffect(() => {
         for (let transaction of transArr) {
             if (transaction.type === 'buy') {
-                dispatch(getStockPrices(transaction?.companyId))
+                dispatch(getAssetPrices(transaction?.companyId))
             }
         }
-    }, [dispatch])
+    }, [dispatch, currentUser])
 
     // Returns the last price (closing price) in the stock prices array that YOU OWN.
     const closingPrice = (companyId) => {
-        for (let stock of companies) {
-            if (stock?.id === companyId && stock.prices) {
-                const priceArr = stock.prices
-                return priceArr[priceArr.length - 1]
+        for (let compId in assetPrices) {
+            if (parseInt(compId) === companyId) {
+                return assetPrices[compId].length - 1
             }
         }
     }
@@ -139,12 +140,12 @@ const Dashboard = () => {
                                                 </td>
                                                 {/* -------------------- BALANCE SECTION -------------------- */}
                                                 <td className='owned-balance'>
-                                                    <div className='owned-balance-price'>${(((transaction.price * transaction.shares) + transaction.shares * (closingPrice(transaction?.companyId) - transaction.price)) * transaction.shares).toFixed(2)}</div>
+                                                    <div className='owned-balance-price'>{currencyFormat.format(((transaction?.price * transaction?.shares) + transaction?.shares * (closingPrice(transaction?.companyId) - transaction?.price)) * transaction?.shares)}</div>
                                                     <div className='owned-comp-shares'>{transaction.shares}</div>
                                                 </td>
                                                 {/* -------------------- PRICE SECTION -------------------- */}
                                                 <td className='owned-comp-price'>
-                                                    <div className='curr-comp-price'>${((transaction.price * transaction.shares) + transaction.shares * (closingPrice(transaction.companyId) - transaction.price)).toFixed(2)}</div>
+                                                    <div className='curr-comp-price'>{currencyFormat.format((transaction.price * transaction.shares) + transaction.shares * (closingPrice(transaction.companyId) - transaction.price))}</div>
                                                     {(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2) >= 0 ?
                                                         <div className='curr-comp-percent' style={{ color: 'green' }}>+{(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>
                                                         :

@@ -8,7 +8,11 @@ export const loadPortfolio = (portfolio) => {
     }
 }
 
+let assetPrices = {}
 export const loadAssetPrices = (prices) => {
+    for (let i in prices) {
+        assetPrices[i] = prices[i]
+    }
     return {
         type: LOAD_ASSET_PRICES,
         prices
@@ -51,8 +55,9 @@ const portfolioReducer = ( state = initialState, action ) => {
             action.portfolio.forEach((priceData, i) => newState.entries[i] = priceData)
             return newState
         case LOAD_ASSET_PRICES:
-            newState = { ...state, entries: { ...state.entries }, prices: { ...state.prices } }
-            action.portfolio.forEach(price => newState.prices[price.ticker] = price)
+            newState = { ...state, entries: { }, prices: { } }
+            newState.prices = assetPrices
+            return newState
         default:
             return state
     }

@@ -34,7 +34,7 @@ def get_stock_prices(company_id):
         # create date key/value pair in each stock price
         price['date'] = one_year_data.strftime("%b %d %Y")
 
-    return jsonify(stock_prices)
+    return jsonify({company_id: stock_prices})
 
 # # Weekly prices for OWNED companies
 # @stock_routes.route('/weekly', methods=['POST'])
