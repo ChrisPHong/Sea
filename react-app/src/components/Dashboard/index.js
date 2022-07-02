@@ -26,6 +26,8 @@ const Dashboard = () => {
     const options = { style: 'currency', currency: 'USD' };
     const currencyFormat = new Intl.NumberFormat('en-US', options);
 
+    const [assetBalance, setAssetBalance] = useState(0)
+
     useEffect(() => {
         // dispatch(getTransactions(currentUser?.id))
 
@@ -45,7 +47,7 @@ const Dashboard = () => {
                 dispatch(getAssetPrices(transaction?.companyId))
             }
         }
-    }, [dispatch, currentUser])
+    }, [dispatch, currentUser, stocks])
 
     // Returns the last price (closing price) in the stock prices array that YOU OWN.
     const closingPrice = (companyId) => {
@@ -107,12 +109,21 @@ const Dashboard = () => {
         let topBalance = 0
         for (let transaction of transArr) {
             if (transaction?.type === 'buy') {
-                // (146.23 * 1) + (1 * 364) - 146.23
                 topBalance += transaction.shares * (closingPrice(transaction?.companyId))
             }
         }
-        console.log('what is this number', topBalance)
         return topBalance
+    }
+
+    let sumAssets = 0
+    const closingPriceAndSumUp = (transaction) => {
+        for (let compId in assetPrices) {
+            if (parseInt(compId) === transaction?.companyId) {
+                let pricesArr = assetPrices[compId]
+                sumAssets += pricesArr[pricesArr.length - 1].price * transaction?.shares
+                return pricesArr[pricesArr.length - 1].price
+            }
+        }
     }
 
     return (
@@ -125,6 +136,7 @@ const Dashboard = () => {
                     portfolio={portfolio}
                     totalFunds={totalFunds}
                     buyingTotal={buyingTotal}
+                    assetBalance={assetBalance}
                 />
             </div>
             <div id='info'>
@@ -161,7 +173,7 @@ const Dashboard = () => {
                                                 </td>
                                                 {/* -------------------- PRICE SECTION -------------------- */}
                                                 <td className='owned-comp-price'>
-                                                    <div className='curr-comp-price'>{currencyFormat.format(closingPrice(transaction.companyId))}</div>
+                                                    <div className='curr-comp-price'>{currencyFormat.format(closingPriceAndSumUp(transaction))}</div>
                                                     {(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2) >= 0 ?
                                                         <div className='curr-comp-percent' style={{ color: 'green' }}>+{(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>
                                                         :
