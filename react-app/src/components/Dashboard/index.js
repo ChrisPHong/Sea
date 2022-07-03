@@ -53,6 +53,11 @@ const Dashboard = () => {
         console.log('here is our balanceVal', balanceVal)
     }, [])
 
+    useEffect(() => {
+        dispatch(getPortfolio({ userId: currentUser?.id, currentBalance: closingPriceAndSumUp() }))
+    }, [dispatch, currentUser])
+
+
     // Returns the last price (closing price) in the stock prices array that YOU OWN.
     const closingPrice = (companyId) => {
         for (let compId in assetPrices) {
@@ -67,17 +72,11 @@ const Dashboard = () => {
     // Returns the total price of ALL the stocks you own for the day.
     const buyingTotal = () => {
         let total = 0
-        for (let transaction of transArr) {
-            if (transaction.type === 'buy') {
-                // console.log('this is the transArr', transArr)
-                // console.log('this is what were adding to the total', closingPrice(transaction.companyId) * transaction.shares)
-                total += closingPrice(transaction.companyId) * transaction.shares
-            }
-            // } else if (transaction.type === 'sell') {
-            //     total -= closingPrice(transaction.companyId) * transaction.shares
-            // }
+        for (let compId in assetPrices) {
+            const prices = assetPrices[parseInt(compId)]
+            total += prices[prices.length - 1].price
         }
-        return total
+        return total.toLocaleString('en-US')
     }
 
     // Find ticker from transaction that matches with the pool of companies in database
@@ -109,21 +108,6 @@ const Dashboard = () => {
         return total.toLocaleString('en-US')
     }
 
-    const totalBalance = () => {
-        let topBalance = 0
-        for (let transaction of transArr) {
-            if (transaction?.type === 'buy' && transaction?.userId === currentUser?.id) {
-                for (let compId in assetPrices) {
-                    let pricesArr = assetPrices[compId]
-                    if (transaction?.companyId === parseInt(compId)) {
-                        topBalance += pricesArr[pricesArr.length - 1].price * transaction?.shares
-                    }
-                }
-            }
-        }
-        return topBalance
-    }
-
     const closingPriceAndSumUp = (transaction) => {
         for (let compId in assetPrices) {
             if (parseInt(compId) === transaction?.companyId) {
@@ -133,7 +117,6 @@ const Dashboard = () => {
             }
         }
         console.log('in closing price and sum up', sumAssetPrices)
-        // setBalanceVal(sumAssetPrices)
         return sumAssetPrices
     }
 
@@ -146,11 +129,6 @@ const Dashboard = () => {
         return sumAssetPrices
         // setBalanceVal(finalBalance)
     }
-
-    useEffect(() => {
-        dispatch(getPortfolio({ userId: currentUser?.id, currentBalance: closingPriceAndSumUp() }))
-    }, [dispatch, currentUser])
-
 
     return (
         <div id='portfolio-ctn'>
