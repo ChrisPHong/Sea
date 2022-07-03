@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getOneStock, getStockPrices } from '../../store/stock';
+import { getAllTransactions } from '../../store/transaction';
 import Buy from './Buy';
+import Sell from './Sell';
 import { LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
 import News from '../News'
 import { getCompanyNews } from '../../store/news';
@@ -20,8 +22,12 @@ const StockDetails = () => {
     const user = useSelector(state => state.session.user)
     // console.log(prices)
     const pricesData = Object.values(prices)
-    console.log(pricesData[0])
+    const userShares = useSelector(state => state?.transaction?.shares)
+    console.log('---this is USERSHARES---', userShares)
+
     const stocks = Object.values(stockObj)
+
+
     const watchlist = useSelector((state) => Object.values(state.watchlist));
     const watchlists = Object.values(watchlist[0])
 
@@ -92,8 +98,7 @@ const StockDetails = () => {
             dispatch(getCompanyNews(ticker))
             dispatch(getOneStock(ticker))
             dispatch(getWatchlists())
-            // dispatch(getStockPrices(companyId))
-            // dispatch(getAllTransactions())
+            dispatch(getAllTransactions())
             // dispatch(stockTransaction(transaction))
         }
     }, [dispatch, ticker])
@@ -340,7 +345,8 @@ const StockDetails = () => {
                                 /> */}
                             <div className="tab-toggle-content">
                                 {prices && <Buy user={user} companyId={stock?.id} ticker={ticker} priceData={data[data.length - 1]} />}
-                                {/* {stock && <Sell user={user} price={lastPrice} shares={userShares} />} */}
+                                <br></br>
+                                {prices && <Sell user={user} priceData={data[data.length - 1]} />}
                                 {/* {currentTab === 0 && <Buy user={user} priceArr={price} />} */}
                                 {/* {currentTab === 1 && <Sell user={user} price={closePrice} shares={userShares} />} */}
                             </div>
