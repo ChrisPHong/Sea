@@ -11,7 +11,6 @@ const PortfolioChart = ({ currentUser, portfolio, totalFunds, buyingTotal, sumAs
     const stock = useSelector(state => state?.stock)
     // console.log(" THIS IS THE STOCK CHECKER FOR THE STOCK CHART", stock.prices)
     const [currPrice, setCurrPrice] = useState(newData[newData?.length - 1])
-    console.log('here is sum asset priocs', sumAssetPrices)
 
     // useEffect(() => {
     //     // dispatch(getPortfolio(currentUser?.id))

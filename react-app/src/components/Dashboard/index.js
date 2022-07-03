@@ -62,7 +62,6 @@ const Dashboard = () => {
     const closingPrice = (companyId) => {
         for (let compId in assetPrices) {
             if (parseInt(compId) === companyId) {
-                // console.log('here is the assetPrices being returned hopefully its all different', assetPrices[compId].length - 1)
                 let pricesArr = assetPrices[compId]
                 return pricesArr[pricesArr.length - 1].price
             }
@@ -116,7 +115,6 @@ const Dashboard = () => {
                 return pricesArr[pricesArr.length - 1].price
             }
         }
-        console.log('in closing price and sum up', sumAssetPrices)
         return sumAssetPrices
     }
 
