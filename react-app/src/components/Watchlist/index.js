@@ -160,7 +160,7 @@ function WatchlistPage() {
                                                 </LineChart> */}
 
                                             </div>
-                                            <h5> : {keyAssetPrices.indexOf(company.id.toString()) !== -1 ? closingPriceAssets(company.id) : stockPriceCreator(company.id)}
+                                            <h5 className='companyStockClosingPrice'>  {keyAssetPrices.indexOf(company.id.toString()) !== -1 ? `Closing Price: ${closingPriceAssets(company.id)}` : `Closing Price: ${stockPriceCreator(company.id)}`}
                                             </h5>
                                             <button className='deleteButton'
                                                 onClick={async (e) => {
