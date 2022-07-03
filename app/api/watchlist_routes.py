@@ -84,7 +84,8 @@ def post_company_watchlists(id):
     watchlist.watch_comps.append(stock)
 
     db.session.commit()
-    return "Added company to watchlist"
+    watchlists = Watchlist.query.filter(Watchlist.user_id == current_user.get_id()).all()
+    return jsonify([watchlist.to_dict() for watchlist in watchlists])
 
 @watchlist_routes.route('/<int:id>/delete', methods=['PATCH'])
 @login_required
