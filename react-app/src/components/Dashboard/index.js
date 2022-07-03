@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getStockPrices, getStocks } from '../../store/stock';
 import { getTransactions, getAllTransactions } from '../../store/transaction';
-import { getPortfolio } from '../../store/portfolio';
+import { getPortfolio, getAssetPrices } from '../../store/portfolio';
 import WatchlistPage from '../Watchlist'
 import WatchlistForm from '../WatchlistForm';
 import PortfolioChart from '../PortfolioChart';
@@ -12,44 +12,49 @@ import './Dashboard.css'
 
 const Dashboard = () => {
     const dispatch = useDispatch()
-    const transactions = useSelector(state => state?.transaction?.entries)
-    const stocks = useSelector(state => state?.stock?.entries)
     const currentUser = useSelector(state => state?.session?.user);
+    const stocks = useSelector(state => state?.stock?.entries)
+    const transactions = useSelector(state => state?.transaction?.entries)
     const portfolioPrices = useSelector(state => state?.portfolio?.entries)
-    const portfolio = Object.values(portfolioPrices)
     const news = useSelector(state => state?.news?.entries)
-    const transArr = Object.values(transactions)
+    const assetPrices = useSelector(state => state?.portfolio?.prices)
     const companies = Object.values(stocks)
+    const transArr = Object.values(transactions)
+    const portfolio = Object.values(portfolioPrices)
     const newsArr = Object.values(news)
-    // console.log("THIS IS THE STOCKSSSSSS", stocks)
-    // console.log("THIS IS THE COMPANIESSSSSSSSSSSS", companies)
+    const options = { style: 'currency', currency: 'USD' };
+    const currencyFormat = new Intl.NumberFormat('en-US', options);
+
+    const [assetBalance, setAssetBalance] = useState(0)
 
     useEffect(() => {
         // dispatch(getTransactions(currentUser?.id))
 
-            dispatch(getGeneralNews())
-            dispatch(getAllTransactions())
-            dispatch(getPortfolio({ userId: currentUser?.id }))
-            dispatch(getStocks())
+        dispatch(getGeneralNews())
+        dispatch(getAllTransactions())
+        dispatch(getPortfolio({ userId: currentUser?.id, currentBalance: totalBalance() }))
+        dispatch(getStocks())
 
     }, [dispatch, currentUser])
 
-
-
-    // // Prices update every 30 seconds
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //         dispatch(getOwnedWeeklyPrices(currentUser?.id))
-    //     }, 30000)
-    //     return () => clearInterval(interval);
-    // })
+    // UPDATE THIS: Currently trying to iterate through each owned company in transaction array
+    // If owned, dispatch to get the stock prices of the company by providing the companyId
+    // OKAY THIS ACTUALLY WORKS, BUT NOW WE NEED TO FIGURE OUT HOW TO GRAB THE CORRECT PRICES ARRAY AND MATCH IT TO ITS CORRESPONDING COMPANY
+    useEffect(() => {
+        for (let transaction of transArr) {
+            if (transaction.type === 'buy') {
+                dispatch(getAssetPrices(transaction?.companyId))
+            }
+        }
+    }, [dispatch, currentUser, stocks])
 
     // Returns the last price (closing price) in the stock prices array that YOU OWN.
     const closingPrice = (companyId) => {
-        for (let stock of companies) {
-            if (stock?.id === companyId && stock.prices) {
-                const priceArr = stock.prices
-                return priceArr[priceArr.length - 1]
+        for (let compId in assetPrices) {
+            if (parseInt(compId) === companyId) {
+                // console.log('here is the assetPrices being returned hopefully its all different', assetPrices[compId].length - 1)
+                let pricesArr = assetPrices[compId]
+                return pricesArr[pricesArr.length - 1].price
             }
         }
     }
@@ -59,6 +64,8 @@ const Dashboard = () => {
         let total = 0
         for (let transaction of transArr) {
             if (transaction.type === 'buy') {
+                // console.log('this is the transArr', transArr)
+                // console.log('this is what were adding to the total', closingPrice(transaction.companyId) * transaction.shares)
                 total += closingPrice(transaction.companyId) * transaction.shares
             }
             // } else if (transaction.type === 'sell') {
@@ -71,7 +78,7 @@ const Dashboard = () => {
     // Find ticker from transaction that matches with the pool of companies in database
     const matchTicker = (companyId) => {
         for (let stock of companies) {
-            if (stock?.id === companyId && stock.prices) {
+            if (stock?.id === companyId) {
                 return stock.ticker
             }
         }
@@ -80,7 +87,7 @@ const Dashboard = () => {
     // Find name from transaction that matches with the pool of companies in database
     const matchName = (companyId) => {
         for (let stock of companies) {
-            if (stock?.id === companyId && stock.prices) {
+            if (stock?.id === companyId) {
                 return stock.name
             }
         }
@@ -90,15 +97,37 @@ const Dashboard = () => {
     const totalFunds = () => {
         let total = 0
         for (let transaction of transArr) {
-            if (transaction.type === 'buy') {
+            if (transaction?.type === 'buy') {
                 total += transaction.price * transaction.shares
             }
         }
-        return total
+        return total.toLocaleString('en-US')
+    }
+
+    const totalBalance = () => {
+        let topBalance = 0
+        for (let transaction of transArr) {
+            if (transaction?.type === 'buy') {
+                topBalance += transaction.shares * (closingPrice(transaction?.companyId))
+            }
+        }
+        return topBalance
+    }
+
+    let sumAssets = 0
+    const closingPriceAndSumUp = (transaction) => {
+        for (let compId in assetPrices) {
+            if (parseInt(compId) === transaction?.companyId) {
+                let pricesArr = assetPrices[compId]
+                sumAssets += pricesArr[pricesArr.length - 1].price * transaction?.shares
+                return pricesArr[pricesArr.length - 1].price
+            }
+        }
     }
 
     return (
         <div id='portfolio-ctn'>
+            <h1 className='your-assets-heading'>Your assets</h1>
             {/* -------------------- ASSETS GRAPH -------------------- */}
             <div className='portfolio-graph'>
                 <PortfolioChart
@@ -106,12 +135,12 @@ const Dashboard = () => {
                     portfolio={portfolio}
                     totalFunds={totalFunds}
                     buyingTotal={buyingTotal}
+                    assetBalance={assetBalance}
                 />
             </div>
             <div id='info'>
                 <div id='left'>
                     {/* -------------------- OWNED STOCKS -------------------- */}
-                    <h1 className='your-assets-heading'>Your assets</h1>
                     <div className='owned-assets'>
                         {transArr.length ?
                             <table>
@@ -124,7 +153,7 @@ const Dashboard = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {transArr.map(transaction => (
+                                    {stocks && transArr.map(transaction => (
                                         transaction.type === 'buy' && transaction.userId === currentUser.id ?
                                             <tr key={transaction.id}>
                                                 {/* -------------------- COMPANY SECTION -------------------- */}
@@ -138,12 +167,12 @@ const Dashboard = () => {
                                                 </td>
                                                 {/* -------------------- BALANCE SECTION -------------------- */}
                                                 <td className='owned-balance'>
-                                                    <div className='owned-balance-price'>${(((transaction.price * transaction.shares) + transaction.shares * (closingPrice(transaction.companyId) - transaction.price)) * transaction.shares).toFixed(2)}</div>
+                                                    <div className='owned-balance-price'>{currencyFormat.format(transaction?.shares * closingPrice(transaction?.companyId))}</div>
                                                     <div className='owned-comp-shares'>{transaction.shares}</div>
                                                 </td>
                                                 {/* -------------------- PRICE SECTION -------------------- */}
                                                 <td className='owned-comp-price'>
-                                                    <div className='curr-comp-price'>${((transaction.price * transaction.shares) + transaction.shares * (closingPrice(transaction.companyId) - transaction.price)).toFixed(2)}</div>
+                                                    <div className='curr-comp-price'>{currencyFormat.format(closingPriceAndSumUp(transaction))}</div>
                                                     {(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2) >= 0 ?
                                                         <div className='curr-comp-percent' style={{ color: 'green' }}>+{(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>
                                                         :

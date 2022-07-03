@@ -4,7 +4,7 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine } from 'recharts'
 import { getPortfolio } from '../../store/portfolio';
 import './PortfolioChart.css'
 
-const PortfolioChart = ({ currentUser, portfolio, totalFunds, buyingTotal }) => {
+const PortfolioChart = ({ currentUser, portfolio, totalFunds, buyingTotal, assetBalance }) => {
     // const transArr = Object.values(transactions)
     const dispatch = useDispatch()
     const [newData, setNewData] = useState(portfolio)
@@ -68,12 +68,12 @@ const PortfolioChart = ({ currentUser, portfolio, totalFunds, buyingTotal }) => 
             <div className='balance-info'>
                 <div className='balance-label'>Balance</div>
                 <div className='balance-amt'>
-                    {currPrice !== '0.00' ? `$${currPrice}` : portfolio[portfolio.length - 1].toFixed(2)}
+                    {assetBalance}
                 </div>
                 <div className='balance-percent'>
                     {(buyingTotal() > totalFunds()) ?
                         <div className='all-time-diff' style={{ color: 'green' }}>
-                            +${Math.abs((buyingTotal() - totalFunds())).toFixed(2)}
+                            +${(Math.abs((buyingTotal() - totalFunds())).toFixed(2)).toLocaleString('en-US')}
                         </div>
                         :
                         <div className='all-time-diff' style={{ color: 'red' }}>
@@ -111,7 +111,7 @@ const PortfolioChart = ({ currentUser, portfolio, totalFunds, buyingTotal }) => 
             </div>
             <div className='asset-bottom'>
                 <div className='buying-power'>
-                    Buying power: ${currentUser.balance}
+                    Buying power: ${(currentUser.balance).toLocaleString('en-US')}
                 </div>
                 <div className='asset-timeframe'>
                     <span className='weekly'>
