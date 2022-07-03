@@ -9,7 +9,7 @@ stock_routes = Blueprint('stocks', __name__)
 @stock_routes.route('/<ticker>')
 def get_stocks(ticker):
     stock = Company.query.filter(Company.ticker == ticker.upper()).first()
-    # print(stock, '<<<<<<<<<<<<<<<<< STOCK >>>>>>>>>>>>')
+    print(stock, '<<<<<<<<<<<<<<<<< STOCK >>>>>>>>>>>>')
     return jsonify(stock.to_dict())
 
 @stock_routes.route('/')
@@ -20,6 +20,7 @@ def get_all_stocks():
 
 @stock_routes.route('/<company_id>/prices', methods=['POST'])
 def get_stock_prices(company_id):
+    print("IS THIS BACKEND ROUTE EVEN HITTING???????")
     # Create date from a year ago
     one_year_data = datetime.today() - timedelta(days=365)
     # Find specific stock

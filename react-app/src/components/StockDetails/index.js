@@ -13,29 +13,50 @@ import { getWatchlists } from '../../store/watchlist'
 const StockDetails = () => {
     const dispatch = useDispatch()
     const { ticker } = useParams()
-    // console.log(ticker.toUpperCase())
+    console.log(ticker.toUpperCase())
     const stockObj = useSelector(state => state?.stock?.entries)
     const news = useSelector(state => state?.news?.entries)
     const prices = useSelector(state => state?.stock?.prices)
     const user = useSelector(state => state.session.user)
     // console.log(prices)
     const pricesData = Object.values(prices)
-    const stock = Object.values(stockObj)
-
+    console.log(pricesData[0])
+    const stocks = Object.values(stockObj)
     const watchlist = useSelector((state) => Object.values(state.watchlist));
     const watchlists = Object.values(watchlist[0])
-    // console.log(pricesData)
-    console.log("THIS IS THE PRICE DATA IN AN ARRAY", stock)
-    // console.log('why are prices not rendering', prices)
+
+    let stock
+
+    if (stocks) {
+        for (let i = 0; i < stocks.length; i++) {
+            if (stocks[i].ticker === ticker.toUpperCase()) {
+                stock = stocks[i]
+            }
+        }
+    }
+
+    const companyId = stock?.id
+
+    console.log("THIS IS THE PRICES IN THE STATE ", prices)
+    console.log("THIS IS THE PRICE DATA IN AN ARRAY", pricesData[0])
+    // console.log('These are the stocks', stocks)
+    // console.log("THIS SHOULD BE THE COMPANY ID", companyId)
     // console.log('heres the pricesData that DOESNT WANNA WORK SOMETIMES SMH', pricesData)
 
     const [data, setData] = useState(pricesData)
     const [currPrice, setCurrPrice] = useState(data[data?.length - 1])
 
+    const pricesArr = pricesData[0]
+
+    console.log(pricesArr)
+
     let stockPrices = []
 
-    for (let i = 0; i < pricesData.length; i++) {
-        stockPrices.push(pricesData[i].price)
+    if (pricesArr) {
+        for (let i = 0; i < pricesArr.length; i++) {
+            // console.log(pricesArr[i].price)
+            stockPrices.push(pricesArr[i].price)
+        }
     }
 
     console.log(stockPrices)
@@ -57,9 +78,11 @@ const StockDetails = () => {
 
     let randomNumber = randomMultiplier * .15 * closePrice
 
-    console.log(randomNumber)
+    // console.log(randomNumber)
 
     let buyPrice = Number(stockPrices[stockPrices.length - 1]) + randomNumber
+
+    let openingPrice = Number(stockPrices[0]).toFixed(2)
 
     if (stockPrices.length === 365) console.log(buyPrice)
 
@@ -68,21 +91,30 @@ const StockDetails = () => {
         if (stock === undefined) {
             dispatch(getCompanyNews(ticker))
             dispatch(getOneStock(ticker))
-            dispatch(getStockPrices(stockObj?.id))
             dispatch(getWatchlists())
+            // dispatch(getStockPrices(companyId))
             // dispatch(getAllTransactions())
             // dispatch(stockTransaction(transaction))
         }
     }, [dispatch, ticker])
 
+    useEffect(() => {
+        if (companyId) {
+            dispatch(getStockPrices(companyId))
+        }
+    }, [dispatch, stock])
+
+
     // When the price state, the length of the pricesData array, or the ticker changes,
     // Set the data to the new pricesData and show the 1W timeframe.
     useEffect(() => {
-        setData(pricesData)
+        setData(pricesArr)
         createData('1w')
     }, [pricesData?.length, prices, ticker])
 
-    console.log('what is data printing again??!?!?!?!?!?!??!?', data)
+    console.log('what is data printing again??!?!?!?!?!?!??!?', data[0])
+
+    console.log("WHAT IS THE PRICES DATA")
 
     const createData = (time) => {
         if (time === '1y') {
@@ -90,7 +122,7 @@ const StockDetails = () => {
             return pricesData
         }
         if (time === '1w') {
-            setData(pricesData?.slice(-7))
+            setData(pricesData.slice(-7))
             return pricesData
         }
         if (time === '1m') {
@@ -135,7 +167,7 @@ const StockDetails = () => {
                         <LineChart
                             width={950}
                             height={300}
-                            data={data}
+                            data={data[0]}
                             onMouseMove={(e) => lineMouseOver(e?.activePayload && e?.activePayload[0].payload.price)}
                         >
                             <XAxis dataKey="date" hide='true' />
@@ -275,7 +307,7 @@ const StockDetails = () => {
                                     Open price
                                 </div>
                                 <div>
-                                    ${closePrice}
+                                    ${openingPrice}
                                 </div>
                             </div>
                             <div>

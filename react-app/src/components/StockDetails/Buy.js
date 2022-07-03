@@ -6,7 +6,7 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
     const dispatch = useDispatch()
     const transactions = useSelector(state => state?.transaction?.entries);
     const userId = user.id;
-    console.log('USERRRRR', user)
+    // console.log('USERRRRR', user)
 
     // console.log(transactions)
     // const stock = useSelector(state => state?.stock?.entries)
