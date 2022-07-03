@@ -23,9 +23,10 @@ def make_stock_price(base, progression):
         stock_value = (val + (choice(progression))*random())
 
         # Add stock_value to the stocks list with a float of 2
-        stocks.append({'price': round(stock_value, 2)})
-        # Make the value the new stock_value price
+        # Absolute value method will ensure prices will always be positive
+        stocks.append({'price': round(abs(stock_value), 2)})
 
+        # Make the value the new stock_value price
         val = stock_value
     return stocks
 
@@ -50,6 +51,7 @@ def get_purchased_shares(id, user_id):
 def make_portfolio():
     # timeframe = request.json['timeframe']
     user_id = request.json['userId']
+    current_balance = request.json['currentBalance']
 
     # Get all companies that the user has bought
     owned_companies = Company.query.filter(Company.id == Transaction.company_id, Transaction.user_id == int(user_id), Transaction.type == "buy").all()

@@ -14,17 +14,18 @@ const StockDetails = () => {
     const dispatch = useDispatch()
     const { ticker } = useParams()
     // console.log(ticker.toUpperCase())
-    const stock = useSelector(state => state?.stock?.entries[ticker.toUpperCase()])
+    const stockObj = useSelector(state => state?.stock?.entries)
     const news = useSelector(state => state?.news?.entries)
     const prices = useSelector(state => state?.stock?.prices)
     const user = useSelector(state => state.session.user)
     // console.log(prices)
     const pricesData = Object.values(prices)
+    const stock = Object.values(stockObj)
 
     const watchlist = useSelector((state) => Object.values(state.watchlist));
     const watchlists = Object.values(watchlist[0])
     // console.log(pricesData)
-    console.log("THIS IS THE PRICE DATA IN AN ARRAY", pricesData)
+    console.log("THIS IS THE PRICE DATA IN AN ARRAY", stock)
     // console.log('why are prices not rendering', prices)
     // console.log('heres the pricesData that DOESNT WANNA WORK SOMETIMES SMH', pricesData)
 
@@ -61,12 +62,12 @@ const StockDetails = () => {
         if (stock === undefined) {
             dispatch(getCompanyNews(ticker))
             dispatch(getOneStock(ticker))
-            dispatch(getStockPrices(ticker))
+            dispatch(getStockPrices(stockObj?.id))
             dispatch(getWatchlists())
             // dispatch(getAllTransactions())
             // dispatch(stockTransaction(transaction))
         }
-    }, [dispatch, stock])
+    }, [dispatch, ticker])
 
     // When the price state, the length of the pricesData array, or the ticker changes,
     // Set the data to the new pricesData and show the 1W timeframe.
