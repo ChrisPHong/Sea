@@ -51,7 +51,6 @@ function WatchlistPage() {
 
     // This will generate a price from the basePrice of the stock
     const stockPriceCreator = (companyId) => {
-        console.log("in stockpriceCreator", companyId)
         for (let stock of companies) {
             if (stock.id === companyId) {
                 let basePrice = stock.basePrice
