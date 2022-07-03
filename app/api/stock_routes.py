@@ -25,8 +25,7 @@ def get_stock_prices(company_id):
     # Find specific stock
     stock = Company.query.filter(Company.id == company_id).first()
     # Create fake prices for specified stock
-    stock_prices = make_stock_price(stock.base_price, choice([ASCENDING, DESCENDING]))
-    total_assets_balance = 0
+    stock_prices = make_stock_price(stock.base_price, 365, choice([ASCENDING, DESCENDING]))
 
     # For each price in stock_prices
     for i in range(len(stock_prices)):
@@ -37,17 +36,8 @@ def get_stock_prices(company_id):
         # create date key/value pair in each stock price
         price['date'] = one_year_data.strftime("%b %d %Y")
 
-    bought_comp = Transaction.query.filter(Transaction.company_id == company_id).all()
-
-    # for i in range(len(bought_comp)):
-    #     if int(company_id) == bought_comp[i].company_id and bought_comp.type == 'buy':
-    #         total_assets_balance += stock_prices[-1]['price'] * bought_comp.shares
-    #     else:
-    #         pass
-    # print('<<<<<<<<<<<<<<<<<<<<<< TOTAL ASSETS BALANCE HERE >>>>>>>>>>>>>>>>>>>>>>>>', total_assets_balance)
-
-    # return {company_id: stock_prices, totalAssetsBalance: total_assets_balance}
     return {company_id: stock_prices}
+    # return {company_id: stock_prices}
 
 # # Weekly prices for OWNED companies
 # @stock_routes.route('/weekly', methods=['POST'])

@@ -4,18 +4,18 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine } from 'recharts'
 import { getPortfolio } from '../../store/portfolio';
 import './PortfolioChart.css'
 
-const PortfolioChart = ({ currentUser, portfolio, totalFunds, buyingTotal, assetBalance }) => {
+const PortfolioChart = ({ currentUser, portfolio, totalFunds, buyingTotal, sumAssetPrices }) => {
     // const transArr = Object.values(transactions)
     const dispatch = useDispatch()
     const [newData, setNewData] = useState(portfolio)
     const stock = useSelector(state => state?.stock)
     // console.log(" THIS IS THE STOCK CHECKER FOR THE STOCK CHART", stock.prices)
     const [currPrice, setCurrPrice] = useState(newData[newData?.length - 1])
+    console.log('here is sum asset priocs', sumAssetPrices)
 
     // useEffect(() => {
     //     // dispatch(getPortfolio(currentUser?.id))
     // }, [dispatch])
-
     // Once portfolio is fetched, display the one week graph.
     useEffect(() => {
         createData('1w')
@@ -68,7 +68,7 @@ const PortfolioChart = ({ currentUser, portfolio, totalFunds, buyingTotal, asset
             <div className='balance-info'>
                 <div className='balance-label'>Balance</div>
                 <div className='balance-amt'>
-                    {assetBalance}
+                    {sumAssetPrices}
                 </div>
                 <div className='balance-percent'>
                     {(buyingTotal() > totalFunds()) ?
