@@ -1,9 +1,16 @@
 const LOAD_PORTFOLIO = 'portfolio/loadPortfolio'
 const LOAD_ASSET_PRICES = 'portfolio/loadAssetPrices'
+const CLEAR_ALL_PORTFOLIOS = 'portfolio/CLEAR_ALL_PORTFOLIOS'
 
 export const loadPortfolio = (portfolio) => {
     return {
         type: LOAD_PORTFOLIO,
+        portfolio
+    }
+}
+export const clearPortfolios = (portfolio) =>{
+    return {
+        type: CLEAR_ALL_PORTFOLIOS,
         portfolio
     }
 }
@@ -45,6 +52,11 @@ export const getAssetPrices = (company_id) => async (dispatch) => {
     }
 }
 
+export const clearAllPortFolios = () => async (dispatch) => {
+    dispatch(clearPortfolios())
+    return {}
+}
+
 const initialState = { entries: {}, prices: {}, isLoading: true }
 
 const portfolioReducer = ( state = initialState, action ) => {
@@ -58,6 +70,8 @@ const portfolioReducer = ( state = initialState, action ) => {
             newState = { ...state, entries: {...state.entries }, prices: { ...state.prices } }
             newState.prices = assetPrices
             return newState
+        case CLEAR_ALL_PORTFOLIOS:
+            return { entries: {}, prices: {}, isLoading: true }
         default:
             return state
     }

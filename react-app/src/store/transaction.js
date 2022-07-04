@@ -2,6 +2,7 @@ const LOAD_TRANSACTIONS = 'transaction/loadTransactions';
 const BUY_STOCK = 'transactions/BUY_STOCK';
 const LOAD_BOUGHT_TRANSACTIONS = 'transaction/loadBoughtTransactions'
 const ADD_MONEY = 'transactions/ADD_MONEY'
+const CLEAR_ALL_TRANSACTIONS = 'transactions/CLEAR_ALL_TRANSACTIONS'
 // const SELL_STOCK = 'transactions/SELL_STOCK';
 
 // get all transactions
@@ -30,6 +31,12 @@ export const loadBoughtTransactions = (transactions) => {
     }
 }
 
+export const clearTransactions = (transactions) => {
+    return {
+        type: CLEAR_ALL_TRANSACTIONS,
+        transactions
+    }
+}
 // // delete
 // export const sellStock = (transaction) => ({
 //     type: SELL_STOCK,
@@ -94,7 +101,10 @@ export const addMoneyToCurrentBalance = (balance) => async (dispatch) => {
         dispatch(updateCurrentBalance(balance))
     }
 }
-
+export const clearAllTransactions = () => async (dispatch) => {
+    dispatch(clearTransactions())
+    return {}
+}
 
 const initialState = { entries: {}, boughtTrans: {}, isLoading: true }
 
@@ -122,6 +132,8 @@ const transactionReducer = ( state = initialState, action ) => {
                 ...state, [action.userBalance.user.id]: action.transaction
             }
             return state
+        case CLEAR_ALL_TRANSACTIONS:
+            return { entries: {}, boughtTrans: {}, isLoading: true }
         default:
             return state
     }

@@ -4,6 +4,7 @@ const DELETE_WATCHLIST = 'watchlist/DELETE'
 const EDIT_WATCHLIST = 'watchlist/EDIT'
 const POST_STOCKS_WATCHLIST = 'stocks/watchlist/POST'
 const DELETE_STOCKS_WATCHLIST = 'stocks/watchlist/DELETE'
+const CLEAR_ALL_WATCHLISTS = 'watchlist/CLEAR/LOGOUT'
 
 export const loadWatchlist = (watchlists) => {
     return {
@@ -47,6 +48,13 @@ export const deleteStocksWatchlist = (stocks) => {
     }
 }
 
+export const clearAllWatchlist = (stocks) => {
+    return {
+        type: CLEAR_ALL_WATCHLISTS,
+        stocks
+    }
+}
+
 export const createStockWatchlists = (payload) => async (dispatch) => {
 
     const response = await fetch(`/api/watchlists/${payload.watchlistId}/add`, {
@@ -65,17 +73,14 @@ export const createStockWatchlists = (payload) => async (dispatch) => {
 
 }
 export const deleteStockWatchlists = (payload) => async (dispatch) => {
-    console.log("<<<<<<<<<<< PAYLOAD IN THUNK", payload)
     const response = await fetch(`/api/watchlists/${payload.watchlistId}/delete`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
     })
 
-    console.log("<<<<<<<<<<< PAYLOAD IN THUNK", response)
 
     if (response.ok) {
-        console.log("<<<<<<<<<<<< INSIDE THE RESPONSE", response)
         const watchlists = await response.json()
 
 
@@ -139,6 +144,11 @@ export const deleteWatchList = (watchlistId) => async (dispatch) => {
     }
 }
 
+export const clearAllWatchList = () => async (dispatch) => {
+        dispatch(clearAllWatchlist())
+        return {}
+}
+
 const initialState = { entries: {}, isLoading: true }
 
 
@@ -181,7 +191,8 @@ const watchlistReducer = (state = initialState, action) => {
         case DELETE_STOCKS_WATCHLIST:
             newState = { ...state }
             delete state.entries.watchComps[action.watchlists.watchComps.id]
-
+        case CLEAR_ALL_WATCHLISTS:
+            return { entries: {}, isLoading: true }
         default:
             return state
     }
