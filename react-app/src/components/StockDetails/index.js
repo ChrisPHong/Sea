@@ -17,7 +17,7 @@ const StockDetails = () => {
     const { ticker } = useParams()
     // console.log(ticker.toUpperCase())
     const stockObj = useSelector(state => state?.stock?.entries)
-    console.log("THIS IS THE STOCK OBJECT", stockObj)
+    // console.log("THIS IS THE STOCK OBJECT", stockObj)
     const news = useSelector(state => state?.news?.entries)
     const prices = useSelector(state => state?.stock?.prices)
     const user = useSelector(state => state.session?.user)
@@ -26,6 +26,10 @@ const StockDetails = () => {
     const userShares = useSelector(state => state?.transaction?.entries)
 
     console.log(userShares)
+
+    const userSharesData = Object.values(userShares)
+
+    console.log(userSharesData)
 
 
     const stocks = Object.values(stockObj)
@@ -120,14 +124,14 @@ const StockDetails = () => {
         createData('1w')
     }, [pricesData?.length, prices, ticker])
 
-    // console.log('what is data printing again??!?!?!?!?!?!??!?', data[0])
+    console.log('what is data printing again??!?!?!?!?!?!??!?', data[0])
 
-    // console.log("WHAT IS THE PRICES DATA")
+    console.log("WHAT IS THE PRICES DATA", pricesData)
 
     const createData = (time) => {
         if (time === '1y') {
-            setData(pricesData)
-            return pricesData
+            setData(data[0])
+
         }
         if (time === '1w') {
             setData(pricesData.slice(-7))

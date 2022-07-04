@@ -4,9 +4,26 @@ import { stockTransaction } from '../../store/transaction';
 
 const Sell = ({ user, companyId, priceData, shares }) => {
     console.log(shares)
+    console.log(companyId)
+    const sharesArr = Object.values(shares)
+    console.log(sharesArr)
     const dispatch = useDispatch();
     const [userShares, setUserShares] = useState(shares);
     console.log("THIS IS THE USER SHARES", userShares)
+    let ownedStockShares = 0
+    if (shares) {
+        for (let i = 0; i < sharesArr?.length; i++) {
+            console.log(ownedStockShares)
+            if (sharesArr[i]?.companyId === companyId && sharesArr[i]?.type === "buy") {
+                ownedStockShares += sharesArr[i]?.shares
+            }
+            if (sharesArr[i]?.companyId === companyId && sharesArr[i]?.type === "sell") {
+                ownedStockShares -= sharesArr[i]?.shares
+            }
+        }
+    }
+
+    console.log(ownedStockShares)
 
     const [transactionPrice, setTransactionPrice] = useState((0).toFixed(2));
     const [order, setOrder] = useState('sell');
@@ -58,53 +75,53 @@ const Sell = ({ user, companyId, priceData, shares }) => {
     }
 
     return (
-        // <div>
-        //     <form onSubmit={sellStock}>
-        //         <div className='transaction-box'>
-        //             <div className='transaction-labels' id='buy-label'>Type: Sell</div>
-        //             <div className='transaction-labels'>Shares</div>
-        //             <select name="shares" id="shares" onChange={transactionTotal} value={sharesSold}>
-        //                 <option value=""></option>
-        //                 <option value="1">1</option>
-        //                 <option value="2">2</option>
-        //                 <option value="3">3</option>
-        //                 <option value="4">4</option>
-        //                 <option value="5">5</option>
-        //                 <option value="6">6</option>
-        //                 <option value="7">7</option>
-        //                 <option value="8">8</option>
-        //                 <option value="9">9</option>
-        //                 <option value="10">10</option>
-        //             </select>
-        //         </div>
-        //         <div className='transaction-info'>
-        //             <div className='transaction-labels'>Market Price</div>
-        //             <div id='transaction-stock-price'>
-        //                 ${priceData && Number(priceData[priceData?.length - 1]?.price).toFixed(2)}
-        //             </div>
-        //         </div>
-        //         <hr />
-        //         <div className='transaction-info'>
-        //             <div className='transaction-labels'>Estimated Credit</div>
-        //             <div id='transaction-estimate'>
-        //                 ${transactionPrice}
-        //             </div>
-        //         </div>
-        //         <div className='transaction-btn'>
-        //             <button id='sell-btn' type="submit"
-        //                 onClick={(e) => {
-        //                     sellStock(e);
-        //                 }}
-        //                 disabled={(sharesSold !== "" && userShares >= sharesSold) ? false : true}>
-        //                 {order}
-        //             </button>
-        //         </div>
-        //         <div className='transaction-labels' id='transaction-available-shares'>{userShares || 0} Shares Available</div>
-        //     </form>
-        // </div>
         <div>
-            Sell Component
+            <form onSubmit={sellStock}>
+                <div className='transaction-box'>
+                    <div className='transaction-labels' id='buy-label'>Type: Sell</div>
+                    <div className='transaction-labels'>Shares</div>
+                    <select name="shares" id="shares" onChange={transactionTotal} value={sharesSold}>
+                        <option value=""></option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                </div>
+                <div className='transaction-info'>
+                    <div className='transaction-labels'>Market Price</div>
+                    <div id='transaction-stock-price'>
+                        ${priceData && Number(priceData[priceData?.length - 1]?.price).toFixed(2)}
+                    </div>
+                </div>
+                <hr />
+                <div className='transaction-info'>
+                    <div className='transaction-labels'>Estimated Credit</div>
+                    <div id='transaction-estimate'>
+                        ${transactionPrice}
+                    </div>
+                </div>
+                <div className='transaction-btn'>
+                    <button id='sell-btn' type="submit"
+                        onClick={(e) => {
+                            sellStock(e);
+                        }}
+                        disabled={(sharesSold !== "" && userShares >= sharesSold) ? false : true}>
+                        {order}
+                    </button>
+                </div>
+                <div className='transaction-labels' id='transaction-available-shares'>{ownedStockShares || 0} Shares Available</div>
+            </form>
         </div>
+        // <div>
+        //     Sell Component
+        // </div>
     )
 }
 
