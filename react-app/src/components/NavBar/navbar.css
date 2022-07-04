@@ -147,17 +147,8 @@
     justify-content: flex-start;
     align-items: flex-start;
     margin-left: 10px;
-    border-radius: 5px 5px;
+    /* border-radius: 5px 5px; */
     margin: 5px 10px;
     padding: 10px;
     transition-duration: 1s;
-}
-.sea-logo:hover{
-    max-width: 100px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    margin-left: 10px;
-    box-shadow: 0px 0px 10px rgb(92, 91, 91, .23);
-
 }
