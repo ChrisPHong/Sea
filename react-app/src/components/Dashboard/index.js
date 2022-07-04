@@ -39,8 +39,6 @@ const Dashboard = () => {
     const [newData, setNewData] = useState(portfolio)
     const [currPrice, setCurrPrice] = useState(0)
 
-    console.log('what is portfoliooooooooo', portfolio)
-
     useEffect(() => {
         // dispatch(getTransactions(currentUser?.id))
 
@@ -134,24 +132,8 @@ const Dashboard = () => {
         }
     }
 
-    console.log('bal to backend', balToBackend)
-
     // console.log('what is this', typeof (Number(currPrice.toString().replace(/[^0-9.-]+/g,""))).toFixed(2))
     // number data type: 6472.009999999999
-
-    // useEffect(() => {
-    //     if (balToBackend) {
-    //         dispatch(getPortfolio({ userId: currentUser?.id, currentBalance: balToBackend}))
-    //         setNewData(portfolio)
-    //     }
-    // }, [dispatch, currentUser, balToBackend])
-
-    // -------------------------------------- GRAPH CODE --------------------------------------
-
-    // useEffect(() => {
-    //     // dispatch(getPortfolio(currentUser?.id))
-    // }, [dispatch])
-    // Once portfolio is fetched, display the one week graph.
 
     const createData = (time) => {
         if (time === '1y' && balToBackend) {
