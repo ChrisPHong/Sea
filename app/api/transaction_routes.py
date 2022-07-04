@@ -80,14 +80,8 @@ def add_money_current_balance():
     form = UserBalanceForm()
     form['csrf_token'].data = request.cookies['csrf_token']
 
-    print('<<<<<<<<<<<<<<<<<< BEFORE FORM >>>>>>>>>>>>>>>>>>')
-    print('<<<<<<<<<<<<<<<<<< firn >>>>>>>>>>>>>>>>>>', request.json['userId'])\
-
-    print('<<<<<<<<<<<<<<<<<< firn >>>>>>>>>>>>>>>>>>', form.data['balance'])
     if form.validate_on_submit():
-        print('<<<<<<<<<<<<<<<<<< IN FORM >>>>>>>>>>>>>>>>>>')
         user = User.query.get(request.json['userId'])
-        print('<<<<<<<<<<<<<<<<<< IN FORM >>>>>>>>>>>>>>>>', user)
         user.balance = request.json['balance']
 
         db.session.commit()

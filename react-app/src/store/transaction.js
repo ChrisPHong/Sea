@@ -105,7 +105,7 @@ const transactionReducer = ( state = initialState, action ) => {
             }
             return newState;
         case ADD_MONEY:
-            console.log(' <<<<<<<<< WITHIN THE ADD_MONEY REDUCER >>>>', action)
+
             newState = {
                 ...state, [action.id]: action.transaction
             }

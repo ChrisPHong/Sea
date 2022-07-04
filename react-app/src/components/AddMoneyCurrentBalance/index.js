@@ -12,8 +12,7 @@ function AddMoneyCurrentBalance() {
     const userId = useSelector(state => state.session?.user.id)
     const [balance, setBalance] = useState(user.balance)
     const [errors, setErrors] = useState([]);
-    console.log('<<<<<<<< BALANCE >>>>>>>>>>>', balance)
-    console.log(user.balance)
+
 
     // useEffect(() => {
     //     const error = [];
