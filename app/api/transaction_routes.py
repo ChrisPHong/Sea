@@ -46,6 +46,12 @@ def get_all_transactions():
     # print('-----GET ALL TRANSACTIONS---', allTransactions)
     return jsonify([transaction.to_dict() for transaction in allTransactions])
 
+@transaction_routes.route('<int:userId>/bought_transactions')
+def get_bought_transactions(userId):
+    bought_transactions = Transaction.query.filter(Transaction.type == 'buy', Transaction.user_id == int(userId)).all()
+    print('-----GET ALL TRANSACTIONS---', bought_transactions)
+    return jsonify([transaction.to_dict() for transaction in bought_transactions])
+
 # Users can buy or sell stocks
     # FORM WILL BE IN THE FRONT END COMPONENT
 # Can we pass in the companyid?
