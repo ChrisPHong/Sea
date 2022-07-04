@@ -69,8 +69,6 @@ const Dashboard = () => {
         }
     }, [portfolio?.length, currentUser, balToBackend])
 
-    console.log('all i hear are complaints right now', boughtTransactions)
-
     // Find name and ticker from transaction that matches with the pool of companies in database
     for (let id in stocks) {
         let company = stocks[id]
