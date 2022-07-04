@@ -63,49 +63,21 @@ def make_portfolio():
     # Get all companies that the user has bought
     owned_companies = Company.query.filter(Company.id == Transaction.company_id, Transaction.user_id == int(user_id), Transaction.type == "buy").all()
 
-    # summed_prices_data = []
-    # summed_price = [0] * 365 # [0 , 0 ,,0 , 0 ,0 ,0 ,0 ]
-    portfolio_base_price = 0
-
     previous_dates = datetime.today() - timedelta(days=365)
-
-
-    # owned_company_prices = make_stock_price(current_balance, choice([ASCENDING, DESCENDING]))
-
-
-
-    # For every company that the user owns,
-    for idx in range(len(owned_companies)):
-        company = owned_companies[idx]
-        # Take company base price, multiply it
-        portfolio_base_price += get_bought_transactions(company.id, user_id).price * get_bought_transactions(company.id, user_id).shares
-        # owned_company_prices = make_stock_price(company.base_price, choice([ASCENDING, DESCENDING]))
-        # ex: [
-            # 'date': Jun 30 2022 05:30:00, 'price': 100,
-            # 'date': Jun 29 2022 05:30:00, 'price': 99,
-            # 'date': Jun 28 2022 05:30:00, 'price': 101,
-            # ]
-    # print('--------------------------------- here is the base price for all assets added up ---------------------------------', portfolio_base_price) # 6518.43
+    # owned_company_prices = make_stock_price(company.base_price, choice([ASCENDING, DESCENDING]))
+    # ex: [
+        # 'date': Jun 30 2022 05:30:00, 'price': 100,
+        # 'date': Jun 29 2022 05:30:00, 'price': 99,
+        # 'date': Jun 28 2022 05:30:00, 'price': 101,
+        # ]
     owned_company_prices = make_stock_price(current_balance, 365, choice([ASCENDING, DESCENDING]))
-    print('--------------------------------- BEFORE THE REVERSE ---------------------------------', owned_company_prices)
     owned_company_prices.reverse()
-    print('--------------------------------- THIS IS AFTER THE REVERSE ---------------------------------', owned_company_prices)
-    # owned_company_prices = initial_prices.reverse()
 
-    # For every datePrice dictionary in owned_company_prices
-    # for i in range(len(owned_company_prices)):
-    #     priceData = owned_company_prices[i]
-    #     # Multiply the price by the amount of shares bought
-    #     # ex: { 300, 99, 202 }
-    #     priceData['price'] *= get_purchased_shares(company.id, user_id)
-    #     # Add price to corresponding index in summed_price list
-    #     summed_price[i] += round(priceData['price'], 2)
-    # 0 to 364
+    # Adding a date to each price
     for i in range(len(owned_company_prices)):
         priceData = owned_company_prices[i]
-        new_date = previous_dates + timedelta(days = 1)
-        next_day_price = new_date
-        priceData['date'] = next_day_price.strftime("%b %d %Y")
+        previous_dates += timedelta(days = 1)
+        priceData['date'] = previous_dates.strftime("%b %d %Y")
     # print('--------------------------------- what is this printing out.... ---------------------------------', owned_company_prices)
 
     return jsonify(owned_company_prices)
