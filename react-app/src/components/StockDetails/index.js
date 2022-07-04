@@ -26,10 +26,6 @@ const StockDetails = () => {
     const userShares = useSelector(state => state?.transaction?.entries)
     const userSharesData = Object.values(userShares)
 
-    const testing = Object.keys(prices)
-    console.log('what is htis data rtype', prices)
-    console.log('stocksObj', stockObj)
-
     const stocks = Object.values(stockObj)
 
     const watchlist = useSelector((state) => Object.values(state.watchlist));
@@ -58,8 +54,6 @@ const StockDetails = () => {
 
     const pricesArr = pricesData[0]
 
-    // console.log(pricesArr)
-
     let stockPrices = []
 
     if (pricesArr) {
@@ -68,8 +62,6 @@ const StockDetails = () => {
             stockPrices.push(pricesArr[i].price)
         }
     }
-
-    // console.log(stockPrices)
 
     const gainOrLoss = [1, -1]
 
@@ -123,10 +115,6 @@ const StockDetails = () => {
         }
     }, [pricesData?.length, prices, ticker])
 
-    // console.log('what is data printing again??!?!?!?!?!?!??!?', data[0])
-
-    console.log("WHAT IS THE PRICES DATA", pricesData)
-
     const createData = (time) => {
         if (time === '1y') {
             setData(pricesArr)
@@ -171,82 +159,82 @@ const StockDetails = () => {
 
     return (
         <div id='stocks-detail-ctn'>
-            {/* -------------------- LINE CHART HERE -------------------- */}
-            <div className='asset-chart'>
-                {prices &&
-                    <>
-                        <LineChart
-                            width={950}
-                            height={300}
-                            data={data}
-                            onMouseMove={(e) => lineMouseOver(e?.activePayload && e?.activePayload[0].payload.price)}
-                        >
-                            <XAxis dataKey="date" hide='true' />
-                            <YAxis dataKey="price" domain={['dataMin', 'dataMax']} hide='true' />
-                            <Tooltip
-                                cursor={false}
-                                content={customTooltip}
-                            />
-                            <Line
-                                type="linear"
-                                dataKey="price"
-                                stroke="#0b7cee"
-                                activeDot={{ r: 5 }}
-                                dot={false}
-                                animationDuration={500}
-                                strokeWidth={2}
-                            />
-                        </LineChart>
-                    </>}
-            </div>
-            <div className='stock-chart-bottom'>
-                <div className='stock-timeframe'>
-                    <span className='weekly'>
-                        <button
-                            value='1w'
-                            onClick={e => createData(e.target.value)}
-                        >
-                            1W
-                        </button>
-                    </span>
-                    <span className='monthly'>
-                        <button
-                            value='1m'
-                            onClick={e => createData(e.target.value)}
-                        >
-                            1M
-                        </button>
-                    </span>
-                    <span className='three-months'>
-                        <button
-                            value='3m'
-                            onClick={e => createData(e.target.value)}
-                        >
-                            3M
-                        </button>
-                    </span>
-                    <span className='six-months'>
-                        <button
-                            value='6m'
-                            onClick={e => createData(e.target.value)}
-                        >
-                            6M
-                        </button>
-                    </span>
-                    <span className='one-year'>
-                        <button
-                            value='1y'
-                            onClick={e => createData(e.target.value)}
-                        >
-                            1Y
-                        </button>
-                    </span>
-                </div>
-            </div>
             {stock &&
                 <div className='stock-details-information'>
                     <div className='stock-details-name-title'>
                         {stock.name} ({stock.ticker})
+                    </div>
+                    {/* -------------------- LINE CHART HERE -------------------- */}
+                    <div className='asset-chart'>
+                        {prices &&
+                            <>
+                                <LineChart
+                                    width={950}
+                                    height={300}
+                                    data={data}
+                                    onMouseMove={(e) => lineMouseOver(e?.activePayload && e?.activePayload[0].payload.price)}
+                                >
+                                    <XAxis dataKey="date" hide='true' />
+                                    <YAxis dataKey="price" domain={['dataMin', 'dataMax']} hide='true' />
+                                    <Tooltip
+                                        cursor={false}
+                                        content={customTooltip}
+                                    />
+                                    <Line
+                                        type="linear"
+                                        dataKey="price"
+                                        stroke="#0b7cee"
+                                        activeDot={{ r: 5 }}
+                                        dot={false}
+                                        animationDuration={500}
+                                        strokeWidth={2}
+                                    />
+                                </LineChart>
+                            </>}
+                    </div>
+                    <div className='stock-chart-bottom'>
+                        <div className='stock-timeframe'>
+                            <span className='weekly'>
+                                <button
+                                    value='1w'
+                                    onClick={e => createData(e.target.value)}
+                                >
+                                    1W
+                                </button>
+                            </span>
+                            <span className='monthly'>
+                                <button
+                                    value='1m'
+                                    onClick={e => createData(e.target.value)}
+                                >
+                                    1M
+                                </button>
+                            </span>
+                            <span className='three-months'>
+                                <button
+                                    value='3m'
+                                    onClick={e => createData(e.target.value)}
+                                >
+                                    3M
+                                </button>
+                            </span>
+                            <span className='six-months'>
+                                <button
+                                    value='6m'
+                                    onClick={e => createData(e.target.value)}
+                                >
+                                    6M
+                                </button>
+                            </span>
+                            <span className='one-year'>
+                                <button
+                                    value='1y'
+                                    onClick={e => createData(e.target.value)}
+                                >
+                                    1Y
+                                </button>
+                            </span>
+                        </div>
                     </div>
                     <div className='stock-details-company-information'>
                         <div>
@@ -350,10 +338,9 @@ const StockDetails = () => {
                                     selectTab={setCurrentTab}
                                 /> */}
                             <div className="tab-toggle-content">
-                                {/* --------------------------- COMMENT THIS BACK IN ---------------------------*/}
-                                {/* {prices && <Buy user={user} companyId={stock?.id} ticker={ticker} priceData={data[data?.length - 1]} />}
+                                {prices && <Buy user={user} companyId={stock?.id} ticker={ticker} priceData={data[data.length - 1]} />}
                                 <br></br>
-                                {prices && userShares && <Sell user={user} priceData={data[data.length - 1]} companyId={stock?.id} shares={userShares} />} */}
+                                {prices && userShares && <Sell user={user} priceData={data[data.length - 1]} companyId={stock?.id} shares={userShares} />}
                                 {/* {currentTab === 0 && <Buy user={user} priceArr={price} />} */}
                                 {/* {currentTab === 1 && <Sell user={user} price={closePrice} shares={userShares} />} */}
                             </div>
