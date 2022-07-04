@@ -4,7 +4,7 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine } from 'recharts'
 import { getPortfolio } from '../../store/portfolio';
 import './AssetTable.css'
 
-const AssetTable = ({ currentUser, nameTickerArr, stocks, transArr, closingPrice, currencyFormat }) => {
+const AssetTable = ({ currentUser, nameTickerArr, stocks, transArr, closingPrice, currencyFormat, assetBalance, buyingTotal }) => {
     return (
         <>
             <div className='owned-assets'>
@@ -34,14 +34,16 @@ const AssetTable = ({ currentUser, nameTickerArr, stocks, transArr, closingPrice
                                 </div>
                             ))}
                             {/* -------------------- BALANCE SECTION -------------------- */}
-                            {/* <td className='owned-balance'>
-                                <div className='owned-balance-price'>{currencyFormat.format(price.shares * price.closingPrice)}</div>
-                                <div className='owned-comp-shares'>{price.shares}</div>
-                            </td> */}
+                            {assetBalance && assetBalance.map((balance, i) => (
+                                <td key={i} className='owned-balance'>
+                                    <div className='owned-balance-price'>{currencyFormat.format(balance.total)}</div>
+                                    <div className='owned-comp-shares'>{balance.shares}</div>
+                                </td>
+                            ))}
                             {/* -------------------- PRICE SECTION -------------------- */}
                             {closingPrice && closingPrice.map((price, i) => (
-                                <td className='owned-comp-price'>
-                                    <div key={i} className='curr-comp-price'>
+                                <td key={i} className='owned-comp-price'>
+                                    <div className='curr-comp-price'>
                                         {currencyFormat.format(price.closingPrice)}
                                     </div>
                                     {(((price.shares * (price.closingPrice) - (price.buyingPrice * price.shares)) / (price.buyingPrice * price.shares))).toFixed(2) >= 0 ?

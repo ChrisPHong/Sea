@@ -33,7 +33,6 @@ const Dashboard = () => {
     let sumAssetPrices = 0
     let nameTickerArr = []
     let closingPrice = []
-    let gainLossArr = []
     let assetBalance = []
 
     const [balanceVal, setBalanceVal] = useState(sumAssetPrices)
@@ -101,6 +100,13 @@ const Dashboard = () => {
             }
         }
     }
+
+    for (let price of closingPrice) {
+        let total = price.closingPrice * price.shares
+        assetBalance.push({'total': total, 'shares': price.shares})
+    }
+
+    console.log('here is the official balance now', assetBalance)
 
     // Total money you put in to buy shares
     const totalFunds = () => {
@@ -316,19 +322,11 @@ const Dashboard = () => {
                         nameTickerArr={nameTickerArr}
                         closingPrice={closingPrice}
                         currencyFormat={currencyFormat}
+                        assetBalance={assetBalance}
+                        buyingTotal={buyingTotal}
                     />
                     {/* -------------------- NEWS -------------------- */}
                     <div ref={assetPriceRef}>{sumAssetPrices}</div>
-                    <div hidden={true}>
-                        <PortfolioChart
-                            currentUser={currentUser}
-                            portfolio={portfolio}
-                            totalFunds={totalFunds}
-                            buyingTotal={buyingTotal}
-                            assetBalance={sumAssetPrices}
-                            sumAssetPrices={sumAssetPrices}
-                        />
-                    </div>
                     <div className='news-ctn'>
                         <MarketNews news={newsArr} />
                     </div>
