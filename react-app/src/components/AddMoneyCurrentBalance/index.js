@@ -10,40 +10,62 @@ function AddMoneyCurrentBalance() {
     const state = useSelector((state) => state);
     const user = useSelector(state => state.session?.user)
     const userId = useSelector(state => state.session?.user.id)
-    const [balance, setBalance] = useState(user.balance)
+    const [balance, setBalance] = useState(0)
     const [errors, setErrors] = useState([]);
 
+    useEffect(() => {
+        const error = [];
+        if (balance < 1) {
+            error.push('You can NOT put a value less than 1')
+        }
 
-    // useEffect(() => {
-    //     const error = [];
-    //     if (balance < user.balance) errors.push('You can NOT input a lesser value than your current balance')
-    //     // setErrors(error);
-    // }, []);
+        setErrors(error);
+    }, [balance]);
 
 
     const onSubmit = (e) => {
         e.preventDefault()
-        const payload = {
-            userId,
-            balance
+        if (errors.length === 0) {
 
+            const payload = {
+                userId,
+                balance
+
+            }
+            dispatch(addMoneyToCurrentBalance(payload))
+            setBalance(0)
         }
-        dispatch(addMoneyToCurrentBalance(payload))
     }
 
     return (
         <div className='AddMoneyCurrentBalanceForm'>
+            <h2>Buying Power</h2>
+            {errors.length > 0 ?
+                <>
+                    <ul className='errorsArray'>{errors.map(error => {
+                        return (
+                            <>
+                                <li className='WatchlistFormErrorItem'
+                                    key={error}>{error}</li>
+                            </>
+                        )
+                    })}
+                    </ul>
+                </>
+                : null}
             <form onSubmit={onSubmit}>
-                <h2>Buying Power</h2>
                 <input type='number'
-
+                    placeholder={`Buying Power: ${user.balance}`}
                     className='inputBox'
-                    value={balance}
-                    onChange={(e) => setBalance(e.target.value)}
+
+                    onChange={(e) => {
+                        console.log(e.target.value, "VALUE  >>>>>>>>>>>>>>>>>>>>>")
+                        setBalance(e.target.value)}}
                 />
                 <button
                     className='WatchlistSubmitButton'
                     type='submit'
+                    disabled={errors.length > 0 ? true : false}
                 >Submit</button>
             </form>
 
