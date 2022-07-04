@@ -55,6 +55,10 @@ def update_transactions():
     form['csrf_token'].data = request.cookies['csrf_token']
     todays_date = datetime.today()
 
+    print("YOU CHRISES NEED TO CHILL THE EFF OUT BROS", request.json['balance'])
+
+
+
     if form.validate_on_submit():
         transaction = Transaction(
             price=form.data['price'],
@@ -64,10 +68,10 @@ def update_transactions():
             user_id=form.data['user_id'],
             company_id=form.data['company_id']
         )
-        # user = User.query.filter(User.id == form.data['user_id']).first()
-        # user.balance = form.data['balance']
+        user = User.query.filter(User.id == form.data['user_id']).first()
+        user.balance = request.json['balance']
 
         db.session.add(transaction)
         db.session.commit()
-        return transaction.to_dict()
+        return {'transaction': transaction.to_dict(), 'balance': user.balance}
     return {'errors': validation_errors_to_error_messages(form.errors)}, 402

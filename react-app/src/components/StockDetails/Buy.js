@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { stockTransaction } from '../../store/transaction';
 
 const Buy = ({ user, companyId, ticker, priceData }) => {
-    console.log("THIS IS THE PRICE DATA", priceData)
+    // console.log("THIS IS THE PRICE DATA", priceData)
     // console.log("THIS IS THE CLOSE", priceData[priceData?.length - 1].price)
     const dispatch = useDispatch()
     const transactions = useSelector(state => state?.transaction?.entries);
@@ -19,6 +19,7 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
     const [sharesBought, setSharesBought] = useState(0);
     const [order, setOrder] = useState('buy');
     const [balance, setBalance] = useState(user?.balance)
+    console.log(balance)
 
     useEffect(() => {
         setSharesBought(0)
@@ -52,6 +53,8 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
         setOrder('ordered');
         setBalance((Number(balance) - Number(transactionPrice)).toFixed(2));
         let newBalance = (Number(balance) - Number(transactionPrice)).toFixed(2);
+        console.log("THIS IS THE NEW BALANCE", newBalance)
+        console.log("NO NO NON NONNONON AHHHHHHHHHHHHHH", Number(newBalance).toFixed(2))
 
         // console.log('transaction price----', typeof(parseInt(transactionPrice)))
         // console.log('transaction price----', typeof(user.id))
@@ -64,7 +67,7 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
             type: 'buy',
             user_id: user.id,
             company_id: companyId,
-            // balance: Number(newBalance)
+            balance: Number(newBalance).toFixed(2)
         }
         // const payload = { companyId, userId };
         dispatch(stockTransaction(newTransaction))
