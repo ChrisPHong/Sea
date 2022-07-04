@@ -121,7 +121,7 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
                         {order}
                     </button>
                 </div>
-                <div className='transaction-labels' id='transaction-balance'>Balance Available: ${balance}</div>
+                <div className='transaction-labels' id='transaction-balance'>Balance Available: ${Number(balance).toFixed(2)}</div>
             </form>
         </div>
     )

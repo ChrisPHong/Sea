@@ -70,7 +70,7 @@ def update_transactions():
 
         db.session.add(transaction)
         db.session.commit()
-        return {'transaction': transaction.to_dict(), 'balance': user.balance}
+        return {'transaction': transaction.to_dict(), 'balance': user.balance, 'id': transaction.id}
     return {'errors': validation_errors_to_error_messages(form.errors)}, 402
 
 

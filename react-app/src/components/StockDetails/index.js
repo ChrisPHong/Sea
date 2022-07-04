@@ -17,7 +17,7 @@ const StockDetails = () => {
     const { ticker } = useParams()
     // console.log(ticker.toUpperCase())
     const stockObj = useSelector(state => state?.stock?.entries)
-    console.log("THIS IS THE STOCK OBJECT", stockObj)
+    // console.log("THIS IS THE STOCK OBJECT", stockObj)
     const news = useSelector(state => state?.news?.entries)
     const prices = useSelector(state => state?.stock?.prices)
     const user = useSelector(state => state.session?.user)
