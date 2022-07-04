@@ -291,7 +291,6 @@ const Dashboard = () => {
                         buyingTotal={buyingTotal}
                     />
                     {/* -------------------- NEWS -------------------- */}
-                    <div ref={assetPriceRef}>{sumAssetPrices}</div>
                     <div className='news-ctn'>
                         <MarketNews news={newsArr} />
                     </div>

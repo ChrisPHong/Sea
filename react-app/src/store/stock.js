@@ -53,7 +53,6 @@ export const getStockPrices = (company_id) => async (dispatch) => {
     })
 
     if (response.ok) {
-        console.log("THIS IS IN THE GETSTOCKPRICES REDUCER")
         const prices = await response.json()
         dispatch(loadStockPrices(prices))
     }

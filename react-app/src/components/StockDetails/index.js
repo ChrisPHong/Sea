@@ -20,23 +20,23 @@ const StockDetails = () => {
     // console.log("THIS IS THE STOCK OBJECT", stockObj)
     const news = useSelector(state => state?.news?.entries)
     const prices = useSelector(state => state?.stock?.prices)
-    const user = useSelector(state => state.session?.user)
-    // console.log(prices)
     const pricesData = Object.values(prices)
+    // console.log(prices)
+    const user = useSelector(state => state.session?.user)
     const userShares = useSelector(state => state?.transaction?.entries)
-
-    console.log(userShares)
-
     const userSharesData = Object.values(userShares)
 
-    console.log(userSharesData)
-
+    const testing = Object.keys(prices)
+    console.log('what is htis data rtype', prices)
+    console.log('stocksObj', stockObj)
 
     const stocks = Object.values(stockObj)
 
-
     const watchlist = useSelector((state) => Object.values(state.watchlist));
     const watchlists = Object.values(watchlist[0])
+
+    const [data, setData] = useState(pricesData)
+    const [currPrice, setCurrPrice] = useState(0)
 
     let stock
 
@@ -55,9 +55,6 @@ const StockDetails = () => {
     // console.log('These are the stocks', stocks)
     // console.log("THIS SHOULD BE THE COMPANY ID", companyId)
     // console.log('heres the pricesData that DOESNT WANNA WORK SOMETIMES SMH', pricesData)
-
-    const [data, setData] = useState(pricesData)
-    const [currPrice, setCurrPrice] = useState(data[data?.length - 1])
 
     const pricesArr = pricesData[0]
 
@@ -114,40 +111,42 @@ const StockDetails = () => {
         if (companyId) {
             dispatch(getStockPrices(companyId))
         }
-    }, [dispatch, stock])
+    }, [dispatch, stock, companyId])
 
 
     // When the price state, the length of the pricesData array, or the ticker changes,
     // Set the data to the new pricesData and show the 1W timeframe.
     useEffect(() => {
-        setData(pricesArr)
-        createData('1w')
+        if (pricesArr) {
+            createData('1w')
+            setData(pricesArr?.slice(-7))
+        }
     }, [pricesData?.length, prices, ticker])
 
-    console.log('what is data printing again??!?!?!?!?!?!??!?', data[0])
+    // console.log('what is data printing again??!?!?!?!?!?!??!?', data[0])
 
     console.log("WHAT IS THE PRICES DATA", pricesData)
 
     const createData = (time) => {
         if (time === '1y') {
-            setData(data[0])
-
+            setData(pricesArr)
+            return pricesArr
         }
         if (time === '1w') {
-            setData(pricesData.slice(-7))
-            return pricesData
+            setData(pricesArr?.slice(-7))
+            return pricesArr
         }
         if (time === '1m') {
-            setData(pricesData?.slice(-30))
-            return pricesData
+            setData(pricesArr?.slice(-30))
+            return pricesArr
         }
         if (time === '3m') {
-            setData(pricesData?.slice(-90))
-            return pricesData
+            setData(pricesArr?.slice(-90))
+            return pricesArr
         }
         if (time === '6m') {
-            setData(pricesData?.slice(-(Math.floor(pricesData?.length / 2))))
-            return pricesData
+            setData(pricesArr?.slice(-(Math.floor(pricesArr?.length / 2))))
+            return pricesArr
         }
     }
 
@@ -179,7 +178,7 @@ const StockDetails = () => {
                         <LineChart
                             width={950}
                             height={300}
-                            data={data[0]}
+                            data={data}
                             onMouseMove={(e) => lineMouseOver(e?.activePayload && e?.activePayload[0].payload.price)}
                         >
                             <XAxis dataKey="date" hide='true' />
@@ -351,9 +350,10 @@ const StockDetails = () => {
                                     selectTab={setCurrentTab}
                                 /> */}
                             <div className="tab-toggle-content">
-                                {prices && <Buy user={user} companyId={stock?.id} ticker={ticker} priceData={data[data.length - 1]} />}
+                                {/* --------------------------- COMMENT THIS BACK IN ---------------------------*/}
+                                {/* {prices && <Buy user={user} companyId={stock?.id} ticker={ticker} priceData={data[data?.length - 1]} />}
                                 <br></br>
-                                {prices && userShares && <Sell user={user} priceData={data[data.length - 1]} companyId={stock?.id} shares={userShares} />}
+                                {prices && userShares && <Sell user={user} priceData={data[data.length - 1]} companyId={stock?.id} shares={userShares} />} */}
                                 {/* {currentTab === 0 && <Buy user={user} priceArr={price} />} */}
                                 {/* {currentTab === 1 && <Sell user={user} price={closePrice} shares={userShares} />} */}
                             </div>
