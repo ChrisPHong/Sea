@@ -27,6 +27,10 @@ const StockDetails = () => {
 
     console.log(userShares)
 
+    const userSharesData = Object.values(userShares)
+
+    console.log(userSharesData)
+
 
     const stocks = Object.values(stockObj)
 
@@ -120,14 +124,14 @@ const StockDetails = () => {
         createData('1w')
     }, [pricesData?.length, prices, ticker])
 
-    // console.log('what is data printing again??!?!?!?!?!?!??!?', data[0])
+    console.log('what is data printing again??!?!?!?!?!?!??!?', data[0])
 
-    // console.log("WHAT IS THE PRICES DATA")
+    console.log("WHAT IS THE PRICES DATA", pricesData)
 
     const createData = (time) => {
         if (time === '1y') {
-            setData(pricesData)
-            return pricesData
+            setData(data[0])
+
         }
         if (time === '1w') {
             setData(pricesData.slice(-7))
