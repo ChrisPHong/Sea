@@ -41,8 +41,6 @@ const Dashboard = () => {
 
     console.log('what is portfoliooooooooo', portfolio)
 
-    console.log('HERE ARE ALLL THE BOUGHT TRANSACTIONS NOWWWWW', boughtTransactions)
-
     useEffect(() => {
         // dispatch(getTransactions(currentUser?.id))
 
@@ -54,24 +52,6 @@ const Dashboard = () => {
     }, [dispatch, currentUser])
 
     useEffect(() => {
-        // Dispatch all
-        // for (let i in transArr) {
-        //     let transaction = transArr[i]
-        //     if (transaction.type === 'buy') {
-        //         boughtTransactions.push(transArr[i])
-        //         boughtTransArr.push(transArr[i])
-        //         dispatch(getAssetPrices(transaction?.companyId))
-        //     }
-        //     // console.log('all the bought transactions arr', boughtTransactions)
-        //     // console.log('here is i', i)
-        //     // console.log('here is i... but parseInted...', parseInt(i))
-        //     // console.log('all the bought transactions arr LENGTH', boughtTransactions.length - 1)
-        //     // if (parseInt(i) === boughtTransactions.length - 1) {
-        //     //     console.log('about to hit this getPortfolio dispatch!!!!')
-        //     //     dispatch(getPortfolio({ userId: currentUser?.id, currentBalance: balToBackend}))
-        //     //     setNewData(portfolio)
-        //     // }
-        // }
         for (let compId in boughtTransactions) {
             dispatch(getAssetPrices(compId))
         }
@@ -80,11 +60,8 @@ const Dashboard = () => {
 
 
     useEffect(() => {
-        // if (balToBackend) {
-        console.log('bal to backend', balToBackend)
-        dispatch(getPortfolio({ userId: currentUser?.id, currentBalance: balToBackend}))
+        dispatch(getPortfolio({ userId: currentUser?.id, currentBalance: parseInt(balToBackend.toFixed(2))}))
         setNewData(portfolio)
-        // }
     }, [currentUser, balToBackend])
 
     useEffect(() => {
@@ -94,7 +71,6 @@ const Dashboard = () => {
         }
     }, [portfolio?.length, currentUser, balToBackend])
 
-    console.log('here are the stocks', stocks)
     // Find name and ticker from transaction that matches with the pool of companies in database
     for (let id in stocks) {
         let company = stocks[id]
@@ -108,8 +84,6 @@ const Dashboard = () => {
     // Returns the last price (closing price) that YOU OWN along with
     // buyingPrice and number of shares to help calculate gain/loss percentage
     // as well as calculating asset balance
-    console.log('asset prices', assetPrices)
-    console.log('boughtTransactions', boughtTransactions)
     for (let compId in assetPrices) {
         let pricesArr = assetPrices[compId]
         for (let companyId in boughtTransactions) {
@@ -122,19 +96,7 @@ const Dashboard = () => {
                 })
             }
         }
-        // for (let transaction of transArr) {
-        //     if (parseInt(compId) === transaction?.companyId && transaction?.type === 'buy') {
-        //         let pricesArr = assetPrices[compId]
-        //         closingPrice.push({
-                    // 'closingPrice': pricesArr[pricesArr.length - 1].price,
-                    // 'shares': transaction.shares,
-                    // 'buyingPrice': transaction.price
-        //         })
-        //     }
-        // }
     }
-
-    console.log('what are our closingPrice', closingPrice)
 
     for (let price of closingPrice) {
         let total = price.closingPrice * price.shares
@@ -162,17 +124,17 @@ const Dashboard = () => {
 
     }
 
-    console.log('here is the asset balance', assetBalance)
     // TOTAL ASSET BALANCE
     for (let i in assetBalance) {
         let balance = assetBalance[i]
         portfolioBalance += balance.total
-        console.log('here is i', typeof i)
-        // console.log('here is assetBalnace length', assetBalance)
+
         if (parseInt(i) === assetBalance.length - 1) {
             balToBackend = portfolioBalance
         }
     }
+
+    console.log('bal to backend', balToBackend)
 
     // console.log('what is this', typeof (Number(currPrice.toString().replace(/[^0-9.-]+/g,""))).toFixed(2))
     // number data type: 6472.009999999999
