@@ -1,0 +1,10 @@
+.AddMoneyCurrentBalanceForm{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: solid black;
+    border-radius: 5px 5px;
+    padding: 10px 10px;
+    margin-bottom: 10px;
+    flex-direction: column;
+}

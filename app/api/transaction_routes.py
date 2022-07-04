@@ -81,9 +81,11 @@ def add_money_current_balance():
     form['csrf_token'].data = request.cookies['csrf_token']
 
     if form.validate_on_submit():
+        # We find the user and we add the buying power to the balance
         user = User.query.get(request.json['userId'])
-        user.balance = request.json['balance']
+        user.balance += int(request.json['balance'])
+
 
         db.session.commit()
-        return jsonify({'balance': user.balance, 'user': user.to_dict(), 'id':user.balance})
+        return jsonify({'balance': user.balance, 'user': user.to_dict(), 'id':user.id})
     return {'errors': validation_errors_to_error_messages(form.errors)}, 402

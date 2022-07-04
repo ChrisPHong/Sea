@@ -105,9 +105,8 @@ const transactionReducer = ( state = initialState, action ) => {
             }
             return newState;
         case ADD_MONEY:
-
             newState = {
-                ...state, [action.id]: action.transaction
+                ...state, [action.userBalance.user.id]: action.transaction
             }
             return state
         default:
