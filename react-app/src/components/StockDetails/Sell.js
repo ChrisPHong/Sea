@@ -9,7 +9,7 @@ const Sell = ({ user, companyId, priceData, shares }) => {
     console.log(sharesArr)
     const dispatch = useDispatch();
     const [userShares, setUserShares] = useState(shares);
-    // console.log("THIS IS THE USER SHARES", userShares)
+    console.log("THIS IS THE USER SHARES", userShares)
     let ownedStockShares = 0
     if (shares) {
         for (let i = 0; i < sharesArr?.length; i++) {
