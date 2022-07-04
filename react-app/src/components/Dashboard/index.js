@@ -33,9 +33,7 @@ const Dashboard = () => {
     let assetBalance = []
     let portfolioBalance = 0
 
-    const [balanceVal, setBalanceVal] = useState(sumAssetPrices)
-
-    console.log('portfolio here', portfolio)
+    const [balanceVal, setBalanceVal] = useState(0)
 
     useEffect(() => {
         // dispatch(getTransactions(currentUser?.id))
@@ -60,8 +58,8 @@ const Dashboard = () => {
     }, [])
 
     useEffect(() => {
-        dispatch(getPortfolio({ userId: currentUser?.id, currentBalance: closingPriceAndSumUp() }))
-    }, [dispatch, currentUser])
+        dispatch(getPortfolio({ userId: currentUser?.id, currentBalance: portfolioBalance }))
+    }, [dispatch, currentUser, portfolioBalance])
 
     useEffect(() => {
         createData('1w')
@@ -108,8 +106,6 @@ const Dashboard = () => {
         }
         return total
     }
-
-    console.log('here is the total funds', totalFunds())
 
     // Returns the total price of ALL the stocks you own for the day.
     const buyingTotal = () => {
@@ -204,7 +200,7 @@ const Dashboard = () => {
                     <div className='balance-percent'>
                         {(buyingTotal() > totalFunds()) ?
                             <div className='all-time-diff' style={{ color: 'green' }}>
-                                +${currencyFormat.format(Math.abs((buyingTotal() - totalFunds())).toFixed(2))}
+                                +{currencyFormat.format(Math.abs((buyingTotal() - totalFunds())).toFixed(2))}
                             </div>
                             :
                             <div className='all-time-diff' style={{ color: 'red' }}>
@@ -219,7 +215,7 @@ const Dashboard = () => {
                     <LineChart
                         width={950}
                         height={300}
-                        data={portfolio}
+                        data={newData}
                         onMouseMove={(e) => lineMouseOver(e?.activePayload && e?.activePayload[0].payload.price)}
                     >
                         <XAxis dataKey="date" hide='true' />
