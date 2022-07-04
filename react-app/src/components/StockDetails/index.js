@@ -19,10 +19,10 @@ const StockDetails = () => {
     const stockObj = useSelector(state => state?.stock?.entries)
     const news = useSelector(state => state?.news?.entries)
     const prices = useSelector(state => state?.stock?.prices)
-    const user = useSelector(state => state.session.user)
+    const user = useSelector(state => state.session?.user)
     // console.log(prices)
     const pricesData = Object.values(prices)
-    const userShares = useSelector(state => state?.transaction?.shares)
+    const userShares = useSelector(state => state?.transaction?.entries)
     console.log('---this is USERSHARES---', userShares)
 
     const stocks = Object.values(stockObj)
@@ -43,8 +43,8 @@ const StockDetails = () => {
 
     const companyId = stock?.id
 
-    console.log("THIS IS THE PRICES IN THE STATE ", prices)
-    console.log("THIS IS THE PRICE DATA IN AN ARRAY", pricesData[0])
+    // console.log("THIS IS THE PRICES IN THE STATE ", prices)
+    // console.log("THIS IS THE PRICE DATA IN AN ARRAY", pricesData[0])
     // console.log('These are the stocks', stocks)
     // console.log("THIS SHOULD BE THE COMPANY ID", companyId)
     // console.log('heres the pricesData that DOESNT WANNA WORK SOMETIMES SMH', pricesData)
@@ -117,9 +117,9 @@ const StockDetails = () => {
         createData('1w')
     }, [pricesData?.length, prices, ticker])
 
-    console.log('what is data printing again??!?!?!?!?!?!??!?', data[0])
+    // console.log('what is data printing again??!?!?!?!?!?!??!?', data[0])
 
-    console.log("WHAT IS THE PRICES DATA")
+    // console.log("WHAT IS THE PRICES DATA")
 
     const createData = (time) => {
         if (time === '1y') {

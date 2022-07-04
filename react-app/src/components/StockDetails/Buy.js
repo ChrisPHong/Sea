@@ -3,10 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { stockTransaction } from '../../store/transaction';
 
 const Buy = ({ user, companyId, ticker, priceData }) => {
+    console.log("THIS IS THE PRICE DATA", priceData)
+    // console.log("THIS IS THE CLOSE", priceData[priceData?.length - 1].price)
     const dispatch = useDispatch()
     const transactions = useSelector(state => state?.transaction?.entries);
     const userId = user.id;
     // console.log('USERRRRR', user)
+
 
     // console.log(transactions)
     // const stock = useSelector(state => state?.stock?.entries)
@@ -20,11 +23,11 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
     useEffect(() => {
         setSharesBought(0)
         setTransactionPrice((0).toFixed(2))
-    }, [priceData?.price])
+    }, [priceData])
 
     const transactionTotal = e => {
         setSharesBought(e.target.value);
-        setTransactionPrice((e.target.value * (priceData.price)).toFixed(2));
+        setTransactionPrice((e.target.value * (priceData[priceData?.length - 1].price)).toFixed(2));
         //  price = market price per share
     }
 
@@ -96,7 +99,7 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
                 <div className='transaction-info'>
                     <div className='transaction-labels'>Market Price</div>
                     <div id='transaction-stock-price'>
-                        ${priceData?.price}
+                        ${priceData && Number(priceData[priceData?.length - 1]?.price).toFixed(2)}
                     </div>
                 </div>
                 <hr />
@@ -109,7 +112,7 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
                 <div className='transaction-btn'>
                     <button id='buy-btn' type="submit"
                         onClick={(e) => {
-                        buyStock(e);
+                            buyStock(e);
                         }}
                         disabled={(balance > Number(transactionPrice) && sharesBought !== "") ? false : true}>
                         {order}
