@@ -102,8 +102,10 @@ const Dashboard = () => {
                 total += transaction.price * transaction.shares
             }
         }
-        return total.toLocaleString('en-US')
+        return total
     }
+
+    console.log('here is the total funds', totalFunds())
 
     // Returns the total price of ALL the stocks you own for the day.
     const buyingTotal = () => {
@@ -210,18 +212,18 @@ const Dashboard = () => {
                     <div className='balance-amt'>
                         {currencyFormat.format(portfolioBalance)}
                     </div>
-                    {/* <div className='balance-percent'>
+                    <div className='balance-percent'>
                         {(buyingTotal() > totalFunds()) ?
                             <div className='all-time-diff' style={{ color: 'green' }}>
-                                +${(Math.abs((buyingTotal() - totalFunds())).toFixed(2)).toLocaleString('en-US')}
+                                +${currencyFormat.format(Math.abs((buyingTotal() - totalFunds())).toFixed(2))}
                             </div>
                             :
                             <div className='all-time-diff' style={{ color: 'red' }}>
-                                -${Math.abs((buyingTotal() - totalFunds())).toFixed(2)}
+                                -{currencyFormat.format(Math.abs((buyingTotal() - totalFunds())))}
                             </div>
                         }
                         <div className='all-time'>All time</div>
-                    </div> */}
+                    </div>
                 </div>
                 {/* -------------------- LINE CHART HERE -------------------- */}
                 {/* <div className='asset-chart'>
