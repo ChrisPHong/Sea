@@ -8,6 +8,10 @@ tbody {
     justify-content: center;
 }
 
+tbody {
+    padding-top: 10px;
+}
+
 .owned-assets {
     display: flex;
     justify-content: center;
@@ -15,12 +19,6 @@ tbody {
     border-bottom: 1px solid lightgray;
     padding-bottom: 40px;
 }
-/*
-thead > tr,
-tbody > tr {
-    display: flex;
-    justify-content: center;
-} */
 
 tr {
     display: flex;
@@ -33,13 +31,10 @@ th {
     padding: 0;
 }
 
-/* .owned-comp-name,
-.owned-balance,
-.owned-comp-price {
-    display: flex;
-    flex-direction: column;
-    margin: 0%;
-} */
+.portfolio-theaders {
+    border-bottom: 1px solid lightgray;
+    padding: 15px 0 25px 0;
+}
 
 .comp-title {
     display: flex;
@@ -61,7 +56,6 @@ th {
     width: 200px;
 }
 
-.portfolio-theaders,
 .comp-title,
 .owned-comp-name,
 .owned-balance,
