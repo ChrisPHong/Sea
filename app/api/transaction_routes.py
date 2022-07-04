@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from flask_login import login_required, current_user, UserMixin
 from app.models import db, Transaction, User
 from app.forms import TransactionForm
+from app.forms import UserBalanceForm
 from datetime import datetime, timedelta
 import json
 
@@ -55,10 +56,6 @@ def update_transactions():
     form['csrf_token'].data = request.cookies['csrf_token']
     todays_date = datetime.today()
 
-    print("YOU CHRISES NEED TO CHILL THE EFF OUT BROS", request.json['balance'])
-
-
-
     if form.validate_on_submit():
         transaction = Transaction(
             price=form.data['price'],
@@ -74,4 +71,25 @@ def update_transactions():
         db.session.add(transaction)
         db.session.commit()
         return {'transaction': transaction.to_dict(), 'balance': user.balance}
+    return {'errors': validation_errors_to_error_messages(form.errors)}, 402
+
+
+@transaction_routes.route('/add', methods=['PATCH'])
+@login_required
+def add_money_current_balance():
+    form = UserBalanceForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    print('<<<<<<<<<<<<<<<<<< BEFORE FORM >>>>>>>>>>>>>>>>>>')
+    print('<<<<<<<<<<<<<<<<<< firn >>>>>>>>>>>>>>>>>>', request.json['userId'])\
+
+    print('<<<<<<<<<<<<<<<<<< firn >>>>>>>>>>>>>>>>>>', form.data['balance'])
+    if form.validate_on_submit():
+        print('<<<<<<<<<<<<<<<<<< IN FORM >>>>>>>>>>>>>>>>>>')
+        user = User.query.get(request.json['userId'])
+        print('<<<<<<<<<<<<<<<<<< IN FORM >>>>>>>>>>>>>>>>', user)
+        user.balance = request.json['balance']
+
+        db.session.commit()
+        return jsonify({'balance': user.balance, 'user': user.to_dict(), 'id':user.balance})
     return {'errors': validation_errors_to_error_messages(form.errors)}, 402
