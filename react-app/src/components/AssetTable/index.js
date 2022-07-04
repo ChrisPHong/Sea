@@ -13,10 +13,8 @@ const AssetTable = ({ currentUser, nameTickerArr, stocks, transArr, closingPrice
                     <thead>
                         <tr>
                             <th className='owned-comp-label'>Company</th>
-                            <div>
-                                <th className='owned-shares-label'>Balance</th>
-                                <th className='owned-price-label'>Price</th>
-                            </div>
+                            <th className='owned-shares-label'>Balance</th>
+                            <th className='owned-price-label'>Price</th>
                             <th className='owned-allocations-label'>Allocation</th>
                         </tr>
                     </thead>
@@ -35,24 +33,22 @@ const AssetTable = ({ currentUser, nameTickerArr, stocks, transArr, closingPrice
                                     </td>
                                 </div>
                             ))}
+                            {/* -------------------- BALANCE SECTION -------------------- */}
+                            {/* <td className='owned-balance'>
+                                <div className='owned-balance-price'>{currencyFormat.format(price.shares * price.closingPrice)}</div>
+                                <div className='owned-comp-shares'>{price.shares}</div>
+                            </td> */}
+                            {/* -------------------- PRICE SECTION -------------------- */}
                             {closingPrice && closingPrice.map((price, i) => (
-                                <div className='closing-and-balance'>
-                                {/* -------------------- BALANCE SECTION -------------------- */}
-                                    <td key={i} className='owned-balance'>
-                                        <div className='owned-balance-price'>{currencyFormat.format(price.shares * price.closingPrice)}</div>
-                                        <div className='owned-comp-shares'>{price.shares}</div>
-                                    </td>
-                                {/* -------------------- PRICE SECTION -------------------- */}
-                                    <td className='owned-comp-price'>
-                                        <div className='curr-comp-price'>
-                                            {currencyFormat.format(price.closingPrice)}
-                                        </div>
-                                        {(((price.shares * (price.closingPrice) - (price.buyingPrice * price.shares)) / (price.buyingPrice * price.shares))).toFixed(2) >= 0 ?
-                                            <div className='curr-comp-percent' style={{ color: 'green' }}>+{(((price.shares * (price.closingPrice) - (price.buyingPrice * price.shares)) / (price.buyingPrice * price.shares))).toFixed(2)}%</div>
-                                            :
-                                            <div className='curr-comp-percent' style={{ color: 'red' }}>{(((price.shares * (price.closingPrice) - (price.buyingPrice * price.shares)) / (price.buyingPrice * price.shares))).toFixed(2)}%</div>}
-                                    </td>
-                                </div>
+                                <td className='owned-comp-price'>
+                                    <div key={i} className='curr-comp-price'>
+                                        {currencyFormat.format(price.closingPrice)}
+                                    </div>
+                                    {(((price.shares * (price.closingPrice) - (price.buyingPrice * price.shares)) / (price.buyingPrice * price.shares))).toFixed(2) >= 0 ?
+                                        <div className='curr-comp-percent' style={{ color: 'green' }}>+{(((price.shares * (price.closingPrice) - (price.buyingPrice * price.shares)) / (price.buyingPrice * price.shares))).toFixed(2)}%</div>
+                                        :
+                                        <div className='curr-comp-percent' style={{ color: 'red' }}>{(((price.shares * (price.closingPrice) - (price.buyingPrice * price.shares)) / (price.buyingPrice * price.shares))).toFixed(2)}%</div>}
+                                </td>
                             ))}
                             {/* -------------------- ALLOCATION SECTION -------------------- */}
                             {/* <td className='owned-allocations'>

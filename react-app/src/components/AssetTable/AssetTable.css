@@ -23,13 +23,13 @@ th {
     margin: 0%;
 }
 
-.comp-title,
-.closing-and-balance {
+.comp-title {
     display: flex;
     width: 400px;
 }
 
 .owned-comp-name {
+    display: flex;
     width: 300px;
 }
 
