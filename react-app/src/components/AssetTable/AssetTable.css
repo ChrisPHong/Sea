@@ -1,3 +1,13 @@
+table {
+    width: 1000px;
+}
+
+thead,
+tbody {
+    display: flex;
+    justify-content: center;
+}
+
 .owned-assets {
     display: flex;
     justify-content: center;
@@ -5,46 +15,62 @@
     border-bottom: 1px solid lightgray;
     padding-bottom: 40px;
 }
+/*
+thead > tr,
+tbody > tr {
+    display: flex;
+    justify-content: center;
+} */
 
 tr {
     display: flex;
     text-align: left;
 }
 
-.portfolio-theaders {
-    display: flex;
-    justify-content: space-around;
-    width: 1000px;
-}
-/*
 th {
     font-weight: 400;
     color: gray;
+    padding: 0;
 }
 
-.owned-comp-name,
+/* .owned-comp-name,
 .owned-balance,
 .owned-comp-price {
     display: flex;
     flex-direction: column;
     margin: 0%;
-}
+} */
 
 .comp-title {
     display: flex;
     flex-direction: column;
-    width: 400px;
+    /* width: 250px; */
 }
 
-.owned-comp-name {
-    display: flex;
+.owned-comp-label,
+.comp-title {
     width: 300px;
 }
 
+.owned-shares-label,
+.owned-balance,
+.owned-price-label,
+.owned-comp-price,
+.owned-allocations-label,
+.allocation-percent {
+    width: 200px;
+}
+
+.portfolio-theaders,
+.comp-title,
 .owned-comp-name,
 .owned-balance,
 .owned-comp-price {
-    padding: 10px 0 10px 0;
+    padding: 15px 0 15px 0;
+}
+
+.allocation-percent {
+    padding: 25px 0 25px 0;
 }
 
 .company-ticker,
@@ -55,7 +81,7 @@ th {
     padding-top: 5px;
 }
 
-.owned-comp-price,
+/* .owned-comp-price,
 .owned-balance,
 .owned-allocations {
     width: 200px;
