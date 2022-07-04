@@ -55,8 +55,10 @@ const Dashboard = () => {
     }, [dispatch, currentUser, stocks])
 
     useEffect(() => {
-        createData('1w')
-    }, [portfolio?.length, currentUser])
+        if (balToBackend) {
+            createData('1w')
+        }
+    }, [portfolio?.length, currentUser, balToBackend])
 
     // Find name and ticker from transaction that matches with the pool of companies in database
     for (let id in stocks) {
@@ -113,7 +115,9 @@ const Dashboard = () => {
     for (let i in assetBalance) {
         let balance = assetBalance[i]
         portfolioBalance += balance.total
-        if (i === assetBalance.length - 1) {
+        // console.log('here is i', i)
+        // console.log('here is assetBalnace length', parseInt(i) === assetBalance.length - 1)
+        if (parseInt(i) === assetBalance.length - 1) {
             balToBackend = portfolioBalance
         }
     }
@@ -123,8 +127,11 @@ const Dashboard = () => {
     // number data type: 6472.009999999999
 
     useEffect(() => {
-        dispatch(getPortfolio({ userId: currentUser?.id, currentBalance: 1000}))
-    }, [dispatch, currentUser, portfolioBalance])
+        if (balToBackend){
+            dispatch(getPortfolio({ userId: currentUser?.id, currentBalance: balToBackend}))
+            setNewData(portfolio)
+        }
+    }, [dispatch, currentUser, balToBackend])
 
     // -------------------------------------- GRAPH CODE --------------------------------------
 
@@ -134,23 +141,23 @@ const Dashboard = () => {
     // Once portfolio is fetched, display the one week graph.
 
     const createData = (time) => {
-        if (time === '1y') {
+        if (time === '1y' && balToBackend) {
             setNewData(portfolio)
             return newData
         }
-        if (time === '1w') {
+        if (time === '1w' && balToBackend) {
             setNewData(portfolio?.slice(-7))
             return newData
         }
-        if (time === '1m') {
+        if (time === '1m' && balToBackend) {
             setNewData(portfolio?.slice(-30))
             return newData
         }
-        if (time === '3m') {
+        if (time === '3m' && balToBackend) {
             setNewData(portfolio?.slice(-90))
             return newData
         }
-        if (time === '6m') {
+        if (time === '6m' && balToBackend) {
             setNewData(portfolio?.slice(-(Math.floor(portfolio?.length / 2))))
             return newData
         }
@@ -187,7 +194,6 @@ const Dashboard = () => {
                 <div className='balance-info'>
                     <div className='balance-label'>Balance</div>
                     <div className='balance-amt'>
-                        {/* {currencyFormat.format(portfolioBalance)} */}
                         {currPrice ? `${currencyFormat.format(currPrice)}` : currencyFormat.format(portfolioBalance)}
                     </div>
                     <div className='balance-percent'>
@@ -208,7 +214,7 @@ const Dashboard = () => {
                     <LineChart
                         width={950}
                         height={300}
-                        data={newData}
+                        data={balToBackend && newData}
                         onMouseMove={(e) => lineMouseOver(e?.activePayload && e?.activePayload[0].payload.price)}
                     >
                         <XAxis dataKey="date" hide='true' />

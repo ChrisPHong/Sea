@@ -57,8 +57,8 @@ def make_portfolio():
     # timeframe = request.json['timeframe']
     user_id = request.json['userId']
     current_balance = request.json['currentBalance']
-
     print('----------------------------------THIS IS WHAT WERE RECEIVING FROM FRONTEND----------------------------------', current_balance)
+
 
     # Get all companies that the user has bought
     owned_companies = Company.query.filter(Company.id == Transaction.company_id, Transaction.user_id == int(user_id), Transaction.type == "buy").all()
@@ -72,6 +72,8 @@ def make_portfolio():
         # ]
     owned_company_prices = make_stock_price(current_balance, 365, choice([ASCENDING, DESCENDING]))
     owned_company_prices.reverse()
+
+    print('--------------------------------- what is the list printing out ---------------------------------', owned_company_prices)
 
     # Adding a date to each price
     for i in range(len(owned_company_prices)):
