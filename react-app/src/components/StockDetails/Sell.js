@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {stockTransaction } from '../../store/transaction';
+import { stockTransaction } from '../../store/transaction';
 
-const Sell = ({ user, ticker, companyId, priceData, shares }) => {
+const Sell = ({ user, companyId, priceData, shares }) => {
+    console.log(shares)
     const dispatch = useDispatch();
     const [userShares, setUserShares] = useState(shares);
+    console.log("THIS IS THE USER SHARES", userShares)
+
     const [transactionPrice, setTransactionPrice] = useState((0).toFixed(2));
     const [order, setOrder] = useState('sell');
     const [sharesSold, setSharesSold] = useState(0);
@@ -12,23 +15,23 @@ const Sell = ({ user, ticker, companyId, priceData, shares }) => {
 
     const transactionTotal = e => {
         setSharesSold(e.target.value);
-        setTransactionPrice((e.target.value * (priceData.price)).toFixed(2));
+        setTransactionPrice((e.target.value * (priceData[priceData?.length - 1].price)).toFixed(2));
         //  price = market price per share
     }
 
-    const convertDate = date => {
-        const dates = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-        const newDate = date.split(' ')
-        let newMonth
-        for (let i in dates) {
-            if (newDate[0] === dates[i]) {
-                newMonth = i
-            }
+    // const convertDate = date => {
+    //     const dates = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    //     const newDate = date.split(' ')
+    //     let newMonth
+    //     for (let i in dates) {
+    //         if (newDate[0] === dates[i]) {
+    //             newMonth = i
+    //         }
 
-        }
-        const result = new Date(`${newMonth}-${parseInt(newDate[1])}-${parseInt(newDate[2])}`)
-        return result.toDateString()
-    }
+    //     }
+    //     const result = new Date(`${newMonth}-${parseInt(newDate[1])}-${parseInt(newDate[2])}`)
+    //     return result.toDateString()
+    // }
 
     const sellStock = async (e) => {
         e.preventDefault();
@@ -55,49 +58,52 @@ const Sell = ({ user, ticker, companyId, priceData, shares }) => {
     }
 
     return (
+        // <div>
+        //     <form onSubmit={sellStock}>
+        //         <div className='transaction-box'>
+        //             <div className='transaction-labels' id='buy-label'>Type: Sell</div>
+        //             <div className='transaction-labels'>Shares</div>
+        //             <select name="shares" id="shares" onChange={transactionTotal} value={sharesSold}>
+        //                 <option value=""></option>
+        //                 <option value="1">1</option>
+        //                 <option value="2">2</option>
+        //                 <option value="3">3</option>
+        //                 <option value="4">4</option>
+        //                 <option value="5">5</option>
+        //                 <option value="6">6</option>
+        //                 <option value="7">7</option>
+        //                 <option value="8">8</option>
+        //                 <option value="9">9</option>
+        //                 <option value="10">10</option>
+        //             </select>
+        //         </div>
+        //         <div className='transaction-info'>
+        //             <div className='transaction-labels'>Market Price</div>
+        //             <div id='transaction-stock-price'>
+        //                 ${priceData && Number(priceData[priceData?.length - 1]?.price).toFixed(2)}
+        //             </div>
+        //         </div>
+        //         <hr />
+        //         <div className='transaction-info'>
+        //             <div className='transaction-labels'>Estimated Credit</div>
+        //             <div id='transaction-estimate'>
+        //                 ${transactionPrice}
+        //             </div>
+        //         </div>
+        //         <div className='transaction-btn'>
+        //             <button id='sell-btn' type="submit"
+        //                 onClick={(e) => {
+        //                     sellStock(e);
+        //                 }}
+        //                 disabled={(sharesSold !== "" && userShares >= sharesSold) ? false : true}>
+        //                 {order}
+        //             </button>
+        //         </div>
+        //         <div className='transaction-labels' id='transaction-available-shares'>{userShares || 0} Shares Available</div>
+        //     </form>
+        // </div>
         <div>
-            <form onSubmit={sellStock}>
-                <div className='transaction-box'>
-                    <div className='transaction-labels' id='buy-label'>Type: Sell</div>
-                    <div className='transaction-labels'>Shares</div>
-                    <select name="shares" id="shares" onChange={transactionTotal} value={sharesSold}>
-                        <option value=""></option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                    </select>
-                </div>
-                <div className='transaction-info'>
-                    <div className='transaction-labels'>Market Price</div>
-                    <div id='transaction-stock-price'>
-                        ${priceData?.price}
-                    </div>
-                </div>
-                <hr />
-                <div className='transaction-info'>
-                    <div className='transaction-labels'>Estimated Credit</div>
-                    <div id='transaction-estimate'>
-                        ${transactionPrice}
-                    </div>
-                </div>
-                <div className='transaction-btn'>
-                    <button id='sell-btn' type="submit"
-                        onClick={(e) => {
-                        sellStock(e);
-                        }}
-                        disabled={(sharesSold !== "" && userShares >= sharesSold) ? false : true}>
-                        {order}
-                    </button>
-                </div>
-                <div className='transaction-labels' id='transaction-available-shares'>{userShares || 0} Shares Available</div>
-            </form>
+            Sell Component
         </div>
     )
 }
