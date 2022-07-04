@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getStockPrices, getStocks } from '../../store/stock';
-import { getTransactions, getAllTransactions } from '../../store/transaction';
+import { getTransactions, getAllTransactions, getBoughtTransactions } from '../../store/transaction';
 import { getPortfolio, getAssetPrices } from '../../store/portfolio';
 import WatchlistPage from '../Watchlist'
 import WatchlistForm from '../WatchlistForm';
@@ -21,6 +21,7 @@ const Dashboard = () => {
     const portfolioPrices = useSelector(state => state?.portfolio?.entries)
     const news = useSelector(state => state?.news?.entries)
     const assetPrices = useSelector(state => state?.portfolio?.prices)
+    const boughtTransactions = useSelector(state => state?.transaction?.boughtTrans)
     const companies = Object.values(stocks)
     const transArr = Object.values(transactions)
     const portfolio = Object.values(portfolioPrices)
@@ -32,39 +33,73 @@ const Dashboard = () => {
     let closingPrice = []
     let assetBalance = []
     let portfolioBalance = 0
+    let boughtTransArr = []
     let balToBackend
 
     const [newData, setNewData] = useState(portfolio)
     const [currPrice, setCurrPrice] = useState(0)
+
+    console.log('what is portfoliooooooooo', portfolio)
+
+    console.log('HERE ARE ALLL THE BOUGHT TRANSACTIONS NOWWWWW', boughtTransactions)
 
     useEffect(() => {
         // dispatch(getTransactions(currentUser?.id))
 
         dispatch(getGeneralNews())
         dispatch(getAllTransactions())
+        dispatch(getBoughtTransactions(currentUser?.id))
         dispatch(getStocks())
 
     }, [dispatch, currentUser])
 
     useEffect(() => {
-        for (let transaction of transArr) {
-            if (transaction.type === 'buy') {
-                dispatch(getAssetPrices(transaction?.companyId))
-            }
+        // Dispatch all
+        // for (let i in transArr) {
+        //     let transaction = transArr[i]
+        //     if (transaction.type === 'buy') {
+        //         boughtTransactions.push(transArr[i])
+        //         boughtTransArr.push(transArr[i])
+        //         dispatch(getAssetPrices(transaction?.companyId))
+        //     }
+        //     // console.log('all the bought transactions arr', boughtTransactions)
+        //     // console.log('here is i', i)
+        //     // console.log('here is i... but parseInted...', parseInt(i))
+        //     // console.log('all the bought transactions arr LENGTH', boughtTransactions.length - 1)
+        //     // if (parseInt(i) === boughtTransactions.length - 1) {
+        //     //     console.log('about to hit this getPortfolio dispatch!!!!')
+        //     //     dispatch(getPortfolio({ userId: currentUser?.id, currentBalance: balToBackend}))
+        //     //     setNewData(portfolio)
+        //     // }
+        // }
+        for (let compId in boughtTransactions) {
+            dispatch(getAssetPrices(compId))
         }
+        // boughtTransArr = boughtTransactions
     }, [dispatch, currentUser, stocks])
+
+
+    useEffect(() => {
+        // if (balToBackend) {
+        console.log('bal to backend', balToBackend)
+        dispatch(getPortfolio({ userId: currentUser?.id, currentBalance: balToBackend}))
+        setNewData(portfolio)
+        // }
+    }, [currentUser, balToBackend])
 
     useEffect(() => {
         if (balToBackend) {
             createData('1w')
+            setNewData(portfolio?.slice(-7))
         }
     }, [portfolio?.length, currentUser, balToBackend])
 
+    console.log('here are the stocks', stocks)
     // Find name and ticker from transaction that matches with the pool of companies in database
     for (let id in stocks) {
         let company = stocks[id]
-        for (let transaction of transArr) {
-            if (company.id === transaction?.companyId) {
+        for (let compId in boughtTransactions) {
+            if (company.id === parseInt(compId)) {
                 nameTickerArr.push({'name': company.name, 'ticker': company.ticker})
             }
         }
@@ -73,10 +108,13 @@ const Dashboard = () => {
     // Returns the last price (closing price) that YOU OWN along with
     // buyingPrice and number of shares to help calculate gain/loss percentage
     // as well as calculating asset balance
+    console.log('asset prices', assetPrices)
+    console.log('boughtTransactions', boughtTransactions)
     for (let compId in assetPrices) {
-        for (let transaction of transArr) {
-            if (parseInt(compId) === transaction?.companyId) {
-                let pricesArr = assetPrices[compId]
+        let pricesArr = assetPrices[compId]
+        for (let companyId in boughtTransactions) {
+            let transaction = boughtTransactions[companyId]
+            if (compId === companyId) {
                 closingPrice.push({
                     'closingPrice': pricesArr[pricesArr.length - 1].price,
                     'shares': transaction.shares,
@@ -84,7 +122,19 @@ const Dashboard = () => {
                 })
             }
         }
+        // for (let transaction of transArr) {
+        //     if (parseInt(compId) === transaction?.companyId && transaction?.type === 'buy') {
+        //         let pricesArr = assetPrices[compId]
+        //         closingPrice.push({
+                    // 'closingPrice': pricesArr[pricesArr.length - 1].price,
+                    // 'shares': transaction.shares,
+                    // 'buyingPrice': transaction.price
+        //         })
+        //     }
+        // }
     }
+
+    console.log('what are our closingPrice', closingPrice)
 
     for (let price of closingPrice) {
         let total = price.closingPrice * price.shares
@@ -109,29 +159,30 @@ const Dashboard = () => {
             total += price.closingPrice * price.shares
         }
         return total
+
     }
 
+    console.log('here is the asset balance', assetBalance)
     // TOTAL ASSET BALANCE
     for (let i in assetBalance) {
         let balance = assetBalance[i]
         portfolioBalance += balance.total
-        // console.log('here is i', i)
-        // console.log('here is assetBalnace length', parseInt(i) === assetBalance.length - 1)
+        console.log('here is i', typeof i)
+        // console.log('here is assetBalnace length', assetBalance)
         if (parseInt(i) === assetBalance.length - 1) {
             balToBackend = portfolioBalance
         }
     }
-    console.log('what is balToBackend', balToBackend)
 
     // console.log('what is this', typeof (Number(currPrice.toString().replace(/[^0-9.-]+/g,""))).toFixed(2))
     // number data type: 6472.009999999999
 
-    useEffect(() => {
-        if (balToBackend){
-            dispatch(getPortfolio({ userId: currentUser?.id, currentBalance: balToBackend}))
-            setNewData(portfolio)
-        }
-    }, [dispatch, currentUser, balToBackend])
+    // useEffect(() => {
+    //     if (balToBackend) {
+    //         dispatch(getPortfolio({ userId: currentUser?.id, currentBalance: balToBackend}))
+    //         setNewData(portfolio)
+    //     }
+    // }, [dispatch, currentUser, balToBackend])
 
     // -------------------------------------- GRAPH CODE --------------------------------------
 
