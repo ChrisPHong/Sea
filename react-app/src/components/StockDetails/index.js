@@ -105,7 +105,6 @@ const StockDetails = () => {
             dispatch(getCompanyNews(ticker))
             dispatch(getOneStock(ticker))
             dispatch(getWatchlists())
-            dispatch(getStockPrices(stock?.id))
             dispatch(getAllTransactions())
             // dispatch(stockTransaction(transaction))
         }
