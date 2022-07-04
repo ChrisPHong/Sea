@@ -5,10 +5,11 @@ import { getPortfolio } from '../../store/portfolio';
 import './AssetTable.css'
 
 const AssetTable = ({ currentUser, nameTickerArr, stocks, transArr, closingPrice, currencyFormat, assetBalance, buyingTotal }) => {
+    console.log('heres closingPirce', closingPrice)
     return (
         <>
             <div className='owned-assets'>
-            {transArr?.length ?
+            {transArr &&
                 <table>
                     <thead>
                         <tr>
@@ -53,13 +54,13 @@ const AssetTable = ({ currentUser, nameTickerArr, stocks, transArr, closingPrice
                                 </td>
                             ))}
                             {/* -------------------- ALLOCATION SECTION -------------------- */}
-                            {/* <td className='owned-allocations'>
-                                {(((closingPrice(transaction.companyId) * transaction.shares) / buyingTotal()) * 100).toFixed(2)}%</td> */}
+                            {closingPrice && closingPrice.map((price, i) => (
+                                <td key={i} className='owned-allocations'>
+                                    {(((price.closingPrice * price.shares) / buyingTotal()) * 100).toFixed(2)}%</td>
+                            ))}
                         </tr>
                     </tbody>
-                </table>
-                :
-                <p>You do not have any stocks!</p>}
+                </table>}
             </div>
         </>
     )

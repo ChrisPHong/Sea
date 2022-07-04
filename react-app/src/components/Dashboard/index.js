@@ -65,16 +65,6 @@ const Dashboard = () => {
         dispatch(getPortfolio({ userId: currentUser?.id, currentBalance: closingPriceAndSumUp() }))
     }, [dispatch, currentUser])
 
-    // Returns the total price of ALL the stocks you own for the day.
-    const buyingTotal = () => {
-        let total = 0
-        for (let compId in assetPrices) {
-            const prices = assetPrices[parseInt(compId)]
-            total += prices[prices.length - 1].price
-        }
-        return total.toLocaleString('en-US')
-    }
-
     // Find name and ticker from transaction that matches with the pool of companies in database
     for (let id in stocks) {
         let company = stocks[id]
@@ -118,6 +108,16 @@ const Dashboard = () => {
         }
         return total.toLocaleString('en-US')
     }
+
+    // Returns the total price of ALL the stocks you own for the day.
+    const buyingTotal = () => {
+        let total = 0
+        for (let price of closingPrice) {
+            total += price.closingPrice * price.shares
+        }
+        return total
+    }
+    console.log('heres the buying total', buyingTotal())
 
     const closingPriceAndSumUp = (transaction) => {
         for (let compId in assetPrices) {
