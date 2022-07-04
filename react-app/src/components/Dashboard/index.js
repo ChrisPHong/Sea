@@ -32,8 +32,10 @@ const Dashboard = () => {
     let closingPrice = []
     let assetBalance = []
     let portfolioBalance = 0
+    let balToBackend
 
-    const [balanceVal, setBalanceVal] = useState(0)
+    const [newData, setNewData] = useState(portfolio)
+    const [currPrice, setCurrPrice] = useState(0)
 
     useEffect(() => {
         // dispatch(getTransactions(currentUser?.id))
@@ -51,15 +53,6 @@ const Dashboard = () => {
             }
         }
     }, [dispatch, currentUser, stocks])
-
-    useEffect(() => {
-        setBalanceVal(sumAssetPrices)
-        console.log('here is our balanceVal', balanceVal)
-    }, [])
-
-    useEffect(() => {
-        dispatch(getPortfolio({ userId: currentUser?.id, currentBalance: portfolioBalance }))
-    }, [dispatch, currentUser, portfolioBalance])
 
     useEffect(() => {
         createData('1w')
@@ -117,28 +110,23 @@ const Dashboard = () => {
     }
 
     // TOTAL ASSET BALANCE
-    for (let balance of assetBalance) {
+    for (let i in assetBalance) {
+        let balance = assetBalance[i]
         portfolioBalance += balance.total
-    }
-
-    const closingPriceAndSumUp = (transaction) => {
-        for (let compId in assetPrices) {
-            if (parseInt(compId) === transaction?.companyId) {
-                let pricesArr = assetPrices[compId]
-                sumAssetPrices += pricesArr[pricesArr.length - 1].price * transaction?.shares
-                return pricesArr[pricesArr.length - 1].price
-            }
+        if (i === assetBalance.length - 1) {
+            balToBackend = portfolioBalance
         }
-        return sumAssetPrices
     }
+    console.log('what is balToBackend', balToBackend)
 
+    // console.log('what is this', typeof (Number(currPrice.toString().replace(/[^0-9.-]+/g,""))).toFixed(2))
+    // number data type: 6472.009999999999
 
+    useEffect(() => {
+        dispatch(getPortfolio({ userId: currentUser?.id, currentBalance: balToBackend}))
+    }, [dispatch, currentUser, portfolioBalance])
 
     // -------------------------------------- GRAPH CODE --------------------------------------
-    const [newData, setNewData] = useState(portfolio)
-    // const stock = useSelector(state => state?.stock)
-    // console.log(" THIS IS THE STOCK CHECKER FOR THE STOCK CHART", stock.prices)
-    const [currPrice, setCurrPrice] = useState(portfolioBalance)
 
     // useEffect(() => {
     //     // dispatch(getPortfolio(currentUser?.id))

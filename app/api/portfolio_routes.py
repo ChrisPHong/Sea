@@ -58,6 +58,8 @@ def make_portfolio():
     user_id = request.json['userId']
     current_balance = request.json['currentBalance']
 
+    print('----------------------------------THIS IS WHAT WERE RECEIVING FROM FRONTEND----------------------------------', current_balance)
+
     # Get all companies that the user has bought
     owned_companies = Company.query.filter(Company.id == Transaction.company_id, Transaction.user_id == int(user_id), Transaction.type == "buy").all()
 
