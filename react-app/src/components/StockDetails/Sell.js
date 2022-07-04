@@ -56,15 +56,15 @@ const Sell = ({ user, companyId, priceData, shares }) => {
         setUserShares(userShares - sharesSold);
         setBalance((Number(balance) + Number(transactionPrice)).toFixed(2));
         let newBalance = (Number(balance) + Number(transactionPrice)).toFixed(2);
-
+        console.log("THIS IS THE NEW BALANCE", newBalance)
+        console.log("NO NO NON NONNONON AHHHHHHHHHHHHHH", Number(newBalance).toFixed(2))
         let newTransaction = {
             price: Number(transactionTotal),
             shares: Number(-sharesSold),
             type: 'sell',
             user_id: user.id,
             company_id: companyId,
-            // balance: Number(newBalance)
-        }
+            balance: Number(newBalance).toFixed(2)        }
         dispatch(stockTransaction(newTransaction))
     }
 
