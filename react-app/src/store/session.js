@@ -103,8 +103,6 @@ export default function reducer(state = initialState, action) {
     case SET_USER:
       return { user: action.payload }
     case REMOVE_USER:
-      // news, portfolio, search, session, stock, transaction, watchlist
-      // console.log('in LOAD REMOVE ONE REDUCER', newState)
       return { user: null }
     default:
       return state;

@@ -39,7 +39,7 @@ function AddMoneyCurrentBalance() {
 
             }
             dispatch(addMoneyToCurrentBalance(payload))
-            setBalance(0)
+            setBalance('')
             setBuyingPower(Number(balance) + buyingPower)
         }
     }
@@ -69,7 +69,7 @@ function AddMoneyCurrentBalance() {
                 <input type='number'
                     placeholder={`Add to Buying Power`}
                     className='inputBox'
-
+                    value={balance}
                     onChange={(e) => {
                         setBalance(e.target.value)}}
                 />

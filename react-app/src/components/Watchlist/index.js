@@ -16,7 +16,6 @@ function WatchlistPage() {
     const watchlist = useSelector((state) => Object.values(state.watchlist));
     const watchlists = Object.values(watchlist[0])
     const transactions = useSelector(state => state?.transaction?.entries)
-    const transArr = Object.values(transactions)
     const assetPrices = useSelector(state => state?.portfolio?.prices)
     const stocks = useSelector(state => state?.stock?.entries)
     const companies = Object.values(stocks)
@@ -51,10 +50,8 @@ function WatchlistPage() {
                 return basePrice
             }
         }
-        return "Hello"
+        return
     }
-    useEffect(() => {
-    }, [dispatch]);
 
     useEffect(() => {
         dispatch(getWatchlists())
