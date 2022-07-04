@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { logout } from '../../store/session';
 import {clearAllWatchList} from '../../store/watchlist'
 import {clearAllTransactions} from '../../store/transaction'
+import {clearAllPortFolios} from '../../store/portfolio'
 import { useHistory } from 'react-router-dom';
 import '../NavBar/navbar.css'
 
@@ -13,6 +14,7 @@ const LogoutButton = () => {
     await dispatch(logout());
     await dispatch(clearAllWatchList())
     await dispatch(clearAllTransactions())
+    await dispatch(clearAllPortFolios())
     history.push('/')
   };
 
