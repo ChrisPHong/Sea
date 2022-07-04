@@ -6,6 +6,7 @@ import { getPortfolio, getAssetPrices } from '../../store/portfolio';
 import WatchlistPage from '../Watchlist'
 import WatchlistForm from '../WatchlistForm';
 import PortfolioChart from '../PortfolioChart';
+import AddMoneyCurrentBalance from '../AddMoneyCurrentBalance'
 import { getGeneralNews } from '../../store/news';
 import MarketNews from '../MarketNews';
 import './Dashboard.css'
@@ -198,6 +199,7 @@ const Dashboard = () => {
                 <div id='right'>
                     {/* -------------------- WATCHLIST -------------------- */}
                     <div className='watchlist-form'>
+                        <AddMoneyCurrentBalance />
                         <WatchlistForm />
                         <WatchlistPage />
                     </div>
