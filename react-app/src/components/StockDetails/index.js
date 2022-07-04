@@ -15,15 +15,18 @@ import { getWatchlists } from '../../store/watchlist'
 const StockDetails = () => {
     const dispatch = useDispatch()
     const { ticker } = useParams()
-    console.log(ticker.toUpperCase())
+    // console.log(ticker.toUpperCase())
     const stockObj = useSelector(state => state?.stock?.entries)
+    console.log("THIS IS THE STOCK OBJECT", stockObj)
     const news = useSelector(state => state?.news?.entries)
     const prices = useSelector(state => state?.stock?.prices)
     const user = useSelector(state => state.session?.user)
     // console.log(prices)
     const pricesData = Object.values(prices)
     const userShares = useSelector(state => state?.transaction?.entries)
-    console.log('---this is USERSHARES---', userShares)
+
+    console.log(userShares)
+
 
     const stocks = Object.values(stockObj)
 
@@ -54,7 +57,7 @@ const StockDetails = () => {
 
     const pricesArr = pricesData[0]
 
-    console.log(pricesArr)
+    // console.log(pricesArr)
 
     let stockPrices = []
 
@@ -65,7 +68,7 @@ const StockDetails = () => {
         }
     }
 
-    console.log(stockPrices)
+    // console.log(stockPrices)
 
     const gainOrLoss = [1, -1]
 
@@ -90,7 +93,7 @@ const StockDetails = () => {
 
     let openingPrice = Number(stockPrices[0]).toFixed(2)
 
-    if (stockPrices.length === 365) console.log(buyPrice)
+    // if (stockPrices.length === 365) console.log(buyPrice)
 
     // getting stocks from backend
     useEffect(() => {
@@ -346,7 +349,7 @@ const StockDetails = () => {
                             <div className="tab-toggle-content">
                                 {prices && <Buy user={user} companyId={stock?.id} ticker={ticker} priceData={data[data.length - 1]} />}
                                 <br></br>
-                                {prices && <Sell user={user} priceData={data[data.length - 1]} />}
+                                {prices && userShares && <Sell user={user} priceData={data[data.length - 1]} companyId={stock?.id} shares={userShares} />}
                                 {/* {currentTab === 0 && <Buy user={user} priceArr={price} />} */}
                                 {/* {currentTab === 1 && <Sell user={user} price={closePrice} shares={userShares} />} */}
                             </div>
