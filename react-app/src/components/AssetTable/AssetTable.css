@@ -2,13 +2,13 @@ table {
     width: 1000px;
 }
 
-thead,
-tbody {
+.dashboard-header,
+.dashboard-body {
     display: flex;
     justify-content: center;
 }
 
-tbody {
+.dashboard-body {
     padding-top: 10px;
 }
 
@@ -20,12 +20,12 @@ tbody {
     padding-bottom: 40px;
 }
 
-tr {
+.body-row {
     display: flex;
     text-align: left;
 }
 
-th {
+.portfolio-theaders > th {
     font-weight: 400;
     color: gray;
     padding: 0;
@@ -45,6 +45,7 @@ th {
 .owned-comp-label,
 .comp-title {
     width: 300px;
+    text-align: left;
 }
 
 .owned-shares-label,
@@ -54,6 +55,7 @@ th {
 .owned-allocations-label,
 .allocation-percent {
     width: 200px;
+    text-align: left;
 }
 
 .comp-title,

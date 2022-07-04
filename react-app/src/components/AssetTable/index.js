@@ -10,7 +10,7 @@ const AssetTable = ({ nameTickerArr, transArr, closingPrice, currencyFormat, ass
             <div className='owned-assets'>
             {transArr &&
                 <table>
-                    <thead>
+                    <thead className='dashboard-header'>
                         <tr>
                             <div className='portfolio-theaders'>
                                 <th className='owned-comp-label'>Company</th>
@@ -20,8 +20,8 @@ const AssetTable = ({ nameTickerArr, transArr, closingPrice, currencyFormat, ass
                             </div>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
+                    <tbody className='dashboard-body'>
+                        <tr className='body-row'>
                             {/* -------------------- COMPANY SECTION -------------------- */}
                             <td>
                                 {nameTickerArr && nameTickerArr.map((comp, i) => (
