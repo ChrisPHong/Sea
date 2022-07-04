@@ -34,6 +34,7 @@ const Dashboard = () => {
     let nameTickerArr = []
     let closingPrice = []
     let gainLossArr = []
+    let assetBalance = []
 
     const [balanceVal, setBalanceVal] = useState(sumAssetPrices)
 
@@ -86,7 +87,8 @@ const Dashboard = () => {
     }
 
     // Returns the last price (closing price) that YOU OWN along with
-    // buyingPrice and number of shares to help calculate gain/loss percentage.
+    // buyingPrice and number of shares to help calculate gain/loss percentage
+    // as well as calculating asset balance
     for (let compId in assetPrices) {
         for (let transaction of transArr) {
             if (parseInt(compId) === transaction?.companyId) {
@@ -121,19 +123,6 @@ const Dashboard = () => {
         }
         return sumAssetPrices
     }
-
-    const saveLatestBalance = (num) => {
-        const finalBalance = num
-        console.log('what is our final balance now?!?!?!?!?', finalBalance)
-        sumAssetPrices = finalBalance
-        console.log('did final balance did transfereed over to sumAssetPrices', sumAssetPrices)
-
-        return sumAssetPrices
-        // setBalanceVal(finalBalance)
-    }
-
-
-
 
 
 
@@ -315,7 +304,6 @@ const Dashboard = () => {
                     totalFunds={totalFunds}
                     buyingTotal={buyingTotal}
                     assetBalance={sumAssetPrices}
-                    saveLatestBalance={saveLatestBalance}
                 />
             </div>
             <div id='info'>
@@ -330,7 +318,6 @@ const Dashboard = () => {
                         currencyFormat={currencyFormat}
                     />
                     {/* -------------------- NEWS -------------------- */}
-                    <div>{saveLatestBalance(sumAssetPrices)}</div>
                     <div ref={assetPriceRef}>{sumAssetPrices}</div>
                     <div hidden={true}>
                         <PortfolioChart
@@ -339,7 +326,6 @@ const Dashboard = () => {
                             totalFunds={totalFunds}
                             buyingTotal={buyingTotal}
                             assetBalance={sumAssetPrices}
-                            saveLatestBalance={saveLatestBalance}
                             sumAssetPrices={sumAssetPrices}
                         />
                     </div>

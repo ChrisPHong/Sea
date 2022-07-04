@@ -62,7 +62,7 @@ const StockDetails = () => {
         if (stock === undefined) {
             dispatch(getCompanyNews(ticker))
             dispatch(getOneStock(ticker))
-            dispatch(getStockPrices(stockObj?.id))
+            dispatch(getStockPrices(stock?.id))
             dispatch(getWatchlists())
             // dispatch(getAllTransactions())
             // dispatch(stockTransaction(transaction))

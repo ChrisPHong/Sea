@@ -16,11 +16,19 @@ th {
 }
 
 .owned-comp-name,
+.owned-balance,
 .owned-comp-price {
     display: flex;
     flex-direction: column;
     margin: 0%;
 }
+
+.comp-title,
+.closing-and-balance {
+    display: flex;
+    width: 400px;
+}
+
 .owned-comp-name {
     width: 300px;
 }
