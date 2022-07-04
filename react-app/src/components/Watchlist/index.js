@@ -29,14 +29,6 @@ function WatchlistPage() {
 
     const [show, setShow] = useState('hidden')
 
-    // const closingPrice = (companyId) => {
-    //     for (let stock of companies) {
-    //         if (stock.id === companyId && stock.prices) {
-    //             const priceArr = stock.prices
-    //             return priceArr[priceArr.length - 1]
-    //         }
-    //     }
-    // }
 
     const closingPriceAssets = (companyId) => {
         for (let compId in assetPrices) {

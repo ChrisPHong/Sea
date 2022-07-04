@@ -11,7 +11,9 @@ function AddMoneyCurrentBalance() {
     const user = useSelector(state => state.session?.user)
     const userId = useSelector(state => state.session?.user.id)
     const [balance, setBalance] = useState(0)
+    const [buyingPower, setBuyingPower] = useState(user.balance)
     const [errors, setErrors] = useState([]);
+    const [show, setShow] = useState(false);
 
     useEffect(() => {
         const error = [];
@@ -25,6 +27,10 @@ function AddMoneyCurrentBalance() {
 
     const onSubmit = (e) => {
         e.preventDefault()
+        if(errors.length > 0){
+            setShow(true)
+            return
+        }
         if (errors.length === 0) {
 
             const payload = {
@@ -34,12 +40,16 @@ function AddMoneyCurrentBalance() {
             }
             dispatch(addMoneyToCurrentBalance(payload))
             setBalance(0)
+            setBuyingPower(Number(balance) + buyingPower)
         }
     }
 
     return (
         <div className='AddMoneyCurrentBalanceForm'>
-            <h2>Buying Power</h2>
+            <h2 className='buying-power-inForm'>Buying Power: ${buyingPower.toLocaleString('en-US')}</h2>
+            {show ?
+            <div>
+
             {errors.length > 0 ?
                 <>
                     <ul className='errorsArray'>{errors.map(error => {
@@ -53,19 +63,20 @@ function AddMoneyCurrentBalance() {
                     </ul>
                 </>
                 : null}
+                </div>
+                    : null}
             <form onSubmit={onSubmit}>
                 <input type='number'
-                    placeholder={`Buying Power: ${user.balance}`}
+                    placeholder={`Add to Buying Power`}
                     className='inputBox'
 
                     onChange={(e) => {
-                        console.log(e.target.value, "VALUE  >>>>>>>>>>>>>>>>>>>>>")
                         setBalance(e.target.value)}}
                 />
                 <button
                     className='WatchlistSubmitButton'
                     type='submit'
-                    disabled={errors.length > 0 ? true : false}
+                    // disabled={errors.length > 0 ? true : false}
                 >Submit</button>
             </form>
 

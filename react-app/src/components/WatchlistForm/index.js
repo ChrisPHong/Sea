@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {postWatchlists} from '../../store/watchlist'
+import { postWatchlists } from '../../store/watchlist'
 import './WatchlistForm.css';
 
 function WatchlistForm() {
     const [name, setName] = useState('');
     const [errors, setErrors] = useState([]);
+    const [show, setShow] = useState(false);
+
 
     const dispatch = useDispatch();
 
@@ -25,6 +27,10 @@ function WatchlistForm() {
 
     const onSubmit = async (e) => {
         e.preventDefault();
+        if(errors.length > 0){
+            setShow(true)
+            return
+        }
         if (errors.length === 0) {
             const payload = {
                 userId,
@@ -36,47 +42,52 @@ function WatchlistForm() {
 
     }
 
-    useEffect(()=>{
+    useEffect(() => {
 
-    },[onSubmit])
+    }, [onSubmit])
 
     return (
         <div className="WatchlistFormDiv">
 
-        <form className="WatchlistForm" onSubmit={onSubmit}>
-           {errors.length > 0 ?
-           <>
-           <h2 className='WatchlistHeaderForm'>Create Your Watchlist</h2>
-           <ul className='errorsArray'>{errors.map(error => {
-               return (
-                   <>
-               <li className='WatchlistFormErrorItem'
-               key={error}>{error}</li>
-               </>
-               )
-            })}
-            </ul>
-           </>
-           : null}
-                <div className='InputAndSubmitButton'>
-            <div className='nameInput'>
-                <input type='text'
-                    required
-                    className='inputBox'
-                    placeholder='Watchlist Name'
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    />
-            </div>
+            <form className="WatchlistForm" onSubmit={onSubmit}>
+                <h2 className='WatchlistHeaderForm'>Create Your Watchlist</h2>
+                {show ?
 
-            <button
-                className='WatchlistSubmitButton'
-                type='submit'
-                disabled={errors.length > 0 ? true : false}
-                >Submit</button>
+                    errors.length > 0 ?
+                        <>
+                        <h4>Errors:</h4>
+                            <ul className='errorsArray'>{errors.map(error => {
+                                return (
+                                    <>
+                                        <li className='WatchlistFormErrorItem'
+                                            key={error}>{error}</li>
+                                    </>
+                                )
+                            })}
+                            </ul>
+                        </>
+                        : null
+
+                    : null}
+                <div className='InputAndSubmitButton'>
+                    <div className='nameInput'>
+                        <input type='text'
+                            required
+                            className='inputBox'
+                            placeholder='Watchlist Name'
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
+                    </div>
+
+                    <button
+                        className='WatchlistSubmitButton'
+                        type='submit'
+                        // disabled={errors.length > 0 ? true : false}
+                    >Submit</button>
                 </div>
-        </form>
-                </div>
+            </form>
+        </div>
     )
 }
 
