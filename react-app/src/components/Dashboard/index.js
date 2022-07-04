@@ -5,9 +5,14 @@ import { getTransactions, getAllTransactions } from '../../store/transaction';
 import { getPortfolio, getAssetPrices } from '../../store/portfolio';
 import WatchlistPage from '../Watchlist'
 import WatchlistForm from '../WatchlistForm';
-import PortfolioChart from '../PortfolioChart';
+import PortfolioChart from '../AssetTable';
 import { getGeneralNews } from '../../store/news';
 import MarketNews from '../MarketNews';
+import AssetTable from '../AssetTable';
+// import { useState, useEffect } from 'react';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine } from 'recharts';
+// import { getPortfolio } from '../../store/portfolio';
 import './Dashboard.css'
 
 const Dashboard = () => {
@@ -26,6 +31,8 @@ const Dashboard = () => {
     const options = { style: 'currency', currency: 'USD' };
     const currencyFormat = new Intl.NumberFormat('en-US', options);
     let sumAssetPrices = 0
+    let compNameArr = []
+    let tickerArr = []
 
     const [balanceVal, setBalanceVal] = useState(sumAssetPrices)
 
@@ -79,19 +86,18 @@ const Dashboard = () => {
     }
 
     // Find ticker from transaction that matches with the pool of companies in database
-    const matchTicker = (companyId) => {
-        for (let stock of companies) {
-            if (stock?.id === companyId) {
-                return stock.ticker
-            }
+    for (let stock of companies) {
+        if (stock?.id === companyId) {
+            compNameArr.push(company.id)
         }
     }
 
     // Find name from transaction that matches with the pool of companies in database
-    const matchName = (companyId) => {
-        for (let stock of companies) {
-            if (stock?.id === companyId) {
-                return stock.name
+    for (let id in stocks) {
+        let company = stocks[id]
+        for (let transaction of transArr) {
+            if (company.id === transaction?.companyId) {
+                compNameArr.push(company.name)
             }
         }
     }
@@ -128,6 +134,178 @@ const Dashboard = () => {
         // setBalanceVal(finalBalance)
     }
 
+
+
+
+
+
+    // -------------------------------------- GRAPH CODE --------------------------------------
+    // const transArr = Object.values(transactions)
+    const [newData, setNewData] = useState(portfolio)
+    const stock = useSelector(state => state?.stock)
+    // console.log(" THIS IS THE STOCK CHECKER FOR THE STOCK CHART", stock.prices)
+    const [currPrice, setCurrPrice] = useState(newData[newData?.length - 1])
+
+    // useEffect(() => {
+    //     // dispatch(getPortfolio(currentUser?.id))
+    // }, [dispatch])
+    // Once portfolio is fetched, display the one week graph.
+    useEffect(() => {
+        createData('1w')
+    }, [portfolio?.length, currentUser])
+
+    const createData = (time) => {
+        if (time === '1y') {
+            setNewData(portfolio)
+            return newData
+        }
+        if (time === '1w') {
+            setNewData(portfolio?.slice(-7))
+            return newData
+        }
+        if (time === '1m') {
+            setNewData(portfolio?.slice(-30))
+            return newData
+        }
+        if (time === '3m') {
+            setNewData(portfolio?.slice(-90))
+            return newData
+        }
+        if (time === '6m') {
+            setNewData(portfolio?.slice(-(Math.floor(portfolio?.length / 2))))
+            return newData
+        }
+    }
+
+    const lineMouseOver = (price) => {
+        if (price) {
+            setCurrPrice(price?.toFixed(2))
+        }
+    }
+
+    // Customized tooltip to show price and date
+    const customTooltip = ({ active, payload, label }) => {
+        if (active && payload && payload.length) {
+            return (
+                <div className="custom-tooltip">
+                    <p className="tooltip-price">{`$${((payload[0].value)).toFixed(2)}`}</p>
+                    <p className="tooltip-date">{label}</p>
+                </div>
+            );
+        }
+        return null;
+    }
+
+
+
+
+
+    //     return (
+//         <>
+//             <div className='balance-info'>
+//                 <div className='balance-label'>Balance</div>
+//                 <div className='balance-amt'>
+//                     {sumAssetPrices}
+//                 </div>
+//                 <div className='balance-percent'>
+//                     {(buyingTotal() > totalFunds()) ?
+//                         <div className='all-time-diff' style={{ color: 'green' }}>
+//                             +${(Math.abs((buyingTotal() - totalFunds())).toFixed(2)).toLocaleString('en-US')}
+//                         </div>
+//                         :
+//                         <div className='all-time-diff' style={{ color: 'red' }}>
+//                             -${Math.abs((buyingTotal() - totalFunds())).toFixed(2)}
+//                         </div>
+//                     }
+//                     <div className='all-time'>All time</div>
+//                 </div>
+//             </div>
+//             {/* -------------------- LINE CHART HERE -------------------- */}
+//             <div className='asset-chart'>
+//                 <LineChart
+//                     width={950}
+//                     height={300}
+//                     data={newData}
+//                     onMouseMove={(e) => lineMouseOver(e?.activePayload && e?.activePayload[0].payload.price)}
+//                 >
+//                     <XAxis dataKey="date" hide='true' />
+//                     <YAxis dataKey="price" domain={['dataMin', 'dataMax']} hide='true' />
+//                     <ReferenceLine y={totalFunds()} stroke="gray" strokeDasharray="3 3" />
+//                     <Tooltip
+//                         cursor={false}
+//                         content={customTooltip}
+//                     />
+//                     <Line
+//                         type="linear"
+//                         dataKey="price"
+//                         stroke="#0b7cee"
+//                         activeDot={{ r: 5 }}
+//                         dot={false}
+//                         animationDuration={500}
+//                         strokeWidth={2}
+//                     />
+//                 </LineChart>
+//             </div>
+//             <div className='asset-bottom'>
+//                 <div className='buying-power'>
+//                     Buying power: ${(currentUser.balance).toLocaleString('en-US')}
+//                 </div>
+//                 <div className='asset-timeframe'>
+//                     <span className='weekly'>
+//                         <button
+//                             value='1w'
+//                             onClick={e => createData(e.target.value)}
+//                         >
+//                             1W
+//                         </button>
+//                     </span>
+//                     <span className='monthly'>
+//                         <button
+//                             value='1m'
+//                             onClick={e => createData(e.target.value)}
+//                         >
+//                             1M
+//                         </button>
+//                     </span>
+//                     <span className='three-months'>
+//                         <button
+//                             value='3m'
+//                             onClick={e => createData(e.target.value)}
+//                         >
+//                             3M
+//                         </button>
+//                     </span>
+//                     <span className='six-months'>
+//                         <button
+//                             value='6m'
+//                             onClick={e => createData(e.target.value)}
+//                         >
+//                             6M
+//                         </button>
+//                     </span>
+//                     <span className='one-year'>
+//                         <button
+//                             value='1y'
+//                             onClick={e => createData(e.target.value)}
+//                         >
+//                             1Y
+//                         </button>
+//                     </span>
+//                 </div>
+//             </div>
+//         </>
+//     )
+// }
+
+
+
+
+
+
+
+
+
+
     return (
         <div id='portfolio-ctn'>
             <h1 className='your-assets-heading'>Your assets</h1>
@@ -145,53 +323,12 @@ const Dashboard = () => {
             <div id='info'>
                 <div id='left'>
                     {/* -------------------- OWNED STOCKS -------------------- */}
-                    <div className='owned-assets'>
-                        {transArr.length ?
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th className='owned-comp-label'>Company</th>
-                                        <th className='owned-shares-label'>Balance</th>
-                                        <th className='owned-price-label'>Price</th>
-                                        <th className='owned-allocations-label'>Allocation</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {stocks && transArr.map(transaction => (
-                                        transaction.type === 'buy' && transaction.userId === currentUser.id ?
-                                            <tr key={transaction.id}>
-                                                {/* -------------------- COMPANY SECTION -------------------- */}
-                                                <td className='owned-comp-name'>
-                                                    <div className='company-name'>
-                                                        {matchName(transaction.companyId)}
-                                                    </div>
-                                                    <div className='company-ticker'>
-                                                        {matchTicker(transaction.companyId)}
-                                                    </div>
-                                                </td>
-                                                {/* -------------------- BALANCE SECTION -------------------- */}
-                                                <td className='owned-balance'>
-                                                    <div className='owned-balance-price'>{currencyFormat.format(transaction?.shares * closingPriceAndSumUp(transaction))}</div>
-                                                    <div className='owned-comp-shares'>{transaction.shares}</div>
-                                                </td>
-                                                {/* -------------------- PRICE SECTION -------------------- */}
-                                                <td className='owned-comp-price'>
-                                                    <div className='curr-comp-price'>{currencyFormat.format(closingPrice(transaction?.companyId))}</div>
-                                                    {(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2) >= 0 ?
-                                                        <div className='curr-comp-percent' style={{ color: 'green' }}>+{(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>
-                                                        :
-                                                        <div className='curr-comp-percent' style={{ color: 'red' }}>{(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>}
-                                                </td>
-                                                {/* -------------------- ALLOCATION SECTION -------------------- */}
-                                                <td className='owned-allocations'>
-                                                    {(((closingPrice(transaction.companyId) * transaction.shares) / buyingTotal()) * 100).toFixed(2)}%</td>
-                                            </tr> : ""
-                                    ))}
-                                </tbody>
-                            </table>
-                            :
-                            <p>You do not have any stocks!</p>}
-                    </div>
+                    <AssetTable
+                        currentUser={currentUser}
+                        stocks={stocks}
+                        transArr={transArr}
+                        compNameArr={compNameArr}
+                    />
                     {/* -------------------- NEWS -------------------- */}
                     <div>{saveLatestBalance(sumAssetPrices)}</div>
                     <div ref={assetPriceRef}>{sumAssetPrices}</div>

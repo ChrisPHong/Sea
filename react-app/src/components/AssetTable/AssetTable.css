@@ -1,0 +1,43 @@
+.owned-assets {
+    display: flex;
+    justify-content: center;
+    width: auto;
+    border-bottom: 1px solid lightgray;
+    padding-bottom: 40px;
+}
+
+tr {
+    text-align: left;
+}
+
+th {
+    font-weight: 400;
+    color: gray;
+}
+
+.owned-comp-name {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    margin: 0%;
+}
+
+.owned-comp-name,
+.owned-balance,
+.owned-comp-price {
+    padding: 10px 0 10px 0;
+}
+
+.company-ticker,
+.owned-comp-shares,
+.curr-comp-percent {
+    font-size: 10pt;
+    color: gray;
+    padding-top: 5px;
+}
+
+.owned-comp-price,
+.owned-balance,
+.owned-allocations {
+    width: 200px;
+}
