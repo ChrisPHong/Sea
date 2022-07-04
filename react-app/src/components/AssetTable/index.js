@@ -5,7 +5,6 @@ import { getPortfolio } from '../../store/portfolio';
 import './AssetTable.css'
 
 const AssetTable = ({ currentUser, compNameArr, stocks, transArr }) => {
-    console.log('hey bro im in asset table can you just print already', compNameArr)
     return (
         <>
             <div className='owned-assets'>
@@ -22,14 +21,14 @@ const AssetTable = ({ currentUser, compNameArr, stocks, transArr }) => {
                     <tbody>
                         <tr>
                             {/* -------------------- COMPANY SECTION -------------------- */}
-                            {compNameArr && compNameArr.map((name, i) => (
+                            {compNameArr && compNameArr.map((comp, i) => (
                                 <td key={i} className='owned-comp-name'>
                                     <div className='company-name'>
-                                        {name}
+                                        {comp.name}
                                     </div>
-                                    {/* <div className='company-ticker'>
-                                        {matchTicker(transaction.companyId)}
-                                    </div> */}
+                                    <div className='company-ticker'>
+                                        {comp.ticker}
+                                    </div>
                                 </td>
                             ))}
                             {/* -------------------- BALANCE SECTION -------------------- */}

@@ -85,19 +85,12 @@ const Dashboard = () => {
         return total.toLocaleString('en-US')
     }
 
-    // Find ticker from transaction that matches with the pool of companies in database
-    for (let stock of companies) {
-        if (stock?.id === companyId) {
-            compNameArr.push(company.id)
-        }
-    }
-
-    // Find name from transaction that matches with the pool of companies in database
+    // Find name and ticker from transaction that matches with the pool of companies in database
     for (let id in stocks) {
         let company = stocks[id]
         for (let transaction of transArr) {
             if (company.id === transaction?.companyId) {
-                compNameArr.push(company.name)
+                compNameArr.push({'name': company.name, 'ticker': company.ticker})
             }
         }
     }
