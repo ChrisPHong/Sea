@@ -32,19 +32,19 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
         //  price = market price per share
     }
 
-    const convertDate = date => {
-        const dates = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-        const newDate = date.split(' ')
-        let newMonth
-        for (let i in dates) {
-            if (newDate[0] === dates[i]) {
-                newMonth = i
-            }
+    // const convertDate = date => {
+    //     const dates = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    //     const newDate = date.split(' ')
+    //     let newMonth
+    //     for (let i in dates) {
+    //         if (newDate[0] === dates[i]) {
+    //             newMonth = i
+    //         }
 
-        }
-        const result = new Date(`${newMonth}-${parseInt(newDate[1])}-${parseInt(newDate[2])}`)
-        return result.toDateString()
-    }
+    //     }
+    //     const result = new Date(`${newMonth}-${parseInt(newDate[1])}-${parseInt(newDate[2])}`)
+    //     return result.toDateString()
+    // }
 
     // console.log('IS THIS OUR BRAND NEW DATE?!??!?!?!!', convertDate(priceData.date))
 
