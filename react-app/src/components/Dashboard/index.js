@@ -63,6 +63,10 @@ const Dashboard = () => {
         dispatch(getPortfolio({ userId: currentUser?.id, currentBalance: closingPriceAndSumUp() }))
     }, [dispatch, currentUser])
 
+    useEffect(() => {
+        createData('1w')
+    }, [portfolio?.length, currentUser])
+
     // Find name and ticker from transaction that matches with the pool of companies in database
     for (let id in stocks) {
         let company = stocks[id]
@@ -135,72 +139,57 @@ const Dashboard = () => {
 
 
     // -------------------------------------- GRAPH CODE --------------------------------------
-    // const transArr = Object.values(transactions)
-    // const [newData, setNewData] = useState(portfolio)
+    const [newData, setNewData] = useState(portfolio)
     // const stock = useSelector(state => state?.stock)
     // console.log(" THIS IS THE STOCK CHECKER FOR THE STOCK CHART", stock.prices)
-    // const [currPrice, setCurrPrice] = useState(newData[newData?.length - 1])
+    const [currPrice, setCurrPrice] = useState(newData[newData?.length - 1])
 
     // useEffect(() => {
     //     // dispatch(getPortfolio(currentUser?.id))
     // }, [dispatch])
     // Once portfolio is fetched, display the one week graph.
-    // useEffect(() => {
-    //     createData('1w')
-    // }, [portfolio?.length, currentUser])
 
-    // const createData = (time) => {
-    //     if (time === '1y') {
-    //         setNewData(portfolio)
-    //         return newData
-    //     }
-    //     if (time === '1w') {
-    //         setNewData(portfolio?.slice(-7))
-    //         return newData
-    //     }
-    //     if (time === '1m') {
-    //         setNewData(portfolio?.slice(-30))
-    //         return newData
-    //     }
-    //     if (time === '3m') {
-    //         setNewData(portfolio?.slice(-90))
-    //         return newData
-    //     }
-    //     if (time === '6m') {
-    //         setNewData(portfolio?.slice(-(Math.floor(portfolio?.length / 2))))
-    //         return newData
-    //     }
-    // }
+    const createData = (time) => {
+        if (time === '1y') {
+            setNewData(portfolio)
+            return newData
+        }
+        if (time === '1w') {
+            setNewData(portfolio?.slice(-7))
+            return newData
+        }
+        if (time === '1m') {
+            setNewData(portfolio?.slice(-30))
+            return newData
+        }
+        if (time === '3m') {
+            setNewData(portfolio?.slice(-90))
+            return newData
+        }
+        if (time === '6m') {
+            setNewData(portfolio?.slice(-(Math.floor(portfolio?.length / 2))))
+            return newData
+        }
+    }
 
-    // const lineMouseOver = (price) => {
-    //     if (price) {
-    //         setCurrPrice(price?.toFixed(2))
-    //     }
-    // }
+    const lineMouseOver = (price) => {
+        if (price) {
+            setCurrPrice(price?.toFixed(2))
+        }
+    }
 
-    // // Customized tooltip to show price and date
-    // const customTooltip = ({ active, payload, label }) => {
-    //     if (active && payload && payload.length) {
-    //         return (
-    //             <div className="custom-tooltip">
-    //                 <p className="tooltip-price">{`$${((payload[0].value)).toFixed(2)}`}</p>
-    //                 <p className="tooltip-date">{label}</p>
-    //             </div>
-    //         );
-    //     }
-    //     return null;
-    // }
-
-
-
-
-
-
-
-
-
-
-
+    // Customized tooltip to show price and date
+    const customTooltip = ({ active, payload, label }) => {
+        if (active && payload && payload.length) {
+            return (
+                <div className="custom-tooltip">
+                    <p className="tooltip-price">{`$${((payload[0].value)).toFixed(2)}`}</p>
+                    <p className="tooltip-date">{label}</p>
+                </div>
+            );
+        }
+        return null;
+    }
 
     return (
         <div id='portfolio-ctn'>
@@ -226,11 +215,11 @@ const Dashboard = () => {
                     </div>
                 </div>
                 {/* -------------------- LINE CHART HERE -------------------- */}
-                {/* <div className='asset-chart'>
+                <div className='asset-chart'>
                     <LineChart
                         width={950}
                         height={300}
-                        data={newData}
+                        data={portfolio}
                         onMouseMove={(e) => lineMouseOver(e?.activePayload && e?.activePayload[0].payload.price)}
                     >
                         <XAxis dataKey="date" hide='true' />
@@ -297,7 +286,7 @@ const Dashboard = () => {
                             </button>
                         </span>
                     </div>
-                </div> */}
+                </div>
             </div>
             <div id='info'>
                 <div id='left'>
