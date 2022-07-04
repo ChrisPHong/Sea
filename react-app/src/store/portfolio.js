@@ -51,11 +51,11 @@ const portfolioReducer = ( state = initialState, action ) => {
     let newState
     switch (action.type) {
         case LOAD_PORTFOLIO:
-            newState = { ...state, entries: {...state.entries} }
+            newState = { ...state, entries: { ...state.entries }, prices: { ...state.prices } }
             action.portfolio.forEach((priceData, i) => newState.entries[i] = priceData)
             return newState
         case LOAD_ASSET_PRICES:
-            newState = { ...state, entries: { }, prices: { } }
+            newState = { ...state, entries: {...state.entries }, prices: { ...state.prices } }
             newState.prices = assetPrices
             return newState
         default:
