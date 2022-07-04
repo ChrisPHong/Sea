@@ -1,10 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {stockTransaction } from '../../store/transaction';
+import { stockTransaction } from '../../store/transaction';
 
-const Sell = ({ user, ticker, price, shares }) => {
+const Sell = ({ user, companyId, priceData, shares }) => {
+    console.log(shares)
+    console.log(companyId)
+    const sharesArr = Object.values(shares)
+    console.log(sharesArr)
     const dispatch = useDispatch();
     const [userShares, setUserShares] = useState(shares);
+    console.log("THIS IS THE USER SHARES", userShares)
+    let ownedStockShares = 0
+    if (shares) {
+        for (let i = 0; i < sharesArr?.length; i++) {
+            console.log(ownedStockShares)
+            if (sharesArr[i]?.companyId === companyId && sharesArr[i]?.type === "buy") {
+                ownedStockShares += sharesArr[i]?.shares
+            }
+            if (sharesArr[i]?.companyId === companyId && sharesArr[i]?.type === "sell") {
+                ownedStockShares -= sharesArr[i]?.shares
+            }
+        }
+    }
+
+    console.log(ownedStockShares)
+
     const [transactionPrice, setTransactionPrice] = useState((0).toFixed(2));
     const [order, setOrder] = useState('sell');
     const [sharesSold, setSharesSold] = useState(0);
@@ -12,9 +32,23 @@ const Sell = ({ user, ticker, price, shares }) => {
 
     const transactionTotal = e => {
         setSharesSold(e.target.value);
-        setTransactionPrice((e.target.value * price).toFixed(2));
+        setTransactionPrice((e.target.value * (priceData[priceData?.length - 1].price)).toFixed(2));
         //  price = market price per share
     }
+
+    // const convertDate = date => {
+    //     const dates = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    //     const newDate = date.split(' ')
+    //     let newMonth
+    //     for (let i in dates) {
+    //         if (newDate[0] === dates[i]) {
+    //             newMonth = i
+    //         }
+
+    //     }
+    //     const result = new Date(`${newMonth}-${parseInt(newDate[1])}-${parseInt(newDate[2])}`)
+    //     return result.toDateString()
+    // }
 
     const sellStock = async (e) => {
         e.preventDefault();
@@ -23,27 +57,28 @@ const Sell = ({ user, ticker, price, shares }) => {
         setBalance((Number(balance) + Number(transactionPrice)).toFixed(2));
         let newBalance = (Number(balance) + Number(transactionPrice)).toFixed(2);
 
-            let newTransaction = {
-                user_id: user.id,
-                shares: Number(-sharesSold),
-                price: Number(transactionTotal),
-                type: 'sell',
-                balance: Number(newBalance)
-            }
-            dispatch(stockTransaction(newTransaction))
+        let newTransaction = {
+            price: Number(transactionTotal),
+            shares: Number(-sharesSold),
+            type: 'sell',
+            user_id: user.id,
+            company_id: companyId,
+            // balance: Number(newBalance)
+        }
+        dispatch(stockTransaction(newTransaction))
     }
 
     if (sellStock) {
         setTimeout(() => {
             setOrder('sell')
-        }, 3000)
+        }, 3500)
     }
 
     return (
         <div>
             <form onSubmit={sellStock}>
                 <div className='transaction-box'>
-                    <div className='transaction-labels' id='buy-label'>Type: Buy</div>
+                    <div className='transaction-labels' id='buy-label'>Type: Sell</div>
                     <div className='transaction-labels'>Shares</div>
                     <select name="shares" id="shares" onChange={transactionTotal} value={sharesSold}>
                         <option value=""></option>
@@ -62,7 +97,7 @@ const Sell = ({ user, ticker, price, shares }) => {
                 <div className='transaction-info'>
                     <div className='transaction-labels'>Market Price</div>
                     <div id='transaction-stock-price'>
-                        ${price}
+                        ${priceData && Number(priceData[priceData?.length - 1]?.price).toFixed(2)}
                     </div>
                 </div>
                 <hr />
@@ -75,15 +110,18 @@ const Sell = ({ user, ticker, price, shares }) => {
                 <div className='transaction-btn'>
                     <button id='sell-btn' type="submit"
                         onClick={(e) => {
-                        sellStock(e);
+                            sellStock(e);
                         }}
                         disabled={(sharesSold !== "" && userShares >= sharesSold) ? false : true}>
                         {order}
                     </button>
                 </div>
-                <div className='transaction-labels' id='transaction-available-shares'>{userShares || 0} Shares Available</div>
+                <div className='transaction-labels' id='transaction-available-shares'>{ownedStockShares || 0} Shares Available</div>
             </form>
         </div>
+        // <div>
+        //     Sell Component
+        // </div>
     )
 }
 

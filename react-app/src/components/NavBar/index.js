@@ -24,14 +24,14 @@ const NavBar = () => {
         <>
           <div className='sea-navbar-logo'>
             <NavLink to='/dashboard' exact={true} activeClassName='active'>
-              Sea
+              <img className='sea-logo' src='/images/sea-logo.png' />
             </NavLink>
           </div>
 
           <div className='auth-navbar-right'>
             { stock && (
               <SearchBar />
-            )}
+              )}
 
             <div id="nav-portfolio">
               <NavLink to='/dashboard' exact={true} activeClassName='active'>
@@ -49,10 +49,10 @@ const NavBar = () => {
           </div>
         </>
       :
-        <>
+      <>
           <div className='sea-navbar-logo'>
             <NavLink to='/' exact={true} activeClassName='active'>
-              Sea
+          <img className='sea-logo' src='/images/sea-logo.png' />
             </NavLink>
           </div>
           <div className='navbar-right'>

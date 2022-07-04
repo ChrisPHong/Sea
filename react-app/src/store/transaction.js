@@ -1,6 +1,7 @@
 const LOAD_TRANSACTIONS = 'transaction/loadTransactions';
 const BUY_STOCK = 'transactions/BUY_STOCK';
 const LOAD_BOUGHT_TRANSACTIONS = 'transaction/loadBoughtTransactions'
+const ADD_MONEY = 'transactions/ADD_MONEY'
 // const SELL_STOCK = 'transactions/SELL_STOCK';
 
 // get all transactions
@@ -15,6 +16,11 @@ export const loadTransactions = (transactions) => {
 export const buyStock = (transaction) => ({
     type: BUY_STOCK,
     transaction
+})
+// update Balance
+export const updateCurrentBalance = (userBalance) => ({
+    type: ADD_MONEY,
+    userBalance
 })
 
 export const loadBoughtTransactions = (transactions) => {
@@ -74,6 +80,21 @@ export const stockTransaction = (data) => async (dispatch) => {
     }
 }
 
+export const addMoneyToCurrentBalance = (balance) => async (dispatch) => {
+    const response = await fetch(`/api/transactions/add`, {
+        method: 'PATCH',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(balance)
+    })
+    console.log(response)
+
+    if (response.ok) {
+        const balance = await response.json()
+        console.log(balance)
+        dispatch(updateCurrentBalance(balance))
+    }
+}
+
 
 const initialState = { entries: {}, boughtTrans: {}, isLoading: true }
 
@@ -96,6 +117,11 @@ const transactionReducer = ( state = initialState, action ) => {
                 }
             }
             return newState;
+        case ADD_MONEY:
+            newState = {
+                ...state, [action.userBalance.user.id]: action.transaction
+            }
+            return state
         default:
             return state
     }

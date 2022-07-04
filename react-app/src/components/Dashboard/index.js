@@ -5,7 +5,7 @@ import { getTransactions, getAllTransactions, getBoughtTransactions } from '../.
 import { getPortfolio, getAssetPrices } from '../../store/portfolio';
 import WatchlistPage from '../Watchlist'
 import WatchlistForm from '../WatchlistForm';
-import PortfolioChart from '../AssetTable';
+import AddMoneyCurrentBalance from '../AddMoneyCurrentBalance'
 import { getGeneralNews } from '../../store/news';
 import MarketNews from '../MarketNews';
 import AssetTable from '../AssetTable';
@@ -58,7 +58,7 @@ const Dashboard = () => {
 
 
     useEffect(() => {
-        dispatch(getPortfolio({ userId: currentUser?.id, currentBalance: parseInt(balToBackend.toFixed(2))}))
+        dispatch(getPortfolio({ userId: currentUser?.id, currentBalance: balToBackend}))
         setNewData(portfolio)
     }, [currentUser, balToBackend])
 
@@ -68,6 +68,8 @@ const Dashboard = () => {
             setNewData(portfolio?.slice(-7))
         }
     }, [portfolio?.length, currentUser, balToBackend])
+
+    console.log('all i hear are complaints right now', boughtTransactions)
 
     // Find name and ticker from transaction that matches with the pool of companies in database
     for (let id in stocks) {
@@ -104,10 +106,9 @@ const Dashboard = () => {
     // Total money you put in to buy shares
     const totalFunds = () => {
         let total = 0
-        for (let transaction of transArr) {
-            if (transaction?.type === 'buy') {
-                total += transaction.price * transaction.shares
-            }
+        for (let compId in boughtTransactions) {
+            let transaction = boughtTransactions[compId]
+            total += transaction.price * transaction.shares
         }
         return total
     }
@@ -300,6 +301,7 @@ const Dashboard = () => {
                 <div id='right'>
                     {/* -------------------- WATCHLIST -------------------- */}
                     <div className='watchlist-form'>
+                        <AddMoneyCurrentBalance />
                         <WatchlistForm />
                         <WatchlistPage />
                     </div>

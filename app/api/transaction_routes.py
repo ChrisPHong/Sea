@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from flask_login import login_required, current_user, UserMixin
 from app.models import db, Transaction, User
 from app.forms import TransactionForm
+from app.forms import UserBalanceForm
 from datetime import datetime, timedelta
 import json
 
@@ -70,10 +71,27 @@ def update_transactions():
             user_id=form.data['user_id'],
             company_id=form.data['company_id']
         )
-        # user = User.query.filter(User.id == form.data['user_id']).first()
-        # user.balance = form.data['balance']
+        user = User.query.filter(User.id == form.data['user_id']).first()
+        user.balance = request.json['balance']
 
         db.session.add(transaction)
         db.session.commit()
-        return transaction.to_dict()
+        return {'transaction': transaction.to_dict(), 'balance': user.balance, 'id': transaction.id}
+    return {'errors': validation_errors_to_error_messages(form.errors)}, 402
+
+
+@transaction_routes.route('/add', methods=['PATCH'])
+@login_required
+def add_money_current_balance():
+    form = UserBalanceForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    if form.validate_on_submit():
+        # We find the user and we add the buying power to the balance
+        user = User.query.get(request.json['userId'])
+        user.balance += int(request.json['balance'])
+
+
+        db.session.commit()
+        return jsonify({'balance': user.balance, 'user': user.to_dict(), 'id':user.id})
     return {'errors': validation_errors_to_error_messages(form.errors)}, 402

@@ -49,7 +49,7 @@ def make_portfolio():
     previous_dates = datetime.today() - timedelta(days=365)
 
     # Create asset prices
-    owned_company_prices = make_stock_price(current_balance, 365, choice([ASCENDING, DESCENDING]))
+    owned_company_prices = make_stock_price(round(current_balance, 2), 365, choice([ASCENDING, DESCENDING]))
     # ex: [
         # 'price': 100,
         # 'price': 99,

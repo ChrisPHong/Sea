@@ -7,9 +7,6 @@ from flask_login import current_user
 # name must be unique
 def watchlist_validator(form, field):
     name = field.data
-    # print(name, "<<<<<<<<<<<<<<<<<<<<<< name >>>>>>>>>>>>>>>>")
-    # print(field, "<<<<<<<<<<<<<<<<<<<<<< field >>>>>>>>>>>>>>>>")
-    # print(field)
     user_id = current_user.get_id()
     watchlists = Watchlist.query.filter(Watchlist.user_id == user_id).all()
 
