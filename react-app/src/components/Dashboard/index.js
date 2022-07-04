@@ -33,6 +33,7 @@ const Dashboard = () => {
     let sumAssetPrices = 0
     let nameTickerArr = []
     let closingPrice = []
+    let gainLossArr = []
 
     const [balanceVal, setBalanceVal] = useState(sumAssetPrices)
 
@@ -89,7 +90,11 @@ const Dashboard = () => {
         for (let transaction of transArr) {
             if (parseInt(compId) === transaction?.companyId) {
                 let pricesArr = assetPrices[compId]
-                closingPrice.push(pricesArr[pricesArr.length - 1].price)
+                closingPrice.push({
+                    'closingPrice': pricesArr[pricesArr.length - 1].price,
+                    'shares': transaction.shares,
+                    'buyingPrice': transaction.price
+                })
             }
         }
     }
