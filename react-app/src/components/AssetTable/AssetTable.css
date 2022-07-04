@@ -1,4 +1,4 @@
-/* .owned-assets {
+.owned-assets {
     display: flex;
     justify-content: center;
     width: auto;
@@ -7,15 +7,16 @@
 }
 
 tr {
+    display: flex;
     text-align: left;
 }
 
 .portfolio-theaders {
     display: flex;
-    justify-content: space-between;
-    width: 800px;
+    justify-content: space-around;
+    width: 1000px;
 }
-
+/*
 th {
     font-weight: 400;
     color: gray;
