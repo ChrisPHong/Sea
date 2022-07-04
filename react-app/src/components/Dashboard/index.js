@@ -60,7 +60,7 @@ const Dashboard = () => {
     useEffect(() => {
         dispatch(getPortfolio({ userId: currentUser?.id, currentBalance: balToBackend}))
         setNewData(portfolio)
-    }, [currentUser, balToBackend])
+    }, [currentUser, balToBackend, dispatch])
 
     useEffect(() => {
         if (balToBackend) {
