@@ -41,9 +41,7 @@ export const getAllTransactions = () => async (dispatch) => {
 
 export const getBoughtTransactions = (userId) => async (dispatch) => {
     const response = await fetch(`/api/transactions/${userId}/bought_transactions`)
-    console.log('AM I GETTING THIS ')
     const transactions = await response.json()
-    console.log('here is the backend info', transactions)
     dispatch(loadBoughtTransactions(transactions))
 }
 
@@ -83,11 +81,6 @@ const transactionReducer = ( state = initialState, action ) => {
     let newState;
     switch (action.type) {
         case LOAD_TRANSACTIONS:
-            // console.log('ACTION-----', action.transactions)
-            // return {
-            //     ...state,
-            //     entries: action.transactions
-            // }
             newState = { ...state, entries: {...state.entries} }
             action.transactions.forEach(transaction => {newState.entries[transaction.id] = transaction})
             return newState
