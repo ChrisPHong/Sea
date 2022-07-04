@@ -138,7 +138,7 @@ const Dashboard = () => {
     const [newData, setNewData] = useState(portfolio)
     // const stock = useSelector(state => state?.stock)
     // console.log(" THIS IS THE STOCK CHECKER FOR THE STOCK CHART", stock.prices)
-    const [currPrice, setCurrPrice] = useState(newData[newData?.length - 1])
+    const [currPrice, setCurrPrice] = useState(portfolioBalance)
 
     // useEffect(() => {
     //     // dispatch(getPortfolio(currentUser?.id))
@@ -171,6 +171,10 @@ const Dashboard = () => {
     const lineMouseOver = (price) => {
         if (price) {
             setCurrPrice(price?.toFixed(2))
+        } else {
+            if (portfolioBalance) {
+                setCurrPrice(portfolioBalance)
+            }
         }
     }
 
@@ -195,7 +199,8 @@ const Dashboard = () => {
                 <div className='balance-info'>
                     <div className='balance-label'>Balance</div>
                     <div className='balance-amt'>
-                        {currencyFormat.format(portfolioBalance)}
+                        {/* {currencyFormat.format(portfolioBalance)} */}
+                        {currPrice ? `${currencyFormat.format(currPrice)}` : currencyFormat.format(portfolioBalance)}
                     </div>
                     <div className='balance-percent'>
                         {(buyingTotal() > totalFunds()) ?
