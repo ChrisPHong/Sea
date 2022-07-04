@@ -13,12 +13,12 @@ DESCENDING = [-1, -1, 1, -1, -1, 1]
 
 
 def make_stock_price(base, time_length, progression):
-    stocks = []
+    stocks = [{'price': round(abs(base), 2)}]
 
     # Base price
     val = base
 
-    for day in range(time_length):
+    for day in range(time_length - 1):
 
         stock_value = (val + (choice(progression))*random())
 
@@ -67,10 +67,7 @@ def make_portfolio():
     # summed_price = [0] * 365 # [0 , 0 ,,0 , 0 ,0 ,0 ,0 ]
     portfolio_base_price = 0
 
-    second_half = datetime.today() - timedelta(days=182)
-    print('--------------------------------- first_half day ---------------------------------', second_half)
-    first_half = second_half - timedelta(days=182)
-    print('--------------------------------- first_half day ---------------------------------', first_half)
+    previous_dates = datetime.today() - timedelta(days=365)
 
 
     # owned_company_prices = make_stock_price(current_balance, choice([ASCENDING, DESCENDING]))
@@ -89,8 +86,11 @@ def make_portfolio():
             # 'date': Jun 28 2022 05:30:00, 'price': 101,
             # ]
     # print('--------------------------------- here is the base price for all assets added up ---------------------------------', portfolio_base_price) # 6518.43
-    first_half_prices = make_stock_price(portfolio_base_price, 182, choice([ASCENDING, DESCENDING]))
-    second_half_prices = make_stock_price(current_balance, 182, choice([ASCENDING, DESCENDING]))
+    owned_company_prices = make_stock_price(current_balance, 365, choice([ASCENDING, DESCENDING]))
+    print('--------------------------------- BEFORE THE REVERSE ---------------------------------', owned_company_prices)
+    owned_company_prices.reverse()
+    print('--------------------------------- THIS IS AFTER THE REVERSE ---------------------------------', owned_company_prices)
+    # owned_company_prices = initial_prices.reverse()
 
     # For every datePrice dictionary in owned_company_prices
     # for i in range(len(owned_company_prices)):
@@ -101,19 +101,11 @@ def make_portfolio():
     #     # Add price to corresponding index in summed_price list
     #     summed_price[i] += round(priceData['price'], 2)
     # 0 to 364
-    for i in range(len(first_half_prices)):
-        priceData = first_half_prices[i]
-        new_date = first_half + timedelta(days = 1)
-        first_half = new_date
-        priceData['date'] = first_half.strftime("%b %d %Y")
-
-    for i in range(len(second_half_prices)):
-        priceData = second_half_prices[i]
-        new_date = second_half + timedelta(days = 1)
-        second_half = new_date
-        priceData['date'] = second_half.strftime("%b %d %Y")
-
-    owned_company_prices = first_half_prices + second_half_prices
-    print('--------------------------------- what is this printing out.... ---------------------------------', owned_company_prices)
+    for i in range(len(owned_company_prices)):
+        priceData = owned_company_prices[i]
+        new_date = previous_dates + timedelta(days = 1)
+        next_day_price = new_date
+        priceData['date'] = next_day_price.strftime("%b %d %Y")
+    # print('--------------------------------- what is this printing out.... ---------------------------------', owned_company_prices)
 
     return jsonify(owned_company_prices)

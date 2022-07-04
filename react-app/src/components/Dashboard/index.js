@@ -123,7 +123,7 @@ const Dashboard = () => {
     // number data type: 6472.009999999999
 
     useEffect(() => {
-        dispatch(getPortfolio({ userId: currentUser?.id, currentBalance: balToBackend}))
+        dispatch(getPortfolio({ userId: currentUser?.id, currentBalance: 1000}))
     }, [dispatch, currentUser, portfolioBalance])
 
     // -------------------------------------- GRAPH CODE --------------------------------------
