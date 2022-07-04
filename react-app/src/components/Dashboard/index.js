@@ -31,8 +31,7 @@ const Dashboard = () => {
     const options = { style: 'currency', currency: 'USD' };
     const currencyFormat = new Intl.NumberFormat('en-US', options);
     let sumAssetPrices = 0
-    let compNameArr = []
-    let tickerArr = []
+    let nameTickerArr = []
 
     const [balanceVal, setBalanceVal] = useState(sumAssetPrices)
 
@@ -90,7 +89,7 @@ const Dashboard = () => {
         let company = stocks[id]
         for (let transaction of transArr) {
             if (company.id === transaction?.companyId) {
-                compNameArr.push({'name': company.name, 'ticker': company.ticker})
+                nameTickerArr.push({'name': company.name, 'ticker': company.ticker})
             }
         }
     }
@@ -320,7 +319,7 @@ const Dashboard = () => {
                         currentUser={currentUser}
                         stocks={stocks}
                         transArr={transArr}
-                        compNameArr={compNameArr}
+                        nameTickerArr={nameTickerArr}
                     />
                     {/* -------------------- NEWS -------------------- */}
                     <div>{saveLatestBalance(sumAssetPrices)}</div>

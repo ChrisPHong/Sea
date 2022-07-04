@@ -4,7 +4,7 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine } from 'recharts'
 import { getPortfolio } from '../../store/portfolio';
 import './AssetTable.css'
 
-const AssetTable = ({ currentUser, compNameArr, stocks, transArr }) => {
+const AssetTable = ({ currentUser, nameTickerArr, stocks, transArr }) => {
     return (
         <>
             <div className='owned-assets'>
@@ -21,7 +21,7 @@ const AssetTable = ({ currentUser, compNameArr, stocks, transArr }) => {
                     <tbody>
                         <tr>
                             {/* -------------------- COMPANY SECTION -------------------- */}
-                            {compNameArr && compNameArr.map((comp, i) => (
+                            {nameTickerArr && nameTickerArr.map((comp, i) => (
                                 <td key={i} className='owned-comp-name'>
                                     <div className='company-name'>
                                         {comp.name}
