@@ -85,7 +85,8 @@ const Dashboard = () => {
         }
     }
 
-    // Returns the last price (closing price) that YOU OWN.
+    // Returns the last price (closing price) that YOU OWN along with
+    // buyingPrice and number of shares to help calculate gain/loss percentage.
     for (let compId in assetPrices) {
         for (let transaction of transArr) {
             if (parseInt(compId) === transaction?.companyId) {
