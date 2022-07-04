@@ -32,6 +32,7 @@ const Dashboard = () => {
     const currencyFormat = new Intl.NumberFormat('en-US', options);
     let sumAssetPrices = 0
     let nameTickerArr = []
+    let closingPrice = []
 
     const [balanceVal, setBalanceVal] = useState(sumAssetPrices)
 
@@ -63,17 +64,6 @@ const Dashboard = () => {
         dispatch(getPortfolio({ userId: currentUser?.id, currentBalance: closingPriceAndSumUp() }))
     }, [dispatch, currentUser])
 
-
-    // Returns the last price (closing price) in the stock prices array that YOU OWN.
-    const closingPrice = (companyId) => {
-        for (let compId in assetPrices) {
-            if (parseInt(compId) === companyId) {
-                let pricesArr = assetPrices[compId]
-                return pricesArr[pricesArr.length - 1].price
-            }
-        }
-    }
-
     // Returns the total price of ALL the stocks you own for the day.
     const buyingTotal = () => {
         let total = 0
@@ -90,6 +80,16 @@ const Dashboard = () => {
         for (let transaction of transArr) {
             if (company.id === transaction?.companyId) {
                 nameTickerArr.push({'name': company.name, 'ticker': company.ticker})
+            }
+        }
+    }
+
+    // Returns the last price (closing price) that YOU OWN.
+    for (let compId in assetPrices) {
+        for (let transaction of transArr) {
+            if (parseInt(compId) === transaction?.companyId) {
+                let pricesArr = assetPrices[compId]
+                closingPrice.push(pricesArr[pricesArr.length - 1].price)
             }
         }
     }
@@ -320,6 +320,8 @@ const Dashboard = () => {
                         stocks={stocks}
                         transArr={transArr}
                         nameTickerArr={nameTickerArr}
+                        closingPrice={closingPrice}
+                        currencyFormat={currencyFormat}
                     />
                     {/* -------------------- NEWS -------------------- */}
                     <div>{saveLatestBalance(sumAssetPrices)}</div>

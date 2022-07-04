@@ -15,11 +15,14 @@ th {
     color: gray;
 }
 
-.owned-comp-name {
+.owned-comp-name,
+.owned-comp-price {
     display: flex;
     flex-direction: column;
-    width: 300px;
     margin: 0%;
+}
+.owned-comp-name {
+    width: 300px;
 }
 
 .owned-comp-name,

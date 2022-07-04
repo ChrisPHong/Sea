@@ -4,7 +4,7 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine } from 'recharts'
 import { getPortfolio } from '../../store/portfolio';
 import './AssetTable.css'
 
-const AssetTable = ({ currentUser, nameTickerArr, stocks, transArr }) => {
+const AssetTable = ({ currentUser, nameTickerArr, stocks, transArr, closingPrice, currencyFormat }) => {
     return (
         <>
             <div className='owned-assets'>
@@ -37,13 +37,17 @@ const AssetTable = ({ currentUser, nameTickerArr, stocks, transArr }) => {
                                 <div className='owned-comp-shares'>{transaction.shares}</div>
                             </td> */}
                             {/* -------------------- PRICE SECTION -------------------- */}
-                            {/* <td className='owned-comp-price'>
-                                <div className='curr-comp-price'>{currencyFormat.format(closingPrice(transaction?.companyId))}</div>
-                                {(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2) >= 0 ?
-                                    <div className='curr-comp-percent' style={{ color: 'green' }}>+{(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>
-                                    :
-                                    <div className='curr-comp-percent' style={{ color: 'red' }}>{(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>}
-                            </td> */}
+                            {closingPrice && closingPrice.map((price, i) => (
+                                <td key={i} className='owned-comp-price'>
+                                    <div className='curr-comp-price'>
+                                        {currencyFormat.format(price)}
+                                    </div>
+                                    {/* {(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2) >= 0 ?
+                                        <div className='curr-comp-percent' style={{ color: 'green' }}>+{(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>
+                                        :
+                                        <div className='curr-comp-percent' style={{ color: 'red' }}>{(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>} */}
+                                </td>
+                            ))}
                             {/* -------------------- ALLOCATION SECTION -------------------- */}
                             {/* <td className='owned-allocations'>
                                 {(((closingPrice(transaction.companyId) * transaction.shares) / buyingTotal()) * 100).toFixed(2)}%</td> */}
