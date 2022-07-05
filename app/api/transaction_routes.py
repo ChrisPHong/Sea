@@ -85,7 +85,7 @@ def add_new_transaction():
 def update_transactions(company_id):
     form = TransactionForm()
     form['csrf_token'].data = request.cookies['csrf_token']
-    user_id = request.json['userId']
+    user_id = request.json['user_id']
     todays_date = datetime.today()
 
     # Get a specific transaction under specific user
@@ -97,14 +97,17 @@ def update_transactions(company_id):
         price=form.data['price'],
         shares=form.data['shares'],
         type=form.data['type']
-        transaction.shares += int(shares)
-        transaction.price = (transaction.price + (int(price) * int(shares))) / transaction.shares
+        print('HERE COMES THE TRANSACTION SHAREEEESSSSSSSS', shares)
+        transaction.shares = transaction.shares + shares
+        transaction.price = transaction.price + price * shares / transaction.shares
 
         user = User.query.filter(User.id == int(user_id)).first()
         user.balance = request.json['balance']
 
         db.session.commit()
-        return {'transaction': transaction.to_dict(), 'balance': user.balance, 'id': transaction.id}
+        new_transaction_dict = transaction.to_dict()
+        new_transaction_dict['balance'] = user.balance
+        return new_transaction_dict
     return {'errors': validation_errors_to_error_messages(form.errors)}, 402
 
 

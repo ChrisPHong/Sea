@@ -8,10 +8,12 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
     const dispatch = useDispatch()
     const transactions = useSelector(state => state?.transaction?.entries);
     const updatedTransaction = useSelector(state => state?.transaction?.entries)
+    const transArr = Object.values(transactions)
     const userId = user.id;
     // console.log('USERRRRR', user)
 
     console.log('here is the transactions', transactions)
+    console.log('here is the UPDATED transactions', updatedTransaction)
 
 
     // console.log(transactions)
@@ -31,7 +33,7 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
 
     const transactionTotal = e => {
         setSharesBought(e.target.value);
-        setTransactionPrice((e.target.value * (priceData[priceData?.length - 1].price)).toFixed(2));
+        setTransactionPrice((e.target.value * (priceData.price)).toFixed(2));
         //  price = market price per share
     }
 
@@ -62,19 +64,28 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
         // console.log('transaction price----', typeof(parseInt(sharesBought)))
         // console.log('transaction price----', typeof(companyId))
         // console.log('transaction price----', typeof('buy'))
+        console.log('WHAT IS THIS DUMB MNUMBER', typeof sharesBought)
         let newTransaction = {
             price: Number(transactionPrice).toFixed(2),
-            shares: parseInt(sharesBought),
+            shares: sharesBought,
             type: 'buy',
             user_id: user.id,
             company_id: companyId,
             balance: Number(newBalance).toFixed(2)
         }
 
-        for (let transaction of transactions) {
-            if (companyId === transaction.companyId) {
+
+        for (let i = 0; i < transArr.length; i++) {
+            let transaction = transArr[i]
+            if (transaction.companyId === companyId) {
                 dispatch(updateTransaction(newTransaction))
-            } else {
+                return
+            }
+        }
+
+        for (let i = 0; i < transArr.length; i++) {
+            let transaction = transArr[i]
+            if (transaction.companyId !== companyId) {
                 dispatch(stockTransaction(newTransaction))
             }
         }
