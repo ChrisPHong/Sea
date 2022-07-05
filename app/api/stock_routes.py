@@ -20,7 +20,6 @@ def get_all_stocks():
 
 @stock_routes.route('/<company_id>/prices', methods=['POST'])
 def get_stock_prices(company_id):
-    print("IS THIS BACKEND ROUTE EVEN HITTING???????")
     # Create date from a year ago
     one_year_data = datetime.today() - timedelta(days=365)
     # Find specific stock

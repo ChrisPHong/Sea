@@ -237,6 +237,7 @@ const Dashboard = () => {
                         <span className='weekly'>
                             <button
                                 value='1w'
+                                className='weekly-btn'
                                 onClick={e => createData(e.target.value)}
                             >
                                 1W
@@ -245,6 +246,7 @@ const Dashboard = () => {
                         <span className='monthly'>
                             <button
                                 value='1m'
+                                className='monthly-btn'
                                 onClick={e => createData(e.target.value)}
                             >
                                 1M
@@ -253,6 +255,7 @@ const Dashboard = () => {
                         <span className='three-months'>
                             <button
                                 value='3m'
+                                className='three-months-btn'
                                 onClick={e => createData(e.target.value)}
                             >
                                 3M
@@ -261,6 +264,7 @@ const Dashboard = () => {
                         <span className='six-months'>
                             <button
                                 value='6m'
+                                className='six-months-btn'
                                 onClick={e => createData(e.target.value)}
                             >
                                 6M
@@ -269,6 +273,7 @@ const Dashboard = () => {
                         <span className='one-year'>
                             <button
                                 value='1y'
+                                className='one-year-btn'
                                 onClick={e => createData(e.target.value)}
                             >
                                 1Y
@@ -291,7 +296,6 @@ const Dashboard = () => {
                         buyingTotal={buyingTotal}
                     />
                     {/* -------------------- NEWS -------------------- */}
-                    <div ref={assetPriceRef}>{sumAssetPrices}</div>
                     <div className='news-ctn'>
                         <MarketNews news={newsArr} />
                     </div>

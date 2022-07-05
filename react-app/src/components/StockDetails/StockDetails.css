@@ -1,7 +1,55 @@
 .stock-details-information {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stock-detail-bottom {
+    height: 50px;
+    width: 95vw;
+    border-bottom: 1px solid lightgray;
+    padding: 20px 0 20px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.stock-timeframe {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 850px;
+    height: 50px;
+}
+
+.stock-timeframe span {
+    width: 50px;
+    font-size: 10pt;
+}
+
+.weekly-btn,
+.monthly-btn,
+.three-months-btn,
+.six-months-btn,
+.one-year-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #0b7cee;
+    font-weight: 600;
+}
+
+
+/* .stock-details-information {
     max-width: 60%;
     margin-left: 5%;
     margin-top: 90px;
+} */
+
+#bottom-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100vw;
 }
 
 .stock-details-company-information {
@@ -44,6 +92,8 @@
     font-weight: 600;
     font-size: 36px;
     margin-top: 50px;
+    width: 950px;
+    padding-bottom: 40px;
 }
 
 .stock-details-keystats-title {

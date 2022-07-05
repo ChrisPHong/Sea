@@ -104,6 +104,18 @@
     width: 50px;
 }
 
+.weekly-btn,
+.monthly-btn,
+.three-months-btn,
+.six-months-btn,
+.one-year-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #0b7cee;
+    font-weight: 600;
+}
+
 #right {
     width: auto;
     margin-left: 60px;
@@ -137,4 +149,5 @@
 .watchlist-form {
     justify-content: center;
     align-items: center;
+    padding-top: 15px;
 }
