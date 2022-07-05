@@ -24,7 +24,7 @@ const NavBar = () => {
         <>
           <div className='sea-navbar-logo'>
             <NavLink to='/dashboard' exact={true} activeClassName='active'>
-              <img className='sea-logo' src='/images/sea-logo.png' />
+              <img className='sea-logo' src={process.env.PUBLIC_URL + '/images/sea-logo.png'} />
             </NavLink>
           </div>
 
@@ -52,7 +52,8 @@ const NavBar = () => {
       <>
           <div className='sea-navbar-logo'>
             <NavLink to='/' exact={true} activeClassName='active'>
-          <img className='sea-logo' src='/images/sea-logo.png' />
+          <img className='sea-logo' src={process.env.PUBLIC_URL + '/images/sea-logo.png'}
+ />
             </NavLink>
           </div>
           <div className='navbar-right'>

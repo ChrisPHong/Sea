@@ -16,7 +16,6 @@ function WatchlistPage() {
     const watchlist = useSelector((state) => Object.values(state.watchlist));
     const watchlists = Object.values(watchlist[0])
     const transactions = useSelector(state => state?.transaction?.entries)
-    const transArr = Object.values(transactions)
     const assetPrices = useSelector(state => state?.portfolio?.prices)
     const stocks = useSelector(state => state?.stock?.entries)
     const companies = Object.values(stocks)
@@ -29,14 +28,6 @@ function WatchlistPage() {
 
     const [show, setShow] = useState('hidden')
 
-    // const closingPrice = (companyId) => {
-    //     for (let stock of companies) {
-    //         if (stock.id === companyId && stock.prices) {
-    //             const priceArr = stock.prices
-    //             return priceArr[priceArr.length - 1]
-    //         }
-    //     }
-    // }
 
     const closingPriceAssets = (companyId) => {
         for (let compId in assetPrices) {
@@ -59,10 +50,8 @@ function WatchlistPage() {
                 return basePrice
             }
         }
-        return "Hello"
+        return
     }
-    useEffect(() => {
-    }, [dispatch]);
 
     useEffect(() => {
         dispatch(getWatchlists())
