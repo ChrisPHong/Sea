@@ -7,10 +7,10 @@
 .watchlists {
     justify-content: center;
     align-items: center;
-    margin: 10px;
+    margin-top: 10px;
     border: 40px;
     border: solid black 2px;
-    border-radius: 10px 10px;
+    border-radius: 5px 5px;
     padding: 40px;
 }
 
