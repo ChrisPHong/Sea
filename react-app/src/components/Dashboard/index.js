@@ -241,9 +241,6 @@ const Dashboard = () => {
                     </LineChart>
                 </div>
                 <div className='asset-bottom'>
-                    <div className='buying-power'>
-                        Buying power: ${(currentUser.balance).toLocaleString('en-US')}
-                    </div>
                     <div className='asset-timeframe'>
                         <span className='weekly'>
                             <button
