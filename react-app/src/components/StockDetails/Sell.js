@@ -50,7 +50,7 @@ const Sell = ({ user, companyId, priceData, shares }) => {
         // setUserShares(userShares - sharesSold);
         setBalance((Number(balance) + Number(transactionPrice)).toFixed(2));
         let newBalance = (Number(balance) + Number(transactionPrice)).toFixed(2);
-
+        // if we take num of shares of dashboard and subtract shares sold
         let newTransaction = {
             price: Number(transactionPrice).toFixed(2),
             shares: sharesSold,

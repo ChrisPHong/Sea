@@ -86,7 +86,7 @@ const Dashboard = () => {
         for (let i in boughtTransactions) {
             let transaction = boughtTransactions[i]
             if (company.id === transaction.companyId) {
-                nameTickerArr.push({'name': company.name, 'ticker': company.ticker})
+                nameTickerArr.push({'name': company.name, 'ticker': company.ticker, 'shares': transaction.shares})
             }
         }
     }
