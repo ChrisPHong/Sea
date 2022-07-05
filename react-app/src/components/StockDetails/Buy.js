@@ -19,7 +19,7 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
     const [sharesBought, setSharesBought] = useState(0);
     const [order, setOrder] = useState('buy');
     const [balance, setBalance] = useState(user?.balance)
-    console.log(balance)
+
 
     useEffect(() => {
         setSharesBought(0)
@@ -53,8 +53,6 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
         setOrder('ordered');
         setBalance((Number(balance) - Number(transactionPrice)).toFixed(2));
         let newBalance = (Number(balance) - Number(transactionPrice)).toFixed(2);
-        console.log("THIS IS THE NEW BALANCE", newBalance)
-        console.log("NO NO NON NONNONON AHHHHHHHHHHHHHH", Number(newBalance).toFixed(2))
 
         // console.log('transaction price----', typeof(parseInt(transactionPrice)))
         // console.log('transaction price----', typeof(user.id))
@@ -102,7 +100,7 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
                 <div className='transaction-info'>
                     <div className='transaction-labels'>Market Price</div>
                     <div id='transaction-stock-price'>
-                        ${priceData && Number(priceData[priceData?.length - 1]?.price).toFixed(2)}
+                        ${priceData && Number(priceData.price).toFixed(2)}
                     </div>
                 </div>
                 <hr />

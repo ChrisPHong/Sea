@@ -98,7 +98,7 @@ const Sell = ({ user, companyId, priceData, shares }) => {
                 <div className='transaction-info'>
                     <div className='transaction-labels'>Market Price</div>
                     <div id='transaction-stock-price'>
-                        ${priceData && Number(priceData[priceData?.length - 1]?.price).toFixed(2)}
+                        ${priceData && Number(priceData.price).toFixed(2)}
                     </div>
                 </div>
                 <hr />
