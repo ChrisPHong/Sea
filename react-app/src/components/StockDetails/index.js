@@ -192,11 +192,12 @@ const StockDetails = () => {
                                 </LineChart>
                             </>}
                     </div>
-                    <div className='stock-chart-bottom'>
+                    <div className='stock-detail-bottom'>
                         <div className='stock-timeframe'>
                             <span className='weekly'>
                                 <button
                                     value='1w'
+                                    className='weekly-btn'
                                     onClick={e => createData(e.target.value)}
                                 >
                                     1W
@@ -205,6 +206,7 @@ const StockDetails = () => {
                             <span className='monthly'>
                                 <button
                                     value='1m'
+                                    className='monthly-btn'
                                     onClick={e => createData(e.target.value)}
                                 >
                                     1M
@@ -213,6 +215,7 @@ const StockDetails = () => {
                             <span className='three-months'>
                                 <button
                                     value='3m'
+                                    className='three-months-btn'
                                     onClick={e => createData(e.target.value)}
                                 >
                                     3M
@@ -221,6 +224,7 @@ const StockDetails = () => {
                             <span className='six-months'>
                                 <button
                                     value='6m'
+                                    className='six-months-btn'
                                     onClick={e => createData(e.target.value)}
                                 >
                                     6M
@@ -229,6 +233,7 @@ const StockDetails = () => {
                             <span className='one-year'>
                                 <button
                                     value='1y'
+                                    className='one-year-btn'
                                     onClick={e => createData(e.target.value)}
                                 >
                                     1Y
@@ -236,121 +241,127 @@ const StockDetails = () => {
                             </span>
                         </div>
                     </div>
-                    <div className='stock-details-company-information'>
-                        <div>
-                            <div className='stock-details-about-title'>
-                                About
+                    <div id='bottom-info'>
+                        <div id='left'>
+                            <div className='stock-details-company-information'>
+                                <div>
+                                    <div className='stock-details-about-title'>
+                                        About
+                                    </div>
+                                    <hr></hr>
+                                    <div className='stock-details-about-description'>
+                                        {stock.description}
+                                    </div>
+                                </div>
+                                <div className='stock-details-title'>
+                                    <div>
+                                        <div className='stock-details-ceo-title'>
+                                            CEO
+                                        </div>
+                                        <div>
+                                            {stock.ceo}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div className='stock-details-employees-title'>
+                                            Employees
+                                        </div>
+                                        <div>
+                                            {stock.employees}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div className='stock-details-headquarters-title'>
+                                            Headquarters
+                                        </div>
+                                        <div>
+                                            {stock.headquarters}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div className='stock-details-founded-title'>
+                                            Founded
+                                        </div>
+                                        <div>
+                                            {stock.founded}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className='stock-details-keystats-title'>
+                                    Key Statistic
+                                </div>
+                                <hr></hr>
+                                <div className='stock-details-keystats-information'>
+                                    <div>
+                                        <div className='stock-details-high-price'>
+                                            High
+                                        </div>
+                                        <div className='stock-details-high-price-number'>
+                                            ${max}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div className='stock-details-low-price'>
+                                            Low
+                                        </div>
+                                        <div className='stock-details-low-price-number'>
+                                            ${min}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div className='stock-details-open-price'>
+                                            Open price
+                                        </div>
+                                        <div>
+                                            ${openingPrice}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div className='stock-details-close-price'>
+                                            Close price
+                                        </div>
+                                        <div>
+                                            ${closePrice}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <hr></hr>
-                            <div className='stock-details-about-description'>
-                                {stock.description}
+                            <div className='PostCompanyInWatchlist'>
+                                < CompanyWatchlistForm props={watchlists} />
                             </div>
+                            {news ? <div>
+                                <News news={news} ticker={ticker} />
+                            </div> : <div>Loading</div>}
                         </div>
-                        <div className='stock-details-title'>
-                            <div>
-                                <div className='stock-details-ceo-title'>
-                                    CEO
-                                </div>
-                                <div>
-                                    {stock.ceo}
-                                </div>
-                            </div>
-                            <div>
-                                <div className='stock-details-employees-title'>
-                                    Employees
-                                </div>
-                                <div>
-                                    {stock.employees}
-                                </div>
-                            </div>
-                            <div>
-                                <div className='stock-details-headquarters-title'>
-                                    Headquarters
-                                </div>
-                                <div>
-                                    {stock.headquarters}
-                                </div>
-                            </div>
-                            <div>
-                                <div className='stock-details-founded-title'>
-                                    Founded
-                                </div>
-                                <div>
-                                    {stock.founded}
-                                </div>
-                            </div>
-                        </div>
-                        <div className='stock-details-keystats-title'>
-                            Key Statistic
-                        </div>
-                        <hr></hr>
-                        <div className='stock-details-keystats-information'>
-                            <div>
-                                <div className='stock-details-high-price'>
-                                    High
-                                </div>
-                                <div className='stock-details-high-price-number'>
-                                    ${max}
-                                </div>
-                            </div>
-                            <div>
-                                <div className='stock-details-low-price'>
-                                    Low
-                                </div>
-                                <div className='stock-details-low-price-number'>
-                                    ${min}
-                                </div>
-                            </div>
-                            <div>
-                                <div className='stock-details-open-price'>
-                                    Open price
-                                </div>
-                                <div>
-                                    ${openingPrice}
-                                </div>
-                            </div>
-                            <div>
-                                <div className='stock-details-close-price'>
-                                    Close price
-                                </div>
-                                <div>
-                                    ${closePrice}
+                        <div id='right'>
+                            {/* start of buy sell container */}
+                            <div className='fixed-side-container'>
+                                <div className='buy-sell-container'>
+                                    <section className="buy-sell">
+                                        <div id='tabs'>
+                                            <h2>This is the Buy Sell Tab</h2>
+                                            {/* <Headers
+                                                    titles={titles}
+                                                    currentTab={currentTab}
+                                                    selectTab={setCurrentTab}
+                                                /> */}
+                                            <div className="tab-toggle-content">
+                                                {prices && <Buy user={user} companyId={stock?.id} ticker={ticker} priceData={data[data.length - 1]} />}
+                                                <br></br>
+                                                {prices && userShares && <Sell user={user} priceData={data[data.length - 1]} companyId={stock?.id} shares={userShares} />}
+                                                {/* {currentTab === 0 && <Buy user={user} priceArr={price} />} */}
+                                                {/* {currentTab === 1 && <Sell user={user} price={closePrice} shares={userShares} />} */}
+                                            </div>
+                                        </div>
+                                    </section>
+                                    {/* <section className="">
+                                            watchlist?
+                                        </section> */}
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className='PostCompanyInWatchlist'>
-                        < CompanyWatchlistForm props={watchlists} />
-                    </div>
-                    {news ? <div>
-                        <News news={news} ticker={ticker} />
-                    </div> : <div>Loading</div>}
                 </div>}
-            {/* start of buy sell container */}
-            <div className='fixed-side-container'>
-                <div className='buy-sell-container'>
-                    <section className="buy-sell">
-                        <div id='tabs'>
-                            <h2>This is the Buy Sell Tab</h2>
-                            {/* <Headers
-                                    titles={titles}
-                                    currentTab={currentTab}
-                                    selectTab={setCurrentTab}
-                                /> */}
-                            <div className="tab-toggle-content">
-                                {prices && <Buy user={user} companyId={stock?.id} ticker={ticker} priceData={data[data.length - 1]} />}
-                                <br></br>
-                                {prices && userShares && <Sell user={user} priceData={data[data.length - 1]} companyId={stock?.id} shares={userShares} />}
-                                {/* {currentTab === 0 && <Buy user={user} priceArr={price} />} */}
-                                {/* {currentTab === 1 && <Sell user={user} price={closePrice} shares={userShares} />} */}
-                            </div>
-                        </div>
-                    </section>
-                    {/* <section className="">
-                            watchlist?
-                        </section> */}
-                </div>
-            </div>
         </div>
     )
 

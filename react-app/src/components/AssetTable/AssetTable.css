@@ -39,7 +39,6 @@ table {
 .comp-title {
     display: flex;
     flex-direction: column;
-    /* width: 250px; */
 }
 
 .owned-comp-label,
@@ -76,9 +75,3 @@ table {
     color: gray;
     padding-top: 5px;
 }
-
-/* .owned-comp-price,
-.owned-balance,
-.owned-allocations {
-    width: 200px;
-} */
