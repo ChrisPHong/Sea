@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { stockTransaction, updateTransaction } from '../../store/transaction';
+import { getBoughtTransactions, stockTransaction, updateTransaction } from '../../store/transaction';
 
 const Buy = ({ user, companyId, ticker, priceData }) => {
     // console.log("THIS IS THE PRICE DATA", priceData)
     // console.log("THIS IS THE CLOSE", priceData[priceData?.length - 1].price)
     const dispatch = useDispatch()
     const transactions = useSelector(state => state?.transaction?.entries);
-    const updatedTransaction = useSelector(state => state?.transaction?.entries)
+    const updatedTransaction = useSelector(state => state?.transaction?.boughtTrans)
     const transArr = Object.values(transactions)
     const updatedTransArr = Object.values(updatedTransaction)
     const userId = user.id;
@@ -52,7 +52,7 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
     //     return result.toDateString()
     // }
 
-    // console.log('IS THIS OUR BRAND NEW DATE?!??!?!?!!', convertDate(priceData.date))
+    console.log('IS THIS OUR BRAND NEW USER?!??!?!?!!', user?.id)
 
     const buyStock = async (e) => {
         e.preventDefault();
@@ -80,9 +80,11 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
             let transaction = updatedTransArr[i]
             if (transaction.companyId === companyId && transaction.type === 'buy') {
                 dispatch(updateTransaction(newTransaction))
+                dispatch(getBoughtTransactions(user?.id))
                 return
             }
         }
+
 
         // If company is NOT found in updatedTransArr, post a new transaction
         let companyIds = []
@@ -95,6 +97,7 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
 
         if (!companyIds.includes(companyId)) {
             dispatch(stockTransaction(newTransaction))
+            dispatch(getBoughtTransactions(user?.id))
         }
 
         // const payload = { companyId, userId };

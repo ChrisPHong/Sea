@@ -138,16 +138,12 @@ const transactionReducer = ( state = initialState, action ) => {
             action.transactions.forEach(transaction => {newState.entries[transaction.id] = transaction})
             return newState
         case LOAD_BOUGHT_TRANSACTIONS:
-            newState = { ...state, entries: { }, boughtTrans: { } }
+            newState = { ...state, entries: { ...state.entries }, boughtTrans: { } }
             action.transactions.forEach(transaction => {newState.boughtTrans[transaction.id] = transaction})
             return newState
         case BUY_STOCK:
-            newState = {
-                ...state, entries: {
-                    ...state.entries,
-                    [action.transaction.id]: action.transaction
-                }
-            }
+            newState = {...state, entries: {...state.entries }, boughtTrans: { ...state.boughtTrans } }
+            newState.boughtTrans[action.transaction.id] = action.transaction
             return newState;
         case EDIT_TRANSACTION:
             newState = { ...state, entries: { ...state.entries } }
