@@ -54,10 +54,11 @@ def get_bought_transactions(userId):
 
 # Users can buy or sell stocks
     # FORM WILL BE IN THE FRONT END COMPONENT
-# Can we pass in the companyid?
-@transaction_routes.route('/update', methods=['POST'])
+
+# WE HIT THIS ROUTE IF COMPANY IS NOT IN TRANSACTION DATABASE
+@transaction_routes.route('/post', methods=['POST'])
 @login_required
-def update_transactions():
+def add_new_transaction():
     form = TransactionForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     todays_date = datetime.today()
@@ -75,6 +76,33 @@ def update_transactions():
         user.balance = request.json['balance']
 
         db.session.add(transaction)
+        db.session.commit()
+        return {'transaction': transaction.to_dict(), 'balance': user.balance, 'id': transaction.id}
+    return {'errors': validation_errors_to_error_messages(form.errors)}, 402
+
+@transaction_routes.route('/<int:company_id>/update', methods=['PATCH'])
+@login_required
+def update_transactions(company_id):
+    form = TransactionForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+    user_id = request.json['userId']
+    todays_date = datetime.today()
+
+    # Get a specific transaction under specific user
+    transaction = Transaction.query.filter(Transaction.company_id == company_id, Transaction.user_id == int(user_id)).first()
+
+
+    if form.validate_on_submit():
+
+        price=form.data['price'],
+        shares=form.data['shares'],
+        type=form.data['type']
+        transaction.shares += int(shares)
+        transaction.price = (transaction.price + (int(price) * int(shares))) / transaction.shares
+
+        user = User.query.filter(User.id == int(user_id)).first()
+        user.balance = request.json['balance']
+
         db.session.commit()
         return {'transaction': transaction.to_dict(), 'balance': user.balance, 'id': transaction.id}
     return {'errors': validation_errors_to_error_messages(form.errors)}, 402

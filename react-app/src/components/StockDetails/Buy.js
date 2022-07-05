@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { stockTransaction } from '../../store/transaction';
+import { stockTransaction, updateTransaction } from '../../store/transaction';
 
 const Buy = ({ user, companyId, ticker, priceData }) => {
     // console.log("THIS IS THE PRICE DATA", priceData)
     // console.log("THIS IS THE CLOSE", priceData[priceData?.length - 1].price)
     const dispatch = useDispatch()
     const transactions = useSelector(state => state?.transaction?.entries);
+    const updatedTransaction = useSelector(state => state?.transaction?.entries)
     const userId = user.id;
     // console.log('USERRRRR', user)
+
+    console.log('here is the transactions', transactions)
 
 
     // console.log(transactions)
@@ -67,8 +70,15 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
             company_id: companyId,
             balance: Number(newBalance).toFixed(2)
         }
+
+        for (let transaction of transactions) {
+            if (companyId === transaction.companyId) {
+                dispatch(updateTransaction(newTransaction))
+            } else {
+                dispatch(stockTransaction(newTransaction))
+            }
+        }
         // const payload = { companyId, userId };
-        dispatch(stockTransaction(newTransaction))
     }
 
     if (buyStock) {
