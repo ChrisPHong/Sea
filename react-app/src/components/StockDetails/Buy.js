@@ -75,10 +75,10 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
             balance: Number(newBalance).toFixed(2)
         }
 
-        // If companyId is found in the updatedTransArr, update Transaction
+        // If companyId is found in the updatedTransArr and is a BUY, update Transaction
         for (let i = 0; i < updatedTransArr.length; i++) {
             let transaction = updatedTransArr[i]
-            if (transaction.companyId === companyId) {
+            if (transaction.companyId === companyId && transaction.type === 'buy') {
                 dispatch(updateTransaction(newTransaction))
                 return
             }
@@ -88,7 +88,9 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
         let companyIds = []
         for (let i = 0; i < updatedTransArr.length; i++) {
             let transaction = updatedTransArr[i]
-            companyIds.push(transaction.companyId)
+            if (transaction.type === 'buy') {
+                companyIds.push(transaction.companyId)
+            }
         }
 
         if (!companyIds.includes(companyId)) {

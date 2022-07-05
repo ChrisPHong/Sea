@@ -25,6 +25,7 @@ const Dashboard = () => {
     const companies = Object.values(stocks)
     const transArr = Object.values(transactions)
     const portfolio = Object.values(portfolioPrices)
+    const allBoughtTransArr = Object.values(boughtTransactions)
     const newsArr = Object.values(news)
     const options = { style: 'currency', currency: 'USD' };
     const currencyFormat = new Intl.NumberFormat('en-US', options);
@@ -57,7 +58,7 @@ const Dashboard = () => {
         dispatch(getBoughtTransactions(currentUser?.id))
         dispatch(getStocks())
 
-    }, [dispatch, currentUser])
+    }, [dispatch, currentUser, allBoughtTransArr.length])
 
     useEffect(() => {
         for (let compId in boughtTransactions) {

@@ -89,7 +89,7 @@ def update_transactions(company_id):
     todays_date = datetime.today()
 
     # Get a specific transaction under specific user
-    transaction = Transaction.query.filter(Transaction.company_id == company_id, Transaction.user_id == int(user_id)).first()
+    transaction = Transaction.query.filter(Transaction.company_id == company_id, Transaction.user_id == int(user_id), Transaction.type == 'buy').first()
 
 
     if form.validate_on_submit():
