@@ -36,6 +36,16 @@ const Dashboard = () => {
     let boughtTransArr = []
     let balToBackend
 
+    // nameArr = []
+    // sharesTotal = 0
+    // totalPrice = 0
+    // buy ? sharesTotal += shares : sharesTotal += -${shares}
+    // {
+        // name: set(nameArr),
+        // shares: sharesTotal,
+        // updatePrice:
+    // }
+
     const [newData, setNewData] = useState(portfolio)
     const [currPrice, setCurrPrice] = useState(0)
 
@@ -70,6 +80,7 @@ const Dashboard = () => {
     }, [portfolio?.length, currentUser, balToBackend])
 
     // Find name and ticker from transaction that matches with the pool of companies in database
+    console.log('here are the bought transactions', boughtTransactions)
     for (let id in stocks) {
         let company = stocks[id]
         for (let compId in boughtTransactions) {
