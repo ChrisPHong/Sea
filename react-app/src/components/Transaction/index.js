@@ -9,7 +9,7 @@ function TransactionPage() {
     const history = useHistory();
     const dispatch = useDispatch();
     const sessionUser = useSelector(state => state?.session?.user);
-    console.log('this is sesssion userrrrr', sessionUser)
+    // console.log('this is sesssion userrrrr', sessionUser)
     // console.log('this is sesssion userrrrr ID', sessionUser.id)
     const userId = sessionUser.id;
     // const user = useSelector((state) => (state.session.user));
@@ -19,10 +19,10 @@ function TransactionPage() {
     const companiesObj = useSelector(state => state?.stock?.entries)
     const companiesArr = Object.values(companiesObj)
 
-    console.log('------comp obj----', companiesObj)
+    // console.log('------comp obj----', companiesObj)
 
     // const state = useSelector(state => console.log('this is STATE!!!!!', state))
-    console.log('---transactionsObj----', transactionsObj)
+    // console.log('---transactionsObj----', transactionsObj)
 
     const transactions = Object.values(transactionsObj ? transactionsObj : {})
 

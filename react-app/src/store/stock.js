@@ -53,7 +53,7 @@ export const getStockPrices = (company_id) => async (dispatch) => {
     })
 
     if (response.ok) {
-        console.log("THIS IS IN THE GETSTOCKPRICES REDUCER")
+        // console.log("THIS IS IN THE GETSTOCKPRICES REDUCER")
         const prices = await response.json()
         dispatch(loadStockPrices(prices))
     }
@@ -84,9 +84,9 @@ const stockReducer = (state = initialState, action) => {
         // Keep previous state, but reset the prices data and then fill state with new updated prices.
         case LOAD_STOCK_PRICES:
             newState = { ...state, entries: { ...state.entries }, prices: {} }
-            console.log(action.prices)
+            // console.log(action.prices)
             let pricesDate = Object.values(action.prices)
-            console.log("THIS IS IN THE LOAD STOCK PRICES REDUCER", pricesDate)
+            // console.log("THIS IS IN THE LOAD STOCK PRICES REDUCER", pricesDate)
             pricesDate.forEach((stockPrice, i) => newState.prices[i] = stockPrice)
             // newState.entries[action.stock] = action.stock
             return newState

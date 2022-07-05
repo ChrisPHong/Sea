@@ -136,7 +136,7 @@ def sell_transaction(company_id):
         balance=request.json['balance']
 
         asset_balance = price[0] * transaction.shares
-        print('---------------------- THIS IS HOW MUCH VALUE WE HAVE RIGHT NOW ----------------------', asset_balance)
+        # print('---------------------- THIS IS HOW MUCH VALUE WE HAVE RIGHT NOW ----------------------', asset_balance)
         # shares is a tuple in the database, so have to key into the first index
         transaction.shares -= shares[0]
 
@@ -145,13 +145,13 @@ def sell_transaction(company_id):
 
         # selling amount: The market price * the shares the user selected # 220
         transaction_amount = price[0] * int(shares[0])
-        print('---------------------- THIS IS WHAT WE SOLD THE SHARES FOR ----------------------', transaction_amount)
-        print('---------------------- NEW BALANCE BUT NIKE ----------------------', price)
+        # print('---------------------- THIS IS WHAT WE SOLD THE SHARES FOR ----------------------', transaction_amount)
+        # print('---------------------- NEW BALANCE BUT NIKE ----------------------', price)
         # Asset balance = number of shares owned * market price
 
         # Set transaction price by taking the difference of the asset balance and transaction amount
         transaction.price = (asset_balance - transaction_amount) / 4
-        print('---------------------- THIS IS WHAT WE HAVE AFTER SELLING ----------------------', transaction.price)
+        # print('---------------------- THIS IS WHAT WE HAVE AFTER SELLING ----------------------', transaction.price)
 
         user = User.query.filter(User.id == int(user_id)).first()
         user.balance += transaction_amount

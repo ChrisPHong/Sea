@@ -134,11 +134,11 @@ export const addMoneyToCurrentBalance = (balance) => async (dispatch) => {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(balance)
     })
-    console.log(response)
+    // console.log(response)
 
     if (response.ok) {
         const balance = await response.json()
-        console.log(balance)
+        // console.log(balance)
         dispatch(updateCurrentBalance(balance))
     }
 }
