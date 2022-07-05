@@ -25,6 +25,7 @@ const Dashboard = () => {
     const companies = Object.values(stocks)
     const transArr = Object.values(transactions)
     const portfolio = Object.values(portfolioPrices)
+    const allBoughtTransArr = Object.values(boughtTransactions)
     const newsArr = Object.values(news)
     const options = { style: 'currency', currency: 'USD' };
     const currencyFormat = new Intl.NumberFormat('en-US', options);
@@ -80,11 +81,11 @@ const Dashboard = () => {
     }, [portfolio?.length, currentUser, balToBackend])
 
     // Find name and ticker from transaction that matches with the pool of companies in database
-    console.log('here are the bought transactions', boughtTransactions)
     for (let id in stocks) {
         let company = stocks[id]
-        for (let compId in boughtTransactions) {
-            if (company.id === parseInt(compId)) {
+        for (let i in boughtTransactions) {
+            let transaction = boughtTransactions[i]
+            if (company.id === transaction.companyId) {
                 nameTickerArr.push({'name': company.name, 'ticker': company.ticker})
             }
         }

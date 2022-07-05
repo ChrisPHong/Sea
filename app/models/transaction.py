@@ -30,8 +30,8 @@ class Transaction(db.Model):
             'userId': self.user_id,
             'companyId': self.company_id
         }
-        
-    def to_dict(self):
+
+    def to_dict_with_balance(self):
         return {
             'id': self.id,
             'price': self.price,
@@ -39,5 +39,5 @@ class Transaction(db.Model):
             'type': self.type,
             'date': self.date,
             'userId': self.user_id,
-            'companyId': self.company_id
+            'companyId': self.company_id,
         }

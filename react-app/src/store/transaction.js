@@ -3,6 +3,7 @@ const BUY_STOCK = 'transactions/BUY_STOCK';
 const LOAD_BOUGHT_TRANSACTIONS = 'transaction/loadBoughtTransactions'
 const ADD_MONEY = 'transactions/ADD_MONEY'
 const CLEAR_ALL_TRANSACTIONS = 'transactions/CLEAR_ALL_TRANSACTIONS'
+const EDIT_TRANSACTION = 'transactions/EDIT_TRANSACTIONS'
 // const SELL_STOCK = 'transactions/SELL_STOCK';
 
 // get all transactions
@@ -13,6 +14,12 @@ export const loadTransactions = (transactions) => {
     }
 }
 
+export const editTransaction = (transaction) => {
+    return {
+        type: EDIT_TRANSACTION,
+        transaction
+    }
+}
 // post
 export const buyStock = (transaction) => ({
     type: BUY_STOCK,
@@ -73,9 +80,24 @@ export const getTransactions = (userId) => async (dispatch) => {
     }
 }
 
+export const updateTransaction = (payload) => async (dispatch) => {
+    const response = await fetch(`/api/transactions/${payload.company_id}/update`, {
+        method: 'PATCH',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(payload)
+    })
+
+    if (response.ok) {
+        // console.log('RESPONSEEEEEEEE', response)
+        const transaction = await response.json()
+        // console.log('storeeeeeee', transactions)
+        dispatch(editTransaction(transaction))
+    }
+}
+
 // thunk - buy/sell stock ??
 export const stockTransaction = (data) => async (dispatch) => {
-    const res = await fetch(`/api/transactions/update`, {
+    const res = await fetch(`/api/transactions/post`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data)
@@ -116,17 +138,17 @@ const transactionReducer = ( state = initialState, action ) => {
             action.transactions.forEach(transaction => {newState.entries[transaction.id] = transaction})
             return newState
         case LOAD_BOUGHT_TRANSACTIONS:
-            newState = { ...state, entries: { }, boughtTrans: { } }
+            newState = { ...state, entries: { ...state.entries }, boughtTrans: { } }
             action.transactions.forEach(transaction => {newState.boughtTrans[transaction.id] = transaction})
             return newState
         case BUY_STOCK:
-            newState = {
-                ...state, entries: {
-                    ...state.entries,
-                    [action.transaction.id]: action.transaction
-                }
-            }
+            newState = {...state, entries: {...state.entries }, boughtTrans: { ...state.boughtTrans } }
+            newState.boughtTrans[action.transaction.id] = action.transaction
             return newState;
+        case EDIT_TRANSACTION:
+            newState = { ...state, entries: { ...state.entries }, boughtTrans: { ...state.boughtTrans } }
+            newState.boughtTrans[action.transaction.id] = action.transaction
+            return newState
         case ADD_MONEY:
             newState = {
                 ...state, [action.userBalance.user.id]: action.transaction
