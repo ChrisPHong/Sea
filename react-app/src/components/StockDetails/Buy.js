@@ -13,8 +13,8 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
     const userId = user.id;
     // console.log('USERRRRR', user)
 
-    console.log('here is the transactions', transactions)
-    console.log('here is the UPDATED transactions', updatedTransaction)
+    // console.log('here is the transactions', transactions)
+    // console.log('here is the UPDATED transactions', updatedTransaction)
 
 
     // console.log(transactions)
@@ -52,7 +52,7 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
     //     return result.toDateString()
     // }
 
-    console.log('IS THIS OUR BRAND NEW USER?!??!?!?!!', user?.id)
+    // console.log('IS THIS OUR BRAND NEW USER?!??!?!?!!', user?.id)
 
     const buyStock = async (e) => {
         e.preventDefault();
@@ -65,7 +65,7 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
         // console.log('transaction price----', typeof(parseInt(sharesBought)))
         // console.log('transaction price----', typeof(companyId))
         // console.log('transaction price----', typeof('buy'))
-        console.log('WHAT IS THIS DUMB MNUMBER', typeof sharesBought)
+        // console.log('WHAT IS THIS DUMB MNUMBER', typeof sharesBought)
         let newTransaction = {
             price: Number(transactionPrice).toFixed(2),
             shares: sharesBought,

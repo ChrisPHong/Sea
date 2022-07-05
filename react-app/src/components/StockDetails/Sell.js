@@ -113,7 +113,7 @@ const Sell = ({ user, companyId, priceData, shares }) => {
                         {order}
                     </button>
                 </div>
-                <div className='transaction-labels' id='transaction-available-shares'>{ownedStockShares || 0} Shares Available</div>
+                {/* <div className='transaction-labels' id='transaction-available-shares'>{ownedStockShares || 0} Shares Available</div> */}
             </form>
         </div>
         // <div>
