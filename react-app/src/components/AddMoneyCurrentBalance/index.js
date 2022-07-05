@@ -74,7 +74,7 @@ function AddMoneyCurrentBalance() {
                         setBalance(e.target.value)}}
                 />
                 <button
-                    className='WatchlistSubmitButton'
+                    className='AddMoneySubmitButton'
                     type='submit'
                     // disabled={errors.length > 0 ? true : false}
                 >Submit</button>

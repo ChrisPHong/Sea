@@ -6,17 +6,19 @@
 }
 
 .TitleTransactions{
-    border-bottom: 2px solid rgb(82, 82, 82, .4);
+    color: rgb(11, 124, 238);
+    border-bottom: 2px solid #0b7cee;
     justify-content: center;
     align-items: center;
 }
 
 .ColumnNameTransactions{
     margin: 10px 10px;
-    border: 2px solid rgb(82, 82, 82, .4);
+    /* border: 2px solid rgb(82, 82, 82, .4); */
+    border: 2px solid rgb(74, 243, 248);
     align-items: center;
     padding: 10px 15px;
-    color: black;
+    color: #0b7cee;
     font-weight: bold;
     justify-content: center;
     /* background-color: #28c5f9;
@@ -28,11 +30,13 @@
 
 .transactionColumn{
     margin: 10px 10px;
-    border: 2px solid rgb(82, 82, 82, .4);
+    border: 2px solid rgb(74, 243, 248);
     align-items: center;
     padding: 10px 15px;
     justify-content: center;
     font-weight: bold;
+    color: rgb(11, 124, 238);
+
 
 }
 
