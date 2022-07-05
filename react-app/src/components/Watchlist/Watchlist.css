@@ -23,7 +23,8 @@
 
 .deleteButton {
     border: none;
-    border-radius: 8px 8px;
+    background-color: transparent;
+    /* border-radius: 8px 8px; */
 
     /* padding: 5px 14px;
     background-color: transparent;
@@ -42,7 +43,8 @@
 
 .editButton {
     border: none;
-    border-radius: 8px 8px;
+    background-color: transparent;
+    /* border-radius: 8px 8px; */
     /* padding: 5px 14px;
     background-color: transparent;
     margin-left: 5px;
@@ -143,7 +145,8 @@
 .companyStockClosingPrice{
     display: flex;
     font-size: 15px;
-    justify-content: center;
+    width: 150px;
+    justify-content: flex-end;
     align-items: center;
     padding-bottom: 1px;
     margin-right: 10px;
