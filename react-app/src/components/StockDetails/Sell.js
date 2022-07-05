@@ -3,17 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { stockTransaction } from '../../store/transaction';
 
 const Sell = ({ user, companyId, priceData, shares }) => {
-    console.log(shares)
-    console.log(companyId)
     const sharesArr = Object.values(shares)
-    console.log(sharesArr)
     const dispatch = useDispatch();
     const [userShares, setUserShares] = useState(shares);
     // console.log("THIS IS THE USER SHARES", userShares)
     let ownedStockShares = 0
     if (shares) {
         for (let i = 0; i < sharesArr?.length; i++) {
-            console.log(ownedStockShares)
             if (sharesArr[i]?.companyId === companyId && sharesArr[i]?.userId === user.id && sharesArr[i]?.type === "buy") {
                 ownedStockShares += sharesArr[i]?.shares
             }
@@ -22,8 +18,6 @@ const Sell = ({ user, companyId, priceData, shares }) => {
             }
         }
     }
-
-    console.log(ownedStockShares)
 
     const [transactionPrice, setTransactionPrice] = useState((0).toFixed(2));
     const [order, setOrder] = useState('sell');
@@ -56,8 +50,6 @@ const Sell = ({ user, companyId, priceData, shares }) => {
         // setUserShares(userShares - sharesSold);
         setBalance((Number(balance) + Number(transactionPrice)).toFixed(2));
         let newBalance = (Number(balance) + Number(transactionPrice)).toFixed(2);
-        console.log("THIS IS THE NEW BALANCE", newBalance)
-        console.log("NO NO NON NONNONON AHHHHHHHHHHHHHH", Number(newBalance).toFixed(2))
         let newTransaction = {
             price: Number(transactionPrice).toFixed(2),
             shares: Number(sharesSold),
