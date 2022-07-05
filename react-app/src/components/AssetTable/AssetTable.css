@@ -75,3 +75,13 @@ table {
     color: gray;
     padding-top: 5px;
 }
+
+.company-name a {
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+}
+
+.company-name a:hover {
+    text-decoration: underline;
+}

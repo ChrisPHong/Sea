@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine } from 'recharts';
 import { getPortfolio } from '../../store/portfolio';
+import { Link } from 'react-router-dom';
 import './AssetTable.css'
 
 const AssetTable = ({ nameTickerArr, transArr, closingPrice, currencyFormat, assetBalance, buyingTotal }) => {
@@ -27,7 +28,7 @@ const AssetTable = ({ nameTickerArr, transArr, closingPrice, currencyFormat, ass
                                 {nameTickerArr && nameTickerArr.map((comp, i) => (
                                     <div key={i} className='comp-title'>
                                         <div className='company-name'>
-                                            {comp.name}
+                                            <Link to={`/stocks/${comp.ticker}`}>{comp.name}</Link>
                                         </div>
                                         <div className='company-ticker'>
                                             {comp.ticker}
