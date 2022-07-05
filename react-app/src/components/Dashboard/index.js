@@ -58,7 +58,7 @@ const Dashboard = () => {
         dispatch(getBoughtTransactions(currentUser?.id))
         dispatch(getStocks())
 
-    }, [dispatch, currentUser, boughtTransactions])
+    }, [dispatch, currentUser])
 
     useEffect(() => {
         for (let compId in boughtTransactions) {
