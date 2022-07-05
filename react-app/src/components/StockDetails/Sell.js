@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { stockTransaction } from '../../store/transaction';
+import { sellTransaction, stockTransaction, getBoughtTransactions } from '../../store/transaction';
 
 const Sell = ({ user, companyId, priceData, shares }) => {
     const sharesArr = Object.values(shares)
@@ -26,7 +26,7 @@ const Sell = ({ user, companyId, priceData, shares }) => {
 
     const transactionTotal = e => {
         setSharesSold(e.target.value);
-        setTransactionPrice((e.target.value * (priceData[priceData?.length - 1].price)).toFixed(2));
+        setTransactionPrice((e.target.value * (priceData.price)).toFixed(2));
         //  price = market price per share
     }
 
@@ -50,15 +50,19 @@ const Sell = ({ user, companyId, priceData, shares }) => {
         // setUserShares(userShares - sharesSold);
         setBalance((Number(balance) + Number(transactionPrice)).toFixed(2));
         let newBalance = (Number(balance) + Number(transactionPrice)).toFixed(2);
+
         let newTransaction = {
             price: Number(transactionPrice).toFixed(2),
-            shares: Number(sharesSold),
+            shares: sharesSold,
             type: 'sell',
             user_id: user.id,
             company_id: companyId,
-            balance: Number(newBalance).toFixed(2)
+            balance: Number(newBalance).toFixed(2),
         }
-        dispatch(stockTransaction(newTransaction))
+
+        dispatch(sellTransaction(newTransaction))
+        dispatch(getBoughtTransactions(user?.id))
+
     }
 
     if (sellStock) {
