@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { stockTransaction } from '../../store/transaction';
+import { getBoughtTransactions, stockTransaction, updateTransaction } from '../../store/transaction';
 
 const Buy = ({ user, companyId, ticker, priceData }) => {
     // console.log("THIS IS THE PRICE DATA", priceData)
     // console.log("THIS IS THE CLOSE", priceData[priceData?.length - 1].price)
     const dispatch = useDispatch()
     const transactions = useSelector(state => state?.transaction?.entries);
+    const updatedTransaction = useSelector(state => state?.transaction?.boughtTrans)
+    const transArr = Object.values(transactions)
+    const updatedTransArr = Object.values(updatedTransaction)
     const userId = user.id;
     // console.log('USERRRRR', user)
+
+    console.log('here is the transactions', transactions)
+    console.log('here is the UPDATED transactions', updatedTransaction)
 
 
     // console.log(transactions)
@@ -19,7 +25,7 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
     const [sharesBought, setSharesBought] = useState(0);
     const [order, setOrder] = useState('buy');
     const [balance, setBalance] = useState(user?.balance)
-    console.log(balance)
+
 
     useEffect(() => {
         setSharesBought(0)
@@ -28,7 +34,7 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
 
     const transactionTotal = e => {
         setSharesBought(e.target.value);
-        setTransactionPrice((e.target.value * (priceData[priceData?.length - 1].price)).toFixed(2));
+        setTransactionPrice((e.target.value * (priceData.price)).toFixed(2));
         //  price = market price per share
     }
 
@@ -46,31 +52,55 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
     //     return result.toDateString()
     // }
 
-    // console.log('IS THIS OUR BRAND NEW DATE?!??!?!?!!', convertDate(priceData.date))
+    console.log('IS THIS OUR BRAND NEW USER?!??!?!?!!', user?.id)
 
     const buyStock = async (e) => {
         e.preventDefault();
         setOrder('ordered');
         setBalance((Number(balance) - Number(transactionPrice)).toFixed(2));
         let newBalance = (Number(balance) - Number(transactionPrice)).toFixed(2);
-        console.log("THIS IS THE NEW BALANCE", newBalance)
-        console.log("NO NO NON NONNONON AHHHHHHHHHHHHHH", Number(newBalance).toFixed(2))
 
         // console.log('transaction price----', typeof(parseInt(transactionPrice)))
         // console.log('transaction price----', typeof(user.id))
         // console.log('transaction price----', typeof(parseInt(sharesBought)))
         // console.log('transaction price----', typeof(companyId))
         // console.log('transaction price----', typeof('buy'))
+        console.log('WHAT IS THIS DUMB MNUMBER', typeof sharesBought)
         let newTransaction = {
             price: Number(transactionPrice).toFixed(2),
-            shares: parseInt(sharesBought),
+            shares: sharesBought,
             type: 'buy',
             user_id: user.id,
             company_id: companyId,
             balance: Number(newBalance).toFixed(2)
         }
+
+        // If companyId is found in the updatedTransArr and is a BUY, update Transaction
+        for (let i = 0; i < updatedTransArr.length; i++) {
+            let transaction = updatedTransArr[i]
+            if (transaction.companyId === companyId && transaction.type === 'buy') {
+                dispatch(updateTransaction(newTransaction))
+                dispatch(getBoughtTransactions(user?.id))
+                return
+            }
+        }
+
+
+        // If company is NOT found in updatedTransArr, post a new transaction
+        let companyIds = []
+        for (let i = 0; i < updatedTransArr.length; i++) {
+            let transaction = updatedTransArr[i]
+            if (transaction.type === 'buy') {
+                companyIds.push(transaction.companyId)
+            }
+        }
+
+        if (!companyIds.includes(companyId)) {
+            dispatch(stockTransaction(newTransaction))
+            dispatch(getBoughtTransactions(user?.id))
+        }
+
         // const payload = { companyId, userId };
-        dispatch(stockTransaction(newTransaction))
     }
 
     if (buyStock) {
@@ -102,7 +132,7 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
                 <div className='transaction-info'>
                     <div className='transaction-labels'>Market Price</div>
                     <div id='transaction-stock-price'>
-                        ${priceData && Number(priceData[priceData?.length - 1]?.price).toFixed(2)}
+                        ${priceData && Number(priceData.price).toFixed(2)}
                     </div>
                 </div>
                 <hr />
