@@ -2,9 +2,26 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border: solid black;
+    border: solid black 2px;
     border-radius: 5px 5px;
     padding: 10px 10px;
     margin-bottom: 10px;
     flex-direction: column;
+}
+
+.AddMoneySubmitButton{
+    background-color: #0b7cee;
+    color: white;
+    font-family: sans-serif;
+    border-radius: 5px 5px;
+    padding: 5px 5px;
+    /* background-color: transparent; */
+    transition-duration: 1s;
+    margin:5px;
+}
+
+.AddMoneySubmitButton:hover {
+    background-color: rgb(40, 197, 249);
+
+
 }
