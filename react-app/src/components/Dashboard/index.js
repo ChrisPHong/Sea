@@ -83,8 +83,9 @@ const Dashboard = () => {
     console.log('here are the bought transactions', boughtTransactions)
     for (let id in stocks) {
         let company = stocks[id]
-        for (let compId in boughtTransactions) {
-            if (company.id === parseInt(compId)) {
+        for (let i in boughtTransactions) {
+            let transaction = boughtTransactions[i]
+            if (company.id === transaction.companyId) {
                 nameTickerArr.push({'name': company.name, 'ticker': company.ticker})
             }
         }

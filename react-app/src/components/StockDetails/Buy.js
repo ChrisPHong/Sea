@@ -9,6 +9,7 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
     const transactions = useSelector(state => state?.transaction?.entries);
     const updatedTransaction = useSelector(state => state?.transaction?.entries)
     const transArr = Object.values(transactions)
+    const updatedTransArr = Object.values(updatedTransaction)
     const userId = user.id;
     // console.log('USERRRRR', user)
 
@@ -74,21 +75,26 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
             balance: Number(newBalance).toFixed(2)
         }
 
-
-        for (let i = 0; i < transArr.length; i++) {
-            let transaction = transArr[i]
+        // If companyId is found in the updatedTransArr, update Transaction
+        for (let i = 0; i < updatedTransArr.length; i++) {
+            let transaction = updatedTransArr[i]
             if (transaction.companyId === companyId) {
                 dispatch(updateTransaction(newTransaction))
                 return
             }
         }
 
-        for (let i = 0; i < transArr.length; i++) {
-            let transaction = transArr[i]
-            if (transaction.companyId !== companyId) {
-                dispatch(stockTransaction(newTransaction))
-            }
+        // If company is NOT found in updatedTransArr, post a new transaction
+        let companyIds = []
+        for (let i = 0; i < updatedTransArr.length; i++) {
+            let transaction = updatedTransArr[i]
+            companyIds.push(transaction.companyId)
         }
+
+        if (!companyIds.includes(companyId)) {
+            dispatch(stockTransaction(newTransaction))
+        }
+
         // const payload = { companyId, userId };
     }
 

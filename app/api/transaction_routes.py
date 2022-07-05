@@ -97,9 +97,14 @@ def update_transactions(company_id):
         price=form.data['price'],
         shares=form.data['shares'],
         type=form.data['type']
-        print('HERE COMES THE TRANSACTION SHAREEEESSSSSSSS', shares)
-        transaction.shares = transaction.shares + shares
-        transaction.price = transaction.price + price * shares / transaction.shares
+        print('HERE COMES THE TRANSACTION SHAREEEESSSSSSSS', shares[0])
+        # shares is a tuple in the database, so have to key into the first index
+        transaction.shares += shares[0]
+        total_amount = price * int(shares[0])
+
+        transaction.price = transaction.price + total_amount[0]
+        final_price = transaction.price / transaction.shares
+        transaction.price = final_price
 
         user = User.query.filter(User.id == int(user_id)).first()
         user.balance = request.json['balance']
