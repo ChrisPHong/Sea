@@ -12,7 +12,8 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 import Dashboard from './components/Dashboard'
 import StockDetails from './components/StockDetails';
 import { authenticate } from './store/session';
-import TransactionPage from './components/Transaction';
+// import TransactionPage from './components/Transaction';
+import MiniFooter from './components/MiniFooter';
 
 
 function App() {
@@ -47,13 +48,16 @@ function App() {
         </Route>
         <ProtectedRoute path='/dashboard'>
           <Dashboard />
+          <MiniFooter />
         </ProtectedRoute>
         <ProtectedRoute path='/stocks/:ticker'>
           <StockDetails />
+          <MiniFooter />
         </ProtectedRoute>
-        <ProtectedRoute path='/transactions'>
+        {/* <ProtectedRoute path='/transactions'>
           <TransactionPage />
-        </ProtectedRoute>
+          <MiniFooter />
+        </ProtectedRoute> */}
       </Switch>
     </BrowserRouter>
   );

@@ -107,3 +107,28 @@
 .stock-details-close-price {
     margin-top: 40px;
 }
+
+.fixed-side-container {
+    display: block;
+    padding: 20px;
+    margin: 2em 2em;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    box-shadow: 0px 0px 15px rgb(209, 209, 209);
+    width: 230px;
+    /* height: 360px; */
+}
+
+#buy-btn, #sell-btn {
+    padding: 5px;
+    background-color: white;
+    border-radius: 5px;
+    border: 0.5px solid black;
+    width: 60px;
+    margin-bottom: 5px;
+}
+
+#buy-btn:hover, #sell-btn:hover {
+    cursor: pointer;
+    background-color: whitesmoke;
+}
