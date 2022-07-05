@@ -29,6 +29,6 @@
 
 .AddMoneySubmitButton:hover {
     background-color: rgb(40, 197, 249);
-
+    cursor: pointer;
 
 }
