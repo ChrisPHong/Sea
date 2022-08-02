@@ -38,19 +38,21 @@ def get_bought_transactions(comp_id, user_id):
             return transaction
 
 
-@portfolio_routes.route('/', methods=['POST'])
+@portfolio_routes.route('/')
 def make_portfolio():
-    # timeframe = request.json['timeframe']
-    # user_id = request.json['userId']
-    current_balance = request.json['current_balance']
+    balance = 0
 
-    # Get all companies that the user has bought
-    owned_companies = Company.query.filter(Company.id == Transaction.company_id, Transaction.user_id == current_user.get_id(), Transaction.type == "buy").all()
+    # Get all companies that the user has traded
+    all_transactions = Transaction.query.filter(Transaction.user_id == current_user.id).all()
+    for transaction in all_transactions:
+        if transaction.type == 'buy':
+            balance += transaction.price * transaction.shares
+        else:
+            balance -= transaction.price * transaction.shares
 
     previous_dates = datetime.today() - timedelta(days=365)
-
     # Create asset prices
-    owned_company_prices = make_stock_price(round(current_balance, 2), 365, choice([ASCENDING, DESCENDING]))
+    owned_company_prices = make_stock_price(round(balance, 2), 365, choice([ASCENDING, DESCENDING]))
     # ex: [
         # 'price': 100,
         # 'price': 99,
