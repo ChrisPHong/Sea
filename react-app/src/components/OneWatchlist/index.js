@@ -10,7 +10,7 @@ import '../Watchlist';
 
 
 
-function OneWatchlist({ watchlist }) {
+function OneWatchlist({ watchlist, currencyFormat }) {
     const dispatch = useDispatch();
     const state = useSelector((state) => state);
     const assetPrices = useSelector(state => state?.portfolio?.prices)
@@ -21,16 +21,7 @@ function OneWatchlist({ watchlist }) {
     const pricesData = Object.values(prices).slice(-7)
     const [watchlistChartData, setWatchlistChartData] = useState(pricesData)
 
-    const [show, setShow] = useState(false)
 
-
-    const settingShow = () => {
-        if (show === false) {
-            setShow(true);
-        } else {
-            setShow(false);
-        }
-    }
 
     const closingPriceAssets = (companyId) => {
         for (let compId in assetPrices) {
@@ -113,7 +104,7 @@ function OneWatchlist({ watchlist }) {
                                                 </LineChart> */}
 
                                     </div>
-                                    <h5 className='companyStockClosingPrice'>  {keyAssetPrices.indexOf(company.id.toString()) !== -1 ? `$${closingPriceAssets(company.id)}` : `$${stockPriceCreator(company.id)}`}
+                                    <h5 className='companyStockClosingPrice'>  {keyAssetPrices.indexOf(company.id.toString()) !== -1 ? `$${closingPriceAssets(company.id)}` : `${currencyFormat.format(stockPriceCreator(company.id))}`}
                                     </h5>
                                     <button className='deleteButton'
                                         onClick={async (e) => {

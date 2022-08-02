@@ -11,7 +11,7 @@ import OneWatchlist from '../OneWatchlist'
 
 
 
-function WatchlistPage() {
+function WatchlistPage({currencyFormat}) {
     const dispatch = useDispatch();
     const state = useSelector((state) => state);
     const watchlist = useSelector((state) => Object.values(state.watchlist));
@@ -38,7 +38,7 @@ function WatchlistPage() {
 
                 return (
                     <>
-                        <OneWatchlist watchlist={watchlist} />
+                        <OneWatchlist watchlist={watchlist} currencyFormat={currencyFormat}/>
                     </>
 
                 )

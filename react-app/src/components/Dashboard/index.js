@@ -316,7 +316,7 @@ const Dashboard = () => {
                     <div className='watchlist-form'>
                         <AddMoneyCurrentBalance />
                         <WatchlistForm />
-                        <WatchlistPage />
+                        <WatchlistPage currencyFormat={currencyFormat}/>
                     </div>
                 </div>
             </div>
