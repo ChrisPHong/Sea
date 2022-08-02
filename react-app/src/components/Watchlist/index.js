@@ -7,6 +7,7 @@ import { deleteWatchList, deleteStockWatchlists } from '../../store/watchlist'
 import { LineChart, Line, XAxis, YAxis } from 'recharts';
 import EditWatchListForm from '../EditWatchListForm'
 import './Watchlist.css';
+import OneWatchlist from '../OneWatchlist'
 
 
 
@@ -25,148 +26,23 @@ function WatchlistPage() {
     const [watchlistChartData, setWatchlistChartData] = useState(pricesData)
 
 
-
     const [show, setShow] = useState('hidden')
-
-
-    const closingPriceAssets = (companyId) => {
-        for (let compId in assetPrices) {
-            if (parseInt(compId) === companyId) {
-                // console.log('here is the assetPrices being returned hopefully its all different', assetPrices[compId].length - 1)
-                let pricesArr = assetPrices[compId]
-                return pricesArr[pricesArr.length - 1].price
-            }
-        }
-    }
-
-
-    // This will generate a price from the basePrice of the stock
-    const stockPriceCreator = (companyId) => {
-        for (let stock of companies) {
-            if (stock.id === companyId) {
-                let basePrice = stock.basePrice
-                basePrice += 30
-
-                return basePrice
-            }
-        }
-        return
-    }
 
     useEffect(() => {
         dispatch(getWatchlists())
 
-    }, [dispatch, show])
+    }, [dispatch])
 
-    // useEffect(() => {
-    //     for (let watchlist of watchlists) {
-    //         dispatch(getStockPrices(watchlist?.watchComps?.id))
-    //     }
-    // }, [dispatch])
 
     return (
         <div className='watchlists'>
             <h1 className='WatchlistTitleH1'>Watchlists</h1>
             {watchlists.map(watchlist => {
+
                 return (
-                    <div className='OneWatchListDiv'>
-                        <div className='watchlistButtonsEditAndDelete'>
-                            <div className='titleWatchlistDiv'>
-                                <p className='watchlistName'>
-                                    {watchlist.name}
-                                </p>
-                                <div className='editAndDeleteButtonDiv'>
-                                    <button
-
-                                        className='deleteButton'
-
-                                        onClick={() => {
-                                            dispatch(deleteWatchList(watchlist.id))
-                                        }}
-
-                                    ><img className='deletePicture' src={'https://www.iconpacks.net/icons/1/free-trash-icon-347-thumb.png'} /></button>
-
-                                    <button
-                                        className={`editButton ${watchlist.id}`}
-                                        onClick={async (e) => {
-                                            // Getting the specific edit form div
-                                            let specificEditForm = document.getElementsByClassName(`editform-${watchlist.id}`)[0]
-                                            // Checking to see if the current clicked is equal to the watchlistId
-
-                                            if (parseInt(e.currentTarget.className.split(' ')[1]) === watchlist.id) {
-                                                if (specificEditForm.className === `editform-${watchlist.id} hidden`) {
-
-                                                    return specificEditForm.className = `editform-${watchlist.id} show`
-
-
-
-                                                } else if (specificEditForm.className === `editform-${watchlist.id} show`) {
-                                                    return specificEditForm.className = `editform-${watchlist.id} hidden`
-
-                                                }
-                                            }
-                                            else {
-                                                setShow('hidden')
-                                                specificEditForm.className = `editform-${watchlist.id} ${show}`
-                                                return
-                                            }
-                                        }
-                                        }
-                                    >
-                                        <img className={`editingPicture ${watchlist.id}`} src={'https://cdn-icons-png.flaticon.com/512/61/61456.png'} />
-                                    </button >
-
-                                    <div className={`editform-${watchlist.id} hidden`}>
-                                        < EditWatchListForm watchlist={watchlist} />
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div className='company'>
-                                {watchlist.watchComps.map((company) => {
-                                    return (
-                                        <div className={`company-${company.id} divCompanyPriceAndGraph`}>
-                                            <NavLink className='navLinkStocksWatchlist' to={`/stocks/${company.ticker}`}>
-                                                {company.ticker}
-                                            </NavLink>
-                                            <div className='asset-chart'>
-                                                {/* <LineChart
-                                                    width={200}
-                                                    height={100}
-                                                    data={watchlistChartData}
-                                                    >
-                                                    <XAxis dataKey="date" hide='true' />
-                                                    <YAxis dataKey="price" domain={['dataMin', 'dataMax']} hide='true' />
-                                                    <Line
-                                                    type="linear"
-                                                    dataKey="price"
-                                                    stroke="#0b7cee"
-                                                    activeDot={{ r: 5 }}
-                                                    dot={false}
-                                                    strokeWidth={2}
-                                                    />
-                                                </LineChart> */}
-
-                                            </div>
-                                            <h5 className='companyStockClosingPrice'>  {keyAssetPrices.indexOf(company.id.toString()) !== -1 ? `$${closingPriceAssets(company.id)}` : `$${stockPriceCreator(company.id)}`}
-                                            </h5>
-                                            <button className='deleteButton'
-                                                onClick={async (e) => {
-                                                    const payload = {
-                                                        watchlistId: watchlist.id,
-                                                        ticker: company.ticker
-                                                    }
-
-                                                    await dispatch(deleteStockWatchlists(payload))
-                                                    await dispatch(getWatchlists())
-                                                }}
-                                            ><img className='deletePicture' src={'https://www.iconpacks.net/icons/1/free-trash-icon-347-thumb.png'} /></button>
-                                        </div>
-                                    )
-                                })}
-                            </div>
-                        </div>
-                    </div >
+                    <>
+                        <OneWatchlist watchlist={watchlist} />
+                    </>
 
                 )
             })}
