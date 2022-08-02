@@ -88,6 +88,11 @@ const StockDetails = () => {
 
     // if (stockPrices.length === 365) console.log(buyPrice)
 
+    useEffect(() => {
+        // Force the page to scroll up to top on mount
+        window.scrollTo(0, 0)
+    }, [])
+
     // getting stocks from backend
     useEffect(() => {
         if (stock === undefined) {
