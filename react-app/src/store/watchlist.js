@@ -122,6 +122,10 @@ export const editWatchlists = (payload) => async (dispatch) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
     })
+    console.log(response, "<<<<< THIS IS THE RESPONSE!")
+    if(!response.ok){
+        return "The name you provided already exists. Please enter a new value"
+    }
     if (response.ok) {
 
         const watchlist = await response.json()
@@ -177,6 +181,16 @@ const watchlistReducer = (state = initialState, action) => {
             return newState
 
         case EDIT_WATCHLIST:
+            // if(action.watchlist.errors){
+            //     console.log(action.watchlist.errors, "<<<<<<<<<<<< ACTION!")
+            //     newState = {
+            //         ...state, entries: {
+            //             ...state.entries,
+            //             error: action.watchlist.errors
+            //         }
+            //     }
+            //     return newState
+            // }
             newState = {
                 ...state, entries: {
                     ...state.entries,
