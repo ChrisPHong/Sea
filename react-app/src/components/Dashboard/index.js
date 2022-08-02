@@ -65,8 +65,6 @@ const Dashboard = () => {
 
     }, [dispatch, currentUser])
 
-    console.log('here is boughttransactions', boughtTransactions)
-
     useEffect(() => {
         for (let compId in boughtTransactions) {
             dispatch(getAssetPrices(compId))
