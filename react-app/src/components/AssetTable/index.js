@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import './AssetTable.css'
 
 const AssetTable = ({ nameTickerArr, transArr, closingPrice, currencyFormat, assetBalance, buyingTotal }) => {
+    console.log('here is asset balance', assetBalance)
     return (
         <>
             <div className='owned-assets'>
