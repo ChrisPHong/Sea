@@ -16,9 +16,10 @@ function CompanyWatchlistForm(props) {
     const companies = Object.values(stocks)
     const watchlists = props.props
 
+    const [clicked, setClicked] = useState(false)
 
     useEffect(() => {
-    }, [dispatch]);
+    }, [dispatch, clicked]);
 
 
     return (
@@ -34,8 +35,9 @@ function CompanyWatchlistForm(props) {
                             }
 
                             dispatch(createStockWatchlists(payload))
+
                         }}
-                        >{watchlist.name}</button>
+                        > {watchlist.name}</button>
 
                     })
                     }

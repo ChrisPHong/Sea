@@ -53,7 +53,7 @@ def patch_watchlists(id):
 
     watchlist = Watchlist.query.filter(Watchlist.id == id).first()
 
-    print(watchlist, "INSIDE THE EDIT ROUTE AND THIS IS THE WATCHLIST")
+    # print(watchlist, "INSIDE THE EDIT ROUTE AND THIS IS THE WATCHLIST")
 
     if form.validate_on_submit():
         watchlist.name = form.data['name']
@@ -84,7 +84,8 @@ def post_company_watchlists(id):
     watchlist.watch_comps.append(stock)
 
     db.session.commit()
-    return "Added company to watchlist"
+    watchlists = Watchlist.query.filter(Watchlist.user_id == current_user.get_id()).all()
+    return jsonify([watchlist.to_dict() for watchlist in watchlists])
 
 @watchlist_routes.route('/<int:id>/delete', methods=['PATCH'])
 @login_required
@@ -99,9 +100,9 @@ def delete_company_watchlists(id):
 
     # Finding that specific company within the watch_comps and then removing it from the list
     # joint_table = watchlist.watch_comps
-    print('<<<<<<<<<<<< BEFORE DELETE >>>>>>>>>>>>>')
+    # print('<<<<<<<<<<<< BEFORE DELETE >>>>>>>>>>>>>')
     the_list = [company for company in watchlist.watch_comps if company.id == stock.id]
-    print('<<<<<<<<<<<< THE LIST >>>>>>>>>>>>>> ', the_list[0])
+    # print('<<<<<<<<<<<< THE LIST >>>>>>>>>>>>>> ', the_list[0])
     # found_company = [company.to_dict() for company in joint_table if company.id == stock.id]
     # print(found_company)
     # index = joint_table.index(found_company)
@@ -110,7 +111,7 @@ def delete_company_watchlists(id):
 
     watchlist.watch_comps.remove(([company for company in watchlist.watch_comps if company.id == stock.id][0]))
 
-    print('<<<<<<<<<<<< AFTER DELETE >>>>>>>>>>>>>', watchlist.watch_comps)
+    # print('<<<<<<<<<<<< AFTER DELETE >>>>>>>>>>>>>', watchlist.watch_comps)
 
     db.session.commit()
     watchlists = Watchlist.query.filter(Watchlist.user_id == current_user.get_id()).all()

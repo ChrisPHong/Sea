@@ -1,0 +1,51 @@
+.transaction-container{
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+}
+
+.TitleTransactions{
+    color: rgb(11, 124, 238);
+    border-bottom: 2px solid #0b7cee;
+    justify-content: center;
+    align-items: center;
+}
+
+.ColumnNameTransactions{
+    margin: 10px 10px;
+    /* border: 2px solid rgb(82, 82, 82, .4); */
+    border: 2px solid rgb(74, 243, 248);
+    align-items: center;
+    padding: 10px 15px;
+    color: #0b7cee;
+    font-weight: bold;
+    justify-content: center;
+    /* background-color: #28c5f9;
+    background-image: linear-gradient(to right, rgb(74, 243, 248, .6), rgb(11, 124, 238, .6)); */
+    background-image: linear-gradient(to right, rgb(74, 243, 248, .2), rgb(11, 124, 238, .2));
+
+}
+
+
+.transactionColumn{
+    margin: 10px 10px;
+    border: 2px solid rgb(74, 243, 248);
+    align-items: center;
+    padding: 10px 15px;
+    justify-content: center;
+    font-weight: bold;
+    color: rgb(11, 124, 238);
+
+
+}
+
+.transactionColumn:nth-child(odd){
+    /* background-color: #28c5f9; */
+    /* background-image: linear-gradient(to right, rgb(74, 243, 248, .8), rgb(11, 124, 238, .8)); */
+    background-image: linear-gradient(to right, rgb(74, 243, 248, .2), rgb(11, 124, 238, .2));
+}
+.transactionColumn:nth-child(even){
+    /* background-color: #0b7cee; */
+    background-image: linear-gradient(to left, rgb(74, 243, 248, .2), rgb(11, 124, 238, .2));
+}

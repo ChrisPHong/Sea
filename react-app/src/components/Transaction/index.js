@@ -9,7 +9,7 @@ function TransactionPage() {
     const history = useHistory();
     const dispatch = useDispatch();
     const sessionUser = useSelector(state => state?.session?.user);
-    console.log('this is sesssion userrrrr', sessionUser)
+    // console.log('this is sesssion userrrrr', sessionUser)
     // console.log('this is sesssion userrrrr ID', sessionUser.id)
     const userId = sessionUser.id;
     // const user = useSelector((state) => (state.session.user));
@@ -19,10 +19,10 @@ function TransactionPage() {
     const companiesObj = useSelector(state => state?.stock?.entries)
     const companiesArr = Object.values(companiesObj)
 
-    console.log('------comp obj----', companiesObj)
+    // console.log('------comp obj----', companiesObj)
 
     // const state = useSelector(state => console.log('this is STATE!!!!!', state))
-    console.log('---transactionsObj----', transactionsObj)
+    // console.log('---transactionsObj----', transactionsObj)
 
     const transactions = Object.values(transactionsObj ? transactionsObj : {})
 
@@ -47,25 +47,20 @@ function TransactionPage() {
 
     return (
         <>
-            <h1>Transaction Page</h1>
-            <h1>Transaction Page</h1>
-            <h1>Transaction Page</h1>
-            <h1>Transaction Page</h1>
-            <h1>Transaction Page</h1>
 
             <div className='transaction-container'>
-                <h2>Transactions</h2>
+                <h2 className='TitleTransactions'>Transactions</h2>
                 <div className='transaction-table'>
                     {transactions ?
                         (
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Company</th>
-                                        <th>Price</th>
-                                        <th>Shares</th>
-                                        <th>Buy/Sell</th>
-                                        <th>Date</th>
+                                        <th className='ColumnNameTransactions'>COMPANY</th>
+                                        <th className='ColumnNameTransactions'>PRICE</th>
+                                        <th className='ColumnNameTransactions'>SHARES</th>
+                                        <th className='ColumnNameTransactions'>BUY/SELL</th>
+                                        <th className='ColumnNameTransactions'>DATE</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -73,11 +68,11 @@ function TransactionPage() {
                                         if (transaction.userId === userId) {
                                             return (<tr key={transaction.id} className={(transaction?.type === "sell") ? 'sell' : 'buy'}>
                                                 {/* <td>{companiesObj && companiesObj[transaction.companyId].ticker}</td> */}
-                                                <td>{matchTicker(transaction.companyId)}</td>
-                                                <td>{transaction?.price}</td>
-                                                <td>{transaction?.shares}</td>
-                                                <td>{transaction?.type}</td>
-                                                <td>{transaction?.date}</td>
+                                                <td className='transactionColumn'>{matchTicker(transaction.companyId)}</td>
+                                                <td className='transactionColumn'>${transaction?.price}</td>
+                                                <td className='transactionColumn'>{transaction?.shares}</td>
+                                                <td className='transactionColumn'>{transaction?.type.toUpperCase()}</td>
+                                                <td className='transactionColumn'>{transaction?.date}</td>
                                             </tr>)
                                         }
                                     })}

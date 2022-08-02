@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { editWatchlists } from '../../store/watchlist'
-import {useHistory} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import './EditWatchListForm.css'
 
 function EditWatchListForm(watchlist) {
 
-    // console.log('<<<<<<<<<<<<<< THIS IS SHOW >>>>>>>>>>>', props)
-    // console.log('<<<<<<<<<<<<<< THIS IS SHOW >>>>>>>>>>>', watchlist)
     const history = useHistory()
     const id = watchlist.watchlist.id
     const [name, setName] = useState(watchlist.watchlist.name);
     const [errors, setErrors] = useState([]);
-    // const [show, setShow] = useState(props.props);
+    const [show, setShow] = useState(false)
 
     const lists = useSelector((state) => Object.values(state.watchlist));
     const watchlists = Object.values(lists[0])
@@ -32,6 +30,10 @@ function EditWatchListForm(watchlist) {
 
     const onSubmit = async (e) => {
         e.preventDefault();
+        if(errors.length > 0){
+            setShow(true)
+            return
+        }
         if (errors.length === 0) {
             const payload = {
                 id,
@@ -44,27 +46,29 @@ function EditWatchListForm(watchlist) {
         }
 
     }
-    useEffect(()=>{
+    useEffect(() => {
 
-    },[onSubmit])
+    }, [onSubmit])
 
 
     return (
         <form className={`WatchlistForm-${id}`} onSubmit={onSubmit}>
-           {errors.length > 0 ?
-           <>
-           <h3>Error</h3>
-           <ul className='errorsArray'>{errors.map(error => {
-               return (
-               <>
-               <li className='errorItem'
-               key={error}>{error}</li>
-               </>
-               )
-            })}
-            </ul>
-           </>
-           : null}
+            {show ?
+                    errors.length > 0 ?
+                        <>
+                            <h3>Error</h3>
+                            <ul className='errorsArray'>{errors.map(error => {
+                                return (
+                                    <>
+                                        <li className='errorItem'
+                                            key={error}>{error}</li>
+                                    </>
+                                )
+                            })}
+                            </ul>
+                        </>
+                        : null
+                : null}
             <div className='nameInput'>
                 <input type='text'
                     required
@@ -77,7 +81,7 @@ function EditWatchListForm(watchlist) {
             <button
                 className='submitButton'
                 type='submit'
-                disabled={errors.length > 0 ? true : false}
+
             >Save Changes</button>
         </form>
     )

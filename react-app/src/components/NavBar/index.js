@@ -20,16 +20,17 @@ const NavBar = () => {
     <nav className='nav-bar'>
 
       {currentUser
-      ?
+        ?
         <>
           <div className='sea-navbar-logo'>
             <NavLink to='/dashboard' exact={true} activeClassName='active'>
               Sea
+              {/* <img className='sea-logo' src={process.env.PUBLIC_URL + '/images/sea-logo.png'} /> */}
             </NavLink>
           </div>
 
           <div className='auth-navbar-right'>
-            { stock && (
+            {stock && (
               <SearchBar />
             )}
 
@@ -39,20 +40,20 @@ const NavBar = () => {
               </NavLink>
             </div>
 
-            <div id="nav-transactions">
+            {/* <div id="nav-transactions">
               <NavLink to='/transactions' exact={true} activeClassName='active'>
                 Transactions
               </NavLink>
-            </div>
+            </div> */}
 
             <LogoutButton />
           </div>
         </>
-      :
+        :
         <>
           <div className='sea-navbar-logo'>
-            <NavLink to='/' exact={true} activeClassName='active'>
-              Sea
+            {/* <img className='sea-logo' src={process.env.PUBLIC_URL + '/images/sea-logo.png'} */}
+            <NavLink to='/' exact={true} activeClassName='active'> Sea
             </NavLink>
           </div>
           <div className='navbar-right'>

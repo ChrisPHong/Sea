@@ -20,10 +20,12 @@ def get_all_stocks():
 
 @stock_routes.route('/<company_id>/prices', methods=['POST'])
 def get_stock_prices(company_id):
-    print('WHAT IS THIS COMPANY ID WE ARE RECEIVING FROM FRONT END', company_id)
+    # Create date from a year ago
     one_year_data = datetime.today() - timedelta(days=365)
+    # Find specific stock
     stock = Company.query.filter(Company.id == company_id).first()
-    stock_prices = make_stock_price(stock.base_price, choice([ASCENDING, DESCENDING]))
+    # Create fake prices for specified stock
+    stock_prices = make_stock_price(stock.base_price, 365, choice([ASCENDING, DESCENDING]))
 
     # For each price in stock_prices
     for i in range(len(stock_prices)):
@@ -34,7 +36,8 @@ def get_stock_prices(company_id):
         # create date key/value pair in each stock price
         price['date'] = one_year_data.strftime("%b %d %Y")
 
-    return jsonify(stock_prices)
+    return {company_id: stock_prices}
+    # return {company_id: stock_prices}
 
 # # Weekly prices for OWNED companies
 # @stock_routes.route('/weekly', methods=['POST'])

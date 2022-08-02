@@ -30,3 +30,14 @@ class Transaction(db.Model):
             'userId': self.user_id,
             'companyId': self.company_id
         }
+
+    def to_dict_with_balance(self):
+        return {
+            'id': self.id,
+            'price': self.price,
+            'shares': self.shares,
+            'type': self.type,
+            'date': self.date,
+            'userId': self.user_id,
+            'companyId': self.company_id,
+        }

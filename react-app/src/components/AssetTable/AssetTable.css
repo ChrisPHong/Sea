@@ -1,0 +1,87 @@
+table {
+    width: 1000px;
+}
+
+.dashboard-header,
+.dashboard-body {
+    display: flex;
+    justify-content: center;
+}
+
+.dashboard-body {
+    padding-top: 10px;
+}
+
+.owned-assets {
+    display: flex;
+    justify-content: center;
+    width: auto;
+    border-bottom: 1px solid lightgray;
+    padding-bottom: 40px;
+}
+
+.body-row {
+    display: flex;
+    text-align: left;
+}
+
+.portfolio-theaders > th {
+    font-weight: 400;
+    color: gray;
+    padding: 0;
+}
+
+.portfolio-theaders {
+    border-bottom: 1px solid lightgray;
+    padding: 15px 0 25px 0;
+}
+
+.comp-title {
+    display: flex;
+    flex-direction: column;
+}
+
+.owned-comp-label,
+.comp-title {
+    width: 300px;
+    text-align: left;
+}
+
+.owned-shares-label,
+.owned-balance,
+.owned-price-label,
+.owned-comp-price,
+.owned-allocations-label,
+.allocation-percent {
+    width: 200px;
+    text-align: left;
+}
+
+.comp-title,
+.owned-comp-name,
+.owned-balance,
+.owned-comp-price {
+    padding: 15px 0 15px 0;
+}
+
+.allocation-percent {
+    padding: 25px 0 25px 0;
+}
+
+.company-ticker,
+.owned-comp-shares,
+.curr-comp-percent {
+    font-size: 10pt;
+    color: gray;
+    padding-top: 5px;
+}
+
+.company-name a {
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+}
+
+.company-name a:hover {
+    text-decoration: underline;
+}
