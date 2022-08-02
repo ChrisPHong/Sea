@@ -18,7 +18,7 @@ def get_all_stocks():
     # print(companies, '<<<<<<<<<<<<<<<<< COMPANIES >>>>>>>>>>>>')
     return jsonify([company.to_dict() for company in companies])
 
-@stock_routes.route('/<company_id>/prices', methods=['POST'])
+@stock_routes.route('/<company_id>/prices')
 def get_stock_prices(company_id):
     # Create date from a year ago
     one_year_data = datetime.today() - timedelta(days=365)

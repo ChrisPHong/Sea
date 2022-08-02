@@ -46,11 +46,7 @@ export const getOneStock = (ticker) => async (dispatch) => {
 }
 
 export const getStockPrices = (company_id) => async (dispatch) => {
-    const response = await fetch(`/api/stocks/${company_id}/prices`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(company_id)
-    })
+    const response = await fetch(`/api/stocks/${company_id}/prices`)
 
     if (response.ok) {
         // console.log("THIS IS IN THE GETSTOCKPRICES REDUCER")
