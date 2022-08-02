@@ -51,6 +51,11 @@ const Dashboard = () => {
     const [currPrice, setCurrPrice] = useState(0)
 
     useEffect(() => {
+        // Force the page to scroll up to top on mount
+        window.scrollTo(0, 0)
+    }, [])
+
+    useEffect(() => {
         // dispatch(getTransactions(currentUser?.id))
 
         dispatch(getGeneralNews())
@@ -69,7 +74,7 @@ const Dashboard = () => {
 
 
     useEffect(() => {
-        dispatch(getPortfolio({ userId: currentUser?.id, currentBalance: balToBackend}))
+        dispatch(getPortfolio({'current_balance': balToBackend}))
         setNewData(portfolio)
     }, [currentUser, balToBackend, dispatch])
 

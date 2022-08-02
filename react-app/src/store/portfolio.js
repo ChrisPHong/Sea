@@ -26,11 +26,11 @@ export const loadAssetPrices = (prices) => {
     }
 }
 
-export const getPortfolio = (payload) => async (dispatch) => {
+export const getPortfolio = (current_balance) => async (dispatch) => {
     const response = await fetch('/api/portfolio/', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(payload)
+        body: JSON.stringify(current_balance)
     })
 
     if (response.ok) {

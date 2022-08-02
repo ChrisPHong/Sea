@@ -1,5 +1,6 @@
 from app.models import Transaction, Company
 from flask import Blueprint, jsonify, request
+from flask_login import current_user
 from datetime import datetime, timedelta
 from random import choice, random
 
@@ -40,11 +41,11 @@ def get_bought_transactions(comp_id, user_id):
 @portfolio_routes.route('/', methods=['POST'])
 def make_portfolio():
     # timeframe = request.json['timeframe']
-    user_id = request.json['userId']
-    current_balance = request.json['currentBalance']
+    # user_id = request.json['userId']
+    current_balance = request.json['current_balance']
 
     # Get all companies that the user has bought
-    owned_companies = Company.query.filter(Company.id == Transaction.company_id, Transaction.user_id == int(user_id), Transaction.type == "buy").all()
+    owned_companies = Company.query.filter(Company.id == Transaction.company_id, Transaction.user_id == current_user.get_id(), Transaction.type == "buy").all()
 
     previous_dates = datetime.today() - timedelta(days=365)
 
