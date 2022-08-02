@@ -25,6 +25,8 @@ const StockDetails = () => {
     const user = useSelector(state => state.session?.user)
     const userShares = useSelector(state => state?.transaction?.entries)
     const userSharesData = Object.values(userShares)
+    const options = { style: 'currency', currency: 'USD' };
+    const currencyFormat = new Intl.NumberFormat('en-US', options);
 
     const stocks = Object.values(stockObj)
 
@@ -168,6 +170,9 @@ const StockDetails = () => {
                 <div className='stock-details-information'>
                     <div className='stock-details-name-title'>
                         {stock.name} ({stock.ticker})
+                    </div>
+                    <div className='stock-balance-amount'>
+                        {pricesArr && currencyFormat.format(pricesArr[pricesArr.length - 1].price)}
                     </div>
                     {/* -------------------- LINE CHART HERE -------------------- */}
                     <div className='asset-chart'>
