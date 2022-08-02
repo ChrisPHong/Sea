@@ -28,10 +28,10 @@ const AssetTable = ({ nameTickerArr, transArr, closingPrice, currencyFormat, ass
                             <td>
                                 {nameTickerArr && nameTickerArr.map((comp, i) => (
                                     <div key={i} className='comp-title'>
-                                        <div className='company-name' hidden={comp.shares === 0}>
+                                        <div className='company-name'>
                                             <Link to={`/stocks/${comp.ticker}`}>{comp.name}</Link>
                                         </div>
-                                        <div className='company-ticker' hidden={comp.shares === 0}>
+                                        <div className='company-ticker'>
                                             {comp.ticker}
                                         </div>
                                     </div>
@@ -41,8 +41,8 @@ const AssetTable = ({ nameTickerArr, transArr, closingPrice, currencyFormat, ass
                             <td>
                                 {assetBalance && assetBalance.map((balance, i) => (
                                     <div key={i} className='owned-balance'>
-                                        <div className='owned-balance-price' hidden={balance.shares === 0}>{currencyFormat.format(balance.total)}</div>
-                                        <div className='owned-comp-shares' hidden={balance.shares === 0}>{balance.shares}</div>
+                                        <div className='owned-balance-price'>{currencyFormat.format(balance.total)}</div>
+                                        <div className='owned-comp-shares'>{balance.shares}</div>
                                     </div>
                                 ))}
                             </td>
@@ -50,20 +50,20 @@ const AssetTable = ({ nameTickerArr, transArr, closingPrice, currencyFormat, ass
                             <td>
                                 {closingPrice && closingPrice.map((price, i) => (
                                     <div key={i} className='owned-comp-price'>
-                                        <div className='curr-comp-price' hidden={price.shares === 0}>
+                                        <div className='curr-comp-price'>
                                             {currencyFormat.format(price.closingPrice)}
                                         </div>
                                         {(((price.shares * (price.closingPrice) - (price.buyingPrice * price.shares)) / (price.buyingPrice * price.shares))).toFixed(2) >= 0 ?
-                                            <div className='curr-comp-percent' hidden={price.shares === 0} style={{ color: 'green' }}>+{(((price.shares * (price.closingPrice) - (price.buyingPrice * price.shares)) / (price.buyingPrice * price.shares))).toFixed(2)}%</div>
+                                            <div className='curr-comp-percent' style={{ color: 'green' }}>+{(((price.shares * (price.closingPrice) - (price.buyingPrice * price.shares)) / (price.buyingPrice * price.shares))).toFixed(2)}%</div>
                                             :
-                                            <div className='curr-comp-percent' hidden={price.shares === 0} style={{ color: 'red' }}>{(((price.shares * (price.closingPrice) - (price.buyingPrice * price.shares)) / (price.buyingPrice * price.shares))).toFixed(2)}%</div>}
+                                            <div className='curr-comp-percent' style={{ color: 'red' }}>{(((price.shares * (price.closingPrice) - (price.buyingPrice * price.shares)) / (price.buyingPrice * price.shares))).toFixed(2)}%</div>}
                                     </div>
                                 ))}
                             </td>
                             {/* -------------------- ALLOCATION SECTION -------------------- */}
                             <td className='owned-allocations'>
                                 {closingPrice && closingPrice.map((price, i) => (
-                                    <div key={i} className='allocation-percent' hidden={price.shares === 0}>
+                                    <div key={i} className='allocation-percent'>
                                         {(((price.closingPrice * price.shares) / buyingTotal()) * 100).toFixed(2)}%
                                     </div>
                                 ))}
