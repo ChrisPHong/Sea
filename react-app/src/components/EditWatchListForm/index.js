@@ -27,6 +27,7 @@ function EditWatchListForm({ watchlist, names}) {
     },[])
     useEffect(() => {
         const error = [];
+        if (name.length > 100) error.push('The Name must be less than 100 characters')
         if (name?.length < 1) error.push('Put a name with at least 1 character')
         if (watchlistNames.includes(name)) error.push('Provide a unique name')
         setErrors(error);
