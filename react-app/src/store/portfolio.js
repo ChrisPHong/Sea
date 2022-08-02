@@ -40,11 +40,7 @@ export const getPortfolio = (current_balance) => async (dispatch) => {
 }
 
 export const getAssetPrices = (company_id) => async (dispatch) => {
-    const response = await fetch(`/api/stocks/${company_id}/prices`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(company_id)
-    })
+    const response = await fetch(`/api/stocks/${company_id}/prices`)
 
     if (response.ok) {
         const prices = await response.json()

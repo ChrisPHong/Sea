@@ -74,8 +74,8 @@ const Dashboard = () => {
 
 
     useEffect(() => {
-        dispatch(getPortfolio({'current_balance': balToBackend}))
-        setNewData(portfolio)
+            dispatch(getPortfolio({'current_balance': balToBackend}))
+            setNewData(portfolio)
     }, [currentUser, balToBackend, dispatch])
 
     useEffect(() => {
@@ -146,7 +146,6 @@ const Dashboard = () => {
         if (parseInt(i) === assetBalance.length - 1) {
             balToBackend = portfolioBalance
         }
-        // dispatch(getPortfolio({ userId: currentUser?.id, currentBalance: balToBackend}))
     }
 
     // console.log('what is this', typeof (Number(currPrice.toString().replace(/[^0-9.-]+/g,""))).toFixed(2))
