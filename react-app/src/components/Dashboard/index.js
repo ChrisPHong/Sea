@@ -64,11 +64,8 @@ const Dashboard = () => {
 
     }, [dispatch, currentUser])
 
-    console.log('bought transactions here', boughtTransactions)
-
     useEffect(() => {
         for (let transId in boughtTransactions) {
-            console.log('WHAT IS THIS', boughtTransactions[transId].companyId)
             dispatch(getAssetPrices(boughtTransactions[transId].companyId))
         }
         // boughtTransArr = boughtTransactions
@@ -99,7 +96,6 @@ const Dashboard = () => {
     // Returns the last price (closing price) that YOU OWN along with
     // buyingPrice and number of shares to help calculate gain/loss percentage
     // as well as calculating asset balance
-    console.log('assetprices', assetPrices)
     for (let compId in assetPrices) {
         let pricesArr = assetPrices[compId]
         for (let transId in boughtTransactions) {
