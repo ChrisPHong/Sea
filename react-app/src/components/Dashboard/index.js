@@ -37,15 +37,14 @@ const Dashboard = () => {
     let boughtTransArr = []
     let balToBackend
 
-    // nameArr = []
-    // sharesTotal = 0
-    // totalPrice = 0
-    // buy ? sharesTotal += shares : sharesTotal += -${shares}
-    // {
-        // name: set(nameArr),
-        // shares: sharesTotal,
-        // updatePrice:
-    // }
+    // Dispatch a getPortfolio thunk.
+    // Backend will iterate through list of companies from transactions and keep a balance count
+    // Throw balance count into make_stock_price function to generate 365 stock prices
+    // Deliver to frontend.
+
+    // Dispatch a getTransaction thunk
+    // This will generate prices and data in the backend for table (INDEPENDENT FROM GRAPH/BALANCE)
+    //
 
     const [newData, setNewData] = useState(portfolio)
     const [currPrice, setCurrPrice] = useState(0)
@@ -66,24 +65,22 @@ const Dashboard = () => {
     }, [dispatch, currentUser])
 
     useEffect(() => {
-        for (let compId in boughtTransactions) {
-            dispatch(getAssetPrices(compId))
+        for (let transId in boughtTransactions) {
+            dispatch(getAssetPrices(boughtTransactions[transId].companyId))
         }
         // boughtTransArr = boughtTransactions
     }, [dispatch, currentUser, stocks])
 
 
     useEffect(() => {
-        dispatch(getPortfolio({'current_balance': balToBackend}))
+        dispatch(getPortfolio())
         setNewData(portfolio)
-    }, [currentUser, balToBackend, dispatch])
+    }, [currentUser, dispatch])
 
     useEffect(() => {
-        if (balToBackend) {
-            createData('1w')
-            setNewData(portfolio?.slice(-7))
-        }
-    }, [portfolio?.length, currentUser, balToBackend])
+        createData('1w')
+        setNewData(portfolio?.slice(-7))
+    }, [portfolio?.length, currentUser])
 
     // Find name and ticker from transaction that matches with the pool of companies in database
     for (let id in stocks) {
@@ -101,9 +98,9 @@ const Dashboard = () => {
     // as well as calculating asset balance
     for (let compId in assetPrices) {
         let pricesArr = assetPrices[compId]
-        for (let companyId in boughtTransactions) {
-            let transaction = boughtTransactions[companyId]
-            if (compId === companyId) {
+        for (let transId in boughtTransactions) {
+            let transaction = boughtTransactions[transId]
+            if (+compId === transaction.companyId) {
                 closingPrice.push({
                     'closingPrice': pricesArr[pricesArr.length - 1].price,
                     'shares': transaction.shares,
@@ -138,38 +135,37 @@ const Dashboard = () => {
 
     }
 
-    // TOTAL ASSET BALANCE
-    for (let i in assetBalance) {
-        let balance = assetBalance[i]
-        portfolioBalance += balance.total
+    // // TOTAL ASSET BALANCE
+    // for (let i in assetBalance) {
+    //     let balance = assetBalance[i]
+    //     portfolioBalance += balance.total
 
-        if (parseInt(i) === assetBalance.length - 1) {
-            balToBackend = portfolioBalance
-        }
-        // dispatch(getPortfolio({ userId: currentUser?.id, currentBalance: balToBackend}))
-    }
+    //     if (parseInt(i) === assetBalance.length - 1) {
+    //         balToBackend = portfolioBalance
+    //     }
+    // }
 
     // console.log('what is this', typeof (Number(currPrice.toString().replace(/[^0-9.-]+/g,""))).toFixed(2))
     // number data type: 6472.009999999999
 
     const createData = (time) => {
-        if (time === '1y' && balToBackend) {
+        if (time === '1y') {
             setNewData(portfolio)
             return newData
         }
-        if (time === '1w' && balToBackend) {
+        if (time === '1w') {
             setNewData(portfolio?.slice(-7))
             return newData
         }
-        if (time === '1m' && balToBackend) {
+        if (time === '1m') {
             setNewData(portfolio?.slice(-30))
             return newData
         }
-        if (time === '3m' && balToBackend) {
+        if (time === '3m') {
             setNewData(portfolio?.slice(-90))
             return newData
         }
-        if (time === '6m' && balToBackend) {
+        if (time === '6m') {
             setNewData(portfolio?.slice(-(Math.floor(portfolio?.length / 2))))
             return newData
         }
@@ -226,7 +222,7 @@ const Dashboard = () => {
                     <LineChart
                         width={950}
                         height={300}
-                        data={balToBackend && newData}
+                        data={newData}
                         onMouseMove={(e) => lineMouseOver(e?.activePayload && e?.activePayload[0].payload.price)}
                     >
                         <XAxis dataKey="date" hide='true' />
