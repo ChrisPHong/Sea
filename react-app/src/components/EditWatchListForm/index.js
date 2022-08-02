@@ -4,10 +4,10 @@ import { getWatchlists, editWatchlists, deleteWatchList } from '../../store/watc
 import { useHistory } from 'react-router-dom'
 import './EditWatchListForm.css'
 
-function EditWatchListForm({ watchlist }) {
+function EditWatchListForm({ watchlist, names}) {
     const history = useHistory()
     const id = watchlist.id
-    const [name, setName] = useState(watchlist.name);
+    const [name, setName] = useState('');
     const [errors, setErrors] = useState([]);
     const [show, setShow] = useState(false)
     const [display, setDisplay] = useState(false);
@@ -22,8 +22,12 @@ function EditWatchListForm({ watchlist }) {
     const dispatch = useDispatch();
     let userId = useSelector((state) => state.session?.user?.id)
 
+    useEffect(()=>{
+        setName(names)
+    },[])
     useEffect(() => {
         const error = [];
+        if (name.length > 100) error.push('The Name must be less than 100 characters')
         if (name?.length < 1) error.push('Put a name with at least 1 character')
         if (watchlistNames.includes(name)) error.push('Provide a unique name')
         setErrors(error);
@@ -59,7 +63,6 @@ function EditWatchListForm({ watchlist }) {
                 return
             }
             setDisplay(false)
-            await dispatch(getWatchlists())
 
         }
 
@@ -72,15 +75,6 @@ function EditWatchListForm({ watchlist }) {
     return (
         <>
         <div className='editAndDeleteButtonDiv'>
-                                    <button
-
-                                        className='deleteButton'
-
-                                        onClick={() => {
-                                            dispatch(deleteWatchList(watchlist.id))
-                                        }}
-
-                                    ><img className='deletePicture' src={'https://www.iconpacks.net/icons/1/free-trash-icon-347-thumb.png'} /></button>
 
                                     <button
                                         className={`editButton ${watchlist.id}`}

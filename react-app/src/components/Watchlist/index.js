@@ -25,13 +25,10 @@ function WatchlistPage() {
     const pricesData = Object.values(prices).slice(-7)
     const [watchlistChartData, setWatchlistChartData] = useState(pricesData)
 
-
-    const [show, setShow] = useState('hidden')
-
     useEffect(() => {
         dispatch(getWatchlists())
 
-    }, [dispatch])
+    }, [dispatch, watchlists.length])
 
 
     return (

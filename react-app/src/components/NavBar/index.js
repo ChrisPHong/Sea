@@ -6,6 +6,7 @@ import LogoutButton from '../auth/LogoutButton';
 import SearchBar from '../SearchBar';
 // import { getStocks } from '../../store/stock';
 import './navbar.css'
+import seaLogo from './seaLogo.png'
 
 const NavBar = () => {
   // const dispatch = useDispatch();
@@ -24,8 +25,8 @@ const NavBar = () => {
         <>
           <div className='sea-navbar-logo'>
             <NavLink to='/dashboard' exact={true} activeClassName='active'>
-              Sea
-              {/* <img className='sea-logo' src={process.env.PUBLIC_URL + '/images/sea-logo.png'} /> */}
+
+              <img className='sea-logo' src={seaLogo} />
             </NavLink>
           </div>
 
@@ -52,8 +53,8 @@ const NavBar = () => {
         :
         <>
           <div className='sea-navbar-logo'>
-            {/* <img className='sea-logo' src={process.env.PUBLIC_URL + '/images/sea-logo.png'} */}
-            <NavLink to='/' exact={true} activeClassName='active'> Sea
+            <NavLink to='/' exact={true} activeClassName='active'>
+          <img className='sea-logo' src={seaLogo} />
             </NavLink>
           </div>
           <div className='navbar-right'>
