@@ -160,7 +160,7 @@ const watchlistReducer = (state = initialState, action) => {
     let newState;
     switch (action.type) {
         case LOAD_WATCHLIST:
-            newState = { ...state, entries: { ...state.entries } }
+            newState = { ...state, entries: {} }
             action.watchlists.map(watchlist => { newState.entries[watchlist.id] = watchlist })
             return newState
         case POST_WATCHLIST:
@@ -176,7 +176,7 @@ const watchlistReducer = (state = initialState, action) => {
 
         case DELETE_WATCHLIST:
 
-            newState = { ...state }
+            newState = { ...state, entries: {...state.entries} }
             delete newState.entries[action.watchlistId]
             return newState
 

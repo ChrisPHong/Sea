@@ -59,10 +59,11 @@ function OneWatchlist({ watchlist }) {
     useEffect(() => {
         dispatch(getWatchlists())
 
-    }, [dispatch])
+    }, [dispatch,])
 
     return (
-        <div className='watchlist'>
+        <div key={watchlist.id}
+        className='watchlist'>
 
             <div className='OneWatchListDiv'>
                 <div className='watchlistButtonsEditAndDelete'>
@@ -71,7 +72,19 @@ function OneWatchlist({ watchlist }) {
                             {watchlist.name}
                         </p>
                         <div className='editAndDeleteButtonDiv'>
-                            < EditWatchListForm watchlist={watchlist}  />
+                            <button
+
+                                className='deleteButton'
+
+                                onClick={async () => {
+                                    await dispatch(deleteWatchList(watchlist.id))
+                                    await dispatch(getWatchlists())
+                                }}
+
+                            ><img className='deletePicture' src={'https://www.iconpacks.net/icons/1/free-trash-icon-347-thumb.png'} /></button>
+
+
+                            < EditWatchListForm watchlist={watchlist} names={watchlist.name} />
                         </div>
                     </div>
                     <div className='company'>
@@ -110,7 +123,7 @@ function OneWatchlist({ watchlist }) {
                                             }
 
                                             await dispatch(deleteStockWatchlists(payload))
-                                            await dispatch(getWatchlists())
+                                            // await dispatch(getWatchlists())
                                         }}
                                     ><img className='deletePicture' src={'https://www.iconpacks.net/icons/1/free-trash-icon-347-thumb.png'} /></button>
                                 </div>
