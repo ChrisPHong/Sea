@@ -61,7 +61,7 @@ def patch_watchlists(id):
         db.session.commit()
         return watchlist.to_dict()
 
-    return {'errors': validation_errors_to_error_messages(form.errors)}
+    return {'errors': validation_errors_to_error_messages(form.errors)}, 400
 
 # Users can delete their watchlist
 @watchlist_routes.route('/<int:id>', methods=['DELETE'])

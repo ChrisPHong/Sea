@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { editWatchlists } from '../../store/watchlist'
+import { getWatchlists, editWatchlists, deleteWatchList } from '../../store/watchlist'
 import { useHistory } from 'react-router-dom'
 import './EditWatchListForm.css'
 
-function EditWatchListForm(watchlist) {
-
+function EditWatchListForm({ watchlist }) {
     const history = useHistory()
-    const id = watchlist.watchlist.id
-    const [name, setName] = useState(watchlist.watchlist.name);
+    const id = watchlist.id
+    const [name, setName] = useState(watchlist.name);
     const [errors, setErrors] = useState([]);
     const [show, setShow] = useState(false)
+    const [display, setDisplay] = useState(false);
+
 
     const lists = useSelector((state) => Object.values(state.watchlist));
     const watchlists = Object.values(lists[0])
@@ -28,9 +29,18 @@ function EditWatchListForm(watchlist) {
         setErrors(error);
     }, [name])
 
+
+    const settingDisplay = () =>{
+        if(display === false){
+            setDisplay(true);
+        } else{
+            setDisplay(false);
+        }
+    }
+
     const onSubmit = async (e) => {
         e.preventDefault();
-        if(errors.length > 0){
+        if (errors.length > 0) {
             setShow(true)
             return
         }
@@ -40,8 +50,16 @@ function EditWatchListForm(watchlist) {
                 userId,
                 name,
             }
-            await dispatch(editWatchlists(payload))
-            await history.push('/dashboard')
+            const data = await dispatch(editWatchlists(payload))
+            if(data){
+                let error = []
+                error.push(data)
+                setErrors(error)
+                setShow(true)
+                return
+            }
+            setDisplay(false)
+            await dispatch(getWatchlists())
 
         }
 
@@ -52,38 +70,69 @@ function EditWatchListForm(watchlist) {
 
 
     return (
-        <form className={`WatchlistForm-${id}`} onSubmit={onSubmit}>
-            {show ?
-                    errors.length > 0 ?
-                        <>
-                            <h3>Error</h3>
-                            <ul className='errorsArray'>{errors.map(error => {
-                                return (
-                                    <>
-                                        <li className='errorItem'
-                                            key={error}>{error}</li>
-                                    </>
-                                )
-                            })}
-                            </ul>
-                        </>
-                        : null
-                : null}
-            <div className='nameInput'>
-                <input type='text'
-                    required
-                    className='inputBox'
-                    placeholder='Watchlist Name'
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                />
-            </div>
-            <button
-                className='submitButton'
-                type='submit'
+        <>
+        <div className='editAndDeleteButtonDiv'>
+                                    <button
 
-            >Save Changes</button>
-        </form>
+                                        className='deleteButton'
+
+                                        onClick={() => {
+                                            dispatch(deleteWatchList(watchlist.id))
+                                        }}
+
+                                    ><img className='deletePicture' src={'https://www.iconpacks.net/icons/1/free-trash-icon-347-thumb.png'} /></button>
+
+                                    <button
+                                        className={`editButton ${watchlist.id}`}
+                                        onClick={async (e) => {
+                                            settingDisplay()
+                                        }
+                                        }
+                                    >
+                                        <img className={`editingPicture ${watchlist.id}`} src={'https://cdn-icons-png.flaticon.com/512/61/61456.png'} />
+                                    </button >
+
+
+
+                                </div>
+
+            {display ?
+                <form className={`WatchlistForm-${id}`} onSubmit={onSubmit}>
+                    {show ?
+                        errors.length > 0 ?
+                            <>
+                                <h3>Error</h3>
+                                <ul className='errorsArray'>{errors.map(error => {
+                                    return (
+                                        <>
+                                            <li className='errorItem'
+                                                key={error}>{error}</li>
+                                        </>
+                                    )
+                                })}
+                                </ul>
+                            </>
+                            : null
+                        : null}
+                    <div className='nameInput'>
+                        <input type='text'
+                            required
+                            className='inputBox'
+                            placeholder='Watchlist Name'
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
+                    </div>
+                    <button
+                        className='submitButton'
+                        type='submit'
+
+                    >Save Changes</button>
+                </form>
+
+                : null}
+
+        </>
     )
 }
 
