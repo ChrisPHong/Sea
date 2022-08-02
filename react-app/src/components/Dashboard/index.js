@@ -65,6 +65,8 @@ const Dashboard = () => {
 
     }, [dispatch, currentUser])
 
+    console.log('here is boughttransactions', boughtTransactions)
+
     useEffect(() => {
         for (let compId in boughtTransactions) {
             dispatch(getAssetPrices(compId))
@@ -74,8 +76,8 @@ const Dashboard = () => {
 
 
     useEffect(() => {
-            dispatch(getPortfolio({'current_balance': balToBackend}))
-            setNewData(portfolio)
+        dispatch(getPortfolio({'current_balance': balToBackend}))
+        setNewData(portfolio)
     }, [currentUser, balToBackend, dispatch])
 
     useEffect(() => {
