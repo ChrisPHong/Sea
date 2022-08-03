@@ -340,9 +340,9 @@ const StockDetails = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className='PostCompanyInWatchlist'>
+                            {/* <div className='PostCompanyInWatchlist'>
                                 < CompanyWatchlistForm props={watchlists} />
-                            </div>
+                            </div> */}
                             {news ? <div>
                                 <News news={news} ticker={ticker} />
                             </div> : <div>Loading</div>}
@@ -368,10 +368,11 @@ const StockDetails = () => {
                                             </div>
                                         </div>
                                     </section>
-                                    {/* <section className="">
-                                            watchlist?
-                                        </section> */}
+
                                 </div>
+                            </div>
+                            <div className='PostCompanyInWatchlist'>
+                                < CompanyWatchlistForm props={watchlists} />
                             </div>
                         </div>
                     </div>
