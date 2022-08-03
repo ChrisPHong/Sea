@@ -21,14 +21,11 @@ const Dashboard = () => {
     const closingPrices = useSelector(state => state?.portfolio?.closing)
     const closingPricesArr = Object.values(closingPrices)
 
-    console.log('here is transactions', transactions)
-
     const portfolioPrices = useSelector(state => state?.portfolio?.entries)
     const news = useSelector(state => state?.news?.entries)
     // const assetPrices = useSelector(state => state?.portfolio?.prices)
     const boughtTransactions = useSelector(state => state?.transaction?.entries)
 
-    console.log('here is BOUGHT transactions', boughtTransactions)
     const companies = Object.values(stocks)
     const transArr = Object.values(transactions)
     const portfolio = Object.values(portfolioPrices)
@@ -36,12 +33,8 @@ const Dashboard = () => {
     const newsArr = Object.values(news)
     const options = { style: 'currency', currency: 'USD' };
     const currencyFormat = new Intl.NumberFormat('en-US', options);
-    let sumAssetPrices = 0
     let nameTickerArr = []
-    let closingPrice = []
     let portfolioBalance = 0
-    let boughtTransArr = []
-    let balToBackend
 
     const [newData, setNewData] = useState(portfolio)
     const [currPrice, setCurrPrice] = useState(0)

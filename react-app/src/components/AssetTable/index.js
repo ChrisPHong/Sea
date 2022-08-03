@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 import './AssetTable.css'
 
 const AssetTable = ({ stocks, companies, transArr, currencyFormat, buyingTotal, closingPrices, closingPricesArr }) => {
-    const dispatch = useDispatch()
 
     // const assetPricesArr = Object.values(assetPrices)
     // const closingPrice = (id) => {
@@ -17,7 +16,7 @@ const AssetTable = ({ stocks, companies, transArr, currencyFormat, buyingTotal, 
     //         return latestPrice
     //     }
     // }
-    console.log('here is closing prices', closingPrices)
+    console.log('here is closing prices arr', closingPricesArr)
 
     return (
         <>
