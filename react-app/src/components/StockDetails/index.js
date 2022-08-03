@@ -33,6 +33,7 @@ const StockDetails = () => {
     const watchlist = useSelector((state) => Object.values(state.watchlist));
     const watchlists = Object.values(watchlist[0])
 
+
     const [data, setData] = useState(pricesData)
     const [currPrice, setCurrPrice] = useState(0)
 
@@ -109,8 +110,11 @@ const StockDetails = () => {
     useEffect(() => {
         if (companyId) {
             dispatch(getStockPrices(companyId))
+            dispatch(getCompanyNews(ticker))
         }
     }, [dispatch, stock, companyId])
+
+
 
 
     // When the price state, the length of the pricesData array, or the ticker changes,
