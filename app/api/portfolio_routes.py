@@ -1,4 +1,4 @@
-from app.models import Transaction, Company
+from app.models import Transaction, Company, company
 from flask import Blueprint, jsonify, request
 from flask_login import current_user
 from datetime import datetime, timedelta

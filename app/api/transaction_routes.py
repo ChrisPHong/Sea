@@ -48,8 +48,35 @@ def get_all_transactions():
 
 @transaction_routes.route('/<int:userId>/bought_transactions')
 def get_bought_transactions(userId):
-    bought_transactions = Transaction.query.filter(Transaction.type == 'buy', Transaction.user_id == int(userId)).all()
-    return jsonify([transaction.to_dict() for transaction in bought_transactions])
+    company_object = {}
+    # separate the boughts and the sells
+    bought_transactions = Transaction.query.filter(Transaction.type == 'buy', Transaction.user_id == current_user.id).all()
+    sell_transactions = Transaction.query.filter(Transaction.type == 'sell', Transaction.user_id == current_user.id).all()
+
+    bought_transactions_copy = [transaction.to_dict() for transaction in bought_transactions]
+    sell_transactions_copy = [transaction.to_dict() for transaction in sell_transactions]
+    # loop through
+
+    for transaction in bought_transactions_copy:
+        # print(transaction, '*'*50)
+        if not company_object.__contains__(transaction['companyId']):
+            # company_transactions.append(transaction)
+            company_object[transaction['companyId']] = transaction
+            # company_set.add(transaction.companyId)
+        else:
+            company_object[transaction['companyId']]['shares'] += transaction['shares']
+            avg = (company_object[transaction['companyId']]['price'] + transaction['price']) / 2
+            company_object[transaction['companyId']]['price'] = avg
+
+    for transaction in sell_transactions_copy:
+        if company_object[transaction['companyId']]['shares'] > transaction['shares']:
+            company_object[transaction['companyId']]['shares'] -= transaction['shares']
+
+        elif company_object[transaction['companyId']]['shares'] == transaction['shares']:
+            company_object[transaction['companyId']]['shares'] = 0
+            del company_object[transaction['companyId']]
+
+    return company_object
 
 # Users can buy or sell stocks
     # FORM WILL BE IN THE FRONT END COMPONENT
