@@ -20,7 +20,7 @@ function PageNotFound() {
                         { sessionUser ?
                         <span id='back-to-home'><NavLink exact to='/dashboard'>Back to Dashboard</NavLink></span>
                         :
-                        <span id='back-to-home'><NavLink exact to='/'>Back to Sea Homepage</NavLink></span>
+                        <span id='back-to-home'><NavLink exact to='/'>Back to Home</NavLink></span>
                         }
                     </p>
                 </>
