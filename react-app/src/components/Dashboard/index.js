@@ -37,15 +37,6 @@ const Dashboard = () => {
     let boughtTransArr = []
     let balToBackend
 
-    // Dispatch a getPortfolio thunk.
-    // Backend will iterate through list of companies from transactions and keep a balance count
-    // Throw balance count into make_stock_price function to generate 365 stock prices
-    // Deliver to frontend.
-
-    // Dispatch a getTransaction thunk
-    // This will generate prices and data in the backend for table (INDEPENDENT FROM GRAPH/BALANCE)
-    //
-
     const [newData, setNewData] = useState(portfolio)
     const [currPrice, setCurrPrice] = useState(0)
 
@@ -202,7 +193,8 @@ const Dashboard = () => {
                 <div className='balance-info'>
                     <div className='balance-label'>Balance</div>
                     <div className='balance-amt'>
-                        {currPrice ? `${currencyFormat.format(currPrice)}` : currencyFormat.format(portfolioBalance)}
+                        {/* If hovering over the graph, update the balance amount. Otherwise, default to the most recent price */}
+                        {currPrice ? `${currencyFormat.format(currPrice)}` : currencyFormat.format(portfolioPrices['364']?.price)}
                     </div>
                     <div className='balance-percent'>
                         {(buyingTotal() > totalFunds()) ?
@@ -299,9 +291,10 @@ const Dashboard = () => {
                     <AssetTable
                         currentUser={currentUser}
                         stocks={stocks}
+                        companies={companies}
+                        assetPrices={assetPrices}
                         transArr={transArr}
                         nameTickerArr={nameTickerArr}
-                        closingPrice={closingPrice}
                         currencyFormat={currencyFormat}
                         assetBalance={assetBalance}
                         buyingTotal={buyingTotal}
