@@ -1,21 +1,23 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine } from 'recharts';
-import { getPortfolio } from '../../store/portfolio';
+import { getPortfolio,getAssetClosingPrices } from '../../store/portfolio';
 import { Link } from 'react-router-dom';
 import './AssetTable.css'
 
-const AssetTable = ({ stocks, companies, assetPrices, transArr, currencyFormat, buyingTotal }) => {
-    const assetPricesArr = Object.values(assetPrices)
-    const closingPrice = (id) => {
-        const filteredTransactions = transArr.filter(transaction => transaction.type === 'buy')
-        if (assetPricesArr.length === filteredTransactions.length) {
-            const compPrices = assetPrices[id]
-            const priceObj = compPrices['364']
-            const latestPrice = priceObj.price
-            return latestPrice
-        }
-    }
+const AssetTable = ({ stocks, companies, transArr, currencyFormat, buyingTotal, closingPrices, closingPricesArr }) => {
+    const dispatch = useDispatch()
+
+    // const assetPricesArr = Object.values(assetPrices)
+    // const closingPrice = (id) => {
+    //     if (assetPricesArr.length === transArr.length) {
+    //         const compPrices = assetPrices[`${id}`]
+    //         const priceObj = compPrices['364']
+    //         const latestPrice = priceObj.price
+    //         return latestPrice
+    //     }
+    // }
+    console.log('here is closing prices', closingPrices)
 
     return (
         <>
@@ -63,7 +65,7 @@ const AssetTable = ({ stocks, companies, assetPrices, transArr, currencyFormat, 
                                 {/* Display bought transactions. If same company and transaction type is sell, then deduct from transaction buy that has the same companyId */}
                                 <td className='owned-balance'>
                                     <div className='owned-balance-price'>
-                                        {currencyFormat.format(closingPrice(transaction?.companyId) * transaction.shares)}
+                                        {closingPricesArr.length !== 0 && currencyFormat.format(closingPrices[transaction?.companyId][transaction?.companyId]?.price * transaction.shares)}
                                          </div>
                                     <div className='owned-comp-shares'>{transaction.shares}</div>
 
@@ -71,12 +73,12 @@ const AssetTable = ({ stocks, companies, assetPrices, transArr, currencyFormat, 
                                 {/* -------------------- PRICE SECTION -------------------- */}
                                 <td className='owned-comp-price'>
                                     <div className='curr-comp-price'>
-                                        {assetPricesArr.length && currencyFormat.format(closingPrice(transaction?.companyId))}
+                                        {currencyFormat.format(closingPrices[transaction?.companyId][transaction?.companyId]?.price)}
                                     </div>
-                                    {assetPricesArr.length && (((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2) >= 0 ?
-                                        <div className='curr-comp-percent' style={{ color: 'green' }}>+{(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>
+                                    {(((transaction.shares * (closingPrices[transaction?.companyId][transaction?.companyId]?.price) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2) >= 0 ?
+                                        <div className='curr-comp-percent' style={{ color: 'green' }}>+{(((transaction.shares * (closingPrices[transaction?.companyId][transaction?.companyId]?.price) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>
                                         :
-                                        <div className='curr-comp-percent' style={{ color: 'red' }}>{(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>}
+                                        <div className='curr-comp-percent' style={{ color: 'red' }}>{(((transaction.shares * (closingPrices[transaction?.companyId][transaction?.companyId]?.price) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>}
 
                                     {/* {closingPrice && closingPrice.map((price, i) => (
                                         <div key={i} className='owned-comp-price'>
@@ -93,7 +95,7 @@ const AssetTable = ({ stocks, companies, assetPrices, transArr, currencyFormat, 
                                 {/* -------------------- ALLOCATION SECTION -------------------- */}
                                 <td className='owned-allocations'>
                                     <div className='allocation-percent'>
-                                        {assetPricesArr.length && (((closingPrice(transaction.companyId) * transaction.shares) / buyingTotal()) * 100).toFixed(2)}%
+                                        {(((closingPrices[transaction?.companyId][transaction?.companyId]?.price * transaction.shares) / buyingTotal()) * 100).toFixed(2)}%
                                     </div>
                                     {/* {closingPrice && closingPrice.map((price, i) => (
                                         <div key={i} className='allocation-percent'>

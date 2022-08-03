@@ -31,11 +31,36 @@ def make_stock_price(base, time_length, progression):
         val = stock_value
     return stocks
 
-def get_bought_transactions(comp_id, user_id):
-    bought_transactions = Transaction.query.filter(Transaction.type == 'buy', Transaction.user_id == int(user_id)).all()
-    for transaction in bought_transactions:
-        if transaction.company_id == comp_id:
-            return transaction
+def load_buy_transactions():
+    company_object = {}
+    # separate the boughts and the sells
+    bought_transactions = Transaction.query.filter(Transaction.type == 'buy', Transaction.user_id == current_user.id).all()
+    sell_transactions = Transaction.query.filter(Transaction.type == 'sell', Transaction.user_id == current_user.id).all()
+
+    bought_transactions_copy = [transaction.to_dict() for transaction in bought_transactions]
+    sell_transactions_copy = [transaction.to_dict() for transaction in sell_transactions]
+    # loop through
+
+    for transaction in bought_transactions_copy:
+        # print(transaction, '*'*50)
+        if not company_object.__contains__(transaction['companyId']):
+            # company_transactions.append(transaction)
+            company_object[transaction['companyId']] = transaction
+            # company_set.add(transaction.companyId)
+        else:
+            company_object[transaction['companyId']]['shares'] += transaction['shares']
+            avg = (company_object[transaction['companyId']]['price'] + transaction['price']) / 2
+            company_object[transaction['companyId']]['price'] = avg
+
+    for transaction in sell_transactions_copy:
+        if company_object[transaction['companyId']]['shares'] > transaction['shares']:
+            company_object[transaction['companyId']]['shares'] -= transaction['shares']
+
+        elif company_object[transaction['companyId']]['shares'] == transaction['shares']:
+            company_object[transaction['companyId']]['shares'] = 0
+            del company_object[transaction['companyId']]
+
+    return list(company_object)
 
 
 @portfolio_routes.route('/')
@@ -68,3 +93,18 @@ def make_portfolio():
         priceData['date'] = previous_dates.strftime("%b %d %Y")
 
     return jsonify(owned_company_prices)
+
+@portfolio_routes.route('/asset_prices')
+def make_asset_prices():
+    company_ids = load_buy_transactions()
+    companies = [Company.query.get(company_id) for company_id in company_ids]
+    prices_copy = []
+
+    previous_dates = datetime.today() - timedelta(days=365)
+
+    for company in companies:
+        owned_company_prices = make_stock_price(round(company.base_price, 2), 365, choice([ASCENDING, DESCENDING]))
+        owned_company_prices.reverse()
+        prices_copy.append({company.id: owned_company_prices[-1]})
+
+    return jsonify(prices_copy)
