@@ -5,9 +5,8 @@ import { getPortfolio } from '../../store/portfolio';
 import { Link } from 'react-router-dom';
 import './AssetTable.css'
 
-const AssetTable = ({ nameTickerArr, stocks, companies, assetPrices, transArr, currencyFormat, assetBalance, buyingTotal }) => {
+const AssetTable = ({ stocks, companies, assetPrices, transArr, currencyFormat, buyingTotal }) => {
     const assetPricesArr = Object.values(assetPrices)
-    console.log(transArr, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< TRANS ARRAY")
     const closingPrice = (id) => {
         const filteredTransactions = transArr.filter(transaction => transaction.type === 'buy')
         if (assetPricesArr.length === filteredTransactions.length) {
@@ -35,7 +34,7 @@ const AssetTable = ({ nameTickerArr, stocks, companies, assetPrices, transArr, c
                     </thead>
                     <tbody className='dashboard-body'>
                         {transArr && transArr.map(transaction => (
-                            transaction.type === 'buy' &&
+                            transaction.type === 'buy' && transaction.shares > 0 &&
                             <tr className='body-row' key={transaction.id}>
                                 {/* -------------------- COMPANY SECTION -------------------- */}
                                 <td className='comp-title'>
@@ -64,15 +63,10 @@ const AssetTable = ({ nameTickerArr, stocks, companies, assetPrices, transArr, c
                                 {/* Display bought transactions. If same company and transaction type is sell, then deduct from transaction buy that has the same companyId */}
                                 <td className='owned-balance'>
                                     <div className='owned-balance-price'>
-                                        {currencyFormat.format(transaction.price * transaction.shares)}
+                                        {currencyFormat.format(closingPrice(transaction?.companyId) * transaction.shares)}
                                          </div>
                                     <div className='owned-comp-shares'>{transaction.shares}</div>
-                                    {/* {assetBalance && assetBalance.map((balance, i) => (
-                                        <div key={i} className='owned-balance'>
-                                            <div className='owned-balance-price'>{currencyFormat.format(balance.total)}</div>
-                                            <div className='owned-comp-shares'>{balance.shares}</div>
-                                        </div>
-                                    ))} */}
+
                                 </td>
                                 {/* -------------------- PRICE SECTION -------------------- */}
                                 <td className='owned-comp-price'>
