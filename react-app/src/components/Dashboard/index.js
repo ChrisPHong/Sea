@@ -202,7 +202,8 @@ const Dashboard = () => {
                 <div className='balance-info'>
                     <div className='balance-label'>Balance</div>
                     <div className='balance-amt'>
-                        {currPrice ? `${currencyFormat.format(currPrice)}` : currencyFormat.format(portfolioBalance)}
+                        {/* If hovering over the graph, update the balance amount. Otherwise, default to the most recent price */}
+                        {currPrice ? `${currencyFormat.format(currPrice)}` : currencyFormat.format(portfolioPrices['364']?.price)}
                     </div>
                     <div className='balance-percent'>
                         {(buyingTotal() > totalFunds()) ?
