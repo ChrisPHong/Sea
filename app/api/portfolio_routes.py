@@ -72,35 +72,35 @@ def make_portfolio():
 
     return jsonify(owned_company_prices)
 
-@portfolio_routes.route('/thisRoute')
-def positive_portfolio():
+# @portfolio_routes.route('/thisRoute')
+# def positive_portfolio():
 
-    company_object = {}
-    # separate the boughts and the sells
-    bought_transactions = Transaction.query.filter(Transaction.type == 'buy', Transaction.user_id == current_user.id).all()
-    sell_transactions = Transaction.query.filter(Transaction.type == 'sell', Transaction.user_id == current_user.id).all()
+#     company_object = {}
+#     # separate the boughts and the sells
+#     bought_transactions = Transaction.query.filter(Transaction.type == 'buy', Transaction.user_id == current_user.id).all()
+#     sell_transactions = Transaction.query.filter(Transaction.type == 'sell', Transaction.user_id == current_user.id).all()
 
-    bought_transactions_copy = [transaction.to_dict() for transaction in bought_transactions]
-    sell_transactions_copy = [transaction.to_dict() for transaction in sell_transactions]
-    # loop through
+#     bought_transactions_copy = [transaction.to_dict() for transaction in bought_transactions]
+#     sell_transactions_copy = [transaction.to_dict() for transaction in sell_transactions]
+#     # loop through
 
-    for transaction in bought_transactions_copy:
-        # print(transaction, '*'*50)
-        if not company_object.__contains__(transaction['companyId']):
-            # company_transactions.append(transaction)
-            company_object[transaction['companyId']] = transaction
-            # company_set.add(transaction.companyId)
-        else:
-            company_object[transaction['companyId']]['shares'] += transaction['shares']
-            avg = (company_object[transaction['companyId']]['price'] + transaction['price']) / 2
-            company_object[transaction['companyId']]['price'] = avg
+#     for transaction in bought_transactions_copy:
+#         # print(transaction, '*'*50)
+#         if not company_object.__contains__(transaction['companyId']):
+#             # company_transactions.append(transaction)
+#             company_object[transaction['companyId']] = transaction
+#             # company_set.add(transaction.companyId)
+#         else:
+#             company_object[transaction['companyId']]['shares'] += transaction['shares']
+#             avg = (company_object[transaction['companyId']]['price'] + transaction['price']) / 2
+#             company_object[transaction['companyId']]['price'] = avg
 
-    for transaction in sell_transactions_copy:
-        if company_object[transaction['companyId']]['shares'] > transaction['shares']:
-            company_object[transaction['companyId']]['shares'] -= transaction['shares']
+#     for transaction in sell_transactions_copy:
+#         if company_object[transaction['companyId']]['shares'] > transaction['shares']:
+#             company_object[transaction['companyId']]['shares'] -= transaction['shares']
 
-        elif company_object[transaction['companyId']]['shares'] == transaction['shares']:
-            company_object[transaction['companyId']]['shares'] = 0
-            del company_object[transaction['companyId']]
+#         elif company_object[transaction['companyId']]['shares'] == transaction['shares']:
+#             company_object[transaction['companyId']]['shares'] = 0
+#             del company_object[transaction['companyId']]
 
-    return company_object
+#     return company_object

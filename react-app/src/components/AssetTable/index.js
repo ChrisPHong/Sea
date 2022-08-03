@@ -7,7 +7,7 @@ import './AssetTable.css'
 
 const AssetTable = ({ nameTickerArr, stocks, companies, assetPrices, transArr, currencyFormat, assetBalance, buyingTotal }) => {
     const assetPricesArr = Object.values(assetPrices)
-
+    console.log(transArr, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< TRANS ARRAY")
     const closingPrice = (id) => {
         const filteredTransactions = transArr.filter(transaction => transaction.type === 'buy')
         if (assetPricesArr.length === filteredTransactions.length) {
@@ -63,11 +63,10 @@ const AssetTable = ({ nameTickerArr, stocks, companies, assetPrices, transArr, c
                                 {/* -------------------- BALANCE SECTION -------------------- */}
                                 {/* Display bought transactions. If same company and transaction type is sell, then deduct from transaction buy that has the same companyId */}
                                 <td className='owned-balance'>
-                                    {/* <div className='owned-balance-price'>
-                                        {(transaction.type === 'sell' && transaction.companyId) === (transaction.companyId)
-                                        ? currencyFormat.format(assetPricesclosingPrice(transaction.companyId).shares - transaction.price * transaction.shares)
-                                        : currencyFormat.format(assetPricesclosingPrice(transaction.companyId).shares)}</div>
-                                    <div className='owned-comp-shares'>{transactiontransaction.shares}</div> */}
+                                    <div className='owned-balance-price'>
+                                        {currencyFormat.format(transaction.price * transaction.shares)}
+                                         </div>
+                                    <div className='owned-comp-shares'>{transaction.shares}</div>
                                     {/* {assetBalance && assetBalance.map((balance, i) => (
                                         <div key={i} className='owned-balance'>
                                             <div className='owned-balance-price'>{currencyFormat.format(balance.total)}</div>
