@@ -20,15 +20,19 @@
     background-color: #0b7cee;
     color: white;
     font-family: sans-serif;
-    border-radius: 5px 5px;
-    padding: 5px 5px;
+    /* border-radius: 5px 5px;
+    padding: 5px 5px; */
+    height: 30px;
+    padding: 7px 20px;
+    border-radius: 35px;
+    border: none;
     /* background-color: transparent; */
     transition-duration: 1s;
     margin:5px;
 }
 
 .AddMoneySubmitButton:hover {
-    background-color: rgb(40, 197, 249);
+    /* background-color: rgb(40, 197, 249); */
     cursor: pointer;
-
+    box-shadow: 0px 0px 6px rgb(92, 91, 91, .8);
 }

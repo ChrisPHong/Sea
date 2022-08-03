@@ -14,7 +14,7 @@ import StockDetails from './components/StockDetails';
 import { authenticate } from './store/session';
 import TransactionPage from './components/Transaction';
 import MiniFooter from './components/MiniFooter';
-
+import PageNotFound from './components/PageNotFound';
 
 function App() {
   const [loaded, setLoaded] = useState(false);
@@ -58,6 +58,9 @@ function App() {
           <TransactionPage />
           <MiniFooter />
         </ProtectedRoute>
+        <Route>
+          <PageNotFound />
+        </Route>
       </Switch>
     </BrowserRouter>
   );
