@@ -40,8 +40,6 @@ const Dashboard = () => {
     const [newData, setNewData] = useState(portfolio)
     const [currPrice, setCurrPrice] = useState(0)
 
-    console.log('COMPANIES HERE', transactions)
-
     useEffect(() => {
         // Force the page to scroll up to top on mount
         window.scrollTo(0, 0)
@@ -127,7 +125,6 @@ const Dashboard = () => {
         return total
 
     }
-    console.log('here is asset prices', assetPrices)
 
     // // TOTAL ASSET BALANCE
     // for (let i in assetBalance) {
@@ -294,10 +291,10 @@ const Dashboard = () => {
                     <AssetTable
                         currentUser={currentUser}
                         stocks={stocks}
+                        companies={companies}
                         assetPrices={assetPrices}
                         transArr={transArr}
                         nameTickerArr={nameTickerArr}
-                        closingPrice={closingPrice}
                         currencyFormat={currencyFormat}
                         assetBalance={assetBalance}
                         buyingTotal={buyingTotal}

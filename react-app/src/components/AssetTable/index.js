@@ -5,7 +5,18 @@ import { getPortfolio } from '../../store/portfolio';
 import { Link } from 'react-router-dom';
 import './AssetTable.css'
 
-const AssetTable = ({ nameTickerArr, stocks, assetPrices, transArr, closingPrice, currencyFormat, assetBalance, buyingTotal }) => {
+const AssetTable = ({ nameTickerArr, stocks, companies, assetPrices, transArr, currencyFormat, assetBalance, buyingTotal }) => {
+    const assetPricesArr = Object.values(assetPrices)
+
+    const closingPrice = (id) => {
+        const filteredTransactions = transArr.filter(transaction => transaction.type === 'buy')
+        if (assetPricesArr.length === filteredTransactions.length) {
+            const compPrices = assetPrices[id]
+            const priceObj = compPrices['364']
+            const latestPrice = priceObj.price
+            return latestPrice
+        }
+    }
 
     return (
         <>
@@ -28,12 +39,16 @@ const AssetTable = ({ nameTickerArr, stocks, assetPrices, transArr, closingPrice
                             <tr className='body-row' key={transaction.id}>
                                 {/* -------------------- COMPANY SECTION -------------------- */}
                                 <td className='comp-title'>
-                                    <div className='company-name'>
-                                        {<Link to={`/stocks/${stocks[`${transaction.companyId}`]?.ticker}`}>{stocks[`${transaction.companyId}`].name}</Link>}
-                                    </div>
-                                    <div className='company-ticker'>
-                                        {stocks[`${transaction.companyId}`].ticker}
-                                    </div>
+                                    {companies.length !== 0 &&
+                                    <>
+                                        <div className='company-name'>
+                                            {<Link to={`/stocks/${stocks[`${transaction.companyId}`]?.ticker}`}>{stocks[`${transaction.companyId}`].name}</Link>}
+                                        </div>
+                                        <div className='company-ticker'>
+                                            {stocks[`${transaction.companyId}`].ticker}
+                                        </div>
+                                    </>
+                                    }
                                     {/* {nameTickerArr && nameTickerArr.map((comp, i) => (
                                         <div key={i} className='comp-title'>
                                             <div className='company-name'>
@@ -50,8 +65,8 @@ const AssetTable = ({ nameTickerArr, stocks, assetPrices, transArr, closingPrice
                                 <td className='owned-balance'>
                                     {/* <div className='owned-balance-price'>
                                         {(transaction.type === 'sell' && transaction.companyId) === (transaction.companyId)
-                                        ? currencyFormat.format(assetPrices[`${transaction.companyId}`]['364'] * transaction.shares - transaction.price * transaction.shares)
-                                        : currencyFormat.format(assetPrices[`${transaction.companyId}`]['364'] * transaction.shares)}</div>
+                                        ? currencyFormat.format(assetPricesclosingPrice(transaction.companyId).shares - transaction.price * transaction.shares)
+                                        : currencyFormat.format(assetPricesclosingPrice(transaction.companyId).shares)}</div>
                                     <div className='owned-comp-shares'>{transactiontransaction.shares}</div> */}
                                     {/* {assetBalance && assetBalance.map((balance, i) => (
                                         <div key={i} className='owned-balance'>
@@ -62,13 +77,13 @@ const AssetTable = ({ nameTickerArr, stocks, assetPrices, transArr, closingPrice
                                 </td>
                                 {/* -------------------- PRICE SECTION -------------------- */}
                                 <td className='owned-comp-price'>
-                                    {/* <div className='curr-comp-price'>
-                                        {currencyFormat.format(assetPrices[`${transaction.companyId}`]['364'].price)}
+                                    <div className='curr-comp-price'>
+                                        {assetPricesArr.length && currencyFormat.format(closingPrice(transaction?.companyId))}
                                     </div>
-                                    {(((transaction.shares * (assetPrices[`${transaction.companyId}`]['364'].price) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2) >= 0 ?
-                                        <div className='curr-comp-percent' style={{ color: 'green' }}>+{(((transaction.shares * (assetPrices[`${transaction.companyId}`]['364'].price) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>
+                                    {assetPricesArr.length && (((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2) >= 0 ?
+                                        <div className='curr-comp-percent' style={{ color: 'green' }}>+{(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>
                                         :
-                                        <div className='curr-comp-percent' style={{ color: 'red' }}>{(((transaction.shares * (assetPrices[`${transaction.companyId}`]['364'].price) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>} */}
+                                        <div className='curr-comp-percent' style={{ color: 'red' }}>{(((transaction.shares * (closingPrice(transaction.companyId)) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>}
 
                                     {/* {closingPrice && closingPrice.map((price, i) => (
                                         <div key={i} className='owned-comp-price'>
@@ -85,7 +100,7 @@ const AssetTable = ({ nameTickerArr, stocks, assetPrices, transArr, closingPrice
                                 {/* -------------------- ALLOCATION SECTION -------------------- */}
                                 <td className='owned-allocations'>
                                     <div className='allocation-percent'>
-                                        {(((assetPrices[`${transaction.companyId}`]['364'].price * transaction.shares) / buyingTotal()) * 100).toFixed(2)}%
+                                        {assetPricesArr.length && (((closingPrice(transaction.companyId) * transaction.shares) / buyingTotal()) * 100).toFixed(2)}%
                                     </div>
                                     {/* {closingPrice && closingPrice.map((price, i) => (
                                         <div key={i} className='allocation-percent'>
