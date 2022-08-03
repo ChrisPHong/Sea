@@ -37,17 +37,10 @@ const Dashboard = () => {
     let boughtTransArr = []
     let balToBackend
 
-    // Dispatch a getPortfolio thunk.
-    // Backend will iterate through list of companies from transactions and keep a balance count
-    // Throw balance count into make_stock_price function to generate 365 stock prices
-    // Deliver to frontend.
-
-    // Dispatch a getTransaction thunk
-    // This will generate prices and data in the backend for table (INDEPENDENT FROM GRAPH/BALANCE)
-    //
-
     const [newData, setNewData] = useState(portfolio)
     const [currPrice, setCurrPrice] = useState(0)
+
+    console.log('COMPANIES HERE', transactions)
 
     useEffect(() => {
         // Force the page to scroll up to top on mount
@@ -134,6 +127,7 @@ const Dashboard = () => {
         return total
 
     }
+    console.log('here is asset prices', assetPrices)
 
     // // TOTAL ASSET BALANCE
     // for (let i in assetBalance) {
@@ -300,6 +294,7 @@ const Dashboard = () => {
                     <AssetTable
                         currentUser={currentUser}
                         stocks={stocks}
+                        assetPrices={assetPrices}
                         transArr={transArr}
                         nameTickerArr={nameTickerArr}
                         closingPrice={closingPrice}

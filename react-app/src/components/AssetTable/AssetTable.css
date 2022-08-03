@@ -9,7 +9,11 @@ table {
 }
 
 .dashboard-body {
+    flex-direction: column;
+    align-items: flex-end;
     padding-top: 10px;
+    width: 910px;
+    margin: 0 10px 0 40px;
 }
 
 .owned-assets {
