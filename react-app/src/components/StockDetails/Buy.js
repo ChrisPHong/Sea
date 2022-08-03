@@ -113,7 +113,11 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
         <div>
             <form onSubmit={buyStock}>
                 <div className='transaction-box'>
-                    <div className='transaction-labels' id='buy-label'>Type: Buy</div>
+                    <div className='transaction-labels' id='buy-label'>
+                        <h2>
+                            Buy
+                        </h2>
+                    </div>
                     <div className='transaction-labels'>Shares</div>
                     <select name="shares" id="shares" onChange={transactionTotal} value={sharesBought}>
                         <option value=""></option>
@@ -135,7 +139,7 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
                         ${priceData && Number(priceData.price).toFixed(2)}
                     </div>
                 </div>
-                <hr />
+                <hr id='buy-sell-hr' />
                 <div className='transaction-info'>
                     <div className='transaction-labels'>Estimated Cost</div>
                     <div id='transaction-estimate'>

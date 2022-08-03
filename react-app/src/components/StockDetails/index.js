@@ -353,7 +353,7 @@ const StockDetails = () => {
                                 <div className='buy-sell-container'>
                                     <section className="buy-sell">
                                         <div id='tabs'>
-                                            <h2>Buy/Sell</h2>
+                                            {/* <h2>Buy/Sell</h2> */}
                                             {/* <Headers
                                                     titles={titles}
                                                     currentTab={currentTab}

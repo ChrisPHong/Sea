@@ -128,6 +128,23 @@
     /* height: 360px; */
 }
 
+.transaction-labels {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+#shares {
+    margin-bottom: 5px;
+}
+
+#transaction-stock-price {
+    margin-bottom: 5px;
+}
+
+#buy-sell-hr {
+    margin-bottom: 5px;
+}
+
 #buy-btn, #sell-btn {
     /* padding: 5px;
     background-color: white;
