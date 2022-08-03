@@ -17,11 +17,13 @@ const Dashboard = () => {
     const assetPriceRef = useRef()
     const currentUser = useSelector(state => state?.session?.user);
     const stocks = useSelector(state => state?.stock?.entries)
-    const transactions = useSelector(state => state?.transaction?.entries)
+    const transactions = useSelector(state => state?.transaction?.boughtTrans)
+
     const portfolioPrices = useSelector(state => state?.portfolio?.entries)
     const news = useSelector(state => state?.news?.entries)
     const assetPrices = useSelector(state => state?.portfolio?.prices)
     const boughtTransactions = useSelector(state => state?.transaction?.boughtTrans)
+
     const companies = Object.values(stocks)
     const transArr = Object.values(transactions)
     const portfolio = Object.values(portfolioPrices)
@@ -32,7 +34,6 @@ const Dashboard = () => {
     let sumAssetPrices = 0
     let nameTickerArr = []
     let closingPrice = []
-    let assetBalance = []
     let portfolioBalance = 0
     let boughtTransArr = []
     let balToBackend
@@ -101,11 +102,6 @@ const Dashboard = () => {
         }
     }
 
-    for (let price of closingPrice) {
-        let total = price.closingPrice * price.shares
-        assetBalance.push({'total': total, 'shares': price.shares})
-    }
-
     // Total money you put in to buy shares
     const totalFunds = () => {
         let total = 0
@@ -126,18 +122,7 @@ const Dashboard = () => {
 
     }
 
-    // // TOTAL ASSET BALANCE
-    // for (let i in assetBalance) {
-    //     let balance = assetBalance[i]
-    //     portfolioBalance += balance.total
 
-    //     if (parseInt(i) === assetBalance.length - 1) {
-    //         balToBackend = portfolioBalance
-    //     }
-    // }
-
-    // console.log('what is this', typeof (Number(currPrice.toString().replace(/[^0-9.-]+/g,""))).toFixed(2))
-    // number data type: 6472.009999999999
 
     const createData = (time) => {
         if (time === '1y') {
@@ -296,7 +281,6 @@ const Dashboard = () => {
                         transArr={transArr}
                         nameTickerArr={nameTickerArr}
                         currencyFormat={currencyFormat}
-                        assetBalance={assetBalance}
                         buyingTotal={buyingTotal}
                     />
                     {/* -------------------- NEWS -------------------- */}

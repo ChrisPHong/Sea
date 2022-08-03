@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useHistory } from 'react-router-dom';
 import DemoButton from '../auth/SplashDemoBtn';
 import './splashpage.css';
@@ -10,6 +10,10 @@ function SplashPage() {
     const handleSubmit = () => {
         history.push('/sign-up')
     }
+    useEffect(() => {
+        // Force the page to scroll up to top on mount
+        window.scrollTo(0, 0)
+    }, [])
     return (
         <>
             <div className="panel-one">

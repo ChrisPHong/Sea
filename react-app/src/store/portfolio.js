@@ -30,6 +30,7 @@ export const getPortfolio = () => async (dispatch) => {
     const response = await fetch('/api/portfolio/')
 
     if (response.ok) {
+
         const portfolio = await response.json()
         dispatch(loadPortfolio(portfolio))
     }

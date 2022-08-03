@@ -15,6 +15,15 @@ def seed_transactions():
     #  tech
     transaction2 = Transaction(
         price= 282.01,
+        shares=5,
+        type="buy",
+        date=datetime.today() - timedelta(days=2),
+        user_id=1,
+        company_id=2,
+    )
+    # tech
+    transaction9 = Transaction(
+        price= 100.00,
         shares=1,
         type="sell",
         date=datetime.today() - timedelta(days=2),
@@ -33,6 +42,15 @@ def seed_transactions():
     #  healthcare
     transaction4 = Transaction(
         price= 157.42,
+        shares=1,
+        type="buy",
+        date=datetime.today() - timedelta(days=5),
+        user_id=1,
+        company_id=8,
+    )
+    # healthcare
+    transaction10 = Transaction(
+        price= 200.89,
         shares=1,
         type="sell",
         date=datetime.today() - timedelta(days=5),
@@ -85,6 +103,8 @@ def seed_transactions():
     db.session.add(transaction6)
     db.session.add(transaction7)
     db.session.add(transaction8)
+    db.session.add(transaction9)
+    db.session.add(transaction10)
     db.session.commit()
 
 def undo_transactions():
