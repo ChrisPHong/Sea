@@ -56,10 +56,22 @@
 
 span#back-to-home a {
     color: white;
-    padding: 10px;
-    border-radius: 10px;
+    /* padding: 10px; */
+    /* border-radius: 10px; */
     background-color: rgb(24, 116, 134);
     text-decoration: none;
+
+    font-family: sans-serif;
+    /* border-radius: 5px 5px; */
+    border: none;
+    /* padding: 5px 5px; */
+    /* background-color: transparent; */
+    transition-duration: 1s;
+    margin-top: 10px;
+    margin: 5px;
+    height: 30px;
+    padding: 10px 20px;
+    border-radius: 35px;
 }
 
 span#back-to-home a:hover {

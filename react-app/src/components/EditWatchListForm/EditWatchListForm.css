@@ -2,17 +2,21 @@
     background-color: #0b7cee;
     color: white;
     font-family: sans-serif;
-    border-radius: 5px 5px;
-    padding: 5px 5px;
+    /* border-radius: 5px 5px; */
+    border: none;
+    /* padding: 5px 5px; */
     /* background-color: transparent; */
     transition-duration: 1s;
     margin-top: 10px;
-    margin-left: 10px;
+    margin: 5px;
+    height: 30px;
+    padding: 7px 20px;
+    border-radius: 35px;
 }
 
 .submitButton:hover {
-    background-color: rgb(40, 197, 249);
     box-shadow: 0px 0px 6px rgb(92, 91, 91, .8);
+    cursor: pointer;
 }
 
 .inputBox {

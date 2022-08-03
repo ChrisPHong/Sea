@@ -46,7 +46,8 @@ function AddMoneyCurrentBalance() {
 
     return (
         <div className='AddMoneyCurrentBalanceForm'>
-            <h2 className='buying-power-inForm'>Buying Power: ${buyingPower.toLocaleString('en-US')}</h2>
+            <h2 className='buying-power-inForm'>Buying Power:</h2>
+            <h2 className='buying-power-inForm'>${buyingPower.toLocaleString('en-US')}</h2>
             {show ?
             <div>
 
@@ -65,11 +66,11 @@ function AddMoneyCurrentBalance() {
                 : null}
                 </div>
                     : null}
-            <form onSubmit={onSubmit}>
+            <form onSubmit={onSubmit} className='add-money-form'>
                 <input type='number'
                     placeholder={`Add to Buying Power`}
                     className='inputBox'
-                    value={balance}
+                    // value={balance}
                     onChange={(e) => {
                         setBalance(e.target.value)}}
                 />
