@@ -17,11 +17,13 @@ const Dashboard = () => {
     const assetPriceRef = useRef()
     const currentUser = useSelector(state => state?.session?.user);
     const stocks = useSelector(state => state?.stock?.entries)
-    const transactions = useSelector(state => state?.transaction?.entries)
+    const transactions = useSelector(state => state?.transaction?.boughtTrans)
+
     const portfolioPrices = useSelector(state => state?.portfolio?.entries)
     const news = useSelector(state => state?.news?.entries)
     const assetPrices = useSelector(state => state?.portfolio?.prices)
     const boughtTransactions = useSelector(state => state?.transaction?.boughtTrans)
+
     const companies = Object.values(stocks)
     const transArr = Object.values(transactions)
     const portfolio = Object.values(portfolioPrices)

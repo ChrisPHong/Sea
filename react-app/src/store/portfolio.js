@@ -28,12 +28,9 @@ export const loadAssetPrices = (prices) => {
 
 export const getPortfolio = () => async (dispatch) => {
     const response = await fetch('/api/portfolio/')
-    //Testing this route
-    const testing = await fetch(`/api/portfolio/thisRoute`)
-        console.log(testing, "<<<<<<<<<<<<<<<<<<<<<<")
-    // end of testing route
 
     if (response.ok) {
+
         const portfolio = await response.json()
         dispatch(loadPortfolio(portfolio))
     }

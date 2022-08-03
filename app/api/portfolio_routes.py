@@ -1,4 +1,5 @@
 from inspect import trace
+from itsdangerous import json
 from sqlalchemy import all_
 from app.models import Transaction, Company, company
 from flask import Blueprint, jsonify, request
@@ -73,22 +74,14 @@ def make_portfolio():
 
 @portfolio_routes.route('/thisRoute')
 def positive_portfolio():
-    balance = 0
-
-
 
     company_object = {}
-    # Get all companies that the user has traded
-    all_transactions = Transaction.query.filter(Transaction.user_id == current_user.id).all()
     # separate the boughts and the sells
     bought_transactions = Transaction.query.filter(Transaction.type == 'buy', Transaction.user_id == current_user.id).all()
     sell_transactions = Transaction.query.filter(Transaction.type == 'sell', Transaction.user_id == current_user.id).all()
-    # print('<<<<<<<<<<<<<<<<<<<< BOUGHT', bought_transactions)
-    # print('<<<<<<<<<<<<<<<<<<<< sell', sell_transactions)
 
     bought_transactions_copy = [transaction.to_dict() for transaction in bought_transactions]
     sell_transactions_copy = [transaction.to_dict() for transaction in sell_transactions]
-    print(sell_transactions_copy, "<<<<<<<<<<<<<<<<<<<<<< Sell TRANSA <<<<<<<<<<")
     # loop through
 
     for transaction in bought_transactions_copy:
@@ -102,17 +95,12 @@ def positive_portfolio():
             avg = (company_object[transaction['companyId']]['price'] + transaction['price']) / 2
             company_object[transaction['companyId']]['price'] = avg
 
+    for transaction in sell_transactions_copy:
+        if company_object[transaction['companyId']]['shares'] > transaction['shares']:
+            company_object[transaction['companyId']]['shares'] -= transaction['shares']
 
+        elif company_object[transaction['companyId']]['shares'] == transaction['shares']:
+            company_object[transaction['companyId']]['shares'] = 0
+            del company_object[transaction['companyId']]
 
-
-    # print(company_object, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< company Object")
-
-    # for transaction in all_transactions:
-    #     if transaction.type == 'buy':
-    #         balance += transaction.price * transaction.shares
-    #     else:
-    #         balance -= transaction.price * transaction.shares
-
-
-
-    return 'TESTING'
+    return company_object
