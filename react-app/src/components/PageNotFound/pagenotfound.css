@@ -1,0 +1,38 @@
+.page-not-found {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    /* top: 110px; */
+    width: 100%;
+    background-image: url(https://images.unsplash.com/photo-1498330177096-689e3fb901ca?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#page-not-found-title {
+    color: rgb(255, 255, 255);
+    font-size: 30px;
+    text-align: center;
+    margin-top: 200px;
+}
+
+#page-not-found-text {
+    margin-top: 10px;
+    color: rgb(255, 255, 255);
+    font-size: 25px;
+    text-align: center;
+}
+
+span#back-to-home a {
+    /* font-weight: bold; */
+    color: white;
+    /* font-style: italic; */
+    /* text-decoration: none; */
+}
+
+#sea-icon {
+    width: 100px;
+    height: 100px;
+}
