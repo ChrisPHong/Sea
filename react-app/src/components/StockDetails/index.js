@@ -353,10 +353,16 @@ const StockDetails = () => {
                             <div className='fixed-side-container'>
                                 <div className='buy-sell-container'>
                                     <div id='tabs'>
-                                        <div className='buy-tab'>
+                                        <div
+                                            className='buy-tab'
+                                            onClick={() => setShowBuy(true)}
+                                        >
                                             <span className='trade-span'>Buy</span>
                                         </div>
-                                        <div className='sell-tab'>
+                                        <div
+                                            className='sell-tab'
+                                            onClick={() => setShowBuy(false)}
+                                        >
                                             <span className='trade-span'>Sell</span>
                                         </div>
                                         {/* <Headers
@@ -367,11 +373,13 @@ const StockDetails = () => {
                                     </div>
                                     <section className="buy-sell">
                                         <div className="tab-toggle-content">
-                                            {prices && <Buy user={user} companyId={stock?.id} ticker={ticker} priceData={data[data.length - 1]} />}
-                                            <br></br>
-                                            {prices && userShares && <Sell user={user} priceData={data[data.length - 1]} companyId={stock?.id} shares={userShares} />}
-                                            {/* {currentTab === 0 && <Buy user={user} priceArr={price} />} */}
-                                            {/* {currentTab === 1 && <Sell user={user} price={closePrice} shares={userShares} />} */}
+                                            {showBuy ?
+                                                prices && <Buy user={user} companyId={stock?.id} ticker={ticker} priceData={data[data.length - 1]} />
+                                                :
+                                                prices && userShares && <Sell user={user} priceData={data[data.length - 1]} companyId={stock?.id} shares={userShares} />
+                                                // {/* {currentTab === 0 && <Buy user={user} priceArr={price} />} */}
+                                                // {/* {currentTab === 1 && <Sell user={user} price={closePrice} shares={userShares} />} */}
+                                            }
                                         </div>
                                     </section>
 

@@ -152,9 +152,12 @@
 .sell-tab {
     display: flex;
     align-items: center;
+    justify-content: center;
     height: 75px;
     font-weight: 700;
     font-size: 14pt;
+    cursor: pointer;
+    width: 100%;
 }
 
 #buy-sell-hr {
