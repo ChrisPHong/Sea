@@ -11,6 +11,8 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
     const transArr = Object.values(transactions)
     const updatedTransArr = Object.values(updatedTransaction)
     const userId = user.id;
+    const options = { style: 'currency', currency: 'USD' };
+    const currencyFormat = new Intl.NumberFormat('en-US', options);
     // console.log('USERRRRR', user)
 
     // console.log('here is the transactions', transactions)
@@ -159,7 +161,7 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
                         {order}
                     </button>
                 </div>
-                <div className='transaction-labels' id='transaction-balance'>Balance Available: ${Number(balance).toFixed(2)}</div>
+                <div className='transaction-labels' id='transaction-balance'>Balance Available: {currencyFormat.format(balance)}</div>
             </form>
         </div>
     )
