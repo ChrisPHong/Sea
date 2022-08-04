@@ -18,10 +18,8 @@ function OneWatchlist({ watchlist, currencyFormat }) {
     const companies = Object.values(stocks)
     const keyAssetPrices = Object.keys(assetPrices)
     const prices = useSelector(state => state?.stock?.prices)
-    const pricesData = Object.values(prices).slice(-7)
-    const [watchlistChartData, setWatchlistChartData] = useState(pricesData)
 
-
+    console.log('here are the prices...', prices[0])
 
     const closingPriceAssets = (companyId) => {
         for (let compId in assetPrices) {
@@ -49,8 +47,7 @@ function OneWatchlist({ watchlist, currencyFormat }) {
 
     useEffect(() => {
         dispatch(getWatchlists())
-
-    }, [dispatch,])
+    }, [dispatch])
 
     return (
         <div key={watchlist.id}
@@ -86,22 +83,22 @@ function OneWatchlist({ watchlist, currencyFormat }) {
                                         {company.ticker}
                                     </NavLink>
                                     <div className='asset-chart'>
-                                        {/* <LineChart
-                                                    width={200}
-                                                    height={100}
-                                                    data={watchlistChartData}
-                                                    >
-                                                    <XAxis dataKey="date" hide='true' />
-                                                    <YAxis dataKey="price" domain={['dataMin', 'dataMax']} hide='true' />
-                                                    <Line
-                                                    type="linear"
-                                                    dataKey="price"
-                                                    stroke="#0b7cee"
-                                                    activeDot={{ r: 5 }}
-                                                    dot={false}
-                                                    strokeWidth={2}
-                                                    />
-                                                </LineChart> */}
+                                        <LineChart
+                                            width={50}
+                                            height={35}
+                                            data={prices[0].slice(-30)}
+                                        >
+                                            <XAxis dataKey="date" hide='true' />
+                                            <YAxis dataKey="price" domain={['dataMin', 'dataMax']} hide='true' />
+                                            <Line
+                                            type="linear"
+                                            dataKey="price"
+                                            stroke="#0b7cee"
+                                            activeDot={{ r: 5 }}
+                                            dot={false}
+                                            strokeWidth={2}
+                                            />
+                                        </LineChart>
 
                                     </div>
                                     <h5 className='companyStockClosingPrice'>  {keyAssetPrices.indexOf(company.id.toString()) !== -1 ? `$${closingPriceAssets(company.id)}` : `${currencyFormat.format(stockPriceCreator(company.id))}`}

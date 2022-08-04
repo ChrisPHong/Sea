@@ -85,7 +85,8 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 10px;
+    margin-top: 10px;
+    width: 250px;
 }
 
 .watchlistButtonsEditAndDelete{
@@ -131,7 +132,7 @@
 .companyStockClosingPrice{
     display: flex;
     font-size: 15px;
-    width: 150px;
+    width: auto;
     justify-content: flex-end;
     align-items: center;
     padding-bottom: 1px;
