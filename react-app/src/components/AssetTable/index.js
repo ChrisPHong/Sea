@@ -74,9 +74,9 @@ const AssetTable = ({ stocks, companies, transArr, currencyFormat, buyingTotal, 
                                         {currencyFormat.format(closingPrices[transaction?.companyId]?.price)}
                                     </div>
                                     {(((transaction.shares * (closingPrices[transaction?.companyId]?.price) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2) >= 0 ?
-                                        <div className='curr-comp-percent' style={{ color: 'green' }}>+{(((transaction.shares * (closingPrices[transaction?.companyId]?.price) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>
+                                        <div className='curr-comp-percent' style={{ color: 'green' }}>+{((((transaction.shares * (closingPrices[transaction?.companyId]?.price) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))) * 100).toFixed(2)}%</div>
                                         :
-                                        <div className='curr-comp-percent' style={{ color: 'red' }}>{(((transaction.shares * (closingPrices[transaction?.companyId]?.price) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))).toFixed(2)}%</div>}
+                                        <div className='curr-comp-percent' style={{ color: 'red' }}>{((((transaction.shares * (closingPrices[transaction?.companyId]?.price) - (transaction.price * transaction.shares)) / (transaction.price * transaction.shares))) * 100).toFixed(2)}%</div>}
 
                                     {/* {closingPrice && closingPrice.map((price, i) => (
                                         <div key={i} className='owned-comp-price'>
