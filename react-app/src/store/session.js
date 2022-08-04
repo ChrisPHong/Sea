@@ -1,9 +1,15 @@
 // constants
 const SET_USER = 'session/SET_USER';
 const REMOVE_USER = 'session/REMOVE_USER';
+const GET_INFO = 'session/GET_INFO'
 
 const setUser = (user) => ({
   type: SET_USER,
+  payload: user
+});
+
+const getUser = (user) => ({
+  type: GET_INFO,
   payload: user
 });
 
@@ -57,6 +63,18 @@ export const login = (email, password) => async (dispatch) => {
 
 }
 
+export const getUserInformation = () => async (dispatch) => {
+  const response = await fetch('/api/users/user_information', {
+    method: 'GET',
+  });
+
+  if(response.ok){
+    const userInfo = await response.json()
+    dispatch(getUser(userInfo))
+  }
+
+}
+
 export const logout = () => async (dispatch) => {
   const response = await fetch('/api/auth/logout', {
     headers: {
@@ -104,6 +122,8 @@ export default function reducer(state = initialState, action) {
       return { user: action.payload }
     case REMOVE_USER:
       return { user: null }
+    case GET_INFO:
+      return {user:action.payload}
     default:
       return state;
   }

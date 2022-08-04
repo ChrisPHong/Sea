@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { addMoneyToCurrentBalance } from '../../store/transaction'
+import {getUserInformation} from '../../store/session'
 import './AddMoneyCurrentBalance.css';
 
 
@@ -24,8 +25,10 @@ function AddMoneyCurrentBalance() {
         setErrors(error);
     }, [balance]);
 
-
-    const onSubmit = (e) => {
+    useEffect(()=>{
+        setBuyingPower(user.balance)
+    },[user])
+    const onSubmit = async (e) => {
         e.preventDefault()
         if(errors.length > 0){
             setShow(true)
@@ -38,9 +41,10 @@ function AddMoneyCurrentBalance() {
                 balance
 
             }
-            dispatch(addMoneyToCurrentBalance(payload))
-            setBalance('')
-            setBuyingPower(Number(balance) + buyingPower)
+            await dispatch(addMoneyToCurrentBalance(payload))
+            await dispatch(getUserInformation())
+            await setBalance('')
+            await setBuyingPower(Number(balance) + buyingPower)
         }
     }
 
@@ -48,7 +52,7 @@ function AddMoneyCurrentBalance() {
         <div className='AddMoneyCurrentBalanceForm'>
             <div className='buying-power-headings'>
                 <h2 className='buying-power-inForm'>Buying Power:</h2>
-                <h2 className='buying-power-inForm'>${buyingPower.toLocaleString('en-US')}</h2>
+                <h2 className='buying-power-inForm'>${(buyingPower).toLocaleString('en-US')}</h2>
             </div>
             {show ?
             <div>
