@@ -1,0 +1,29 @@
+.confirmation-modal {
+    width: 300px;
+    height: 150px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    border: 1px solid #0b7cee;
+    /* border: 1px solid rgb(104, 222, 104); */
+}
+
+.confirmation-modal > span {
+    /* color: rgb(104, 222, 104); */
+    color: #0b7cee;
+}
+
+.confirmation-modal > button {
+    cursor: pointer;
+    border: 1px solid #0b7cee;
+    background-color: #0b7cee;
+    /* border: 1px solid rgb(104, 222, 104);
+    background-color: rgb(104, 222, 104); */
+    width: 75px;
+    height: 35px;
+    border-radius: 25px;
+    color: white;
+}

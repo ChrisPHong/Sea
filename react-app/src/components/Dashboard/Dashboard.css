@@ -42,6 +42,7 @@
 .balance-info {
     width: 800px;
     height: 100px;
+    margin-bottom: 20px;
 }
 
 .balance-amt {
@@ -86,7 +87,7 @@
 .asset-bottom {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-end;
     width: 800px;
     height: 50px;
     justify-content: flex-end;

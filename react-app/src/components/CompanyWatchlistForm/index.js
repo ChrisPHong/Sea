@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { createStockWatchlists } from '../../store/watchlist'
 import { useParams } from 'react-router-dom';
+import WatchlistConfirmModal from './WatchlistConfirmModal';
 import './CompanyWatchlistForm.css';
 
 
@@ -18,31 +19,38 @@ function CompanyWatchlistForm(props) {
 
     const [clicked, setClicked] = useState(false)
 
+    const [addToWatchlist, setAddToWatchlist] = useState(false)
+
     useEffect(() => {
     }, [dispatch, clicked]);
 
+    const onClick = (id) => {
+        setAddToWatchlist(true)
+        const payload = {
+            watchlistId: id,
+            ticker
+        }
+        dispatch(createStockWatchlists(payload))
+    }
 
     return (
-        <div className='CompanyWatchlistDiv'>
-            <h3 className='add-to-watchlist-title'> Add to Watchlist</h3>
-
-                    {watchlists.map(watchlist => {
-                        return <button className='WatchListCompanyButton'
-                        onClick={(e)=>{
-                            const payload = {
-                                watchlistId: watchlist.id,
-                                ticker
-                            }
-
-                            dispatch(createStockWatchlists(payload))
-
-                        }}
-                        > {watchlist.name}</button>
-
-                    })
-                    }
-
-        </div >
+        <>
+            <div className='CompanyWatchlistDiv'>
+                <h3 className='add-to-watchlist-title'> Add to Watchlist</h3>
+                {watchlists.map(watchlist => (
+                    <>
+                        <button
+                            key={watchlist.id}
+                            className='WatchListCompanyButton'
+                            onClick={() => onClick(watchlist.id)}
+                        >
+                            {watchlist.name}
+                        </button>
+                    </>
+                ))}
+            </div>
+            {addToWatchlist ? <WatchlistConfirmModal setAddToWatchlist={setAddToWatchlist} /> : ''}
+        </>
     )
 }
 
