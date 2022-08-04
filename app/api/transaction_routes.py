@@ -42,7 +42,7 @@ def get_transactions_comp_tickers(companyId):
 # Return a list of previous transactions
 @transaction_routes.route('/')
 def get_all_transactions():
-    allTransactions = Transaction.query.all()
+    allTransactions = Transaction.query.filter(Transaction.user_id == current_user.id).all()
     # print('-----GET ALL TRANSACTIONS---', allTransactions)
     return jsonify([transaction.to_dict() for transaction in allTransactions])
 
@@ -127,8 +127,6 @@ def add_new_transaction():
 
     if form.data['company_id'] not in list(current_transactions) and form.data['type'] == 'sell':
         return {'errors': 'You cannot sell more than what you own'}, 402
-
-
 
     if form.validate_on_submit():
         transaction = Transaction(
