@@ -121,7 +121,7 @@
     display: block;
     /* padding: 0 20px 20px 20px; */
     margin: 2em 2em;
-    border: 1px solid transparent;
+    /* border: 1px solid transparent; */
     border-radius: 8px;
     box-shadow: 0px 0px 15px rgb(209, 209, 209);
     width: 270px;
@@ -158,6 +158,18 @@
     font-size: 14pt;
     cursor: pointer;
     width: 100%;
+}
+
+.buy-tab {
+    border-top-left-radius: 8px;
+}
+.sell-tab {
+    border-top-right-radius: 8px;
+}
+
+.buy-tab:hover,
+.sell-tab:hover {
+    background-color: rgba(211, 211, 211, 0.2);
 }
 
 #buy-sell-hr {

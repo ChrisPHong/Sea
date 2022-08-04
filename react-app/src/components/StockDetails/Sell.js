@@ -75,11 +75,11 @@ const Sell = ({ user, companyId, priceData, shares }) => {
         <div>
             <form onSubmit={sellStock}>
                 <div className='transaction-box'>
-                    <div className='transaction-labels' id='buy-label'>
+                    {/* <div className='transaction-labels' id='buy-label'>
                         <h2>
                             Sell
                         </h2>
-                    </div>
+                    </div> */}
                     <div className='transaction-labels'>Shares</div>
                     <select name="shares" id="shares" onChange={transactionTotal} value={sharesSold}>
                         <option value=""></option>
