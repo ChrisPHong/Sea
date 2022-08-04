@@ -2,6 +2,9 @@ from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
 from app.forms import WatchlistForm
 from app.models import Watchlist, db, Company
+from datetime import datetime, timedelta
+from random import choice, random
+from .portfolio_routes import make_stock_price, ASCENDING, DESCENDING
 import json
 
 watchlist_routes = Blueprint('watchlists', __name__)
@@ -116,3 +119,23 @@ def delete_company_watchlists(id):
     db.session.commit()
     watchlists = Watchlist.query.filter(Watchlist.user_id == current_user.get_id()).all()
     return jsonify([watchlist.to_dict() for watchlist in watchlists])
+
+@watchlist_routes.route('/watchlist_prices')
+def make_watchlist_prices():
+    watchlists = Watchlist.query.filter(Watchlist.user_id == current_user.get_id()).all()
+    watchlist_dicts = [watchlist.to_dict() for watchlist in watchlists]
+    companies = [Company.query.get(company['id']) for watchlists in watchlist_dicts for company in watchlists['watchComps']]
+
+    prices_copy = []
+
+    for company in companies:
+        previous_dates = datetime.today() - timedelta(days=30)
+        owned_company_prices = make_stock_price(round(company.base_price, 2), 30, choice([ASCENDING, DESCENDING]))
+        owned_company_prices.reverse()
+        for i in range(len(owned_company_prices)):
+            priceData = owned_company_prices[i]
+            previous_dates += timedelta(days = 1)
+            priceData['date'] = previous_dates.strftime("%b %d %Y")
+        prices_copy.append({company.id: owned_company_prices})
+
+    return jsonify(prices_copy)
