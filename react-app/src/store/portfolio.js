@@ -86,7 +86,7 @@ const portfolioReducer = ( state = initialState, action ) => {
             newState = { ...state, entries: {...state.entries }, prices: { ...state.prices }, closing: { ...state.closing} }
             action.prices.forEach((price, i) => {
                 let compId = Object.keys(price)
-                newState.closing[compId[0]] = price
+                newState.closing[compId[0]] = price[compId]
             })
             return newState
         case CLEAR_ALL_PORTFOLIOS:

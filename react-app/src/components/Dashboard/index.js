@@ -101,6 +101,8 @@ const Dashboard = () => {
     //     }
     // }
 
+    console.log('here is closing prices', closingPrices)
+
     // Total money you put in to buy shares
     const totalFunds = () => {
         let total = 0
@@ -114,8 +116,8 @@ const Dashboard = () => {
     // Returns the total price of ALL the stocks you own for the day.
     const buyingTotal = () => {
         let total = 0
-        for (let priceObj of closingPricesArr) {
-            total += Object.values(priceObj)[0].price * transactions[Object.keys(priceObj)[0]].shares
+        for (let compId in closingPrices) {
+            total += closingPrices[compId]?.price * transactions[compId]?.shares
         }
         return total
 
