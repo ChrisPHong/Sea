@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { sellTransaction, stockTransaction, getBoughtTransactions } from '../../store/transaction';
+import { stockTransaction, getBoughtTransactions } from '../../store/transaction';
 
 const Sell = ({ user, companyId, priceData, shares }) => {
     const sharesArr = Object.values(shares)

@@ -184,51 +184,6 @@ def update_transactions(company_id):
     return {'errors': validation_errors_to_error_messages(form.errors)}, 402
 
 
-@transaction_routes.route('/<int:company_id>/sell', methods=['PATCH'])
-@login_required
-def sell_transaction(company_id):
-    form = TransactionForm()
-    form['csrf_token'].data = request.cookies['csrf_token']
-    user_id = request.json['user_id']
-    todays_date = datetime.today()
-
-    # Get a specific transaction under specific user
-    transaction = Transaction.query.filter(Transaction.company_id == company_id, Transaction.user_id == int(user_id), Transaction.type == 'buy').first()
-
-
-    if form.validate_on_submit():
-
-        price=form.data['price'],
-        shares=form.data['shares'],
-        type=form.data['type']
-        balance=request.json['balance']
-
-        asset_balance = price[0] * transaction.shares
-        # print('---------------------- THIS IS HOW MUCH VALUE WE HAVE RIGHT NOW ----------------------', asset_balance)
-        # shares is a tuple in the database, so have to key into the first index
-        transaction.shares -= shares[0]
-
-        if transaction.shares <= 0:
-            transaction.type == 'sell'
-
-        # selling amount: The market price * the shares the user selected # 220
-        transaction_amount = price[0] * int(shares[0])
-        # print('---------------------- THIS IS WHAT WE SOLD THE SHARES FOR ----------------------', transaction_amount)
-        # print('---------------------- NEW BALANCE BUT NIKE ----------------------', price)
-        # Asset balance = number of shares owned * market price
-
-        # Set transaction price by taking the difference of the asset balance and transaction amount
-        transaction.price = (asset_balance - transaction_amount) / 4
-        # print('---------------------- THIS IS WHAT WE HAVE AFTER SELLING ----------------------', transaction.price)
-
-        user = User.query.filter(User.id == int(user_id)).first()
-        user.balance += transaction_amount
-
-        db.session.commit()
-        return transaction.to_dict()
-    return {'errors': validation_errors_to_error_messages(form.errors)}, 402
-
-
 @transaction_routes.route('/add', methods=['PATCH'])
 @login_required
 def add_money_current_balance():
