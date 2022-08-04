@@ -5,6 +5,13 @@ import { getBoughtTransactions, stockTransaction, updateTransaction } from '../.
 const Buy = ({ user, companyId, ticker, priceData }) => {
 
     const dispatch = useDispatch()
+    const transactions = useSelector(state => state?.transaction?.entries);
+    const updatedTransaction = useSelector(state => state?.transaction?.boughtTrans)
+    const transArr = Object.values(transactions)
+    const updatedTransArr = Object.values(updatedTransaction)
+    const userId = user.id;
+    const options = { style: 'currency', currency: 'USD' };
+    const currencyFormat = new Intl.NumberFormat('en-US', options);
 
     const [transactionPrice, setTransactionPrice] = useState((0).toFixed(2));
     const [sharesBought, setSharesBought] = useState(0);
@@ -50,6 +57,12 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
         }, 3500)
     }
 
+    const preventMinus = (e) => {
+        if (!e.code.includes('Digit')) {
+            e.preventDefault();
+        }
+    };
+
     return (
         <div>
             <form onSubmit={buyStock}>
@@ -67,19 +80,15 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
                     </div>
                     <div className='shares-ctn'>
                         <div className='transaction-labels'>Shares</div>
-                        <select name="shares" id="shares" onChange={transactionTotal} value={sharesBought}>
-                            <option value=""></option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
-                        </select>
+                        <input
+                            type="number"
+                            min='0'
+                            onKeyPress={preventMinus}
+                            name="shares"
+                            id="shares"
+                            onChange={transactionTotal}
+                            value={sharesBought}
+                        />
                     </div>
                 </div>
                 <hr id='buy-sell-hr' />
@@ -98,7 +107,7 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
                         {order}
                     </button>
                 </div>
-                <div className='transaction-labels' id='transaction-balance'>Balance Available: ${Number(balance).toFixed(2)}</div>
+                <div className='transaction-labels' id='transaction-balance'>Balance Available: {currencyFormat.format(balance)}</div>
             </form>
         </div>
     )

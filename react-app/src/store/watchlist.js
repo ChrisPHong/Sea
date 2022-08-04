@@ -1,4 +1,5 @@
 const LOAD_WATCHLIST = 'watchlist/LOAD'
+const LOAD_WATCHLIST_PRICES = 'watchlist/loadWatchlistPrices'
 const POST_WATCHLIST = 'watchlist/POST'
 const DELETE_WATCHLIST = 'watchlist/DELETE'
 const EDIT_WATCHLIST = 'watchlist/EDIT'
@@ -10,6 +11,13 @@ export const loadWatchlist = (watchlists) => {
     return {
         type: LOAD_WATCHLIST,
         watchlists
+    }
+}
+
+export const loadWatchlistPrices = (prices) => {
+    return {
+        type: LOAD_WATCHLIST_PRICES,
+        prices
     }
 }
 
@@ -63,11 +71,8 @@ export const createStockWatchlists = (payload) => async (dispatch) => {
         body: JSON.stringify(payload)
     })
 
-
     if (response.ok) {
-
         const watchlists = await response.json()
-
         dispatch(loadWatchlist(watchlists))
     }
 
@@ -79,14 +84,20 @@ export const deleteStockWatchlists = (payload) => async (dispatch) => {
         body: JSON.stringify(payload)
     })
 
-
     if (response.ok) {
         const watchlists = await response.json()
-
-
         dispatch(loadWatchlist(watchlists))
     }
 
+}
+
+export const getWatchlistPrices = () => async (dispatch) => {
+    const response = await fetch('/api/watchlists/watchlist_prices')
+
+    if (response.ok) {
+        const prices = await response.json()
+        dispatch(loadWatchlistPrices(prices))
+    }
 }
 
 export const getWatchlists = (payload) => async (dispatch) => {
@@ -95,12 +106,14 @@ export const getWatchlists = (payload) => async (dispatch) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
     })
+
     if (response.ok) {
         const watchlists = await response.json()
         dispatch(loadWatchlist(watchlists))
     }
 
 }
+
 export const postWatchlists = (payload) => async (dispatch) => {
     const response = await fetch('/api/watchlists/', {
         method: 'POST',
@@ -153,54 +166,40 @@ export const clearAllWatchList = () => async (dispatch) => {
         return {}
 }
 
-const initialState = { entries: {}, isLoading: true }
+const initialState = { entries: {}, prices: {}, isLoading: true }
 
 
 const watchlistReducer = (state = initialState, action) => {
     let newState;
     switch (action.type) {
         case LOAD_WATCHLIST:
-            newState = { ...state, entries: {} }
+            newState = { ...state, entries: {}, prices: { ...state.prices }}
             action.watchlists.map(watchlist => { newState.entries[watchlist.id] = watchlist })
             return newState
+        case LOAD_WATCHLIST_PRICES:
+            newState = { ...state, entries: { ...state.entries }, prices: { ...state.prices }}
+            action.prices.forEach(price => {
+                let compId = Object.keys(price)
+                newState.prices[compId[0]] = price[compId[0]]
+            })
+            return newState
         case POST_WATCHLIST:
-
             newState = {
                 ...state, entries: {
                     ...state.entries,
                     [action.watchlist.id]: action.watchlist
                 }
             }
-
             return newState
-
         case DELETE_WATCHLIST:
-
-            newState = { ...state, entries: {...state.entries} }
+            newState = { ...state, entries: {...state.entries}, prices: { ...state.prices } }
             delete newState.entries[action.watchlistId]
             return newState
-
         case EDIT_WATCHLIST:
-            // if(action.watchlist.errors){
-            //     console.log(action.watchlist.errors, "<<<<<<<<<<<< ACTION!")
-            //     newState = {
-            //         ...state, entries: {
-            //             ...state.entries,
-            //             error: action.watchlist.errors
-            //         }
-            //     }
-            //     return newState
-            // }
-            newState = {
-                ...state, entries: {
-                    ...state.entries,
-                    [action.watchlist.id]: action.watchlist
-                }
-            }
+            newState = { ...state, entries: { ...state.entries, [action.watchlist.id]: action.watchlist }, prices: { ...state.prices } }
             return newState
         case POST_STOCKS_WATCHLIST:
-            newState = { ...state, entries: { ...state.entries, watchComps: { ...state.entries.watchComps, [action.watchlists.watchComps.id]: action.watchlists.watchComps } } }
-
+            newState = { ...state, entries: { ...state.entries, watchComps: { ...state.entries.watchComps, [action.watchlists.watchComps.id]: action.watchlists.watchComps } }, prices: { ...state.prices } }
             return newState
         case DELETE_STOCKS_WATCHLIST:
             newState = { ...state }

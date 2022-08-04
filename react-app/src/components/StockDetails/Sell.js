@@ -67,6 +67,12 @@ const Sell = ({ user, companyId, priceData, shares }) => {
         }, 3500)
     }
 
+    const preventMinus = (e) => {
+        if (!e.code.includes('Digit')) {
+            e.preventDefault();
+        }
+    };
+
     return (
         <div>
             <form onSubmit={sellStock}>
@@ -89,19 +95,15 @@ const Sell = ({ user, companyId, priceData, shares }) => {
                     </div>
                     <div className='shares-ctn'>
                         <div className='transaction-labels'>Shares</div>
-                        <select name="shares" id="shares" onChange={transactionTotal} value={sharesSold}>
-                            <option value=""></option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
-                        </select>
+                        <input
+                            type='number'
+                            min='0'
+                            onKeyPress={preventMinus}
+                            name="shares"
+                            id="shares"
+                            onChange={transactionTotal}
+                            value={sharesSold}
+                        />
                     </div>
                 </div>
                 <hr id='buy-sell-hr' />

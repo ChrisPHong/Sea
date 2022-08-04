@@ -282,7 +282,7 @@ const StockDetails = () => {
                                             Employees
                                         </div>
                                         <div>
-                                            {stock.employees}
+                                            {(stock.employees).toLocaleString()}
                                         </div>
                                     </div>
                                     <div>
