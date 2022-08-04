@@ -81,13 +81,54 @@ def get_bought_transactions(userId):
 # Users can buy or sell stocks
     # FORM WILL BE IN THE FRONT END COMPONENT
 
-# WE HIT THIS ROUTE IF COMPANY IS NOT IN TRANSACTION DATABASE
+def load_buy_transactions():
+    company_object = {}
+    # separate the boughts and the sells
+    bought_transactions = Transaction.query.filter(Transaction.type == 'buy', Transaction.user_id == current_user.id).all()
+    sell_transactions = Transaction.query.filter(Transaction.type == 'sell', Transaction.user_id == current_user.id).all()
+
+    bought_transactions_copy = [transaction.to_dict() for transaction in bought_transactions]
+    sell_transactions_copy = [transaction.to_dict() for transaction in sell_transactions]
+    # loop through
+
+    for transaction in bought_transactions_copy:
+        # print(transaction, '*'*50)
+        if not company_object.__contains__(transaction['companyId']):
+            # company_transactions.append(transaction)
+            company_object[transaction['companyId']] = transaction
+            # company_set.add(transaction.companyId)
+        else:
+            company_object[transaction['companyId']]['shares'] += transaction['shares']
+            avg = (company_object[transaction['companyId']]['price'] + transaction['price']) / 2
+            company_object[transaction['companyId']]['price'] = avg
+
+    for transaction in sell_transactions_copy:
+        if company_object[transaction['companyId']]['shares'] > transaction['shares']:
+            company_object[transaction['companyId']]['shares'] -= transaction['shares']
+
+        elif company_object[transaction['companyId']]['shares'] == transaction['shares']:
+            company_object[transaction['companyId']]['shares'] = 0
+            del company_object[transaction['companyId']]
+    return company_object
+
+
 @transaction_routes.route('/post', methods=['POST'])
 @login_required
 def add_new_transaction():
+    current_transactions = load_buy_transactions()
     form = TransactionForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     todays_date = datetime.today()
+
+    for company_id in current_transactions:
+        if current_transactions[company_id]['companyId'] == form.data['company_id'] and form.data['type'] == 'sell':
+            if current_transactions[company_id]['shares'] < form.data['shares']:
+                return {'errors': 'You cannot sell more than what you own'}, 402
+
+    if form.data['company_id'] not in list(current_transactions) and form.data['type'] == 'sell':
+        return {'errors': 'You cannot sell more than what you own'}, 402
+
+
 
     if form.validate_on_submit():
         transaction = Transaction(

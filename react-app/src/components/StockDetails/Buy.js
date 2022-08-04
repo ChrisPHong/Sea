@@ -3,24 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getBoughtTransactions, stockTransaction, updateTransaction } from '../../store/transaction';
 
 const Buy = ({ user, companyId, ticker, priceData }) => {
-    // console.log("THIS IS THE PRICE DATA", priceData)
-    // console.log("THIS IS THE CLOSE", priceData[priceData?.length - 1].price)
+
     const dispatch = useDispatch()
-    const transactions = useSelector(state => state?.transaction?.entries);
-    const updatedTransaction = useSelector(state => state?.transaction?.boughtTrans)
-    const transArr = Object.values(transactions)
-    const updatedTransArr = Object.values(updatedTransaction)
-    const userId = user.id;
-    // console.log('USERRRRR', user)
 
-    // console.log('here is the transactions', transactions)
-    // console.log('here is the UPDATED transactions', updatedTransaction)
-
-
-    // console.log(transactions)
-    // const stock = useSelector(state => state?.stock?.entries)
-    // const companies = Object.values(stocks)
-    // console.log('---companies in buy page', companies)
     const [transactionPrice, setTransactionPrice] = useState((0).toFixed(2));
     const [sharesBought, setSharesBought] = useState(0);
     const [order, setOrder] = useState('buy');
@@ -38,21 +23,6 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
         //  price = market price per share
     }
 
-    // const convertDate = date => {
-    //     const dates = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-    //     const newDate = date.split(' ')
-    //     let newMonth
-    //     for (let i in dates) {
-    //         if (newDate[0] === dates[i]) {
-    //             newMonth = i
-    //         }
-
-    //     }
-    //     const result = new Date(`${newMonth}-${parseInt(newDate[1])}-${parseInt(newDate[2])}`)
-    //     return result.toDateString()
-    // }
-
-    // console.log('IS THIS OUR BRAND NEW USER?!??!?!?!!', user?.id)
 
     const buyStock = async (e) => {
         e.preventDefault();
@@ -60,12 +30,6 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
         setBalance((Number(balance) - Number(transactionPrice)).toFixed(2));
         let newBalance = (Number(balance) - Number(transactionPrice)).toFixed(2);
 
-        // console.log('transaction price----', typeof(parseInt(transactionPrice)))
-        // console.log('transaction price----', typeof(user.id))
-        // console.log('transaction price----', typeof(parseInt(sharesBought)))
-        // console.log('transaction price----', typeof(companyId))
-        // console.log('transaction price----', typeof('buy'))
-        // console.log('WHAT IS THIS DUMB MNUMBER', typeof sharesBought)
         let newTransaction = {
             price: Number(transactionPrice).toFixed(2),
             shares: sharesBought,
@@ -75,32 +39,9 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
             balance: Number(newBalance).toFixed(2)
         }
 
-        // If companyId is found in the updatedTransArr and is a BUY, update Transaction
-        for (let i = 0; i < updatedTransArr.length; i++) {
-            let transaction = updatedTransArr[i]
-            if (transaction.companyId === companyId && transaction.type === 'buy') {
-                dispatch(updateTransaction(newTransaction))
-                dispatch(getBoughtTransactions(user?.id))
-                return
-            }
-        }
-
-
-        // If company is NOT found in updatedTransArr, post a new transaction
-        let companyIds = []
-        for (let i = 0; i < updatedTransArr.length; i++) {
-            let transaction = updatedTransArr[i]
-            if (transaction.type === 'buy') {
-                companyIds.push(transaction.companyId)
-            }
-        }
-
-        if (!companyIds.includes(companyId)) {
             dispatch(stockTransaction(newTransaction))
             dispatch(getBoughtTransactions(user?.id))
-        }
 
-        // const payload = { companyId, userId };
     }
 
     if (buyStock) {

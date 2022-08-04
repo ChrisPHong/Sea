@@ -121,7 +121,10 @@ export const stockTransaction = (data) => async (dispatch) => {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data)
     })
-
+    if(!res.ok){
+        const error = await res.json()
+        return error
+    }
     if (res.ok) {
         const transactionInfo = await res.json()
         dispatch(buyStock(transactionInfo))
@@ -130,7 +133,7 @@ export const stockTransaction = (data) => async (dispatch) => {
 
 export const addMoneyToCurrentBalance = (balance) => async (dispatch) => {
     const response = await fetch(`/api/transactions/add`, {
-        method: 'PATCH',
+        method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(balance)
     })
