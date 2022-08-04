@@ -136,8 +136,15 @@
     margin: 20px 0;
 }
 
+.transaction-labels {
+    display: flex;
+    align-items: center;
+}
+
 #shares {
-    width: 55px;
+    width: 75px;
+    height: 30px;
+    padding-left: 10px;
 }
 
 .transaction-btn {
