@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { addMoneyToCurrentBalance } from '../../store/transaction'
+import {getUserInformation} from '../../store/session'
 import './AddMoneyCurrentBalance.css';
 
 
@@ -27,7 +28,7 @@ function AddMoneyCurrentBalance() {
     useEffect(()=>{
         setBuyingPower(user.balance)
     },[user])
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault()
         if(errors.length > 0){
             setShow(true)
@@ -40,9 +41,10 @@ function AddMoneyCurrentBalance() {
                 balance
 
             }
-            dispatch(addMoneyToCurrentBalance(payload))
-            setBalance('')
-            setBuyingPower(Number(balance) + buyingPower)
+            await dispatch(addMoneyToCurrentBalance(payload))
+            await dispatch(getUserInformation())
+            await setBalance('')
+            await setBuyingPower(Number(balance) + buyingPower)
         }
     }
 
