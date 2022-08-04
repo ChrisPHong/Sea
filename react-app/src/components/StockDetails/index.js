@@ -356,12 +356,14 @@ const StockDetails = () => {
                                         <div
                                             className='buy-tab'
                                             onClick={() => setShowBuy(true)}
+                                            style={{color: showBuy ? '#0b7cee' : '', borderBottom: showBuy ? '' : '1px solid lightgray', borderTop: showBuy ? '2px solid #0b7cee' : ''}}
                                         >
                                             <span className='trade-span'>Buy</span>
                                         </div>
                                         <div
                                             className='sell-tab'
                                             onClick={() => setShowBuy(false)}
+                                            style={{color: showBuy ? '' : '#0b7cee', borderBottom: showBuy ? '1px solid lightgray' : '', borderTop: showBuy ? '' : '2px solid #0b7cee'}}
                                         >
                                             <span className='trade-span'>Sell</span>
                                         </div>

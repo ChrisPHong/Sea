@@ -155,16 +155,19 @@
     justify-content: center;
     height: 75px;
     font-weight: 700;
-    font-size: 14pt;
+    /* font-size: 14pt; */
     cursor: pointer;
     width: 100%;
 }
 
 .buy-tab {
-    border-top-left-radius: 8px;
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+    border-right: 1px solid lightgray;
 }
 .sell-tab {
-    border-top-right-radius: 8px;
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
 }
 
 .buy-tab:hover,
