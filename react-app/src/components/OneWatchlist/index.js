@@ -8,8 +8,6 @@ import { LineChart, Line, XAxis, YAxis } from 'recharts';
 import EditWatchListForm from '../EditWatchListForm'
 import '../Watchlist';
 
-
-
 function OneWatchlist({ watchlist, currencyFormat }) {
     const dispatch = useDispatch();
     const state = useSelector((state) => state);
@@ -18,8 +16,6 @@ function OneWatchlist({ watchlist, currencyFormat }) {
     const companies = Object.values(stocks)
     const keyAssetPrices = Object.keys(assetPrices)
     const prices = useSelector(state => state?.stock?.prices)
-
-    console.log('here are the prices...', prices[0])
 
     const closingPriceAssets = (companyId) => {
         for (let compId in assetPrices) {
@@ -30,7 +26,6 @@ function OneWatchlist({ watchlist, currencyFormat }) {
             }
         }
     }
-
 
     // This will generate a price from the basePrice of the stock
     const stockPriceCreator = (companyId) => {
