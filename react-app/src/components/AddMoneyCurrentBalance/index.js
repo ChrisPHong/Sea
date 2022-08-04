@@ -46,8 +46,10 @@ function AddMoneyCurrentBalance() {
 
     return (
         <div className='AddMoneyCurrentBalanceForm'>
-            <h2 className='buying-power-inForm'>Buying Power:</h2>
-            <h2 className='buying-power-inForm'>${buyingPower.toLocaleString('en-US')}</h2>
+            <div className='buying-power-headings'>
+                <h2 className='buying-power-inForm'>Buying Power:</h2>
+                <h2 className='buying-power-inForm'>${buyingPower.toLocaleString('en-US')}</h2>
+            </div>
             {show ?
             <div>
 

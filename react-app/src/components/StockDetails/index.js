@@ -36,6 +36,7 @@ const StockDetails = () => {
 
     const [data, setData] = useState(pricesData)
     const [currPrice, setCurrPrice] = useState(0)
+    const [showBuy, setShowBuy] = useState(true)
 
     let stock
 
@@ -351,21 +352,36 @@ const StockDetails = () => {
                             {/* start of buy sell container */}
                             <div className='fixed-side-container'>
                                 <div className='buy-sell-container'>
+                                    <div id='tabs'>
+                                        <div
+                                            className='buy-tab'
+                                            onClick={() => setShowBuy(true)}
+                                            style={{color: showBuy ? '#0b7cee' : '', borderBottom: showBuy ? '' : '1px solid lightgray', borderTop: showBuy ? '2px solid #0b7cee' : ''}}
+                                        >
+                                            <span className='trade-span'>Buy</span>
+                                        </div>
+                                        <div
+                                            className='sell-tab'
+                                            onClick={() => setShowBuy(false)}
+                                            style={{color: showBuy ? '' : '#0b7cee', borderBottom: showBuy ? '1px solid lightgray' : '', borderTop: showBuy ? '' : '2px solid #0b7cee'}}
+                                        >
+                                            <span className='trade-span'>Sell</span>
+                                        </div>
+                                        {/* <Headers
+                                                titles={titles}
+                                                currentTab={currentTab}
+                                                selectTab={setCurrentTab}
+                                            /> */}
+                                    </div>
                                     <section className="buy-sell">
-                                        <div id='tabs'>
-                                            {/* <h2>Buy/Sell</h2> */}
-                                            {/* <Headers
-                                                    titles={titles}
-                                                    currentTab={currentTab}
-                                                    selectTab={setCurrentTab}
-                                                /> */}
-                                            <div className="tab-toggle-content">
-                                                {prices && <Buy user={user} companyId={stock?.id} ticker={ticker} priceData={data[data.length - 1]} />}
-                                                <br></br>
-                                                {prices && userShares && <Sell user={user} priceData={data[data.length - 1]} companyId={stock?.id} shares={userShares} />}
-                                                {/* {currentTab === 0 && <Buy user={user} priceArr={price} />} */}
-                                                {/* {currentTab === 1 && <Sell user={user} price={closePrice} shares={userShares} />} */}
-                                            </div>
+                                        <div className="tab-toggle-content">
+                                            {showBuy ?
+                                                prices && <Buy user={user} companyId={stock?.id} ticker={ticker} priceData={data[data.length - 1]} />
+                                                :
+                                                prices && userShares && <Sell user={user} priceData={data[data.length - 1]} companyId={stock?.id} shares={userShares} />
+                                                // {/* {currentTab === 0 && <Buy user={user} priceArr={price} />} */}
+                                                // {/* {currentTab === 1 && <Sell user={user} price={closePrice} shares={userShares} />} */}
+                                            }
                                         </div>
                                     </section>
 

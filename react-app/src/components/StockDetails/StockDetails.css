@@ -119,30 +119,84 @@
 
 .fixed-side-container {
     display: block;
-    padding: 20px;
-    margin: 2em 2em;
-    border: 1px solid transparent;
+    /* padding: 0 20px 20px 20px; */
+    margin: 45px 2em 2em 2em;
+    /* border: 1px solid transparent; */
     border-radius: 8px;
     box-shadow: 0px 0px 15px rgb(209, 209, 209);
-    width: 230px;
+    width: 270px;
     /* height: 360px; */
 }
 
-.transaction-labels {
-    margin-bottom: 5px;
-    font-weight: bold;
+.transaction-info,
+.shares-ctn {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 20px 0;
 }
 
 #shares {
-    margin-bottom: 5px;
+    width: 55px;
 }
 
-#transaction-stock-price {
-    margin-bottom: 5px;
+.transaction-btn {
+    display: flex;
+    justify-content: center;
+}
+
+#transaction-balance {
+    margin-bottom: 20px;
+}
+
+#tabs {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.buy-tab,
+.sell-tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 75px;
+    font-weight: 700;
+    /* font-size: 14pt; */
+    cursor: pointer;
+    width: 100%;
+}
+
+.buy-tab {
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+    border-right: 1px solid lightgray;
+}
+.sell-tab {
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+}
+
+.buy-tab:hover,
+.sell-tab:hover {
+    background-color: rgba(211, 211, 211, 0.2);
 }
 
 #buy-sell-hr {
     margin-bottom: 5px;
+}
+
+.buy-sell-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.buy-sell {
+    /* display: flex; */
+    width: 80%;
+    padding: 10px;
 }
 
 #buy-btn, #sell-btn {
@@ -157,12 +211,14 @@
     font-family: sans-serif;
     /* border-radius: 5px 5px;
     padding: 5px 5px; */
-    height: 30px;
+    height: 40px;
     padding: 7px 25px;
     border-radius: 35px;
     border: none;
     transition-duration: 1s;
-    margin:5px;
+    margin-bottom: 20px;
+    width: 100%;
+    font-size: 12pt;
 }
 
 #buy-btn:hover, #sell-btn:hover {

@@ -113,30 +113,32 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
         <div>
             <form onSubmit={buyStock}>
                 <div className='transaction-box'>
-                    <div className='transaction-labels' id='buy-label'>
+                    {/* <div className='transaction-labels' id='buy-label'>
                         <h2>
                             Buy
                         </h2>
+                    </div> */}
+                    <div className='transaction-info'>
+                        <div className='transaction-labels'>Market Price</div>
+                        <div id='transaction-stock-price'>
+                            ${priceData && Number(priceData.price).toFixed(2)}
+                        </div>
                     </div>
-                    <div className='transaction-labels'>Shares</div>
-                    <select name="shares" id="shares" onChange={transactionTotal} value={sharesBought}>
-                        <option value=""></option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                    </select>
-                </div>
-                <div className='transaction-info'>
-                    <div className='transaction-labels'>Market Price</div>
-                    <div id='transaction-stock-price'>
-                        ${priceData && Number(priceData.price).toFixed(2)}
+                    <div className='shares-ctn'>
+                        <div className='transaction-labels'>Shares</div>
+                        <select name="shares" id="shares" onChange={transactionTotal} value={sharesBought}>
+                            <option value=""></option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
                     </div>
                 </div>
                 <hr id='buy-sell-hr' />
