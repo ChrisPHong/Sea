@@ -27,6 +27,7 @@ function OneWatchlist({ watchlist, currencyFormat }) {
                             <button
                                 className='deleteButton'
                                 onClick={async () => {
+                                    console.log(watchlist, "<<<<<<<<<<<<<<< WATCHLIST")
                                     await dispatch(deleteWatchList(watchlist.id))
                                     await dispatch(getWatchlists())
                                 }}
@@ -39,7 +40,7 @@ function OneWatchlist({ watchlist, currencyFormat }) {
                     <div className='company'>
                         {watchlist.watchComps.map((company) => {
                             return (
-                                <div className={`company-${company.id} divCompanyPriceAndGraph`}>
+                                <div key={company.id} className={`company-${company.id} divCompanyPriceAndGraph`}>
                                     <NavLink className='navLinkStocksWatchlist' to={`/stocks/${company.ticker}`}>
                                         {company.ticker}
                                     </NavLink>

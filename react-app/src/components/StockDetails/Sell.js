@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { stockTransaction, getBoughtTransactions } from '../../store/transaction';
+import { getUserInformation } from '../../store/session'
 
 const Sell = ({ user, companyId, priceData, shares }) => {
     const sharesArr = Object.values(shares)
     const dispatch = useDispatch();
     const [userShares, setUserShares] = useState(shares);
     const boughtShares = useSelector((state) => Object.values(state.transaction.boughtTrans))
+    const options = { style: 'currency', currency: 'USD' };
+    const currencyFormat = new Intl.NumberFormat('en-US', options);
 
     let ownedStockShares = 0
     if (shares) {
@@ -32,32 +35,47 @@ const Sell = ({ user, companyId, priceData, shares }) => {
         //  price = market price per share
     }
 
+    useEffect(() => {
+        let error = []
+
+
+        if (ownedStockShares < sharesSold) {
+            error.push('You cannot sell more stocks than you can buy')
+        }
+        setErrors(error)
+
+    }, [balance])
+
     const sellStock = async (e) => {
         e.preventDefault();
-        setOrder('sold');
-        // setUserShares(userShares - sharesSold);
-        setBalance((Number(balance) + Number(transactionPrice)).toFixed(2));
-        let newBalance = (Number(balance) + Number(transactionPrice)).toFixed(2);
-        // if we take num of shares of dashboard and subtract shares sold
-        let newTransaction = {
-            price: Number(transactionPrice).toFixed(2),
-            shares: sharesSold,
-            type: 'sell',
-            user_id: user.id,
-            company_id: companyId,
-            balance: Number(newBalance).toFixed(2),
-        }
+        if (errors.length < 1) {
 
-        // Checks to see if the sold shares is > or < than the amount of shares owned
-        const data = await dispatch(stockTransaction(newTransaction))
-        if(data){
-            let error = []
-            error.push(Object.values(data)[0])
-            setErrors(error)
-            return
-        }
-        dispatch(getBoughtTransactions(user?.id))
+            setOrder('sold');
+            // setUserShares(userShares - sharesSold);
+            setBalance((Number(balance) + Number(transactionPrice)).toFixed(2));
+            let newBalance = (Number(balance) + Number(transactionPrice)).toFixed(2);
+            // if we take num of shares of dashboard and subtract shares sold
+            let newTransaction = {
+                price: Number(transactionPrice).toFixed(2),
+                shares: sharesSold,
+                type: 'sell',
+                user_id: user.id,
+                company_id: companyId,
+                balance: Number(newBalance).toFixed(2),
+            }
 
+            // Checks to see if the sold shares is > or < than the amount of shares owned
+            const data = await dispatch(stockTransaction(newTransaction))
+            if (data) {
+                let error = []
+                error.push(Object.values(data)[0])
+                setErrors(error)
+                return
+            }
+            await dispatch(getUserInformation())
+            await dispatch(getBoughtTransactions(user?.id))
+
+        }
     }
 
 
@@ -82,11 +100,11 @@ const Sell = ({ user, companyId, priceData, shares }) => {
                             Sell
                         </h2>
                     </div> */}
-                        <div className='validationErrors-Sell' >
+                    <div className='validationErrors-Sell' >
                         {errors.length ?
-                        errors.map((error, i)=> (<p key={i} style={{color:'red'}}>{error}</p>))
-                        : null}
-                        </div>
+                            errors.map((error, i) => (<p key={i} style={{ color: 'red' }}>{error}</p>))
+                            : null}
+                    </div>
                     <div className='transaction-info'>
                         <div className='transaction-labels'>Market Price</div>
                         <div id='transaction-stock-price'>
@@ -122,6 +140,7 @@ const Sell = ({ user, companyId, priceData, shares }) => {
                         {order}
                     </button>
                 </div>
+                <div className='transaction-labels' id='transaction-balance'>Balance Available: {currencyFormat.format(balance)}</div>
                 {/* <div className='transaction-labels' id='transaction-available-shares'>{ownedStockShares || 0} Shares Available</div> */}
             </form>
         </div>

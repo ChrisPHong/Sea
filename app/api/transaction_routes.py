@@ -141,10 +141,10 @@ def add_new_transaction():
         user.balance = request.json['balance']
 
         db.session.add(transaction)
+        db.session.add(user)
         db.session.commit()
-        new_transaction_dict = transaction.to_dict()
-        new_transaction_dict['balance'] = user.balance
-        return new_transaction_dict
+
+        return transaction.to_dict()
     return {'errors': validation_errors_to_error_messages(form.errors)}, 402
 
 @transaction_routes.route('/<int:company_id>/update', methods=['PATCH'])
@@ -174,6 +174,7 @@ def update_transactions(company_id):
 
         user = User.query.filter(User.id == int(user_id)).first()
         user.balance = request.json['balance']
+
 
         db.session.commit()
         new_transaction_dict = transaction.to_dict()
