@@ -33,7 +33,6 @@ const Dashboard = () => {
     const newsArr = Object.values(news)
     const options = { style: 'currency', currency: 'USD' };
     const currencyFormat = new Intl.NumberFormat('en-US', options);
-    let nameTickerArr = []
     let portfolioBalance = 0
 
     const [newData, setNewData] = useState(portfolio)
@@ -45,63 +44,19 @@ const Dashboard = () => {
     }, [])
 
     useEffect(() => {
-        // dispatch(getTransactions(currentUser?.id))
-
         dispatch(getGeneralNews())
         dispatch(getAllTransactions())
         dispatch(getBoughtTransactions(currentUser?.id))
         dispatch(getStocks())
         dispatch(getAssetClosingPrices())
-
-    }, [dispatch, currentUser])
-
-    // useEffect(() => {
-    //     for (let transId in transactions) {
-    //         dispatch(getAssetPrices(transactions[transId].companyId))
-    //     }
-    //     // boughtTransArr = boughtTransactions
-    // }, [dispatch, currentUser, stocks])
-
-
-    useEffect(() => {
         dispatch(getPortfolio())
         setNewData(portfolio)
-    }, [currentUser, dispatch])
+    }, [dispatch, currentUser])
 
     useEffect(() => {
         createData('1w')
         setNewData(portfolio?.slice(-7))
     }, [portfolio?.length, currentUser])
-
-    // Find name and ticker from transaction that matches with the pool of companies in database
-    for (let id in stocks) {
-        let company = stocks[id]
-        for (let i in boughtTransactions) {
-            let transaction = boughtTransactions[i]
-            if (company.id === transaction.companyId) {
-                nameTickerArr.push({'name': company.name, 'ticker': company.ticker, 'shares': transaction.shares})
-            }
-        }
-    }
-
-    // Returns the last price (closing price) that YOU OWN along with
-    // buyingPrice and number of shares to help calculate gain/loss percentage
-    // as well as calculating asset balance
-    // for (let compId in assetPrices) {
-    //     let pricesArr = assetPrices[compId]
-    //     for (let transId in boughtTransactions) {
-    //         let transaction = boughtTransactions[transId]
-    //         if (+compId === transaction.companyId) {
-    //             closingPrice.push({
-    //                 'closingPrice': pricesArr[pricesArr.length - 1].price,
-    //                 'shares': transaction.shares,
-    //                 'buyingPrice': transaction.price
-    //             })
-    //         }
-    //     }
-    // }
-
-    console.log('here is closing prices', closingPrices)
 
     // Total money you put in to buy shares
     const totalFunds = () => {
@@ -120,10 +75,7 @@ const Dashboard = () => {
             total += closingPrices[compId]?.price * transactions[compId]?.shares
         }
         return total
-
     }
-
-
 
     const createData = (time) => {
         if (time === '1y') {
@@ -281,7 +233,6 @@ const Dashboard = () => {
                         closingPrices={closingPrices}
                         closingPricesArr={closingPricesArr}
                         transArr={transArr}
-                        nameTickerArr={nameTickerArr}
                         currencyFormat={currencyFormat}
                         buyingTotal={buyingTotal}
                     />
