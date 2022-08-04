@@ -133,19 +133,20 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-}
-
-.transaction-labels {
-    margin-bottom: 5px;
-    font-weight: bold;
+    margin: 20px 0;
 }
 
 #shares {
-    margin-bottom: 5px;
+    width: 55px;
 }
 
-#transaction-stock-price {
-    margin-bottom: 5px;
+.transaction-btn {
+    display: flex;
+    justify-content: center;
+}
+
+#transaction-balance {
+    margin-bottom: 20px;
 }
 
 #tabs {
@@ -210,12 +211,14 @@
     font-family: sans-serif;
     /* border-radius: 5px 5px;
     padding: 5px 5px; */
-    height: 30px;
+    height: 40px;
     padding: 7px 25px;
     border-radius: 35px;
     border: none;
     transition-duration: 1s;
-    margin:5px;
+    margin-bottom: 20px;
+    width: 100%;
+    font-size: 12pt;
 }
 
 #buy-btn:hover, #sell-btn:hover {
