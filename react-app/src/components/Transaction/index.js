@@ -49,34 +49,41 @@ function TransactionPage() {
         <>
 
             <div className='transaction-container'>
-                <h2 className='TitleTransactions'>Transactions</h2>
+                <h1 className='TitleTransactions'>Transactions</h1>
                 <div className='transaction-table'>
                     {transactions ?
                         (
                             <table>
-                                <thead>
-                                    <tr>
-                                        <th className='ColumnNameTransactions'>COMPANY</th>
-                                        <th className='ColumnNameTransactions'>PRICE</th>
-                                        <th className='ColumnNameTransactions'>SHARES</th>
-                                        <th className='ColumnNameTransactions'>BUY/SELL</th>
-                                        <th className='ColumnNameTransactions'>DATE</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                                <div>
                                     {transactions.map(transaction => {
                                         if (transaction.userId === userId) {
-                                            return (<tr key={transaction.id} className={(transaction?.type === "sell") ? 'sell' : 'buy'}>
+                                            return (<div key={transaction.id} className={(transaction?.type === "sell") ? 'sell' : 'buy'}>
                                                 {/* <td>{companiesObj && companiesObj[transaction.companyId].ticker}</td> */}
-                                                <td className='transactionColumn'>{matchTicker(transaction.companyId)}</td>
-                                                <td className='transactionColumn'>${transaction?.price}</td>
-                                                <td className='transactionColumn'>{transaction?.shares}</td>
-                                                <td className='transactionColumn'>{transaction?.type.toUpperCase()}</td>
-                                                <td className='transactionColumn'>{transaction?.date}</td>
-                                            </tr>)
+                                                <div>
+                                                    <div className='transactionColumn'>
+                                                        <div className='transaction-page-transaction-details-container'>
+                                                            <div className='transaction-page-ticker-price-buy-sell-container'>
+                                                                {matchTicker(transaction.companyId)}
+                                                            </div>
+                                                            <div className='transaction-page-transaction-date'>
+                                                                {transaction?.date.slice(8, 11)} {transaction?.date.slice(5, 7)}, {transaction?.date.slice(12, 16)}
+                                                            </div>
+                                                            <div className='transaction-page-transaction-stock-price'>
+                                                                ${Number(transaction?.price / transaction?.shares).toFixed(2)}
+                                                            </div>
+                                                            <div className='transaction-page-transaction-buy-sell'>
+                                                                {transaction?.type.toUpperCase() === "BUY" ? <div style={{"color": "darkgreen"}}>Buy</div>: <div style={{"color": "red"}}>Sell</div>}
+                                                            </div>
+                                                            <div className='transaction-page-transaction-total-price'>
+                                                                {transaction?.type.toUpperCase() === "BUY" ? <div style={{"color": "darkgreen"}}>+${Number(transaction?.price).toFixed(2)}</div> : <div style={{"color": "red"}}>-${Number(transaction?.price).toFixed(2)}</div>}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>)
                                         }
                                     })}
-                                </tbody>
+                                </div>
                             </table>
                         ) :
                         (<div>You don't have any transactions yet.</div>)}
