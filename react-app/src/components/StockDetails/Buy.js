@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getBoughtTransactions, stockTransaction, updateTransaction } from '../../store/transaction';
+import { getBoughtTransactions, stockTransaction } from '../../store/transaction';
+import {getUserInformation} from '../../store/session'
 
 const Buy = ({ user, companyId, ticker, priceData }) => {
 
@@ -46,8 +47,10 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
             balance: Number(newBalance).toFixed(2)
         }
 
-            dispatch(stockTransaction(newTransaction))
-            dispatch(getBoughtTransactions(user?.id))
+
+            await dispatch(stockTransaction(newTransaction))
+            await dispatch(getUserInformation())
+            await dispatch(getBoughtTransactions(user?.id))
 
     }
 

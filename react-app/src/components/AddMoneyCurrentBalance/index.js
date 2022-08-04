@@ -24,7 +24,9 @@ function AddMoneyCurrentBalance() {
         setErrors(error);
     }, [balance]);
 
-
+    useEffect(()=>{
+        setBuyingPower(user.balance)
+    },[user])
     const onSubmit = (e) => {
         e.preventDefault()
         if(errors.length > 0){
@@ -48,7 +50,7 @@ function AddMoneyCurrentBalance() {
         <div className='AddMoneyCurrentBalanceForm'>
             <div className='buying-power-headings'>
                 <h2 className='buying-power-inForm'>Buying Power:</h2>
-                <h2 className='buying-power-inForm'>${buyingPower.toLocaleString('en-US')}</h2>
+                <h2 className='buying-power-inForm'>${(buyingPower).toLocaleString('en-US')}</h2>
             </div>
             {show ?
             <div>
