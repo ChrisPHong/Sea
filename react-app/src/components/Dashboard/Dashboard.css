@@ -23,7 +23,7 @@
 }
 
 #left {
-    width: 1000px;
+    width: 900px;
 }
 
 
@@ -125,6 +125,7 @@
     font-size: 36pt;
     width: 950px;
     color: #0b7cee;
+    margin-top: 40px;
 }
 
 .news-ctn {

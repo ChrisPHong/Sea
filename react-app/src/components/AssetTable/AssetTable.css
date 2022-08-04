@@ -1,24 +1,29 @@
 table {
-    width: 1000px;
+    width: 900px;
 }
 
 .dashboard-header,
 .dashboard-body {
     display: flex;
-    justify-content: center;
+}
+
+.dashboard-header {
+    justify-content: flex-start;
+    margin: 0 10px 0 40px;
 }
 
 .dashboard-body {
+    justify-content: center;
     flex-direction: column;
-    align-items: flex-end;
-    width: 910px;
+    align-items: flex-start;
+    width: 100%;
     margin: 0 10px 0 40px;
 }
 
 .owned-assets {
     display: flex;
     justify-content: center;
-    width: auto;
+    width: 100%;
     border-bottom: 1px solid lightgray;
     padding-bottom: 40px;
 }
@@ -63,10 +68,13 @@ table {
 .owned-shares-label,
 .owned-balance,
 .owned-price-label,
-.owned-comp-price,
-.owned-allocations-label,
-.allocation-percent {
+.owned-comp-price {
     width: 200px;
+    text-align: left;
+}
+
+.owned-allocations-label {
+    width: 100px;
     text-align: left;
 }
 
@@ -78,6 +86,8 @@ table {
 }
 
 .allocation-percent {
+    width: 100px;
+    text-align: left;
     padding: 25px 0 25px 0;
 }
 
