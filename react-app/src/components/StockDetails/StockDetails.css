@@ -128,6 +128,13 @@
     /* height: 360px; */
 }
 
+.transaction-info,
+.shares-ctn {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
 .transaction-labels {
     margin-bottom: 5px;
     font-weight: bold;
@@ -186,6 +193,8 @@
 }
 
 .buy-sell {
+    /* display: flex; */
+    width: 80%;
     padding: 10px;
 }
 
