@@ -1,0 +1,85 @@
+.page-not-found {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    /* top: 110px; */
+    width: 100%;
+    background-image: url(https://images.unsplash.com/photo-1498330177096-689e3fb901ca?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.sea-logo-404 {
+    height: 50px;
+    width: 50px;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+.page-not-found-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 200px;
+    width: 400px;
+    height: 250px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+.page-not-found-title {
+    color: rgb(0, 0, 0);
+    font-size: 1.2em;
+    text-align: center;
+    font-weight: bold;
+}
+
+#first-p {
+    padding: 10px 40px 5px 40px;
+}
+
+#second-p {
+    padding-bottom: 30px;
+}
+
+#page-not-found-text {
+    /* margin-top: 10px; */
+    color: rgb(255, 255, 255);
+    font-size: 1em;
+    text-align: center;
+
+    margin-bottom: 40px;
+}
+
+span#back-to-home a {
+    color: white;
+    /* padding: 10px; */
+    /* border-radius: 10px; */
+    background-color: rgb(24, 116, 134);
+    text-decoration: none;
+
+    font-family: sans-serif;
+    /* border-radius: 5px 5px; */
+    border: none;
+    /* padding: 5px 5px; */
+    /* background-color: transparent; */
+    transition-duration: 1s;
+    margin-top: 10px;
+    margin: 5px;
+    height: 30px;
+    padding: 10px 20px;
+    border-radius: 35px;
+}
+
+span#back-to-home a:hover {
+    background-color: rgba(5, 113, 171, 0.3);
+    color: white;
+}
+
+#sea-icon {
+    width: 100px;
+    height: 100px;
+}

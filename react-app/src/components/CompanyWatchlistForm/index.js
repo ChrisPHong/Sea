@@ -24,7 +24,7 @@ function CompanyWatchlistForm(props) {
 
     return (
         <div className='CompanyWatchlistDiv'>
-            <h3> Watchlists</h3>
+            <h3 className='add-to-watchlist-title'> Add to Watchlist</h3>
 
                     {watchlists.map(watchlist => {
                         return <button className='WatchListCompanyButton'
