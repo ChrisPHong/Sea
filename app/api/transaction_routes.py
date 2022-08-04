@@ -187,10 +187,10 @@ def update_transactions(company_id):
 def add_money_current_balance():
     form = UserBalanceForm()
     form['csrf_token'].data = request.cookies['csrf_token']
+    user = User.query.get(current_user.id)
 
     if form.validate_on_submit():
         # We find the user and we add the buying power to the balance
-        user = User.query.get(request.json['userId'])
         user.balance += int(request.json['balance'])
 
 

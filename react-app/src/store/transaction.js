@@ -114,7 +114,7 @@ export const stockTransaction = (data) => async (dispatch) => {
 
 export const addMoneyToCurrentBalance = (balance) => async (dispatch) => {
     const response = await fetch(`/api/transactions/add`, {
-        method: 'POST',
+        method: 'PATCH',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(balance)
     })
