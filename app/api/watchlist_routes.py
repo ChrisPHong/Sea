@@ -70,6 +70,7 @@ def patch_watchlists(id):
 @watchlist_routes.route('/<int:id>', methods=['DELETE'])
 def delete_watchlists(id):
     watchlist = Watchlist.query.filter(Watchlist.id == id).first()
+
     db.session.delete(watchlist)
     db.session.commit()
 
@@ -99,22 +100,8 @@ def delete_company_watchlists(id):
     watchlist = Watchlist.query.filter(Watchlist.id == id).first()
     stock = Company.query.filter(Company.ticker == ticker.upper()).first()
 
-# I think you can find the company and then find the index of the company and then remove it from the list
-
-    # Finding that specific company within the watch_comps and then removing it from the list
-    # joint_table = watchlist.watch_comps
-    # print('<<<<<<<<<<<< BEFORE DELETE >>>>>>>>>>>>>')
-    the_list = [company for company in watchlist.watch_comps if company.id == stock.id]
-    # print('<<<<<<<<<<<< THE LIST >>>>>>>>>>>>>> ', the_list[0])
-    # found_company = [company.to_dict() for company in joint_table if company.id == stock.id]
-    # print(found_company)
-    # index = joint_table.index(found_company)
-    # print('<<<<<<<<<<<< output for joint_table>>>>>>>>>>>>>', [company for company in joint_table if company.id == stock.id])
-    # print('<<<<<<<<<<<< index >>>>>>>>>>>>>', index)
-
     watchlist.watch_comps.remove(([company for company in watchlist.watch_comps if company.id == stock.id][0]))
 
-    # print('<<<<<<<<<<<< AFTER DELETE >>>>>>>>>>>>>', watchlist.watch_comps)
 
     db.session.commit()
     watchlists = Watchlist.query.filter(Watchlist.user_id == current_user.get_id()).all()

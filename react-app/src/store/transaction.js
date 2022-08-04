@@ -122,7 +122,7 @@ export const addMoneyToCurrentBalance = (balance) => async (dispatch) => {
 
     if (response.ok) {
         const balance = await response.json()
-        // console.log(balance)
+
         dispatch(updateCurrentBalance(balance))
     }
 }
@@ -147,6 +147,7 @@ const transactionReducer = ( state = initialState, action ) => {
         case BUY_STOCK:
             newState = {...state, entries: {...state.entries }, boughtTrans: { ...state.boughtTrans } }
             newState.boughtTrans[action.transaction.id] = action.transaction
+
             return newState;
         case EDIT_TRANSACTION:
             newState = { ...state, entries: { ...state.entries }, boughtTrans: { ...state.boughtTrans } }

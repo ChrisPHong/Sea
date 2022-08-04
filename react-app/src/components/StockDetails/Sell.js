@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { stockTransaction, getBoughtTransactions } from '../../store/transaction';
+import {getUserInformation} from '../../store/session'
 
 const Sell = ({ user, companyId, priceData, shares }) => {
     const sharesArr = Object.values(shares)
@@ -56,6 +57,7 @@ const Sell = ({ user, companyId, priceData, shares }) => {
             setErrors(error)
             return
         }
+        dispatch(getUserInformation())
         dispatch(getBoughtTransactions(user?.id))
 
     }

@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from flask_login import login_required, login_user
+from flask_login import current_user, login_required, login_user
 from app.models import User, db
 from app.forms import LoginForm, SignUpForm
 
@@ -29,4 +29,11 @@ def validation_errors_to_error_messages(validation_errors):
 def user(id):
     # user = User.query.get(id)
     user = User.query.filter(User.id == id).first()
+    return user.to_dict()
+
+# Users can get access to their portfolio and info
+@user_routes.route('/user_information')
+@login_required
+def user_information():
+    user = User.query.get(current_user.id)
     return user.to_dict()

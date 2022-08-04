@@ -135,7 +135,7 @@ export const editWatchlists = (payload) => async (dispatch) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
     })
-    console.log(response, "<<<<< THIS IS THE RESPONSE!")
+
     if(!response.ok){
         return "The name you provided already exists. Please enter a new value"
     }

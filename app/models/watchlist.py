@@ -20,7 +20,7 @@ class Watchlist(db.Model):
     users = db.relationship('User', back_populates='watchlists')
 
     # Many-to-Many relationship with Companies
-    watch_comps = db.relationship('Company', secondary=watchlist_company_join, back_populates='comp_wl', cascade='all, delete')
+    watch_comps = db.relationship('Company', secondary=watchlist_company_join, back_populates='comp_wl')
 
 
     def to_dict(self):
