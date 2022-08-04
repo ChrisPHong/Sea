@@ -4,7 +4,6 @@ const LOAD_BOUGHT_TRANSACTIONS = 'transaction/loadBoughtTransactions'
 const ADD_MONEY = 'transactions/ADD_MONEY'
 const CLEAR_ALL_TRANSACTIONS = 'transactions/CLEAR_ALL_TRANSACTIONS'
 const EDIT_TRANSACTION = 'transactions/EDIT_TRANSACTION'
-const SELL_TRANSACTION = 'transactions/SELL_TRANSACTION'
 
 // get all transactions
 export const loadTransactions = (transactions) => {
@@ -21,12 +20,7 @@ export const editTransaction = (transaction) => {
     }
 }
 
-export const deleteTransaction = (transaction) => {
-    return {
-        type: SELL_TRANSACTION,
-        transaction
-    }
-}
+
 // post
 export const buyStock = (transaction) => ({
     type: BUY_STOCK,
@@ -100,19 +94,6 @@ export const updateTransaction = (payload) => async (dispatch) => {
     }
 }
 
-export const sellTransaction = (payload) => async (dispatch) => {
-    const response = await fetch(`/api/transactions/${payload.company_id}/sell`, {
-        method: 'PATCH',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(payload)
-    })
-
-    if (response.ok) {
-        const transaction = await response.json()
-        dispatch(deleteTransaction(transaction))
-    }
-}
-
 
 // thunk - buy/sell stock ??
 export const stockTransaction = (data) => async (dispatch) => {
@@ -121,7 +102,10 @@ export const stockTransaction = (data) => async (dispatch) => {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data)
     })
-
+    if(!res.ok){
+        const error = await res.json()
+        return error
+    }
     if (res.ok) {
         const transactionInfo = await res.json()
         dispatch(buyStock(transactionInfo))
@@ -165,10 +149,6 @@ const transactionReducer = ( state = initialState, action ) => {
             newState.boughtTrans[action.transaction.id] = action.transaction
             return newState;
         case EDIT_TRANSACTION:
-            newState = { ...state, entries: { ...state.entries }, boughtTrans: { ...state.boughtTrans } }
-            newState.boughtTrans[action.transaction.id] = action.transaction
-            return newState
-        case SELL_TRANSACTION:
             newState = { ...state, entries: { ...state.entries }, boughtTrans: { ...state.boughtTrans } }
             newState.boughtTrans[action.transaction.id] = action.transaction
             return newState

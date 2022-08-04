@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { sellTransaction, stockTransaction, getBoughtTransactions } from '../../store/transaction';
+import { stockTransaction, getBoughtTransactions } from '../../store/transaction';
 
 const Sell = ({ user, companyId, priceData, shares }) => {
     const sharesArr = Object.values(shares)
     const dispatch = useDispatch();
     const [userShares, setUserShares] = useState(shares);
-    // console.log("THIS IS THE USER SHARES", userShares)
+    const boughtShares = useSelector((state) => Object.values(state.transaction.boughtTrans))
+
     let ownedStockShares = 0
     if (shares) {
         for (let i = 0; i < sharesArr?.length; i++) {
@@ -23,26 +24,13 @@ const Sell = ({ user, companyId, priceData, shares }) => {
     const [order, setOrder] = useState('sell');
     const [sharesSold, setSharesSold] = useState(0);
     const [balance, setBalance] = useState(user?.balance);
+    const [errors, setErrors] = useState([])
 
     const transactionTotal = e => {
         setSharesSold(e.target.value);
         setTransactionPrice((e.target.value * (priceData.price)).toFixed(2));
         //  price = market price per share
     }
-
-    // const convertDate = date => {
-    //     const dates = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-    //     const newDate = date.split(' ')
-    //     let newMonth
-    //     for (let i in dates) {
-    //         if (newDate[0] === dates[i]) {
-    //             newMonth = i
-    //         }
-
-    //     }
-    //     const result = new Date(`${newMonth}-${parseInt(newDate[1])}-${parseInt(newDate[2])}`)
-    //     return result.toDateString()
-    // }
 
     const sellStock = async (e) => {
         e.preventDefault();
@@ -60,10 +48,18 @@ const Sell = ({ user, companyId, priceData, shares }) => {
             balance: Number(newBalance).toFixed(2),
         }
 
-        dispatch(sellTransaction(newTransaction))
+        // Checks to see if the sold shares is > or < than the amount of shares owned
+        const data = await dispatch(stockTransaction(newTransaction))
+        if(data){
+            let error = []
+            error.push(Object.values(data)[0])
+            setErrors(error)
+            return
+        }
         dispatch(getBoughtTransactions(user?.id))
 
     }
+
 
     if (sellStock) {
         setTimeout(() => {
@@ -86,6 +82,11 @@ const Sell = ({ user, companyId, priceData, shares }) => {
                             Sell
                         </h2>
                     </div> */}
+                        <div className='validationErrors-Sell' >
+                        {errors.length ?
+                        errors.map((error, i)=> (<p key={i} style={{color:'red'}}>{error}</p>))
+                        : null}
+                        </div>
                     <div className='transaction-info'>
                         <div className='transaction-labels'>Market Price</div>
                         <div id='transaction-stock-price'>
