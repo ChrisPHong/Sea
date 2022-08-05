@@ -1,59 +1,56 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { stockTransaction, getBoughtTransactions } from '../../store/transaction';
 import { getUserInformation } from '../../store/session'
 
-const Sell = ({ user, companyId, priceData, shares }) => {
-    const sharesArr = Object.values(shares)
+const Sell = ({ user, companyId, priceData, boughtTransactions, boughtShares}) => {
     const dispatch = useDispatch();
-    const [userShares, setUserShares] = useState(shares);
-    const boughtShares = useSelector((state) => Object.values(state.transaction.boughtTrans))
     const options = { style: 'currency', currency: 'USD' };
     const currencyFormat = new Intl.NumberFormat('en-US', options);
 
     let ownedStockShares = 0
-    if (shares) {
-        for (let i = 0; i < sharesArr?.length; i++) {
-            if (sharesArr[i]?.companyId === companyId && sharesArr[i]?.userId === user.id && sharesArr[i]?.type === "buy") {
-                ownedStockShares += sharesArr[i]?.shares
+    if (boughtShares.length) {
+        for (let i = 0; i < boughtShares?.length; i++) {
+            if (boughtShares[i]?.companyId === companyId && boughtShares[i]?.userId === user.id && boughtShares[i]?.type === "buy") {
+                ownedStockShares += boughtShares[i]?.shares
             }
-            if (sharesArr[i]?.companyId === companyId && sharesArr[i]?.type === "sell") {
-                ownedStockShares -= sharesArr[i]?.shares
+            if (boughtShares[i]?.companyId === companyId && boughtShares[i]?.type === "sell") {
+                ownedStockShares -= boughtShares[i]?.shares
             }
         }
     }
 
     const [transactionPrice, setTransactionPrice] = useState((0).toFixed(2));
     const [order, setOrder] = useState('sell');
-    const [sharesSold, setSharesSold] = useState(0);
+    const [sharesSold, setSharesSold] = useState('');
+    const [currentShares, setCurrentShares] = useState(boughtTransactions[companyId]?.shares)
     const [balance, setBalance] = useState(user?.balance);
     const [errors, setErrors] = useState([])
 
     const transactionTotal = e => {
         setSharesSold(e.target.value);
         setTransactionPrice((e.target.value * (priceData.price)).toFixed(2));
-        //  price = market price per share
     }
 
     useEffect(() => {
         let error = []
 
-
         if (ownedStockShares < sharesSold) {
-            error.push('You cannot sell more stocks than you can buy')
+            error.push(`Your order exceeds the number of shares you own. Please try again.`)
         }
         setErrors(error)
 
-    }, [balance])
+    }, [balance, sharesSold])
 
     const sellStock = async (e) => {
         e.preventDefault();
         if (errors.length < 1) {
 
             setOrder('sold');
-            // setUserShares(userShares - sharesSold);
             setBalance((Number(balance) + Number(transactionPrice)).toFixed(2));
+            setCurrentShares(boughtTransactions[companyId]?.shares - sharesSold)
             let newBalance = (Number(balance) + Number(transactionPrice)).toFixed(2);
+
             // if we take num of shares of dashboard and subtract shares sold
             let newTransaction = {
                 price: Number(priceData.price).toFixed(2),
@@ -74,7 +71,7 @@ const Sell = ({ user, companyId, priceData, shares }) => {
             }
             await dispatch(getUserInformation())
             await dispatch(getBoughtTransactions(user?.id))
-
+            setSharesSold(0)
         }
     }
 
@@ -95,16 +92,12 @@ const Sell = ({ user, companyId, priceData, shares }) => {
         <div>
             <form onSubmit={sellStock}>
                 <div className='transaction-box'>
-                    {/* <div className='transaction-labels' id='buy-label'>
-                        <h2>
-                            Sell
-                        </h2>
-                    </div> */}
                     <div className='validationErrors-Sell' >
                         {errors.length ?
                             errors.map((error, i) => (<p key={i} style={{ color: 'red' }}>{error}</p>))
                             : null}
                     </div>
+                    <div className='transaction-labels' id='owned-shares'>{boughtTransactions[companyId]?.shares ? `${currentShares} shares available` : '0 shares available'}</div>
                     <div className='transaction-info'>
                         <div className='transaction-labels'>Market Price</div>
                         <div id='transaction-stock-price'>
@@ -119,6 +112,7 @@ const Sell = ({ user, companyId, priceData, shares }) => {
                             onKeyPress={preventMinus}
                             name="shares"
                             id="shares"
+                            placeholder='0'
                             onChange={transactionTotal}
                             value={sharesSold}
                         />
@@ -132,21 +126,23 @@ const Sell = ({ user, companyId, priceData, shares }) => {
                     </div>
                 </div>
                 <div className='transaction-btn'>
-                    <button id='sell-btn' type="submit"
-                        onClick={(e) => {
-                            sellStock(e);
+                    <button
+                        id='sell-btn'
+                        type="submit"
+                        onClick={(e) => {sellStock(e)}}
+                        disabled={(sharesSold !== "" && boughtTransactions[companyId]?.shares >= sharesSold) ? false : true}
+                        style={{
+                            backgroundColor: sharesSold !== "" && boughtTransactions[companyId]?.shares < sharesSold ? 'lightgray' : '#0b7cee',
+                            cursor: sharesSold !== "" && boughtTransactions[companyId]?.shares < sharesSold ? 'default' : 'pointer',
+                            transitionDuration: sharesSold !== "" && boughtTransactions[companyId]?.shares < sharesSold ? '' : '1s'
                         }}
-                        disabled={(sharesSold !== "" && userShares >= sharesSold) ? false : true}>
+                    >
                         {order}
                     </button>
                 </div>
                 <div className='transaction-labels' id='transaction-balance'>Balance Available: {currencyFormat.format(balance)}</div>
-                {/* <div className='transaction-labels' id='transaction-available-shares'>{ownedStockShares || 0} Shares Available</div> */}
             </form>
         </div>
-        // <div>
-        //     Sell Component
-        // </div>
     )
 }
 

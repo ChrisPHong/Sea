@@ -20,18 +20,6 @@ def validation_errors_to_error_messages(validation_errors):
             errorMessages.append(f'{field} : {error}')
     return errorMessages
 
-# Return a list of previous transactions
-# @transaction_routes.route('/', methods=['POST'])
-# def get_transactions():
-#     user_id = request.json['userId']
-#     print('------userID', user_id)
-#     allTransactions = Transaction.query.all()
-#     print('-----ALL TRANSACTIONS---', allTransactions)
-#     return user_id;
-    # transactions = Transaction.query.filter(Transaction.user_id == int(user_id)).all()
-    # print('this is transactions in the backend', transactions)
-    # return jsonify([transaction.to_dict() for transaction in transactions])
-
 # get all transaction companies' tickers
 @transaction_routes.route('/', methods=['POST'])
 def get_transactions_comp_tickers(companyId):
@@ -145,41 +133,6 @@ def add_new_transaction():
         db.session.commit()
 
         return transaction.to_dict()
-    return {'errors': validation_errors_to_error_messages(form.errors)}, 402
-
-@transaction_routes.route('/<int:company_id>/update', methods=['PATCH'])
-@login_required
-def update_transactions(company_id):
-    form = TransactionForm()
-    form['csrf_token'].data = request.cookies['csrf_token']
-    user_id = request.json['user_id']
-    todays_date = datetime.today()
-
-    # Get a specific transaction under specific user
-    transaction = Transaction.query.filter(Transaction.company_id == company_id, Transaction.user_id == int(user_id), Transaction.type == 'buy').first()
-
-
-    if form.validate_on_submit():
-
-        price=form.data['price'],
-        shares=form.data['shares'],
-        type=form.data['type']
-        # shares is a tuple in the database, so have to key into the first index
-        transaction.shares += shares[0]
-        total_amount = price * int(shares[0])
-
-        transaction.price = transaction.price + total_amount[0]
-        final_price = transaction.price / transaction.shares
-        transaction.price = final_price
-
-        user = User.query.filter(User.id == int(user_id)).first()
-        user.balance = request.json['balance']
-
-
-        db.session.commit()
-        new_transaction_dict = transaction.to_dict()
-        new_transaction_dict['balance'] = user.balance
-        return new_transaction_dict
     return {'errors': validation_errors_to_error_messages(form.errors)}, 402
 
 
