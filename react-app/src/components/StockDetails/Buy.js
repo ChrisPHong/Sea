@@ -1,25 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { getBoughtTransactions, stockTransaction } from '../../store/transaction';
 import {getUserInformation} from '../../store/session'
 
-const Buy = ({ user, companyId, ticker, priceData, boughtTransactions, boughtShares }) => {
-
+const Buy = ({ user, companyId, priceData, boughtTransactions }) => {
     const dispatch = useDispatch()
-    const transactions = useSelector(state => state?.transaction?.entries);
-    const updatedTransaction = useSelector(state => state?.transaction?.boughtTrans)
-    const transArr = Object.values(transactions)
-    const updatedTransArr = Object.values(updatedTransaction)
-    const userId = user.id;
-    const options = { style: 'currency', currency: 'USD' };
-    const currencyFormat = new Intl.NumberFormat('en-US', options);
 
     const [transactionPrice, setTransactionPrice] = useState((0).toFixed(2));
     const [sharesBought, setSharesBought] = useState(0);
     const [order, setOrder] = useState('buy');
     const [balance, setBalance] = useState(user?.balance)
     const [errors, setErrors] = useState({})
-    const [currentShares, setCurrentShares] = useState(boughtTransactions[companyId]?.shares)
+
+    const options = { style: 'currency', currency: 'USD' };
+    const currencyFormat = new Intl.NumberFormat('en-US', options);
 
 
     useEffect(() => {
@@ -40,12 +34,12 @@ const Buy = ({ user, companyId, ticker, priceData, boughtTransactions, boughtSha
     const transactionTotal = e => {
         setSharesBought(e.target.value);
         setTransactionPrice((e.target.value * (priceData.price)).toFixed(2));
-        //  price = market price per share
     }
 
 
     const buyStock = async (e) => {
         e.preventDefault();
+
         setOrder('ordered');
         setBalance((Number(balance) - Number(transactionPrice)).toFixed(2));
         let newBalance = (Number(balance) - Number(transactionPrice)).toFixed(2);
@@ -59,10 +53,9 @@ const Buy = ({ user, companyId, ticker, priceData, boughtTransactions, boughtSha
             balance: Number(newBalance).toFixed(2)
         }
 
-
-            await dispatch(stockTransaction(newTransaction))
-            await dispatch(getUserInformation())
-            await dispatch(getBoughtTransactions(user?.id))
+        await dispatch(stockTransaction(newTransaction))
+        await dispatch(getUserInformation())
+        await dispatch(getBoughtTransactions(user?.id))
 
     }
 
@@ -85,11 +78,6 @@ const Buy = ({ user, companyId, ticker, priceData, boughtTransactions, boughtSha
                     <div className='validationErrors-Sell'>
                         <p style={{ color: 'red' }}>{errors.balance}</p>
                     </div>
-                    {/* <div className='transaction-labels' id='buy-label'>
-                        <h2>
-                            Buy
-                        </h2>
-                    </div> */}
                     <div className='transaction-labels' id='owned-shares'>{boughtTransactions[companyId]?.shares ? `${boughtTransactions[companyId]?.shares} shares owned` : '0 shares owned'}</div>
                     <div className='transaction-info'>
                         <div className='transaction-labels'>Market Price</div>
@@ -129,7 +117,6 @@ const Buy = ({ user, companyId, ticker, priceData, boughtTransactions, boughtSha
                             transitionDuration: balance < Number(transactionPrice) ? '' : '1s'
                         }}
                     >
-                        {/* disabled={Object.values(errors).length !== 0}> */}
                         {order}
                     </button>
                 </div>
