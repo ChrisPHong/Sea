@@ -3,7 +3,6 @@ const BUY_STOCK = 'transactions/BUY_STOCK';
 const LOAD_BOUGHT_TRANSACTIONS = 'transaction/loadBoughtTransactions'
 const ADD_MONEY = 'transactions/ADD_MONEY'
 const CLEAR_ALL_TRANSACTIONS = 'transactions/CLEAR_ALL_TRANSACTIONS'
-const EDIT_TRANSACTION = 'transactions/EDIT_TRANSACTION'
 
 // get all transactions
 export const loadTransactions = (transactions) => {
@@ -12,14 +11,6 @@ export const loadTransactions = (transactions) => {
         transactions
     }
 }
-
-export const editTransaction = (transaction) => {
-    return {
-        type: EDIT_TRANSACTION,
-        transaction
-    }
-}
-
 
 // post
 export const buyStock = (transaction) => ({
@@ -81,20 +72,6 @@ export const getTransactions = (userId) => async (dispatch) => {
     }
 }
 
-export const updateTransaction = (payload) => async (dispatch) => {
-    const response = await fetch(`/api/transactions/${payload.company_id}/update`, {
-        method: 'PATCH',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(payload)
-    })
-
-    if (response.ok) {
-        const transaction = await response.json()
-        dispatch(editTransaction(transaction))
-    }
-}
-
-
 // thunk - buy/sell stock ??
 export const stockTransaction = (data) => async (dispatch) => {
     const res = await fetch(`/api/transactions/post`, {
@@ -147,12 +124,7 @@ const transactionReducer = ( state = initialState, action ) => {
         case BUY_STOCK:
             newState = {...state, entries: {...state.entries }, boughtTrans: { ...state.boughtTrans } }
             newState.boughtTrans[action.transaction.id] = action.transaction
-
             return newState;
-        case EDIT_TRANSACTION:
-            newState = { ...state, entries: { ...state.entries }, boughtTrans: { ...state.boughtTrans } }
-            newState.boughtTrans[action.transaction.id] = action.transaction
-            return newState
         case ADD_MONEY:
             newState = {
                 ...state, [action.userBalance.user.id]: action.transaction
