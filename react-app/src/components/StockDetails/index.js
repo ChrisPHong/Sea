@@ -3,39 +3,33 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getOneStock, getStockPrices } from '../../store/stock';
 import { getAllTransactions, getBoughtTransactions } from '../../store/transaction';
-import Buy from './Buy';
-import Sell from './Sell';
 import { LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
-import News from '../News'
 import { getCompanyNews } from '../../store/news';
-import './StockDetails.css'
 import CompanyWatchlistForm from '../CompanyWatchlistForm';
 import { getWatchlists } from '../../store/watchlist'
 import PageNotFound from '../PageNotFound';
+import Buy from './Buy';
+import Sell from './Sell';
+import News from '../News'
+import './StockDetails.css'
 
 const StockDetails = () => {
     const dispatch = useDispatch()
     const { ticker } = useParams()
-    // console.log(ticker.toUpperCase())
+    const user = useSelector(state => state.session?.user)
     const stockObj = useSelector(state => state?.stock?.entries)
-    // console.log("THIS IS THE STOCK OBJECT", stockObj)
     const news = useSelector(state => state?.news?.entries)
     const prices = useSelector(state => state?.stock?.prices)
+    const userShares = useSelector(state => state?.transaction?.entries)
     const boughtTransactions = useSelector((state) => state.transaction.boughtTrans)
     const boughtShares = useSelector((state) => Object.values(state.transaction.boughtTrans))
-    const pricesData = Object.values(prices)
-    // console.log(prices)
-    const user = useSelector(state => state.session?.user)
-    const userShares = useSelector(state => state?.transaction?.entries)
-    const userSharesData = Object.values(userShares)
-    const options = { style: 'currency', currency: 'USD' };
-    const currencyFormat = new Intl.NumberFormat('en-US', options);
-
-    const stocks = Object.values(stockObj)
-
     const watchlist = useSelector((state) => Object.values(state.watchlist));
+    const pricesData = Object.values(prices)
+    const stocks = Object.values(stockObj)
     const watchlists = Object.values(watchlist[0])
 
+    const options = { style: 'currency', currency: 'USD' };
+    const currencyFormat = new Intl.NumberFormat('en-US', options);
 
     const [data, setData] = useState(pricesData)
     const [currPrice, setCurrPrice] = useState(0)
@@ -52,13 +46,6 @@ const StockDetails = () => {
     }
 
     const companyId = stock?.id
-
-    // console.log("THIS IS THE PRICES IN THE STATE ", prices)
-    // console.log("THIS IS THE PRICE DATA IN AN ARRAY", pricesData[0])
-    // console.log('These are the stocks', stocks)
-    // console.log("THIS SHOULD BE THE COMPANY ID", companyId)
-    // console.log('heres the pricesData that DOESNT WANNA WORK SOMETIMES SMH', pricesData)
-
     const pricesArr = pricesData[0]
 
     let stockPrices = []
@@ -71,29 +58,15 @@ const StockDetails = () => {
     }
 
     const gainOrLoss = [1, -1]
-
     let gainOrLossRandomElement = gainOrLoss[Math.floor(Math.random().toFixed(2) * gainOrLoss.length)]
-
     let max = Math.max(...stockPrices).toFixed(2)
-
     let min = Math.min(...stockPrices).toFixed(2)
 
     let randomMultiplier = Number(gainOrLossRandomElement).toFixed(2)
-
-    // console.log(randomMultiplier)
-
     let closePrice = Number(stockPrices[stockPrices.length - 1]).toFixed(2)
-    // console.log(stockPrices[stockPrices.length - 1])
-
     let randomNumber = randomMultiplier * .15 * closePrice
-
-    // console.log(randomNumber)
-
     let buyPrice = Number(stockPrices[stockPrices.length - 1]) + randomNumber
-
     let openingPrice = Number(stockPrices[0]).toFixed(2)
-
-    // if (stockPrices.length === 365) console.log(buyPrice)
 
     useEffect(() => {
         // Force the page to scroll up to top on mount
@@ -107,7 +80,6 @@ const StockDetails = () => {
             dispatch(getOneStock(ticker))
             dispatch(getWatchlists())
             dispatch(getAllTransactions())
-            // dispatch(stockTransaction(transaction))
         }
     }, [dispatch, ticker])
 
@@ -345,9 +317,6 @@ const StockDetails = () => {
                                     </div>
                                 </div>
                             </div>
-                            {/* <div className='PostCompanyInWatchlist'>
-                                < CompanyWatchlistForm props={watchlists} />
-                            </div> */}
                             {news ? <div>
                                 <News news={news} ticker={ticker} />
                             </div> : <div>Loading</div>}
