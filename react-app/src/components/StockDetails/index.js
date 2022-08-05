@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getOneStock, getStockPrices } from '../../store/stock';
-import { getAllTransactions } from '../../store/transaction';
+import { getAllTransactions, getBoughtTransactions } from '../../store/transaction';
 import Buy from './Buy';
 import Sell from './Sell';
 import { LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';

@@ -7,18 +7,22 @@ const Sell = ({ user, companyId, priceData, shares }) => {
     const sharesArr = Object.values(shares)
     const dispatch = useDispatch();
     const [userShares, setUserShares] = useState(shares);
+    const boughtTransactions = useSelector((state) => state.transaction.boughtTrans)
     const boughtShares = useSelector((state) => Object.values(state.transaction.boughtTrans))
     const options = { style: 'currency', currency: 'USD' };
     const currencyFormat = new Intl.NumberFormat('en-US', options);
 
+    console.log('here is bougthTransacations', boughtTransactions)
+    console.log('here is user shares', shares)
+
     let ownedStockShares = 0
-    if (shares) {
-        for (let i = 0; i < sharesArr?.length; i++) {
-            if (sharesArr[i]?.companyId === companyId && sharesArr[i]?.userId === user.id && sharesArr[i]?.type === "buy") {
-                ownedStockShares += sharesArr[i]?.shares
+    if (boughtShares.length) {
+        for (let i = 0; i < boughtShares?.length; i++) {
+            if (boughtShares[i]?.companyId === companyId && boughtShares[i]?.userId === user.id && boughtShares[i]?.type === "buy") {
+                ownedStockShares += boughtShares[i]?.shares
             }
-            if (sharesArr[i]?.companyId === companyId && sharesArr[i]?.type === "sell") {
-                ownedStockShares -= sharesArr[i]?.shares
+            if (boughtShares[i]?.companyId === companyId && boughtShares[i]?.type === "sell") {
+                ownedStockShares -= boughtShares[i]?.shares
             }
         }
     }
@@ -26,8 +30,12 @@ const Sell = ({ user, companyId, priceData, shares }) => {
     const [transactionPrice, setTransactionPrice] = useState((0).toFixed(2));
     const [order, setOrder] = useState('sell');
     const [sharesSold, setSharesSold] = useState(0);
+    const [currentShares, setCurrentShares] = useState(boughtTransactions[companyId]?.shares)
     const [balance, setBalance] = useState(user?.balance);
     const [errors, setErrors] = useState([])
+
+    console.log('jehre is shares sold', sharesSold)
+
 
     const transactionTotal = e => {
         setSharesSold(e.target.value);
@@ -38,13 +46,16 @@ const Sell = ({ user, companyId, priceData, shares }) => {
     useEffect(() => {
         let error = []
 
-
         if (ownedStockShares < sharesSold) {
-            error.push('You cannot sell more stocks than you can buy')
+            error.push(`Your order exceeds the number of shares you own. Please try again.`)
         }
         setErrors(error)
 
-    }, [balance])
+    }, [balance, sharesSold])
+
+    useEffect(() => {
+        dispatch(getBoughtTransactions())
+    }, [dispatch, boughtShares])
 
     const sellStock = async (e) => {
         e.preventDefault();
@@ -105,6 +116,7 @@ const Sell = ({ user, companyId, priceData, shares }) => {
                             errors.map((error, i) => (<p key={i} style={{ color: 'red' }}>{error}</p>))
                             : null}
                     </div>
+                    <div className='transaction-labels' id='owned-shares'>{currentShares} shares available</div>
                     <div className='transaction-info'>
                         <div className='transaction-labels'>Market Price</div>
                         <div id='transaction-stock-price'>
@@ -132,11 +144,17 @@ const Sell = ({ user, companyId, priceData, shares }) => {
                     </div>
                 </div>
                 <div className='transaction-btn'>
-                    <button id='sell-btn' type="submit"
-                        onClick={(e) => {
-                            sellStock(e);
+                    <button
+                        id='sell-btn'
+                        type="submit"
+                        onClick={(e) => {sellStock(e)}}
+                        disabled={(sharesSold !== "" && boughtTransactions[companyId]?.shares >= sharesSold) ? false : true}
+                        style={{
+                            backgroundColor: sharesSold !== "" && boughtTransactions[companyId]?.shares < sharesSold ? 'lightgray' : '#0b7cee',
+                            cursor: sharesSold !== "" && boughtTransactions[companyId]?.shares < sharesSold ? 'default' : 'pointer',
+                            transitionDuration: sharesSold !== "" && boughtTransactions[companyId]?.shares < sharesSold ? '' : '1s'
                         }}
-                        disabled={(sharesSold !== "" && userShares >= sharesSold) ? false : true}>
+                    >
                         {order}
                     </button>
                 </div>
