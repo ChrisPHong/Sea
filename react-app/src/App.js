@@ -46,7 +46,7 @@ function App() {
           <SplashPage />
           <Footer />
         </Route>
-        <ProtectedRoute path='/dashboard'>
+        <ProtectedRoute exact path='/dashboard'>
           <Dashboard />
           <MiniFooter />
         </ProtectedRoute>
@@ -54,7 +54,7 @@ function App() {
           <StockDetails />
           <MiniFooter />
         </ProtectedRoute>
-        <ProtectedRoute path='/transactions'>
+        <ProtectedRoute exact path='/transactions'>
           <TransactionPage />
           <MiniFooter />
         </ProtectedRoute>

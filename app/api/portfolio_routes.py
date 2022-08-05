@@ -71,6 +71,7 @@ def make_portfolio():
     all_transactions = Transaction.query.filter(Transaction.user_id == current_user.id).all()
     for transaction in all_transactions:
         if transaction.type == 'buy':
+            print('<<<<'*50, transaction.to_dict())
             balance += transaction.price * transaction.shares
         else:
             balance -= transaction.price * transaction.shares
