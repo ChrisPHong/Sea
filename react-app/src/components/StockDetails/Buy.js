@@ -7,7 +7,7 @@ const Buy = ({ user, companyId, priceData, boughtTransactions }) => {
     const dispatch = useDispatch()
 
     const [transactionPrice, setTransactionPrice] = useState((0).toFixed(2));
-    const [sharesBought, setSharesBought] = useState(0);
+    const [sharesBought, setSharesBought] = useState('');
     const [order, setOrder] = useState('buy');
     const [balance, setBalance] = useState(user?.balance)
     const [errors, setErrors] = useState({})
@@ -17,7 +17,7 @@ const Buy = ({ user, companyId, priceData, boughtTransactions }) => {
 
 
     useEffect(() => {
-        setSharesBought(0)
+        setSharesBought('')
         setTransactionPrice((0).toFixed(2))
     }, [priceData])
 
@@ -88,12 +88,13 @@ const Buy = ({ user, companyId, priceData, boughtTransactions }) => {
                     <div className='shares-ctn'>
                         <div className='transaction-labels'>Shares</div>
                         <input
-                            type="number"
+                            type='number'
                             min='0'
                             onKeyPress={preventMinus}
                             name="shares"
                             id="shares"
                             onChange={transactionTotal}
+                            placeholder='0'
                             value={sharesBought}
                         />
                     </div>

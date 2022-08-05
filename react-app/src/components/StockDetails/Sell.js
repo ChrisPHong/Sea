@@ -22,7 +22,7 @@ const Sell = ({ user, companyId, priceData, boughtTransactions, boughtShares}) =
 
     const [transactionPrice, setTransactionPrice] = useState((0).toFixed(2));
     const [order, setOrder] = useState('sell');
-    const [sharesSold, setSharesSold] = useState(0);
+    const [sharesSold, setSharesSold] = useState('');
     const [currentShares, setCurrentShares] = useState(boughtTransactions[companyId]?.shares)
     const [balance, setBalance] = useState(user?.balance);
     const [errors, setErrors] = useState([])
@@ -112,6 +112,7 @@ const Sell = ({ user, companyId, priceData, boughtTransactions, boughtShares}) =
                             onKeyPress={preventMinus}
                             name="shares"
                             id="shares"
+                            placeholder='0'
                             onChange={transactionTotal}
                             value={sharesSold}
                         />
