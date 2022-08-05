@@ -21,6 +21,8 @@ const StockDetails = () => {
     // console.log("THIS IS THE STOCK OBJECT", stockObj)
     const news = useSelector(state => state?.news?.entries)
     const prices = useSelector(state => state?.stock?.prices)
+    const boughtTransactions = useSelector((state) => state.transaction.boughtTrans)
+    const boughtShares = useSelector((state) => Object.values(state.transaction.boughtTrans))
     const pricesData = Object.values(prices)
     // console.log(prices)
     const user = useSelector(state => state.session?.user)
@@ -116,8 +118,9 @@ const StockDetails = () => {
         }
     }, [dispatch, stock, companyId])
 
-
-
+    useEffect(() => {
+        dispatch(getBoughtTransactions(user?.id))
+    }, [dispatch, stock, boughtShares.length])
 
     // When the price state, the length of the pricesData array, or the ticker changes,
     // Set the data to the new pricesData and show the 1W timeframe.
@@ -368,20 +371,27 @@ const StockDetails = () => {
                                         >
                                             <span className='trade-span'>Sell</span>
                                         </div>
-                                        {/* <Headers
-                                                titles={titles}
-                                                currentTab={currentTab}
-                                                selectTab={setCurrentTab}
-                                            /> */}
                                     </div>
                                     <section className="buy-sell">
                                         <div className="tab-toggle-content">
                                             {showBuy ?
-                                                prices && <Buy user={user} companyId={stock?.id} ticker={ticker} priceData={data[data.length - 1]} />
+                                                prices && <Buy
+                                                            user={user}
+                                                            companyId={stock?.id}
+                                                            ticker={ticker}
+                                                            priceData={data[data.length - 1]}
+                                                            boughtTransactions={boughtTransactions}
+                                                            boughtShares={boughtShares}
+                                                        />
                                                 :
-                                                prices && userShares && <Sell user={user} priceData={data[data.length - 1]} companyId={stock?.id} shares={userShares} />
-                                                // {/* {currentTab === 0 && <Buy user={user} priceArr={price} />} */}
-                                                // {/* {currentTab === 1 && <Sell user={user} price={closePrice} shares={userShares} />} */}
+                                                prices && userShares && <Sell
+                                                                            user={user}
+                                                                            priceData={data[data.length - 1]}
+                                                                            companyId={stock?.id}
+                                                                            shares={userShares}
+                                                                            boughtTransactions={boughtTransactions}
+                                                                            boughtShares={boughtShares}
+                                                                        />
                                             }
                                         </div>
                                     </section>

@@ -3,17 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { stockTransaction, getBoughtTransactions } from '../../store/transaction';
 import { getUserInformation } from '../../store/session'
 
-const Sell = ({ user, companyId, priceData, shares }) => {
+const Sell = ({ user, companyId, priceData, shares, boughtTransactions, boughtShares}) => {
     const sharesArr = Object.values(shares)
     const dispatch = useDispatch();
-    const [userShares, setUserShares] = useState(shares);
-    const boughtTransactions = useSelector((state) => state.transaction.boughtTrans)
-    const boughtShares = useSelector((state) => Object.values(state.transaction.boughtTrans))
     const options = { style: 'currency', currency: 'USD' };
     const currencyFormat = new Intl.NumberFormat('en-US', options);
-
-    console.log('here is bougthTransacations', boughtTransactions)
-    console.log('here is user shares', shares)
 
     let ownedStockShares = 0
     if (boughtShares.length) {
@@ -34,9 +28,6 @@ const Sell = ({ user, companyId, priceData, shares }) => {
     const [balance, setBalance] = useState(user?.balance);
     const [errors, setErrors] = useState([])
 
-    console.log('jehre is shares sold', sharesSold)
-
-
     const transactionTotal = e => {
         setSharesSold(e.target.value);
         setTransactionPrice((e.target.value * (priceData.price)).toFixed(2));
@@ -53,10 +44,6 @@ const Sell = ({ user, companyId, priceData, shares }) => {
 
     }, [balance, sharesSold])
 
-    useEffect(() => {
-        dispatch(getBoughtTransactions())
-    }, [dispatch, boughtShares])
-
     const sellStock = async (e) => {
         e.preventDefault();
         if (errors.length < 1) {
@@ -64,6 +51,7 @@ const Sell = ({ user, companyId, priceData, shares }) => {
             setOrder('sold');
             // setUserShares(userShares - sharesSold);
             setBalance((Number(balance) + Number(transactionPrice)).toFixed(2));
+            setCurrentShares(boughtTransactions[companyId]?.shares - sharesSold)
             let newBalance = (Number(balance) + Number(transactionPrice)).toFixed(2);
             // if we take num of shares of dashboard and subtract shares sold
             let newTransaction = {
@@ -85,7 +73,7 @@ const Sell = ({ user, companyId, priceData, shares }) => {
             }
             await dispatch(getUserInformation())
             await dispatch(getBoughtTransactions(user?.id))
-
+            setSharesSold(0)
         }
     }
 
@@ -116,7 +104,7 @@ const Sell = ({ user, companyId, priceData, shares }) => {
                             errors.map((error, i) => (<p key={i} style={{ color: 'red' }}>{error}</p>))
                             : null}
                     </div>
-                    <div className='transaction-labels' id='owned-shares'>{currentShares} shares available</div>
+                    <div className='transaction-labels' id='owned-shares'>{boughtTransactions[companyId]?.shares ? `${currentShares} shares available` : '0 shares available'}</div>
                     <div className='transaction-info'>
                         <div className='transaction-labels'>Market Price</div>
                         <div id='transaction-stock-price'>

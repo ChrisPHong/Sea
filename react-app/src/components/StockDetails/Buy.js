@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getBoughtTransactions, stockTransaction } from '../../store/transaction';
 import {getUserInformation} from '../../store/session'
 
-const Buy = ({ user, companyId, ticker, priceData }) => {
+const Buy = ({ user, companyId, ticker, priceData, boughtTransactions, boughtShares }) => {
 
     const dispatch = useDispatch()
     const transactions = useSelector(state => state?.transaction?.entries);
@@ -19,6 +19,7 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
     const [order, setOrder] = useState('buy');
     const [balance, setBalance] = useState(user?.balance)
     const [errors, setErrors] = useState({})
+    const [currentShares, setCurrentShares] = useState(boughtTransactions[companyId]?.shares)
 
 
     useEffect(() => {
@@ -89,6 +90,7 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
                             Buy
                         </h2>
                     </div> */}
+                    <div className='transaction-labels' id='owned-shares'>{boughtTransactions[companyId]?.shares ? `${boughtTransactions[companyId]?.shares} shares owned` : '0 shares owned'}</div>
                     <div className='transaction-info'>
                         <div className='transaction-labels'>Market Price</div>
                         <div id='transaction-stock-price'>
@@ -120,7 +122,13 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
                         onClick={(e) => {
                             buyStock(e);
                         }}
-                        disabled={(balance > Number(transactionPrice) && sharesBought !== "") ? false : true}>
+                        disabled={(balance > Number(transactionPrice) && sharesBought !== "") ? false : true}
+                        style={{
+                            backgroundColor: balance < Number(transactionPrice) ? 'lightgray' : '#0b7cee',
+                            cursor: balance < Number(transactionPrice) ? 'default' : 'pointer',
+                            transitionDuration: balance < Number(transactionPrice) ? '' : '1s'
+                        }}
+                    >
                         {/* disabled={Object.values(errors).length !== 0}> */}
                         {order}
                     </button>
