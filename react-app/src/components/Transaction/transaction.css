@@ -31,14 +31,14 @@
 
 
 .transactionColumn {
-    margin: 10px 10px;
+    margin: 10px 0;
     border: 2px solid rgb(74, 243, 248);
     align-items: center;
-    padding: 10px 15px;
+    padding: 10px 0;
     justify-content: center;
     font-weight: bold;
     color: rgb(11, 124, 238);
-    width: 100rem;
+    width: 100%;
 
 
 }
@@ -62,9 +62,13 @@
 .transaction-table {
     display: flex;
     justify-content: center;
+    width: 100%;
+    margin: 40px auto;
+    height: auto;
+}
+
+.transaction-table > table {
     width: 80%;
-    margin: 40px auto 0 auto;
-    height: 80vh;
 }
 
 .transaction-page-transaction-price {
@@ -72,10 +76,14 @@
     align-items: center;
 }
 
-.transaction-page-ticker-price-buy-sell-container,
 .transaction-page-transaction-date,
 .transaction-page-transaction-stock-price,
 .transaction-page-transaction-buy-sell,
 .transaction-page-transaction-total-price {
     width: 100px;
+}
+
+.transaction-page-ticker-price-buy-sell-container {
+    padding-left: 20px;
+    width: 80px;
 }
