@@ -15,6 +15,8 @@ function AddMoneyCurrentBalance() {
     const [buyingPower, setBuyingPower] = useState(user.balance)
     const [errors, setErrors] = useState([]);
     const [show, setShow] = useState(false);
+    const options = { style: 'currency', currency: 'USD' };
+    const currencyFormat = new Intl.NumberFormat('en-US', options);
 
     useEffect(() => {
         const error = [];
@@ -52,7 +54,7 @@ function AddMoneyCurrentBalance() {
         <div className='AddMoneyCurrentBalanceForm'>
             <div className='buying-power-headings'>
                 <h2 className='buying-power-inForm'>Buying Power:</h2>
-                <h2 className='buying-power-inForm'>${(buyingPower).toLocaleString('en-US')}</h2>
+                <h2 className='buying-power-inForm'>{currencyFormat.format(buyingPower)}</h2>
             </div>
             {show ?
             <div>
