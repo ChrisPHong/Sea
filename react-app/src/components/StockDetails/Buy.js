@@ -120,8 +120,8 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
                         onClick={(e) => {
                             buyStock(e);
                         }}
-                        // disabled={(balance > Number(transactionPrice) && sharesBought !== "") ? false : true}>
-                        disabled={Object.values(errors).length !== 0}>
+                        disabled={(balance > Number(transactionPrice) && sharesBought !== "") ? false : true}>
+                        {/* disabled={Object.values(errors).length !== 0}> */}
                         {order}
                     </button>
                 </div>

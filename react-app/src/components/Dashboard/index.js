@@ -48,10 +48,13 @@ const Dashboard = () => {
         dispatch(getAllTransactions())
         dispatch(getBoughtTransactions(currentUser?.id))
         dispatch(getStocks())
-        dispatch(getAssetClosingPrices())
         dispatch(getPortfolio())
         setNewData(portfolio)
     }, [dispatch, currentUser])
+
+    useEffect(() => {
+        dispatch(getAssetClosingPrices())
+    }, [dispatch, currentUser, transArr.length])
 
     useEffect(() => {
         createData('1w')
@@ -68,11 +71,17 @@ const Dashboard = () => {
         return total
     }
 
+
     // Returns the total price of ALL the stocks you own for the day.
     const buyingTotal = () => {
         let total = 0
         for (let compId in closingPrices) {
-            total += closingPrices[compId]?.price * transactions[compId]?.shares
+            // When trading, add to the total.
+            // If selling all of the stocks, compId will not exist in closingPrices anymore
+            // So continue on with for loop.
+            if (transactions[compId]?.shares) {
+                total += closingPrices[compId]?.price * transactions[compId]?.shares
+            }
         }
         return total
     }
