@@ -49,7 +49,7 @@ function Footer () {
                     <div className='developer-name-container'>
                         <div>Justin Yi</div>
                         <div className="socials-container">
-                            <a href="https://www.linkedin.com/in/justin-yi-0b6a6513a/" target='_blank' rel='noreferrer' className="linkedin-logo">
+                            <a href="https://www.linkedin.com/in/justin-yi-dev/" target='_blank' rel='noreferrer' className="linkedin-logo">
                                 <img src={linkedin_logo} alt="logo" />
                             </a>
                             <a href="https://github.com/JYi97" target='_blank' rel='noreferrer' className="github-logo">
