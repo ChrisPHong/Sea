@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { stockTransaction, getBoughtTransactions } from '../../store/transaction';
 import { getUserInformation } from '../../store/session'
 
-const Sell = ({ user, companyId, priceData, shares, boughtTransactions, boughtShares}) => {
-    const sharesArr = Object.values(shares)
+const Sell = ({ user, companyId, priceData, boughtTransactions, boughtShares}) => {
     const dispatch = useDispatch();
     const options = { style: 'currency', currency: 'USD' };
     const currencyFormat = new Intl.NumberFormat('en-US', options);
@@ -31,7 +30,6 @@ const Sell = ({ user, companyId, priceData, shares, boughtTransactions, boughtSh
     const transactionTotal = e => {
         setSharesSold(e.target.value);
         setTransactionPrice((e.target.value * (priceData.price)).toFixed(2));
-        //  price = market price per share
     }
 
     useEffect(() => {
@@ -49,10 +47,10 @@ const Sell = ({ user, companyId, priceData, shares, boughtTransactions, boughtSh
         if (errors.length < 1) {
 
             setOrder('sold');
-            // setUserShares(userShares - sharesSold);
             setBalance((Number(balance) + Number(transactionPrice)).toFixed(2));
             setCurrentShares(boughtTransactions[companyId]?.shares - sharesSold)
             let newBalance = (Number(balance) + Number(transactionPrice)).toFixed(2);
+
             // if we take num of shares of dashboard and subtract shares sold
             let newTransaction = {
                 price: Number(priceData.price).toFixed(2),
@@ -94,11 +92,6 @@ const Sell = ({ user, companyId, priceData, shares, boughtTransactions, boughtSh
         <div>
             <form onSubmit={sellStock}>
                 <div className='transaction-box'>
-                    {/* <div className='transaction-labels' id='buy-label'>
-                        <h2>
-                            Sell
-                        </h2>
-                    </div> */}
                     <div className='validationErrors-Sell' >
                         {errors.length ?
                             errors.map((error, i) => (<p key={i} style={{ color: 'red' }}>{error}</p>))
@@ -147,12 +140,8 @@ const Sell = ({ user, companyId, priceData, shares, boughtTransactions, boughtSh
                     </button>
                 </div>
                 <div className='transaction-labels' id='transaction-balance'>Balance Available: {currencyFormat.format(balance)}</div>
-                {/* <div className='transaction-labels' id='transaction-available-shares'>{ownedStockShares || 0} Shares Available</div> */}
             </form>
         </div>
-        // <div>
-        //     Sell Component
-        // </div>
     )
 }
 

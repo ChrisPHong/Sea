@@ -357,7 +357,6 @@ const StockDetails = () => {
                                                                             user={user}
                                                                             priceData={data[data.length - 1]}
                                                                             companyId={stock?.id}
-                                                                            shares={userShares}
                                                                             boughtTransactions={boughtTransactions}
                                                                             boughtShares={boughtShares}
                                                                         />
