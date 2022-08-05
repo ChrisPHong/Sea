@@ -28,10 +28,10 @@ const AssetTable = ({ stocks, companies, transArr, currencyFormat, buyingTotal, 
                                         {companies.length !== 0 &&
                                         <>
                                             <div className='company-name'>
-                                                {stocks[`${transaction.companyId}`].name}
+                                                {stocks[`${transaction.companyId}`]?.name}
                                             </div>
                                             <div className='company-ticker'>
-                                                {stocks[`${transaction.companyId}`].ticker}
+                                                {stocks[`${transaction.companyId}`]?.ticker}
                                             </div>
                                         </>}
                                     </td>
