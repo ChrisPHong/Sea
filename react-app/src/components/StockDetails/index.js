@@ -11,6 +11,7 @@ import { getCompanyNews } from '../../store/news';
 import './StockDetails.css'
 import CompanyWatchlistForm from '../CompanyWatchlistForm';
 import { getWatchlists } from '../../store/watchlist'
+import PageNotFound from '../PageNotFound';
 
 const StockDetails = () => {
     const dispatch = useDispatch()
@@ -171,7 +172,7 @@ const StockDetails = () => {
 
     return (
         <div id='stocks-detail-ctn'>
-            {stock &&
+            {stock ?
                 <div className='stock-details-information'>
                     <div className='stock-details-name-title'>
                         {stock.name} ({stock.ticker})
@@ -392,7 +393,10 @@ const StockDetails = () => {
                             </div>
                         </div>
                     </div>
-                </div>}
+                </div>
+                :
+                <PageNotFound />
+                }
         </div>
     )
 

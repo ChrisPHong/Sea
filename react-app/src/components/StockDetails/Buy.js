@@ -18,12 +18,23 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
     const [sharesBought, setSharesBought] = useState(0);
     const [order, setOrder] = useState('buy');
     const [balance, setBalance] = useState(user?.balance)
+    const [errors, setErrors] = useState({})
 
 
     useEffect(() => {
         setSharesBought(0)
         setTransactionPrice((0).toFixed(2))
     }, [priceData])
+
+    useEffect(() => {
+        const validationErrors = {}
+
+        if (transactionPrice > balance) {
+            validationErrors.balance = 'You do not have enough money!'
+        }
+
+        setErrors(validationErrors)
+    }, [transactionPrice])
 
     const transactionTotal = e => {
         setSharesBought(e.target.value);
@@ -39,7 +50,7 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
         let newBalance = (Number(balance) - Number(transactionPrice)).toFixed(2);
 
         let newTransaction = {
-            price: Number(transactionPrice).toFixed(2),
+            price: Number(priceData.price).toFixed(2),
             shares: sharesBought,
             type: 'buy',
             user_id: user.id,
@@ -70,6 +81,9 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
         <div>
             <form onSubmit={buyStock}>
                 <div className='transaction-box'>
+                    <div className='validationErrors-Sell'>
+                        <p style={{ color: 'red' }}>{errors.balance}</p>
+                    </div>
                     {/* <div className='transaction-labels' id='buy-label'>
                         <h2>
                             Buy
@@ -106,7 +120,8 @@ const Buy = ({ user, companyId, ticker, priceData }) => {
                         onClick={(e) => {
                             buyStock(e);
                         }}
-                        disabled={(balance > Number(transactionPrice) && sharesBought !== "") ? false : true}>
+                        // disabled={(balance > Number(transactionPrice) && sharesBought !== "") ? false : true}>
+                        disabled={Object.values(errors).length !== 0}>
                         {order}
                     </button>
                 </div>
