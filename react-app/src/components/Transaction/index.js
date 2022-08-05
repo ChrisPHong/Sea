@@ -1,37 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { loadTransactions, getAllTransactions } from '../../store/transaction';
+import { getAllTransactions } from '../../store/transaction';
 import { getStocks } from '../../store/stock';
 import './transaction.css';
 
 function TransactionPage() {
-    const history = useHistory();
     const dispatch = useDispatch();
     const sessionUser = useSelector(state => state?.session?.user);
-    // console.log('this is sesssion userrrrr', sessionUser)
-    // console.log('this is sesssion userrrrr ID', sessionUser.id)
-    const userId = sessionUser.id;
-    // const user = useSelector((state) => (state.session.user));
-
-
     const transactionsObj = useSelector(state => state?.transaction?.entries)
     const companiesObj = useSelector(state => state?.stock?.entries)
     const companiesArr = Object.values(companiesObj)
-
-    // console.log('------comp obj----', companiesObj)
-
-    // const state = useSelector(state => console.log('this is STATE!!!!!', state))
-    // console.log('---transactionsObj----', transactionsObj)
-
     const transactions = Object.values(transactionsObj ? transactionsObj : {})
+    const userId = sessionUser.id;
 
-
-    console.log(transactions, "THIS IS THE TRANSACTIONS FROM THE TRANSACTION PAGE")
-
-    const transactionDates = transactions.map((transaction) => transaction.date.slice(5, 7))
-
-    console.log(transactionDates, 'THIS IS THE TRANSACCTION DATES FROM THE TRANSACTION PAGE')
     // Find ticker from transaction that matches with the pool of companies in database
     const matchTicker = (companyId) => {
         for (let stock of companiesArr) {
@@ -59,11 +40,6 @@ function TransactionPage() {
         return 0
     }
 
-    // const companiesArr = Object.values(companiesObj ? companiesObj : {})
-    // console.log('companies arrrr-----', companiesArr) // array of comp objs
-    // console.log('comppppp ticker------', companiesObj[transaction.companyId].ticker)
-
-
     useEffect(() => {
         dispatch(getStocks());
         dispatch(getAllTransactions());
@@ -71,7 +47,6 @@ function TransactionPage() {
 
     return (
         <>
-
             <div className='transaction-container'>
                 <h1 className='TitleTransactions'>Transactions</h1>
                 <div className='transaction-table'>
@@ -111,7 +86,6 @@ function TransactionPage() {
                             </table>
                         ) :
                         (<div>You don't have any transactions yet.</div>)}
-
                 </div>
             </div>
         </>
