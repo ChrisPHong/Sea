@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { stockTransaction, getBoughtTransactions } from '../../store/transaction';
 import { getUserInformation } from '../../store/session'
 
-const Sell = ({ user, companyId, priceData, boughtTransactions, boughtShares}) => {
+const Sell = ({ user, companyId, priceData, boughtTransactions, boughtShares }) => {
     const dispatch = useDispatch();
     const options = { style: 'currency', currency: 'USD' };
     const currencyFormat = new Intl.NumberFormat('en-US', options);
@@ -71,7 +71,7 @@ const Sell = ({ user, companyId, priceData, boughtTransactions, boughtShares}) =
             }
             await dispatch(getUserInformation())
             await dispatch(getBoughtTransactions(user?.id))
-            setSharesSold(0)
+            setSharesSold('')
         }
     }
 
@@ -129,7 +129,7 @@ const Sell = ({ user, companyId, priceData, boughtTransactions, boughtShares}) =
                     <button
                         id='sell-btn'
                         type="submit"
-                        onClick={(e) => {sellStock(e)}}
+                        onClick={(e) => { sellStock(e) }}
                         disabled={(sharesSold !== "" && boughtTransactions[companyId]?.shares >= sharesSold) ? false : true}
                         style={{
                             backgroundColor: sharesSold !== "" && boughtTransactions[companyId]?.shares < sharesSold ? 'lightgray' : '#0b7cee',
