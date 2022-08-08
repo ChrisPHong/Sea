@@ -56,7 +56,7 @@ const Buy = ({ user, companyId, priceData, boughtTransactions }) => {
         await dispatch(stockTransaction(newTransaction))
         await dispatch(getUserInformation())
         await dispatch(getBoughtTransactions(user?.id))
-
+        setSharesBought('')
     }
 
     if (buyStock) {
