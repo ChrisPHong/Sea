@@ -30,7 +30,9 @@
     border: 1px solid #7cb6f0;
     margin-top: 10px;
     margin-bottom: 10px;
+    padding-left: 20px;
 }
+
 
 .signup-email-form-field,
 .signup-password-form-field,
@@ -44,7 +46,7 @@
 .signup-first-name-form-field,
 .signup-last-name-form-field {
     height: 60px;
-    width: 440px;
+    width: 420px;
 }
 
 .signup-form-first-last-name-container {
@@ -112,4 +114,8 @@
     margin-top: 70px;
     object-fit: cover;
     height: auto;
+}
+
+.signup-errors {
+    color: rgb(221, 47, 47);
 }
