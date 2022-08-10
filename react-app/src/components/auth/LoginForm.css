@@ -84,3 +84,7 @@
 .login-form-create-account:hover {
     color: #7cb6f0;
 }
+
+.login-form-errors {
+    color: rgb(221, 47, 47);
+}

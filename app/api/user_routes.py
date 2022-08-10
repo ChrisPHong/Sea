@@ -27,9 +27,9 @@ def validation_errors_to_error_messages(validation_errors):
 @user_routes.route('/<int:id>')
 @login_required
 def user(id):
-    # user = User.query.get(id)
-    user = User.query.filter(User.id == id).first()
-    return user.to_dict()
+    user = User.query.get(id)
+    # user = User.query.filter(User.id == id).first()
+    return jsonify(user.to_dict());
 
 # Users can get access to their portfolio and info
 @user_routes.route('/user_information')
