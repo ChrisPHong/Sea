@@ -51,7 +51,7 @@ const LoginForm = () => {
     const valErrors = [];
     backendErrors.forEach(err => {
       if (err === 'email : 1') valErrors.push('Email provided not found.')
-      if (err === 'password : 3') valErrors.push('Incorrect password and email.')
+      if (err === 'password : 3') valErrors.push('Incorrect password or email.')
     })
     setErrors(valErrors)
   }, [submitted])
