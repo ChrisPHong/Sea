@@ -33,8 +33,8 @@ function OneWatchlist({ watchlist, currencyFormat }) {
                 <div className='watchlistButtonsEditAndDelete'>
                     <div className='titleWatchlistDiv'>
                         {/* <div className='watchlist-name-edit-delete-div'> */}
-                            <p className='watchlistName'>{watchlist.name}</p>
-                            <div className='editAndDeleteButtonDiv'>
+                            <div className='title-and-delete-btn'>
+                                <p className='watchlistName'>{watchlist.name}</p>
                                 <button
                                     className='deleteButton'
                                     onClick={async () => {
@@ -45,6 +45,8 @@ function OneWatchlist({ watchlist, currencyFormat }) {
                                 >
                                     <img className='deletePicture' src={'https://www.iconpacks.net/icons/1/free-trash-icon-347-thumb.png'} />
                                 </button>
+                            </div>
+                            <div className='editBtnDiv'>
                                 {/* <button
                                     className={`editButton ${watchlist.id}`}
                                     onClick={async (e) => {
@@ -54,9 +56,9 @@ function OneWatchlist({ watchlist, currencyFormat }) {
                                 >
                                     <img className={`editingPicture ${watchlist.id}`} src={'https://cdn-icons-png.flaticon.com/512/61/61456.png'} />
                                 </button > */}
+                                <EditWatchListForm watchlist={watchlist} names={watchlist.name} />
                             </div>
                         {/* </div> */}
-                        <EditWatchListForm watchlist={watchlist} names={watchlist.name} />
                     </div>
 
                     <div className='company'>

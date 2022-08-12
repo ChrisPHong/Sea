@@ -106,11 +106,11 @@
     width: 185px;
 }
 
-.editAndDeleteButtonDiv{
+.editBtnDiv{
     /* display: inline-block; */
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-end;
 
 }
 
@@ -147,4 +147,10 @@
     justify-content: flex-end;
     align-items: center;
     padding-left: 10px;
+}
+
+.title-and-delete-btn {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
