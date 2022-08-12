@@ -137,7 +137,7 @@ export const editWatchlists = (payload) => async (dispatch) => {
     })
 
     if(!response.ok){
-        return "The name you provided already exists. Please enter a new value"
+        return "The name you provided already exists. Please enter a new name."
     }
     if (response.ok) {
 

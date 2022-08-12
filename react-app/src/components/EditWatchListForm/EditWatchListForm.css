@@ -4,17 +4,40 @@
     font-family: sans-serif;
     /* border-radius: 5px 5px; */
     border: none;
+    /* background-color: transparent; */
+    transition-duration: 1s;
+    margin-top: 10px;
+    /* margin-right: 5px; */
+    height: 30px;
+    padding: 7px 10px;
+    border-radius: 35px;
+    width: 65px;
+}
+
+.submitButton:hover {
+    box-shadow: 0px 0px 6px rgb(92, 91, 91, .8);
+    cursor: pointer;
+}
+
+.cancel-watchlist-edit {
+    background-color: #bcc2c8;
+    color: white;
+    font-family: sans-serif;
+    /* border-radius: 5px 5px; */
+    border: none;
     /* padding: 5px 5px; */
     /* background-color: transparent; */
     transition-duration: 1s;
     margin-top: 10px;
-    margin: 5px;
+    margin-right: 5px;
     height: 30px;
-    padding: 7px 20px;
+    padding: 7px 10px;
     border-radius: 35px;
+    width: 65px;
+
 }
 
-.submitButton:hover {
+.cancel-watchlist-edit:hover {
     box-shadow: 0px 0px 6px rgb(92, 91, 91, .8);
     cursor: pointer;
 }
@@ -23,10 +46,22 @@
     border-radius: 5px 5px;
     /* border-radius: 25px; */
     height: 20px;
+    width: 95%;
     padding: 5px 5px;
     margin-top: 4px;
     font-weight: bold;
     font-family: sans-serif;
     border: 0.5px solid black;
-    margin-right: 10px;
+    /* margin-right: -20px; */
+    /* margin-right: 10px; */
+}
+
+.edit-watchlist-error-message {
+    color: rgb(221, 47, 47);
+}
+
+.cancel-save-btns {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
 }

@@ -25,7 +25,7 @@
 .deleteButton {
     border: none;
     background-color: transparent;
-
+    align-self: flex-end;
 }
 
 .deleteButton:hover {
@@ -36,8 +36,7 @@
 .editButton {
     border: none;
     background-color: transparent;
-
-
+    align-self: flex-end;
 }
 
 .editButton:hover {
@@ -103,16 +102,26 @@
     font-size: 25px;
     display: inline-block;
     overflow-wrap: anywhere;
+    width: 185px;
+
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+    text-overflow: ellipsis;
 }
 
-.editAndDeleteButtonDiv{
-    display: inline-block;
-    justify-content: space-between;
+.editBtnDiv{
+    /* display: inline-block; */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
 }
 
 .titleWatchlistDiv{
 
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     margin-bottom: 3px;
     padding-bottom: 6px;
@@ -142,4 +151,11 @@
     justify-content: flex-end;
     align-items: center;
     padding-left: 10px;
+}
+
+.title-and-delete-btn {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
