@@ -118,7 +118,7 @@ function OneWatchlist({ watchlist, currencyFormat }) {
                             <div className='editBtnDiv'>
                                 {display ?
                                 <>
-                                    <form className={`WatchlistForm-${id}`} onSubmit={onSubmit}>
+                                    <form className={`WatchlistForm-${id}`} onSubmit={onSubmit} style={{width: '100%'}}>
                                         {show ?
                                             errors.length > 0 ?
                                                 <>
@@ -142,11 +142,13 @@ function OneWatchlist({ watchlist, currencyFormat }) {
                                                 onChange={(e) => setName(e.target.value)}
                                             />
                                         </div>
-                                        <button
-                                            className='submitButton'
-                                            type='submit'
-                                        >Save Changes</button>
-                                        <button className='cancel-watchlist-edit' onClick={onCancel}>Cancel</button>
+                                        <div className='cancel-save-btns'>
+                                            <button className='cancel-watchlist-edit' onClick={onCancel}>Cancel</button>
+                                            <button
+                                                className='submitButton'
+                                                type='submit'
+                                            >Save</button>
+                                        </div>
                                     </form>
                                     {/* <EditWatchListForm watchlist={watchlist} names={watchlist.name} />
                                     <button className='submitButton' type='submit' onClick={settingDisplay}>Save Changes</button>

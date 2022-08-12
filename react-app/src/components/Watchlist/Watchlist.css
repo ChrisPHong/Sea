@@ -103,13 +103,18 @@
     display: inline-block;
     overflow-wrap: anywhere;
     width: 185px;
+
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+    text-overflow: ellipsis;
 }
 
 .editBtnDiv{
     /* display: inline-block; */
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
+    justify-content: center;
 
 }
 
