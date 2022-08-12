@@ -76,55 +76,53 @@ function EditWatchListForm({ watchlist, names}) {
         <>
         <div className='editAndDeleteButtonDiv'>
 
-                                    <button
-                                        className={`editButton ${watchlist.id}`}
-                                        onClick={async (e) => {
-                                            settingDisplay()
-                                        }
-                                        }
-                                    >
-                                        <img className={`editingPicture ${watchlist.id}`} src={'https://cdn-icons-png.flaticon.com/512/61/61456.png'} />
-                                    </button >
+            <button
+                className={`editButton ${watchlist.id}`}
+                onClick={async (e) => {
+                    settingDisplay()
+                }
+                }
+            >
+                <img className={`editingPicture ${watchlist.id}`} src={'https://cdn-icons-png.flaticon.com/512/61/61456.png'} />
+            </button >
+
+        </div>
 
 
+        {display ?
+            <form className={`WatchlistForm-${id}`} onSubmit={onSubmit}>
+                {show ?
+                    errors.length > 0 ?
+                        <>
+                            {errors.map((error, ind) => {
+                                return (
+                                    <>
+                                        <p className='edit-watchlist-error-message'
+                                            key={ind}>{error}</p>
+                                    </>
+                                )
+                            })}
+                        </>
+                        : null
+                    : null}
+                <div className='nameInput'>
+                    <input type='text'
+                        required
+                        className='inputBox'
+                        placeholder='Watchlist Name'
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                    />
+                </div>
+                <button
+                    className='submitButton'
+                    type='submit'
 
-                                </div>
+                >Save Changes</button>
+                <button className='cancel-watchlist-edit' onClick={settingDisplay}>Cancel</button>
+            </form>
 
-            {display ?
-                <form className={`WatchlistForm-${id}`} onSubmit={onSubmit}>
-                    {show ?
-                        errors.length > 0 ?
-                            <>
-                                {errors.map((error, ind) => {
-                                    return (
-                                        <>
-                                            <p className='edit-watchlist-error-message'
-                                                key={ind}>{error}</p>
-                                        </>
-                                    )
-                                })}
-                            </>
-                            : null
-                        : null}
-                    <div className='nameInput'>
-                        <input type='text'
-                            required
-                            className='inputBox'
-                            placeholder='Watchlist Name'
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                        />
-                    </div>
-                    <button
-                        className='submitButton'
-                        type='submit'
-
-                    >Save Changes</button>
-                    <button className='cancel-watchlist-edit' onClick={settingDisplay}>Cancel</button>
-                </form>
-
-                : null}
-
+            : null}
         </>
     )
 }

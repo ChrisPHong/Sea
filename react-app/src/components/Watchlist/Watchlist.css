@@ -51,7 +51,6 @@
 .editingPicture {
     width: 15px;
     background-color: transparent;
-
 }
 
 .deletePicture {
@@ -104,10 +103,13 @@
     font-size: 25px;
     display: inline-block;
     overflow-wrap: anywhere;
+    width: 185px;
 }
 
 .editAndDeleteButtonDiv{
-    display: inline-block;
+    /* display: inline-block; */
+    display: flex;
+    flex-direction: row;
     justify-content: space-between;
 
 }
@@ -115,7 +117,7 @@
 .titleWatchlistDiv{
 
     display: flex;
-    /* flex-direction: column; */
+    flex-direction: column;
     justify-content: space-between;
     margin-bottom: 3px;
     padding-bottom: 6px;

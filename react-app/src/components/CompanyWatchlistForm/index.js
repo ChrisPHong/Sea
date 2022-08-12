@@ -44,7 +44,7 @@ function CompanyWatchlistForm(props) {
                             className='WatchListCompanyButton'
                             onClick={() => onClick(watchlist.id)}
                         >
-                            {watchlist.name}
+                            <span className='watchlist-name-btn'>{watchlist.name}</span>
                         </button>
                     </>
                 ))}

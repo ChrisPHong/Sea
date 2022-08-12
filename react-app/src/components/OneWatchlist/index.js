@@ -11,11 +11,21 @@ function OneWatchlist({ watchlist, currencyFormat }) {
     const assetPrices = useSelector(state => state?.portfolio?.prices)
     const watchlistPrices = useSelector(state => state?.watchlist?.prices)
     const stocks = useSelector(state => state?.stock?.entries)
+    const [display, setDisplay] = useState(false);
+
 
     useEffect(() => {
         dispatch(getWatchlists())
         dispatch(getWatchlistPrices())
     }, [dispatch])
+
+    const settingDisplay = () =>{
+        if(display === false){
+            setDisplay(true);
+        } else{
+            setDisplay(false);
+        }
+    }
 
     return (
         <div key={watchlist.id} className='watchlist'>
@@ -35,10 +45,20 @@ function OneWatchlist({ watchlist, currencyFormat }) {
                                 >
                                     <img className='deletePicture' src={'https://www.iconpacks.net/icons/1/free-trash-icon-347-thumb.png'} />
                                 </button>
-                                <EditWatchListForm watchlist={watchlist} names={watchlist.name} />
+                                {/* <button
+                                    className={`editButton ${watchlist.id}`}
+                                    onClick={async (e) => {
+                                        settingDisplay()
+                                    }
+                                    }
+                                >
+                                    <img className={`editingPicture ${watchlist.id}`} src={'https://cdn-icons-png.flaticon.com/512/61/61456.png'} />
+                                </button > */}
                             </div>
                         {/* </div> */}
+                        <EditWatchListForm watchlist={watchlist} names={watchlist.name} />
                     </div>
+
                     <div className='company'>
                         {watchlist.watchComps.map((company) => {
                             return (
