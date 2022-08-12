@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
-import { NavLink } from 'react-router-dom';
-import { getWatchlists, deleteWatchList, deleteStockWatchlists, getWatchlistPrices } from '../../store/watchlist'
+import { NavLink, useHistory } from 'react-router-dom';
+import { getWatchlists, editWatchlists, deleteWatchList, deleteStockWatchlists, getWatchlistPrices } from '../../store/watchlist'
 import { LineChart, Line, XAxis, YAxis } from 'recharts';
 import EditWatchListForm from '../EditWatchListForm'
 import '../Watchlist';
+import '../EditWatchListForm/EditWatchListForm.css';
 
 function OneWatchlist({ watchlist, currencyFormat }) {
     const dispatch = useDispatch();
@@ -13,6 +14,29 @@ function OneWatchlist({ watchlist, currencyFormat }) {
     const stocks = useSelector(state => state?.stock?.entries)
     const [display, setDisplay] = useState(false);
 
+    // from EditWatchlistForm index.js
+    const history = useHistory()
+    const id = watchlist.id
+    const [name, setName] = useState('');
+    const [errors, setErrors] = useState([]);
+    const [show, setShow] = useState(false)
+    const lists = useSelector((state) => Object.values(state.watchlist));
+    const watchlists = Object.values(lists[0])
+    const watchlistNames = watchlists.map((watchlist) => {
+        return watchlist.name
+    })
+    let userId = useSelector((state) => state.session?.user?.id)
+
+    useEffect(()=>{
+        setName(watchlist.name)
+    },[])
+    useEffect(() => {
+        const error = [];
+        if (name.length > 100) error.push('Watchlist name must be less than 100 characters')
+        if (name?.length < 1) error.push('Watchlist name must be at least 1 character')
+        // if (watchlistNames.includes(name)) error.push('Provide a unique name')
+        setErrors(error);
+    }, [name])
 
     useEffect(() => {
         dispatch(getWatchlists())
@@ -27,6 +51,42 @@ function OneWatchlist({ watchlist, currencyFormat }) {
         }
     }
 
+    const onSubmit = async (e) => {
+        e.preventDefault();
+        if (errors.length > 0) {
+            setShow(true)
+            return
+        }
+        if (errors.length === 0) {
+            const payload = {
+                id,
+                userId,
+                name,
+            }
+            const data = await dispatch(editWatchlists(payload))
+            if(data){
+                let error = []
+                error.push(data)
+                setErrors(error)
+                setShow(true)
+                return
+            }
+            setDisplay(false)
+
+        }
+
+    }
+    useEffect(() => {
+
+    }, [onSubmit])
+
+    const onCancel = async (e) => {
+        e.preventDefault();
+        setDisplay(false);
+        setName(watchlist.name);
+    }
+
+
     return (
         <div key={watchlist.id} className='watchlist'>
             <div className='OneWatchListDiv'>
@@ -35,6 +95,15 @@ function OneWatchlist({ watchlist, currencyFormat }) {
                         {/* <div className='watchlist-name-edit-delete-div'> */}
                             <div className='title-and-delete-btn'>
                                 <p className='watchlistName'>{watchlist.name}</p>
+                                <button
+                                    className={`editButton ${watchlist.id}`}
+                                    onClick={async (e) => {
+                                        settingDisplay()
+                                    }
+                                    }
+                                >
+                                    <img className={`editingPicture ${watchlist.id}`} src={'https://cdn-icons-png.flaticon.com/512/61/61456.png'} />
+                                </button >
                                 <button
                                     className='deleteButton'
                                     onClick={async () => {
@@ -47,16 +116,44 @@ function OneWatchlist({ watchlist, currencyFormat }) {
                                 </button>
                             </div>
                             <div className='editBtnDiv'>
-                                {/* <button
-                                    className={`editButton ${watchlist.id}`}
-                                    onClick={async (e) => {
-                                        settingDisplay()
-                                    }
-                                    }
-                                >
-                                    <img className={`editingPicture ${watchlist.id}`} src={'https://cdn-icons-png.flaticon.com/512/61/61456.png'} />
-                                </button > */}
-                                <EditWatchListForm watchlist={watchlist} names={watchlist.name} />
+                                {display ?
+                                <>
+                                    <form className={`WatchlistForm-${id}`} onSubmit={onSubmit}>
+                                        {show ?
+                                            errors.length > 0 ?
+                                                <>
+                                                    {errors.map((error, ind) => {
+                                                        return (
+                                                            <>
+                                                                <p className='edit-watchlist-error-message'
+                                                                    key={ind}>{error}</p>
+                                                            </>
+                                                        )
+                                                    })}
+                                                </>
+                                                : null
+                                            : null}
+                                        <div className='nameInput'>
+                                            <input type='text'
+                                                required
+                                                className='inputBox'
+                                                placeholder='Watchlist Name'
+                                                value={name}
+                                                onChange={(e) => setName(e.target.value)}
+                                            />
+                                        </div>
+                                        <button
+                                            className='submitButton'
+                                            type='submit'
+                                        >Save Changes</button>
+                                        <button className='cancel-watchlist-edit' onClick={onCancel}>Cancel</button>
+                                    </form>
+                                    {/* <EditWatchListForm watchlist={watchlist} names={watchlist.name} />
+                                    <button className='submitButton' type='submit' onClick={settingDisplay}>Save Changes</button>
+                                    <button className='cancel-watchlist-edit' onClick={settingDisplay}>Cancel</button> */}
+                                </>
+                                : null
+                                }
                             </div>
                         {/* </div> */}
                     </div>
