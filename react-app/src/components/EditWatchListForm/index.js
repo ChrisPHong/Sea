@@ -29,7 +29,7 @@ function EditWatchListForm({ watchlist, names}) {
         const error = [];
         if (name.length > 100) error.push('The Name must be less than 100 characters')
         if (name?.length < 1) error.push('Put a name with at least 1 character')
-        if (watchlistNames.includes(name)) error.push('Provide a unique name')
+        // if (watchlistNames.includes(name)) error.push('Provide a unique name')
         setErrors(error);
     }, [name])
 
@@ -95,16 +95,14 @@ function EditWatchListForm({ watchlist, names}) {
                     {show ?
                         errors.length > 0 ?
                             <>
-                                <h3>Error</h3>
-                                <ul className='errorsArray'>{errors.map(error => {
+                                {errors.map((error, ind) => {
                                     return (
                                         <>
-                                            <li className='errorItem'
-                                                key={error}>{error}</li>
+                                            <p className='edit-watchlist-error-message'
+                                                key={ind}>{error}</p>
                                         </>
                                     )
                                 })}
-                                </ul>
                             </>
                             : null
                         : null}
@@ -122,6 +120,7 @@ function EditWatchListForm({ watchlist, names}) {
                         type='submit'
 
                     >Save Changes</button>
+                    <button className='cancel-watchlist-edit' onClick={settingDisplay}>Cancel</button>
                 </form>
 
                 : null}

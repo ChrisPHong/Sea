@@ -22,20 +22,22 @@ function OneWatchlist({ watchlist, currencyFormat }) {
             <div className='OneWatchListDiv'>
                 <div className='watchlistButtonsEditAndDelete'>
                     <div className='titleWatchlistDiv'>
-                        <p className='watchlistName'>{watchlist.name}</p>
-                        <div className='editAndDeleteButtonDiv'>
-                            <button
-                                className='deleteButton'
-                                onClick={async () => {
-                                    console.log(watchlist, "<<<<<<<<<<<<<<< WATCHLIST")
-                                    await dispatch(deleteWatchList(watchlist.id))
-                                    await dispatch(getWatchlists())
-                                }}
-                            >
-                                <img className='deletePicture' src={'https://www.iconpacks.net/icons/1/free-trash-icon-347-thumb.png'} />
-                            </button>
-                            <EditWatchListForm watchlist={watchlist} names={watchlist.name} />
-                        </div>
+                        {/* <div className='watchlist-name-edit-delete-div'> */}
+                            <p className='watchlistName'>{watchlist.name}</p>
+                            <div className='editAndDeleteButtonDiv'>
+                                <button
+                                    className='deleteButton'
+                                    onClick={async () => {
+                                        console.log(watchlist, "<<<<<<<<<<<<<<< WATCHLIST")
+                                        await dispatch(deleteWatchList(watchlist.id))
+                                        await dispatch(getWatchlists())
+                                    }}
+                                >
+                                    <img className='deletePicture' src={'https://www.iconpacks.net/icons/1/free-trash-icon-347-thumb.png'} />
+                                </button>
+                                <EditWatchListForm watchlist={watchlist} names={watchlist.name} />
+                            </div>
+                        {/* </div> */}
                     </div>
                     <div className='company'>
                         {watchlist.watchComps.map((company) => {
