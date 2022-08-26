@@ -37,10 +37,16 @@ const Dashboard = () => {
 
     const [newData, setNewData] = useState(portfolio)
     const [currPrice, setCurrPrice] = useState(0)
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         // Force the page to scroll up to top on mount
         window.scrollTo(0, 0)
+
+        setIsLoading(true)
+        setTimeout(() => {
+            setIsLoading(false)
+        }, 1000)
     }, [])
 
     useEffect(() => {
@@ -133,133 +139,141 @@ const Dashboard = () => {
     }
 
     return (
-        <div id='portfolio-ctn'>
-            <h1 className='your-assets-heading'>Your assets</h1>
-            {/* -------------------- ASSETS GRAPH -------------------- */}
-            <div className='portfolio-graph'>
-                <div className='balance-info'>
-                    <div className='balance-label'>Balance</div>
-                    <div className='balance-amt'>
-                        {/* If hovering over the graph, update the balance amount. Otherwise, default to the most recent price */}
-                        {currPrice ? `${currencyFormat.format(currPrice)}` : currencyFormat.format(portfolioPrices['364']?.price)}
+        <>
+            {isLoading
+            ? <div className='loading-ctn'>
+                <div className='loading'></div>
+            </div>
+            :
+            <div id='portfolio-ctn'>
+                <h1 className='your-assets-heading'>Your assets</h1>
+                {/* -------------------- ASSETS GRAPH -------------------- */}
+                <div className='portfolio-graph'>
+                    <div className='balance-info'>
+                        <div className='balance-label'>Balance</div>
+                        <div className='balance-amt'>
+                            {/* If hovering over the graph, update the balance amount. Otherwise, default to the most recent price */}
+                            {currPrice ? `${currencyFormat.format(currPrice)}` : currencyFormat.format(portfolioPrices['364']?.price)}
+                        </div>
+                        <div className='balance-percent'>
+                            {(buyingTotal() > totalFunds()) ?
+                                <div className='all-time-diff' style={{ color: 'green' }}>
+                                    +{currencyFormat.format(Math.abs((buyingTotal() - totalFunds())).toFixed(2))}
+                                </div>
+                                :
+                                <div className='all-time-diff' style={{ color: 'red' }}>
+                                    -{currencyFormat.format(Math.abs((buyingTotal() - totalFunds())))}
+                                </div>
+                            }
+                            <div className='all-time'>All time</div>
+                        </div>
                     </div>
-                    <div className='balance-percent'>
-                        {(buyingTotal() > totalFunds()) ?
-                            <div className='all-time-diff' style={{ color: 'green' }}>
-                                +{currencyFormat.format(Math.abs((buyingTotal() - totalFunds())).toFixed(2))}
-                            </div>
-                            :
-                            <div className='all-time-diff' style={{ color: 'red' }}>
-                                -{currencyFormat.format(Math.abs((buyingTotal() - totalFunds())))}
-                            </div>
-                        }
-                        <div className='all-time'>All time</div>
+                    {/* -------------------- LINE CHART HERE -------------------- */}
+                    <div className='asset-chart'>
+                        <LineChart
+                            width={950}
+                            height={300}
+                            data={newData}
+                            onMouseMove={(e) => lineMouseOver(e?.activePayload && e?.activePayload[0].payload.price)}
+                        >
+                            <XAxis dataKey="date" hide='true' />
+                            <YAxis dataKey="price" domain={['dataMin', 'dataMax']} hide='true' />
+                            <ReferenceLine y={totalFunds()} stroke="gray" strokeDasharray="3 3" />
+                            <Tooltip
+                                cursor={false}
+                                content={customTooltip}
+                            />
+                            <Line
+                                type="linear"
+                                dataKey="price"
+                                stroke="#0b7cee"
+                                activeDot={{ r: 5 }}
+                                dot={false}
+                                animationDuration={500}
+                                strokeWidth={2}
+                            />
+                        </LineChart>
+                    </div>
+                    <div className='asset-bottom'>
+                        <div className='asset-timeframe'>
+                            <span className='weekly'>
+                                <button
+                                    value='1w'
+                                    className='weekly-btn'
+                                    onMouseDown={e => createData(e.target.value)}
+                                >
+                                    1W
+                                </button>
+                            </span>
+                            <span className='monthly'>
+                                <button
+                                    value='1m'
+                                    className='monthly-btn'
+                                    onMouseDown={e => createData(e.target.value)}
+                                >
+                                    1M
+                                </button>
+                            </span>
+                            <span className='three-months'>
+                                <button
+                                    value='3m'
+                                    className='three-months-btn'
+                                    onMouseDown={e => createData(e.target.value)}
+                                >
+                                    3M
+                                </button>
+                            </span>
+                            <span className='six-months'>
+                                <button
+                                    value='6m'
+                                    className='six-months-btn'
+                                    onMouseDown={e => createData(e.target.value)}
+                                >
+                                    6M
+                                </button>
+                            </span>
+                            <span className='one-year'>
+                                <button
+                                    value='1y'
+                                    className='one-year-btn'
+                                    onMouseDown={e => createData(e.target.value)}
+                                >
+                                    1Y
+                                </button>
+                            </span>
+                        </div>
                     </div>
                 </div>
-                {/* -------------------- LINE CHART HERE -------------------- */}
-                <div className='asset-chart'>
-                    <LineChart
-                        width={950}
-                        height={300}
-                        data={newData}
-                        onMouseMove={(e) => lineMouseOver(e?.activePayload && e?.activePayload[0].payload.price)}
-                    >
-                        <XAxis dataKey="date" hide='true' />
-                        <YAxis dataKey="price" domain={['dataMin', 'dataMax']} hide='true' />
-                        <ReferenceLine y={totalFunds()} stroke="gray" strokeDasharray="3 3" />
-                        <Tooltip
-                            cursor={false}
-                            content={customTooltip}
+                <div id='info'>
+                    <div id='left'>
+                        {/* -------------------- OWNED STOCKS -------------------- */}
+                        <AssetTable
+                            currentUser={currentUser}
+                            stocks={stocks}
+                            companies={companies}
+                            closingPrices={closingPrices}
+                            closingPricesArr={closingPricesArr}
+                            transArr={transArr}
+                            currencyFormat={currencyFormat}
+                            buyingTotal={buyingTotal}
                         />
-                        <Line
-                            type="linear"
-                            dataKey="price"
-                            stroke="#0b7cee"
-                            activeDot={{ r: 5 }}
-                            dot={false}
-                            animationDuration={500}
-                            strokeWidth={2}
-                        />
-                    </LineChart>
-                </div>
-                <div className='asset-bottom'>
-                    <div className='asset-timeframe'>
-                        <span className='weekly'>
-                            <button
-                                value='1w'
-                                className='weekly-btn'
-                                onClick={e => createData(e.target.value)}
-                            >
-                                1W
-                            </button>
-                        </span>
-                        <span className='monthly'>
-                            <button
-                                value='1m'
-                                className='monthly-btn'
-                                onClick={e => createData(e.target.value)}
-                            >
-                                1M
-                            </button>
-                        </span>
-                        <span className='three-months'>
-                            <button
-                                value='3m'
-                                className='three-months-btn'
-                                onClick={e => createData(e.target.value)}
-                            >
-                                3M
-                            </button>
-                        </span>
-                        <span className='six-months'>
-                            <button
-                                value='6m'
-                                className='six-months-btn'
-                                onClick={e => createData(e.target.value)}
-                            >
-                                6M
-                            </button>
-                        </span>
-                        <span className='one-year'>
-                            <button
-                                value='1y'
-                                className='one-year-btn'
-                                onClick={e => createData(e.target.value)}
-                            >
-                                1Y
-                            </button>
-                        </span>
+                        {/* -------------------- NEWS -------------------- */}
+                        <div className='news-ctn'>
+                            <MarketNews news={newsArr} />
+                        </div>
+                    </div>
+                    <div id='right'>
+                        {/* -------------------- WATCHLIST -------------------- */}
+                        <div className='watchlist-form'>
+                            <AddMoneyCurrentBalance />
+                            <WatchlistForm />
+                            <WatchlistPage currencyFormat={currencyFormat}/>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div id='info'>
-                <div id='left'>
-                    {/* -------------------- OWNED STOCKS -------------------- */}
-                    <AssetTable
-                        currentUser={currentUser}
-                        stocks={stocks}
-                        companies={companies}
-                        closingPrices={closingPrices}
-                        closingPricesArr={closingPricesArr}
-                        transArr={transArr}
-                        currencyFormat={currencyFormat}
-                        buyingTotal={buyingTotal}
-                    />
-                    {/* -------------------- NEWS -------------------- */}
-                    <div className='news-ctn'>
-                        <MarketNews news={newsArr} />
-                    </div>
-                </div>
-                <div id='right'>
-                    {/* -------------------- WATCHLIST -------------------- */}
-                    <div className='watchlist-form'>
-                        <AddMoneyCurrentBalance />
-                        <WatchlistForm />
-                        <WatchlistPage currencyFormat={currencyFormat}/>
-                    </div>
-                </div>
-            </div>
-        </div>
+            }
+        </>
     )
 }
 

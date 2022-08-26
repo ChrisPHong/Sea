@@ -1,3 +1,23 @@
+.loading-ctn {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    background: rgba(255, 255, 255);
+    z-index: 1;
+}
+
+.loading {
+    width: 100px;
+    height: 100px;
+    border: 2px solid;
+    border-color: #0b7cee transparent transparent;
+    border-radius: 100%;
+    animation: spin-anim 1s linear infinite;
+}
+
 #portfolio-ctn {
     display: flex;
     flex-direction: column;
@@ -152,4 +172,13 @@
     justify-content: center;
     align-items: center;
     padding-top: 15px;
+}
+
+@keyframes spin-anim {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
