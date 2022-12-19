@@ -47,5 +47,6 @@ flask seed undo
 
 flask db downgrade
 
+heroku run -a sea-coin flask db migrate
 heroku run -a sea-coin flask seed all
 heroku run -a sea-coin flask seed undo
